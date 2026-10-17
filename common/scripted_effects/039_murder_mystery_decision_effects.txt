@@ -1412,33 +1412,6 @@ murder_mystery_decision_run_cell_support = {
 	clear_variable = murder_mystery_phase_mission_expiry_days
 }
 
-murder_mystery_decision_fail_cell_mission = {
-	if = {
-		limit = { murder_mystery_runtime_is_active = yes }
-		murder_mystery_open_phase_mission = yes
-		if = {
-			limit = { has_variable = murder_mystery_decision_mission_duration }
-			set_variable = { murder_mystery_phase_mission_expiry_days = murder_mystery_decision_mission_duration }
-		}
-		murder_mystery_fail_phase_mission = yes
-		set_variable = { murder_mystery_case_progress_delta = constant:murder_mystery_action_tuning.failure_case_progress }
-		set_variable = { murder_mystery_network_reach_delta = constant:murder_mystery_action_tuning.failure_reach_gain }
-		set_variable = { murder_mystery_killer_adaptation_delta = constant:murder_mystery_action_tuning.failure_adaptation }
-		murder_mystery_adjust_case_progress = yes
-		murder_mystery_adjust_network_reach = yes
-		murder_mystery_adjust_killer_adaptation = yes
-		murder_mystery_start_action_cooldown = yes
-		clear_variable = murder_mystery_case_progress_delta
-		clear_variable = murder_mystery_network_reach_delta
-		clear_variable = murder_mystery_killer_adaptation_delta
-	}
-	murder_mystery_decision_clear_uncommitted_action = yes
-	clear_variable = murder_mystery_pending_action
-	clear_variable = murder_mystery_pending_phase
-	clear_variable = murder_mystery_phase_mission_expiry_days
-	clear_variable = murder_mystery_decision_mission_duration
-}
-
 # The cell's contacts and cover are arranged at once; the weapons and money
 # travel as a shipment that arrives after shipment_transit_days unless a
 # raid or a lost stage cancels it. A cell that already expects a shipment

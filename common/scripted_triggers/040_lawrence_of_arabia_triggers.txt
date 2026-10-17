@@ -119,19 +119,6 @@ lawrence_is_valid_target = {
 	NOT = { hidden_trigger = { has_country_flag = lawrence_bloc_member } }
 }
 
-# ANY scope. At least one valid target exists and Britain can act.
-lawrence_has_any_valid_target = {
-	ENG = { lawrence_sponsor_can_act = yes }
-	any_country = { lawrence_is_valid_target = yes }
-}
-
-# ANY scope. Event 40 can enter the random pool.
-lawrence_automatic_event_is_available = {
-	lawrence_has_any_valid_target = yes
-	NOT = { has_global_flag = lawrence_campaign_active }
-	NOT = { has_global_flag = lawrence_campaign_closed }
-}
-
 # ---------------------------------------------------------------------------
 # Campaign proof (generation receipts)
 # ---------------------------------------------------------------------------
@@ -209,30 +196,6 @@ lawrence_british_personal_actions_open = {
 # Bands and trend (target scope)
 # ---------------------------------------------------------------------------
 
-lawrence_band_is_broken = {
-	check_variable = { var = lawrence_band value = constant:lawrence_band.broken compare = equals }
-}
-
-lawrence_band_is_restricted = {
-	check_variable = { var = lawrence_band value = constant:lawrence_band.restricted compare = equals }
-}
-
-lawrence_band_is_contested = {
-	check_variable = { var = lawrence_band value = constant:lawrence_band.contested compare = equals }
-}
-
-lawrence_band_is_embedded_or_higher = {
-	check_variable = { var = lawrence_band value = constant:lawrence_band.embedded compare = greater_than_or_equals }
-}
-
-lawrence_band_is_ascendant_or_higher = {
-	check_variable = { var = lawrence_band value = constant:lawrence_band.ascendant compare = greater_than_or_equals }
-}
-
-lawrence_band_is_dominant = {
-	check_variable = { var = lawrence_band value = constant:lawrence_band.dominant compare = equals }
-}
-
 # Influence at or below the clean-removal ceiling.
 lawrence_influence_is_low = {
 	check_variable = { var = lawrence_influence value = constant:lawrence_influence.clean_removal_ceiling compare = less_than }
@@ -241,16 +204,6 @@ lawrence_influence_is_low = {
 # ---------------------------------------------------------------------------
 # Target-side state predicates (target scope)
 # ---------------------------------------------------------------------------
-
-lawrence_target_has_terms = {
-	NOT = { check_variable = { var = lawrence_terms value = constant:lawrence_terms.unset compare = equals } }
-}
-
-lawrence_target_has_file = { has_country_flag = lawrence_file }
-lawrence_target_has_office = { has_country_flag = lawrence_office }
-lawrence_target_has_custody_history = { has_country_flag = lawrence_custody_taken }
-lawrence_target_contact_turned = { has_country_flag = lawrence_contact_turned }
-lawrence_target_has_leverage = { has_country_flag = lawrence_leverage }
 
 lawrence_target_has_evidence_for_detention = {
 	check_variable = { var = lawrence_evidence value = constant:lawrence_evidence.detention compare = greater_than_or_equals }
@@ -276,10 +229,6 @@ lawrence_target_delivery_is_pending = {
 # runs as one lane (file, audit, turn, feed, expose, dismantle): at most two
 # of its decisions are visible together.
 # ---------------------------------------------------------------------------
-
-lawrence_shows_target_category = {
-	lawrence_is_live_target = yes
-}
 
 # Opening: the terms of access are still open.
 lawrence_shows_set_terms = {

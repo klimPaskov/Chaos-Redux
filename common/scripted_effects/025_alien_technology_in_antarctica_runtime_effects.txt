@@ -1560,7 +1560,7 @@ chaosx_nr25_run_bounded_pulse = {
 				has_capitulated = yes
 			}
 		}
-		chaosx_nr25_cleanup_invalid_participant = yes
+		chaosx_nr25_withdraw_participant = yes
 	}
 	else = {
 		set_temp_variable = { chaosx_nr25_pulse_step = constant:chaosx_nr25_timing.pulse_days }
@@ -1742,35 +1742,6 @@ chaosx_nr25_run_bounded_pulse = {
 	}
 }
 
-# COUNTRY scope. Invalid registry members are removed from the bounded array
-# and retain only a cleanup marker. No other country is inspected here.
-chaosx_nr25_cleanup_invalid_participant = {
-	if = {
-		limit = {
-			has_country_flag = chaosx_nr25_participant
-			NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
-			chaosx_alien_recovery_ledger_has_loser_evidence = yes
-		}
-		chaosx_nr25_apply_loser_settlement = yes
-	}
-	chaosx_nr25_remove_phase_missions = yes
-	chaosx_nr25_remove_final_missions = yes
-	remove_ideas = chaosx_nr25_civilian_commitment
-	chaosx_nr25_clear_selection_state = yes
-	clear_variable = chaosx_nr25_final_mission_kind
-	clr_country_flag = chaosx_nr25_final_mission_active
-	clr_country_flag = chaosx_nr25_final_mission_ready
-	if = { limit = { is_in_array = { array = global.chaosx_nr25_participants value = THIS } } remove_from_array = { array = global.chaosx_nr25_participants value = THIS } }
-	clr_country_flag = chaosx_nr25_participant
-	set_country_flag = chaosx_nr25_terminal
-	set_variable = { chaosx_nr25_phase = constant:chaosx_nr25_phase.closed }
-	if = {
-		limit = { check_variable = { var = global.chaosx_nr25_active_participant_count value = constant:chaosx_nr25_value.zero compare = greater_than } }
-		subtract_from_variable = { global.chaosx_nr25_active_participant_count = constant:chaosx_nr25_value.one }
-	}
-	chaosx_nr25_close_if_no_active_participants = yes
-}
-
 # COUNTRY scope. Voluntary withdrawal uses the same settlement and registry
 # cleanup contract as an invalidated expedition, while preserving verified
 # survey notes and exclusive fragment records.
@@ -1803,6 +1774,9 @@ chaosx_nr25_begin_evacuation = {
 	}
 }
 
+# COUNTRY scope. Removes one participant from the bounded registry and settles its missions,
+# commitments and selection state. Used for invalid registry members found by the pulse and for
+# voluntary or forced withdrawal. No other country is inspected here.
 chaosx_nr25_withdraw_participant = {
 	if = {
 		limit = {

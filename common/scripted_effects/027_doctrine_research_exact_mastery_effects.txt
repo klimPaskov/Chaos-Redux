@@ -12751,7 +12751,10 @@ doctrine_research_exact_step_air_subdoctrine_heavy_aircraft_focus_track_heavy_ai
 	}
 }
 
-doctrine_research_exact_step_mountaineers_1_track_special_forces_first = {
+# Special Forces steps are shared by both native Special Forces tracks: add_mastery
+# filters on folder and sub_doctrine only, because every token is xor-locked with its
+# sibling and can occupy only one track at a time.
+doctrine_research_exact_step_mountaineers_1_special_forces = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
 	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mountaineers_1_mastery_gain_factor }
@@ -12776,7 +12779,7 @@ doctrine_research_exact_step_mountaineers_1_track_special_forces_first = {
 	}
 }
 
-doctrine_research_exact_step_mountaineers_2_track_special_forces_first = {
+doctrine_research_exact_step_mountaineers_2_special_forces = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
 	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mountaineers_2_mastery_gain_factor }
@@ -12801,7 +12804,7 @@ doctrine_research_exact_step_mountaineers_2_track_special_forces_first = {
 	}
 }
 
-doctrine_research_exact_step_marines_1_track_special_forces_first = {
+doctrine_research_exact_step_marines_1_special_forces = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
 	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@marines_1_mastery_gain_factor }
@@ -12826,7 +12829,7 @@ doctrine_research_exact_step_marines_1_track_special_forces_first = {
 	}
 }
 
-doctrine_research_exact_step_marines_2_track_special_forces_first = {
+doctrine_research_exact_step_marines_2_special_forces = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
 	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@marines_2_mastery_gain_factor }
@@ -12851,7 +12854,7 @@ doctrine_research_exact_step_marines_2_track_special_forces_first = {
 	}
 }
 
-doctrine_research_exact_step_paratroopers_1_track_special_forces_first = {
+doctrine_research_exact_step_paratroopers_1_special_forces = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
 	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@paratroopers_1_mastery_gain_factor }
@@ -12876,7 +12879,7 @@ doctrine_research_exact_step_paratroopers_1_track_special_forces_first = {
 	}
 }
 
-doctrine_research_exact_step_paratroopers_2_track_special_forces_first = {
+doctrine_research_exact_step_paratroopers_2_special_forces = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
 	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@paratroopers_2_mastery_gain_factor }
@@ -12901,7 +12904,7 @@ doctrine_research_exact_step_paratroopers_2_track_special_forces_first = {
 	}
 }
 
-doctrine_research_exact_step_rangers_1_track_special_forces_first = {
+doctrine_research_exact_step_rangers_1_special_forces = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
 	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@rangers_1_mastery_gain_factor }
@@ -12926,207 +12929,7 @@ doctrine_research_exact_step_rangers_1_track_special_forces_first = {
 	}
 }
 
-doctrine_research_exact_step_rangers_2_track_special_forces_first = {
-	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
-	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
-	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@rangers_2_mastery_gain_factor }
-	doctrine_research_prepare_transaction_step_limit = yes
-	while_loop_effect = {
-		limit = {
-			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
-		}
-		add_mastery = {
-			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
-			folder = special_forces
-			sub_doctrine = rangers_2
-		}
-		add_to_temp_variable = { doctrine_research_transaction_step_guard = constant:doctrine_research_event.mastery_point_increment }
-		doctrine_research_capture_transaction_level = yes
-	}
-	if = {
-		limit = { check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = equals } }
-		set_temp_variable = { doctrine_research_transaction_success = 1 }
-		set_temp_variable = { doctrine_research_transaction_post_level = doctrine_research_transaction_observed_level }
-	}
-}
-
-doctrine_research_exact_step_mountaineers_1_track_special_forces_second = {
-	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
-	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
-	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mountaineers_1_mastery_gain_factor }
-	doctrine_research_prepare_transaction_step_limit = yes
-	while_loop_effect = {
-		limit = {
-			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
-		}
-		add_mastery = {
-			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
-			folder = special_forces
-			sub_doctrine = mountaineers_1
-		}
-		add_to_temp_variable = { doctrine_research_transaction_step_guard = constant:doctrine_research_event.mastery_point_increment }
-		doctrine_research_capture_transaction_level = yes
-	}
-	if = {
-		limit = { check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = equals } }
-		set_temp_variable = { doctrine_research_transaction_success = 1 }
-		set_temp_variable = { doctrine_research_transaction_post_level = doctrine_research_transaction_observed_level }
-	}
-}
-
-doctrine_research_exact_step_mountaineers_2_track_special_forces_second = {
-	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
-	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
-	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mountaineers_2_mastery_gain_factor }
-	doctrine_research_prepare_transaction_step_limit = yes
-	while_loop_effect = {
-		limit = {
-			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
-		}
-		add_mastery = {
-			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
-			folder = special_forces
-			sub_doctrine = mountaineers_2
-		}
-		add_to_temp_variable = { doctrine_research_transaction_step_guard = constant:doctrine_research_event.mastery_point_increment }
-		doctrine_research_capture_transaction_level = yes
-	}
-	if = {
-		limit = { check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = equals } }
-		set_temp_variable = { doctrine_research_transaction_success = 1 }
-		set_temp_variable = { doctrine_research_transaction_post_level = doctrine_research_transaction_observed_level }
-	}
-}
-
-doctrine_research_exact_step_marines_1_track_special_forces_second = {
-	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
-	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
-	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@marines_1_mastery_gain_factor }
-	doctrine_research_prepare_transaction_step_limit = yes
-	while_loop_effect = {
-		limit = {
-			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
-		}
-		add_mastery = {
-			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
-			folder = special_forces
-			sub_doctrine = marines_1
-		}
-		add_to_temp_variable = { doctrine_research_transaction_step_guard = constant:doctrine_research_event.mastery_point_increment }
-		doctrine_research_capture_transaction_level = yes
-	}
-	if = {
-		limit = { check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = equals } }
-		set_temp_variable = { doctrine_research_transaction_success = 1 }
-		set_temp_variable = { doctrine_research_transaction_post_level = doctrine_research_transaction_observed_level }
-	}
-}
-
-doctrine_research_exact_step_marines_2_track_special_forces_second = {
-	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
-	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
-	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@marines_2_mastery_gain_factor }
-	doctrine_research_prepare_transaction_step_limit = yes
-	while_loop_effect = {
-		limit = {
-			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
-		}
-		add_mastery = {
-			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
-			folder = special_forces
-			sub_doctrine = marines_2
-		}
-		add_to_temp_variable = { doctrine_research_transaction_step_guard = constant:doctrine_research_event.mastery_point_increment }
-		doctrine_research_capture_transaction_level = yes
-	}
-	if = {
-		limit = { check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = equals } }
-		set_temp_variable = { doctrine_research_transaction_success = 1 }
-		set_temp_variable = { doctrine_research_transaction_post_level = doctrine_research_transaction_observed_level }
-	}
-}
-
-doctrine_research_exact_step_paratroopers_1_track_special_forces_second = {
-	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
-	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
-	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@paratroopers_1_mastery_gain_factor }
-	doctrine_research_prepare_transaction_step_limit = yes
-	while_loop_effect = {
-		limit = {
-			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
-		}
-		add_mastery = {
-			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
-			folder = special_forces
-			sub_doctrine = paratroopers_1
-		}
-		add_to_temp_variable = { doctrine_research_transaction_step_guard = constant:doctrine_research_event.mastery_point_increment }
-		doctrine_research_capture_transaction_level = yes
-	}
-	if = {
-		limit = { check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = equals } }
-		set_temp_variable = { doctrine_research_transaction_success = 1 }
-		set_temp_variable = { doctrine_research_transaction_post_level = doctrine_research_transaction_observed_level }
-	}
-}
-
-doctrine_research_exact_step_paratroopers_2_track_special_forces_second = {
-	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
-	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
-	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@paratroopers_2_mastery_gain_factor }
-	doctrine_research_prepare_transaction_step_limit = yes
-	while_loop_effect = {
-		limit = {
-			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
-		}
-		add_mastery = {
-			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
-			folder = special_forces
-			sub_doctrine = paratroopers_2
-		}
-		add_to_temp_variable = { doctrine_research_transaction_step_guard = constant:doctrine_research_event.mastery_point_increment }
-		doctrine_research_capture_transaction_level = yes
-	}
-	if = {
-		limit = { check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = equals } }
-		set_temp_variable = { doctrine_research_transaction_success = 1 }
-		set_temp_variable = { doctrine_research_transaction_post_level = doctrine_research_transaction_observed_level }
-	}
-}
-
-doctrine_research_exact_step_rangers_1_track_special_forces_second = {
-	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
-	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
-	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@rangers_1_mastery_gain_factor }
-	doctrine_research_prepare_transaction_step_limit = yes
-	while_loop_effect = {
-		limit = {
-			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
-		}
-		add_mastery = {
-			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
-			folder = special_forces
-			sub_doctrine = rangers_1
-		}
-		add_to_temp_variable = { doctrine_research_transaction_step_guard = constant:doctrine_research_event.mastery_point_increment }
-		doctrine_research_capture_transaction_level = yes
-	}
-	if = {
-		limit = { check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = equals } }
-		set_temp_variable = { doctrine_research_transaction_success = 1 }
-		set_temp_variable = { doctrine_research_transaction_post_level = doctrine_research_transaction_observed_level }
-	}
-}
-
-doctrine_research_exact_step_rangers_2_track_special_forces_second = {
+doctrine_research_exact_step_rangers_2_special_forces = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
 	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@rangers_2_mastery_gain_factor }
@@ -14343,7 +14146,7 @@ doctrine_research_apply_ordinary_empty_track_mastery = {
 	}
 }
 
-# Track-qualified wrappers keep the two native Special Forces tracks distinct.
+# One shared Special Forces step per subdoctrine serves both native tracks.
 # The ordinary adapter remains the fallback for the four vanilla domains and Chaos Warfare.
 
 doctrine_research_apply_special_forces_mastery = {
@@ -14353,116 +14156,108 @@ doctrine_research_apply_special_forces_mastery = {
 	set_temp_variable = { doctrine_research_transaction_post_level = 0 }
 	set_temp_variable = { doctrine_research_transaction_native_completed = 0 }
 	if = {
-		limit = { check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.mountaineers_1 compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_first compare = equals } }
+		limit = {
+			check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.mountaineers_1 compare = equals }
+			OR = {
+				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_first compare = equals }
+				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_second compare = equals }
+			}
+		}
 		doctrine_research_capture_transaction_level = yes
 		set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 		add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-		doctrine_research_exact_step_mountaineers_1_track_special_forces_first = yes
+		doctrine_research_exact_step_mountaineers_1_special_forces = yes
 	}
 	if = {
-		limit = { check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.mountaineers_2 compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_first compare = equals } }
+		limit = {
+			check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.mountaineers_2 compare = equals }
+			OR = {
+				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_first compare = equals }
+				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_second compare = equals }
+			}
+		}
 		doctrine_research_capture_transaction_level = yes
 		set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 		add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-		doctrine_research_exact_step_mountaineers_2_track_special_forces_first = yes
+		doctrine_research_exact_step_mountaineers_2_special_forces = yes
 	}
 	if = {
-		limit = { check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.marines_1 compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_first compare = equals } }
+		limit = {
+			check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.marines_1 compare = equals }
+			OR = {
+				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_first compare = equals }
+				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_second compare = equals }
+			}
+		}
 		doctrine_research_capture_transaction_level = yes
 		set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 		add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-		doctrine_research_exact_step_marines_1_track_special_forces_first = yes
+		doctrine_research_exact_step_marines_1_special_forces = yes
 	}
 	if = {
-		limit = { check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.marines_2 compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_first compare = equals } }
+		limit = {
+			check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.marines_2 compare = equals }
+			OR = {
+				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_first compare = equals }
+				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_second compare = equals }
+			}
+		}
 		doctrine_research_capture_transaction_level = yes
 		set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 		add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-		doctrine_research_exact_step_marines_2_track_special_forces_first = yes
+		doctrine_research_exact_step_marines_2_special_forces = yes
 	}
 	if = {
-		limit = { check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.paratroopers_1 compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_first compare = equals } }
+		limit = {
+			check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.paratroopers_1 compare = equals }
+			OR = {
+				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_first compare = equals }
+				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_second compare = equals }
+			}
+		}
 		doctrine_research_capture_transaction_level = yes
 		set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 		add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-		doctrine_research_exact_step_paratroopers_1_track_special_forces_first = yes
+		doctrine_research_exact_step_paratroopers_1_special_forces = yes
 	}
 	if = {
-		limit = { check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.paratroopers_2 compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_first compare = equals } }
+		limit = {
+			check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.paratroopers_2 compare = equals }
+			OR = {
+				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_first compare = equals }
+				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_second compare = equals }
+			}
+		}
 		doctrine_research_capture_transaction_level = yes
 		set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 		add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-		doctrine_research_exact_step_paratroopers_2_track_special_forces_first = yes
+		doctrine_research_exact_step_paratroopers_2_special_forces = yes
 	}
 	if = {
-		limit = { check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.rangers_1 compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_first compare = equals } }
+		limit = {
+			check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.rangers_1 compare = equals }
+			OR = {
+				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_first compare = equals }
+				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_second compare = equals }
+			}
+		}
 		doctrine_research_capture_transaction_level = yes
 		set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 		add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-		doctrine_research_exact_step_rangers_1_track_special_forces_first = yes
+		doctrine_research_exact_step_rangers_1_special_forces = yes
 	}
 	if = {
-		limit = { check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.rangers_2 compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_first compare = equals } }
+		limit = {
+			check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.rangers_2 compare = equals }
+			OR = {
+				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_first compare = equals }
+				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_second compare = equals }
+			}
+		}
 		doctrine_research_capture_transaction_level = yes
 		set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 		add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-		doctrine_research_exact_step_rangers_2_track_special_forces_first = yes
-	}
-	if = {
-		limit = { check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.mountaineers_1 compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_second compare = equals } }
-		doctrine_research_capture_transaction_level = yes
-		set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
-		add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-		doctrine_research_exact_step_mountaineers_1_track_special_forces_second = yes
-	}
-	if = {
-		limit = { check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.mountaineers_2 compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_second compare = equals } }
-		doctrine_research_capture_transaction_level = yes
-		set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
-		add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-		doctrine_research_exact_step_mountaineers_2_track_special_forces_second = yes
-	}
-	if = {
-		limit = { check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.marines_1 compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_second compare = equals } }
-		doctrine_research_capture_transaction_level = yes
-		set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
-		add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-		doctrine_research_exact_step_marines_1_track_special_forces_second = yes
-	}
-	if = {
-		limit = { check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.marines_2 compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_second compare = equals } }
-		doctrine_research_capture_transaction_level = yes
-		set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
-		add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-		doctrine_research_exact_step_marines_2_track_special_forces_second = yes
-	}
-	if = {
-		limit = { check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.paratroopers_1 compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_second compare = equals } }
-		doctrine_research_capture_transaction_level = yes
-		set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
-		add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-		doctrine_research_exact_step_paratroopers_1_track_special_forces_second = yes
-	}
-	if = {
-		limit = { check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.paratroopers_2 compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_second compare = equals } }
-		doctrine_research_capture_transaction_level = yes
-		set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
-		add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-		doctrine_research_exact_step_paratroopers_2_track_special_forces_second = yes
-	}
-	if = {
-		limit = { check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.rangers_1 compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_second compare = equals } }
-		doctrine_research_capture_transaction_level = yes
-		set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
-		add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-		doctrine_research_exact_step_rangers_1_track_special_forces_second = yes
-	}
-	if = {
-		limit = { check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.rangers_2 compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_second compare = equals } }
-		doctrine_research_capture_transaction_level = yes
-		set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
-		add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-		doctrine_research_exact_step_rangers_2_track_special_forces_second = yes
+		doctrine_research_exact_step_rangers_2_special_forces = yes
 	}
 }
 
@@ -14873,7 +14668,7 @@ doctrine_research_apply_special_forces_empty_track_mastery = {
 			if = { limit = { check_variable = { doctrine_research_receipt_index > constant:doctrine_research_event.invalid_index } } set_variable = { doctrine_research_receipt_pre_levels^doctrine_research_receipt_index = doctrine_research_transaction_pre_level } }
 			set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 			add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-			doctrine_research_exact_step_mountaineers_1_track_special_forces_first = yes
+			doctrine_research_exact_step_mountaineers_1_special_forces = yes
 		}
 		else_if = { limit = { has_doctrine = mountaineers_1 has_completed_subdoctrine = mountaineers_1 } set_temp_variable = { doctrine_research_transaction_native_completed = 1 } }
 	}
@@ -14886,7 +14681,7 @@ doctrine_research_apply_special_forces_empty_track_mastery = {
 			if = { limit = { check_variable = { doctrine_research_receipt_index > constant:doctrine_research_event.invalid_index } } set_variable = { doctrine_research_receipt_pre_levels^doctrine_research_receipt_index = doctrine_research_transaction_pre_level } }
 			set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 			add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-			doctrine_research_exact_step_mountaineers_2_track_special_forces_first = yes
+			doctrine_research_exact_step_mountaineers_2_special_forces = yes
 		}
 		else_if = { limit = { has_doctrine = mountaineers_2 has_completed_subdoctrine = mountaineers_2 } set_temp_variable = { doctrine_research_transaction_native_completed = 1 } }
 	}
@@ -14899,7 +14694,7 @@ doctrine_research_apply_special_forces_empty_track_mastery = {
 			if = { limit = { check_variable = { doctrine_research_receipt_index > constant:doctrine_research_event.invalid_index } } set_variable = { doctrine_research_receipt_pre_levels^doctrine_research_receipt_index = doctrine_research_transaction_pre_level } }
 			set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 			add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-			doctrine_research_exact_step_marines_1_track_special_forces_first = yes
+			doctrine_research_exact_step_marines_1_special_forces = yes
 		}
 		else_if = { limit = { has_doctrine = marines_1 has_completed_subdoctrine = marines_1 } set_temp_variable = { doctrine_research_transaction_native_completed = 1 } }
 	}
@@ -14912,7 +14707,7 @@ doctrine_research_apply_special_forces_empty_track_mastery = {
 			if = { limit = { check_variable = { doctrine_research_receipt_index > constant:doctrine_research_event.invalid_index } } set_variable = { doctrine_research_receipt_pre_levels^doctrine_research_receipt_index = doctrine_research_transaction_pre_level } }
 			set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 			add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-			doctrine_research_exact_step_marines_2_track_special_forces_first = yes
+			doctrine_research_exact_step_marines_2_special_forces = yes
 		}
 		else_if = { limit = { has_doctrine = marines_2 has_completed_subdoctrine = marines_2 } set_temp_variable = { doctrine_research_transaction_native_completed = 1 } }
 	}
@@ -14925,7 +14720,7 @@ doctrine_research_apply_special_forces_empty_track_mastery = {
 			if = { limit = { check_variable = { doctrine_research_receipt_index > constant:doctrine_research_event.invalid_index } } set_variable = { doctrine_research_receipt_pre_levels^doctrine_research_receipt_index = doctrine_research_transaction_pre_level } }
 			set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 			add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-			doctrine_research_exact_step_paratroopers_1_track_special_forces_first = yes
+			doctrine_research_exact_step_paratroopers_1_special_forces = yes
 		}
 		else_if = { limit = { has_doctrine = paratroopers_1 has_completed_subdoctrine = paratroopers_1 } set_temp_variable = { doctrine_research_transaction_native_completed = 1 } }
 	}
@@ -14938,7 +14733,7 @@ doctrine_research_apply_special_forces_empty_track_mastery = {
 			if = { limit = { check_variable = { doctrine_research_receipt_index > constant:doctrine_research_event.invalid_index } } set_variable = { doctrine_research_receipt_pre_levels^doctrine_research_receipt_index = doctrine_research_transaction_pre_level } }
 			set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 			add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-			doctrine_research_exact_step_paratroopers_2_track_special_forces_first = yes
+			doctrine_research_exact_step_paratroopers_2_special_forces = yes
 		}
 		else_if = { limit = { has_doctrine = paratroopers_2 has_completed_subdoctrine = paratroopers_2 } set_temp_variable = { doctrine_research_transaction_native_completed = 1 } }
 	}
@@ -14951,7 +14746,7 @@ doctrine_research_apply_special_forces_empty_track_mastery = {
 			if = { limit = { check_variable = { doctrine_research_receipt_index > constant:doctrine_research_event.invalid_index } } set_variable = { doctrine_research_receipt_pre_levels^doctrine_research_receipt_index = doctrine_research_transaction_pre_level } }
 			set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 			add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-			doctrine_research_exact_step_rangers_1_track_special_forces_first = yes
+			doctrine_research_exact_step_rangers_1_special_forces = yes
 		}
 		else_if = { limit = { has_doctrine = rangers_1 has_completed_subdoctrine = rangers_1 } set_temp_variable = { doctrine_research_transaction_native_completed = 1 } }
 	}
@@ -14964,7 +14759,7 @@ doctrine_research_apply_special_forces_empty_track_mastery = {
 			if = { limit = { check_variable = { doctrine_research_receipt_index > constant:doctrine_research_event.invalid_index } } set_variable = { doctrine_research_receipt_pre_levels^doctrine_research_receipt_index = doctrine_research_transaction_pre_level } }
 			set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 			add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-			doctrine_research_exact_step_rangers_2_track_special_forces_first = yes
+			doctrine_research_exact_step_rangers_2_special_forces = yes
 		}
 		else_if = { limit = { has_doctrine = rangers_2 has_completed_subdoctrine = rangers_2 } set_temp_variable = { doctrine_research_transaction_native_completed = 1 } }
 	}
@@ -14977,7 +14772,7 @@ doctrine_research_apply_special_forces_empty_track_mastery = {
 			if = { limit = { check_variable = { doctrine_research_receipt_index > constant:doctrine_research_event.invalid_index } } set_variable = { doctrine_research_receipt_pre_levels^doctrine_research_receipt_index = doctrine_research_transaction_pre_level } }
 			set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 			add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-			doctrine_research_exact_step_mountaineers_1_track_special_forces_second = yes
+			doctrine_research_exact_step_mountaineers_1_special_forces = yes
 		}
 		else_if = { limit = { has_doctrine = mountaineers_1 has_completed_subdoctrine = mountaineers_1 } set_temp_variable = { doctrine_research_transaction_native_completed = 1 } }
 	}
@@ -14990,7 +14785,7 @@ doctrine_research_apply_special_forces_empty_track_mastery = {
 			if = { limit = { check_variable = { doctrine_research_receipt_index > constant:doctrine_research_event.invalid_index } } set_variable = { doctrine_research_receipt_pre_levels^doctrine_research_receipt_index = doctrine_research_transaction_pre_level } }
 			set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 			add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-			doctrine_research_exact_step_mountaineers_2_track_special_forces_second = yes
+			doctrine_research_exact_step_mountaineers_2_special_forces = yes
 		}
 		else_if = { limit = { has_doctrine = mountaineers_2 has_completed_subdoctrine = mountaineers_2 } set_temp_variable = { doctrine_research_transaction_native_completed = 1 } }
 	}
@@ -15003,7 +14798,7 @@ doctrine_research_apply_special_forces_empty_track_mastery = {
 			if = { limit = { check_variable = { doctrine_research_receipt_index > constant:doctrine_research_event.invalid_index } } set_variable = { doctrine_research_receipt_pre_levels^doctrine_research_receipt_index = doctrine_research_transaction_pre_level } }
 			set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 			add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-			doctrine_research_exact_step_marines_1_track_special_forces_second = yes
+			doctrine_research_exact_step_marines_1_special_forces = yes
 		}
 		else_if = { limit = { has_doctrine = marines_1 has_completed_subdoctrine = marines_1 } set_temp_variable = { doctrine_research_transaction_native_completed = 1 } }
 	}
@@ -15016,7 +14811,7 @@ doctrine_research_apply_special_forces_empty_track_mastery = {
 			if = { limit = { check_variable = { doctrine_research_receipt_index > constant:doctrine_research_event.invalid_index } } set_variable = { doctrine_research_receipt_pre_levels^doctrine_research_receipt_index = doctrine_research_transaction_pre_level } }
 			set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 			add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-			doctrine_research_exact_step_marines_2_track_special_forces_second = yes
+			doctrine_research_exact_step_marines_2_special_forces = yes
 		}
 		else_if = { limit = { has_doctrine = marines_2 has_completed_subdoctrine = marines_2 } set_temp_variable = { doctrine_research_transaction_native_completed = 1 } }
 	}
@@ -15029,7 +14824,7 @@ doctrine_research_apply_special_forces_empty_track_mastery = {
 			if = { limit = { check_variable = { doctrine_research_receipt_index > constant:doctrine_research_event.invalid_index } } set_variable = { doctrine_research_receipt_pre_levels^doctrine_research_receipt_index = doctrine_research_transaction_pre_level } }
 			set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 			add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-			doctrine_research_exact_step_paratroopers_1_track_special_forces_second = yes
+			doctrine_research_exact_step_paratroopers_1_special_forces = yes
 		}
 		else_if = { limit = { has_doctrine = paratroopers_1 has_completed_subdoctrine = paratroopers_1 } set_temp_variable = { doctrine_research_transaction_native_completed = 1 } }
 	}
@@ -15042,7 +14837,7 @@ doctrine_research_apply_special_forces_empty_track_mastery = {
 			if = { limit = { check_variable = { doctrine_research_receipt_index > constant:doctrine_research_event.invalid_index } } set_variable = { doctrine_research_receipt_pre_levels^doctrine_research_receipt_index = doctrine_research_transaction_pre_level } }
 			set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 			add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-			doctrine_research_exact_step_paratroopers_2_track_special_forces_second = yes
+			doctrine_research_exact_step_paratroopers_2_special_forces = yes
 		}
 		else_if = { limit = { has_doctrine = paratroopers_2 has_completed_subdoctrine = paratroopers_2 } set_temp_variable = { doctrine_research_transaction_native_completed = 1 } }
 	}
@@ -15055,7 +14850,7 @@ doctrine_research_apply_special_forces_empty_track_mastery = {
 			if = { limit = { check_variable = { doctrine_research_receipt_index > constant:doctrine_research_event.invalid_index } } set_variable = { doctrine_research_receipt_pre_levels^doctrine_research_receipt_index = doctrine_research_transaction_pre_level } }
 			set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 			add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-			doctrine_research_exact_step_rangers_1_track_special_forces_second = yes
+			doctrine_research_exact_step_rangers_1_special_forces = yes
 		}
 		else_if = { limit = { has_doctrine = rangers_1 has_completed_subdoctrine = rangers_1 } set_temp_variable = { doctrine_research_transaction_native_completed = 1 } }
 	}
@@ -15068,7 +14863,7 @@ doctrine_research_apply_special_forces_empty_track_mastery = {
 			if = { limit = { check_variable = { doctrine_research_receipt_index > constant:doctrine_research_event.invalid_index } } set_variable = { doctrine_research_receipt_pre_levels^doctrine_research_receipt_index = doctrine_research_transaction_pre_level } }
 			set_temp_variable = { doctrine_research_transaction_expected_level = doctrine_research_transaction_observed_level }
 			add_to_temp_variable = { doctrine_research_transaction_expected_level = constant:doctrine_research_event.mastery_levels_per_choice }
-			doctrine_research_exact_step_rangers_2_track_special_forces_second = yes
+			doctrine_research_exact_step_rangers_2_special_forces = yes
 		}
 		else_if = { limit = { has_doctrine = rangers_2 has_completed_subdoctrine = rangers_2 } set_temp_variable = { doctrine_research_transaction_native_completed = 1 } }
 	}

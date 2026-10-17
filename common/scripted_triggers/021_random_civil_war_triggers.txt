@@ -378,16 +378,6 @@ random_civil_war_state_can_be_reserved = {
 	}
 }
 
-random_civil_war_anchor_state_valid = {
-	has_event_target = random_civil_war_host_country
-	has_event_target = random_civil_war_anchor_state
-	event_target:random_civil_war_anchor_state = {
-		is_owned_by = event_target:random_civil_war_host_country
-		is_controlled_by = event_target:random_civil_war_host_country
-		is_in_array = { array = global.random_civil_war_plan_states value = THIS }
-	}
-}
-
 random_civil_war_parent_remnant_valid = {
 	random_civil_war_is_normal_human_country = yes
 	num_of_controlled_states > constant:random_civil_war_value.zero
@@ -461,13 +451,6 @@ random_civil_war_front_id_is_registered = {
 		array = global.random_civil_war_front_ids
 		value = random_civil_war_front_id
 	}
-}
-
-random_civil_war_front_registry_entry_valid = {
-	random_civil_war_is_normal_human_country = yes
-	has_country_flag = random_civil_war_front_registered
-	has_variable = random_civil_war_front_id
-	NOT = { has_capitulated = yes }
 }
 
 random_civil_war_neighbor_exposure_valid = {
@@ -677,16 +660,5 @@ random_civil_war_setup_carrier_registration_valid = {
 	OR = {
 		has_country_flag = random_civil_war_setup_carrier_pending
 		has_variable = random_civil_war_setup_carrier_token
-	}
-}
-
-random_civil_war_cleanup_allowed = {
-	OR = {
-		has_country_flag = random_civil_war_active
-		has_country_flag = random_civil_war_critical_queued
-		has_country_flag = random_civil_war_critical_launch_pending
-		has_country_flag = random_civil_war_front_registered
-		has_country_flag = random_civil_war_exposure_active
-		has_country_flag = random_civil_war_plan_owner
 	}
 }

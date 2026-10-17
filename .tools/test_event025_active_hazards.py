@@ -139,7 +139,7 @@ class ActiveHazardTests(unittest.TestCase):
         self.assertEqual(rt.casualty_calls, 1)
 
     def test_pulse_uses_only_exact_in_force_guards(self):
-        body = RUNTIME.split("chaosx_nr25_run_bounded_pulse = {", 1)[1].split("chaosx_nr25_cleanup_invalid_participant = {", 1)[0]
+        body = RUNTIME.split("chaosx_nr25_run_bounded_pulse = {", 1)[1].split("chaosx_nr25_begin_evacuation = {", 1)[0]
         self.assertNotRegex(body, r"has_global_flag\s*=\s*chaosx_nr25_evolution_(?:" + "|".join(TRACKS) + r")\b")
         # Signal, survivor, militarisation and wreck pulses, race-time
         # Dependence, the militarised camp loss and the Dependence accident.

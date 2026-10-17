@@ -19,11 +19,6 @@ time_traveler_is_custodian = {
 	has_country_flag = time_traveler_custodian
 }
 
-# GLOBAL. The traveler is verified and available to the custodian.
-time_traveler_status_is_active = {
-	check_variable = { global.time_traveler_status = constant:time_traveler_status.active }
-}
-
 # GLOBAL. The traveler exists in the campaign and has not been lost.
 time_traveler_is_present = {
 	OR = {
@@ -58,15 +53,6 @@ time_traveler_mission_is_active = {
 		has_active_mission = time_traveler_mission_build
 		has_active_mission = time_traveler_mission_research
 		has_active_mission = time_traveler_mission_relation
-	}
-}
-
-# COUNTRY. Legacy access held by a former custodian or an ally.
-time_traveler_has_legacy_spirit = {
-	OR = {
-		has_idea = time_traveler_scattered_forecasts
-		has_idea = time_traveler_scattered_forecasts_deep
-		has_idea = time_traveler_future_fragment
 	}
 }
 
@@ -261,11 +247,6 @@ time_traveler_can_consult = {
 	NOT = { has_country_flag = time_traveler_relocating }
 }
 
-# COUNTRY. A stored objective is live (country variables of the custodian).
-time_traveler_has_objective = {
-	hidden_trigger = { check_variable = { time_traveler_c_kind > constant:time_traveler_kind.none } }
-}
-
 # COUNTRY. Garrison objective: the named state is controlled and holds more
 # than time_traveler_c_above divisions.
 time_traveler_garrison_objective_met = {
@@ -341,17 +322,6 @@ time_traveler_research_objective_partial = {
 			AND = { check_variable = { time_traveler_c_tech = constant:time_traveler_tech.computing_machine } is_researching_technology = computing_machine }
 			AND = { check_variable = { time_traveler_c_tech = constant:time_traveler_tech.radio } is_researching_technology = radio }
 		}
-	}
-}
-
-# COUNTRY. A technology of the candidate list can be started now.
-time_traveler_can_research_candidate = {
-	OR = {
-		AND = { NOT = { has_tech = fuel_silos } can_research = fuel_silos }
-		AND = { NOT = { has_tech = improved_machine_tools } can_research = improved_machine_tools }
-		AND = { NOT = { has_tech = advanced_machine_tools } can_research = advanced_machine_tools }
-		AND = { NOT = { has_tech = computing_machine } can_research = computing_machine }
-		AND = { NOT = { has_tech = radio } can_research = radio }
 	}
 }
 
@@ -566,11 +536,6 @@ time_traveler_same_ideology_as_custodian = {
 			AND = { has_government = neutrality var:global.time_traveler_custodian = { has_government = neutrality } }
 		}
 	}
-}
-
-# COUNTRY. The consultation cooldown is running.
-time_traveler_consult_is_cooling = {
-	has_country_flag = time_traveler_consult_cooldown
 }
 
 # COUNTRY (custodian). The family picker lists this family: its offer exists and
