@@ -870,22 +870,6 @@ resources_found_activate_contract = {
 	}
 }
 
-# STATE scope. Requires event target resources_found_commission_sponsor_target.
-resources_found_activate_commission = {
-	if = {
-		limit = {
-			resources_found_can_propose_commission = yes
-			has_event_target = resources_found_commission_sponsor_target
-			event_target:resources_found_commission_sponsor_target = { exists = yes }
-		}
-		set_variable = { resources_found_commission_sponsor = event_target:resources_found_commission_sponsor_target }
-		set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.active }
-		set_variable = { resources_found_commission_started_date = global.date }
-		set_state_flag = resources_found_commission_active
-		clr_state_flag = resources_found_commission_violation
-	}
-}
-
 # STATE scope. Performs the only permitted resource inverse. If another system
 # has reduced a resource below the Event 018 ledger, nothing is subtracted and a
 # reconciliation flag is raised for an explicit caller-owned resolution.

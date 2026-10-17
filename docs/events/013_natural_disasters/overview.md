@@ -253,7 +253,7 @@ All Event 013 art uses stable sprite names. Runtime DDS files and registrations 
 
 Gameplay registrations are grouped as follows:
 
-- aggregate country report: `GFX_report_event_nd_regional_aftermath`, reusing `gfx/event_pictures/013_natural_disasters/report_event_nd_regional_aftermath.dds` through `interface/013_natural_disasters.gfx`; the older family-report event definitions `.101–.125` are no longer used by normal dispatch.
+- aggregate country report: `GFX_report_event_nd_regional_aftermath`, reusing `gfx/event_pictures/013_natural_disasters/report_event_nd_regional_aftermath.dds` through `interface/013_natural_disasters.gfx`.
 - family news sprites `GFX_news_event_nd_*`: the same event-picture folder and GFX file.
 - decision-category pictures `GFX_decision_cat_picture_nd_*`: `gfx/interface/decisions/013_natural_disasters/`, registered in the Event 013 GFX file.
 - decision-category button icons `GFX_decision_category_nd_*`: the same decision folder and GFX file.

@@ -9,7 +9,7 @@ Final localisation must be written during implementation. This spec does not pro
 ## Report event direction
 
 Every affected recipient receives one aggregate report per sequence after that sequence's scheduled physical jobs drain (accepted 2026-10-05, Part 2).
-It is the supplemental `chaosx.nr13.100` report on the shared `GFX_report_event_nd_regional_aftermath` picture; the 25 older per-family report events are no longer used by normal dispatch.
+It is the supplemental `chaosx.nr13.100` report on the shared `GFX_report_event_nd_regional_aftermath` picture.
 Its body names up to four affected states plus a remaining count, describes only measured damage, and omits internal ids, exact death totals, severity assessments and empty status lines.
 
 A report should include:

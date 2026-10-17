@@ -578,40 +578,11 @@ africa_rsa_initialize_republican_breakaway = {
 # Proof actions and intervention ledgers
 # ---------------------------------------------------------------------------
 
-# COUNTRY scope on the Continental Coalition.
-africa_rsa_spend_relief_cost = {
-	set_temp_variable = { africa_rsa_negative_relief_pp = constant:africa_rsa_cost.relief_pp }
-	set_temp_variable = { africa_rsa_negative_relief_cp = constant:africa_rsa_cost.relief_cp }
-	set_temp_variable = { africa_rsa_negative_relief_trains = constant:africa_rsa_cost.relief_trains }
-	set_temp_variable = { africa_rsa_negative_relief_support = constant:africa_rsa_cost.relief_support_equipment }
-	multiply_temp_variable = { africa_rsa_negative_relief_pp = constant:africa_rsa_factor.negative_one }
-	multiply_temp_variable = { africa_rsa_negative_relief_cp = constant:africa_rsa_factor.negative_one }
-	multiply_temp_variable = { africa_rsa_negative_relief_trains = constant:africa_rsa_factor.negative_one }
-	multiply_temp_variable = { africa_rsa_negative_relief_support = constant:africa_rsa_factor.negative_one }
-	add_political_power = africa_rsa_negative_relief_pp
-	add_command_power = africa_rsa_negative_relief_cp
-	add_equipment_to_stockpile = { type = train_equipment_1 amount = africa_rsa_negative_relief_trains }
-	add_equipment_to_stockpile = { type = support_equipment_1 amount = africa_rsa_negative_relief_support }
-}
-
-# COUNTRY scope on the Continental Coalition.
-africa_rsa_protect_civilian_corridor_effect = {
-	africa_rsa_spend_relief_cost = yes
-	africa_rsa_apply_civilian_corridor_protection = yes
-}
-
 africa_rsa_apply_civilian_corridor_protection = {
 	set_country_flag = africa_rsa_civilians_protected
 	275 = { set_state_flag = africa_rsa_relief_corridor_state }
 	681 = { set_state_flag = africa_rsa_relief_corridor_state }
 	719 = { set_state_flag = africa_rsa_relief_corridor_state }
-}
-
-# COUNTRY scope on the Continental Coalition.
-africa_rsa_spend_regional_request_cost = {
-	set_temp_variable = { africa_rsa_negative_request_pp = constant:africa_rsa_cost.regional_request_pp }
-	multiply_temp_variable = { africa_rsa_negative_request_pp = constant:africa_rsa_factor.negative_one }
-	add_political_power = africa_rsa_negative_request_pp
 }
 
 # COUNTRY scope on the Continental Coalition. Input is the regular
@@ -714,33 +685,9 @@ africa_rsa_check_postwar_first_proof = {
 	}
 }
 
-# COUNTRY scope on the victorious Continental Coalition.
-africa_rsa_enact_citizenship_land_milestone_effect = {
-	set_temp_variable = { africa_rsa_negative_citizenship_pp = constant:africa_rsa_cost.citizenship_pp }
-	set_temp_variable = { africa_rsa_negative_citizenship_stability = constant:africa_rsa_cost.citizenship_stability }
-	multiply_temp_variable = { africa_rsa_negative_citizenship_pp = constant:africa_rsa_factor.negative_one }
-	multiply_temp_variable = { africa_rsa_negative_citizenship_stability = constant:africa_rsa_factor.negative_one }
-	add_political_power = africa_rsa_negative_citizenship_pp
-	add_stability = africa_rsa_negative_citizenship_stability
-	africa_rsa_apply_citizenship_land_milestone = yes
-}
-
 africa_rsa_apply_citizenship_land_milestone = {
 	set_country_flag = africa_rsa_citizenship_land_milestone
 	africa_rsa_check_postwar_first_proof = yes
-}
-
-# COUNTRY scope on the victorious Continental Coalition. FROM is the chosen
-# neighboring sovereign target from the targeted decision.
-africa_rsa_guarantee_neighbor_sovereignty_effect = {
-	set_temp_variable = { africa_rsa_negative_guarantee_pp = constant:africa_rsa_cost.sovereignty_guarantee_pp }
-	set_temp_variable = { africa_rsa_negative_guarantee_cp = constant:africa_rsa_cost.sovereignty_guarantee_cp }
-	multiply_temp_variable = { africa_rsa_negative_guarantee_pp = constant:africa_rsa_factor.negative_one }
-	multiply_temp_variable = { africa_rsa_negative_guarantee_cp = constant:africa_rsa_factor.negative_one }
-	add_political_power = africa_rsa_negative_guarantee_pp
-	add_command_power = africa_rsa_negative_guarantee_cp
-	give_guarantee = FROM
-	africa_rsa_apply_neighbor_sovereignty_guarantee = yes
 }
 
 africa_rsa_apply_neighbor_sovereignty_guarantee = {
@@ -1615,20 +1562,6 @@ africa_rsa_finalize_loyalist_suppression = {
 	clr_country_flag = africa_rsa_allied_union_government
 	clr_country_flag = africa_rsa_allied_material_support_received
 	set_country_flag = africa_rsa_continental_coalition_suppressed
-}
-
-# COUNTRY scope on the one-use exile custodian.
-africa_rsa_complete_exile_recovery = {
-	if = {
-		limit = { africa_rsa_exile_recovery_can_be_completed = yes }
-		set_temp_variable = { africa_rsa_negative_exile_pp = constant:africa_rsa_cost.exile_recovery_pp }
-		set_temp_variable = { africa_rsa_negative_exile_cp = constant:africa_rsa_cost.exile_recovery_cp }
-		multiply_temp_variable = { africa_rsa_negative_exile_pp = constant:africa_rsa_factor.negative_one }
-		multiply_temp_variable = { africa_rsa_negative_exile_cp = constant:africa_rsa_factor.negative_one }
-		add_political_power = africa_rsa_negative_exile_pp
-		add_command_power = africa_rsa_negative_exile_cp
-		africa_rsa_apply_exile_recovery = yes
-	}
 }
 
 africa_rsa_apply_exile_recovery = {

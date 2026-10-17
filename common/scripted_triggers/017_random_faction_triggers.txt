@@ -587,50 +587,6 @@ random_faction_open_event_detail_has_recorded_alignment_context = {
 	country_exists = var:global.events_log_open_event_detail_actor_entries^events_log_open_event_detail_index
 }
 
-random_faction_history_row_has_bound_alignment_result = {
-	check_variable = { global.events_log_view_event_id_entries^num > 0 }
-	check_variable = { global.events_log_view_actor_entries^num > 0 }
-	check_variable = { global.events_log_view_has_actor_entries^num > 0 }
-	check_variable = { global.events_log_view_secondary_actor_entries^num > 0 }
-	check_variable = { global.events_log_view_has_secondary_actor_entries^num > 0 }
-	check_variable = {
-		var = global.events_log_view_event_id_entries^events_log_history_index
-		value = constant:random_faction_event.id
-		compare = equals
-	}
-	check_variable = { global.events_log_view_has_actor_entries^events_log_history_index > 0 }
-	check_variable = { global.events_log_view_has_secondary_actor_entries^events_log_history_index > 0 }
-	country_exists = var:global.events_log_view_actor_entries^events_log_history_index
-	country_exists = var:global.events_log_view_secondary_actor_entries^events_log_history_index
-}
-
-random_faction_history_row_has_lost_alignment_result = {
-	check_variable = { global.events_log_view_event_id_entries^num > 0 }
-	check_variable = { global.events_log_view_actor_entries^num > 0 }
-	check_variable = { global.events_log_view_has_secondary_actor_entries^num > 0 }
-	check_variable = {
-		var = global.events_log_view_event_id_entries^events_log_history_index
-		value = constant:random_faction_event.id
-		compare = equals
-	}
-	check_variable = { global.events_log_view_has_secondary_actor_entries^events_log_history_index > 0 }
-	country_exists = var:global.events_log_view_actor_entries^events_log_history_index
-	NOT = { country_exists = var:global.events_log_view_secondary_actor_entries^events_log_history_index }
-}
-
-random_faction_history_row_has_recorded_alignment_context = {
-	check_variable = { global.events_log_view_event_id_entries^num > 0 }
-	check_variable = { global.events_log_view_actor_entries^num > 0 }
-	check_variable = { global.events_log_view_has_actor_entries^num > 0 }
-	check_variable = {
-		var = global.events_log_view_event_id_entries^events_log_history_index
-		value = constant:random_faction_event.id
-		compare = equals
-	}
-	check_variable = { global.events_log_view_has_actor_entries^events_log_history_index > 0 }
-	country_exists = var:global.events_log_view_actor_entries^events_log_history_index
-}
-
 random_faction_current_country_has_tracked_state = {
 	OR = {
 		random_faction_has_active_pressure = yes

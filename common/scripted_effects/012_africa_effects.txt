@@ -601,42 +601,6 @@ africa_initialize_selected_host = {
 	}
 }
 
-# COUNTRY scope on the initialized host. The three distinct contact roles are
-# optional independently. Sparse or empty regional rosters remain valid and
-# resolve through the no-contact opening rather than blocking Event 12.
-africa_prepare_first_contact_targets = {
-	random_country = {
-		limit = {
-			africa_is_valid_relationship_target = yes
-			africa_matches_current_host_overlay = yes
-			NOT = { tag = ROOT }
-			has_war = yes
-		}
-		save_event_target_as = africa_first_contact_threatened
-	}
-	random_country = {
-		limit = {
-			africa_is_valid_relationship_target = yes
-			africa_matches_current_host_overlay = yes
-			NOT = { tag = ROOT }
-			is_subject = yes
-			NOT = { tag = event_target:africa_first_contact_threatened }
-		}
-		save_event_target_as = africa_first_contact_subject
-	}
-	random_country = {
-		limit = {
-			africa_is_valid_relationship_target = yes
-			africa_matches_current_host_overlay = yes
-			NOT = { tag = ROOT }
-			is_subject = no
-			NOT = { tag = event_target:africa_first_contact_threatened }
-			NOT = { tag = event_target:africa_first_contact_subject }
-		}
-		save_event_target_as = africa_first_contact_regional_power
-	}
-}
-
 # COUNTRY scope on the host. The scripted GUI cursor is deliberately separate
 # from the longer selected-target roster. It contains at most one country.
 africa_clear_selected_country_target = {
@@ -937,61 +901,6 @@ africa_register_frozen_first_contact = {
 		africa_clear_frozen_first_contact_context = yes
 	}
 	else = { africa_record_lost_first_delegation = yes }
-}
-
-africa_register_first_contact_threatened = {
-	if = {
-		limit = { has_event_target = africa_first_contact_threatened }
-		event_target:africa_first_contact_threatened = { save_event_target_as = africa_contact_to_register }
-		africa_register_contact_target = yes
-		event_target:africa_first_contact_threatened = {
-			set_country_flag = africa_contact_protection_priority
-			set_country_flag = africa_member_requested_protection
-			if = { limit = { NOT = { has_variable = africa_member_confidence } } set_variable = { africa_member_confidence = constant:africa_measure.medium } }
-			set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.protected }
-			africa_apply_relationship_transition = yes
-		}
-		if = {
-			limit = {
-				check_variable = { africa_contact_registration_result > constant:africa_value.zero }
-				check_variable = { africa_relationship_transition_result > constant:africa_value.zero }
-			}
-			set_country_flag = africa_first_contact_selected
-		}
-	}
-}
-
-africa_register_first_contact_subject = {
-	if = {
-		limit = { has_event_target = africa_first_contact_subject }
-		event_target:africa_first_contact_subject = { save_event_target_as = africa_contact_to_register }
-		africa_register_contact_target = yes
-		event_target:africa_first_contact_subject = {
-			set_country_flag = africa_contact_liberation_priority
-			set_country_flag = africa_liberation_movement_recognised
-			if = { limit = { NOT = { has_variable = africa_member_confidence } } set_variable = { africa_member_confidence = constant:africa_measure.medium } }
-		}
-		if = {
-			limit = { check_variable = { africa_contact_registration_result > constant:africa_value.zero } }
-			set_country_flag = africa_first_contact_selected
-		}
-	}
-}
-
-africa_register_first_contact_regional_power = {
-	if = {
-		limit = { has_event_target = africa_first_contact_regional_power }
-		event_target:africa_first_contact_regional_power = { save_event_target_as = africa_contact_to_register }
-		africa_register_contact_target = yes
-		event_target:africa_first_contact_regional_power = {
-			set_country_flag = africa_contact_proof_demand
-			if = { limit = { NOT = { has_variable = africa_member_confidence } } set_variable = { africa_member_confidence = constant:africa_measure.medium } }
-		}
-		if = {
-			limit = { check_variable = { africa_contact_registration_result > constant:africa_value.zero } }
-			set_country_flag = africa_first_contact_selected
-		}
-	}
 }
 
 # COUNTRY scope on the host. The prefire gate normally guarantees a mapped

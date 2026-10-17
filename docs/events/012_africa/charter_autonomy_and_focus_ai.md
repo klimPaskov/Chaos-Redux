@@ -82,7 +82,6 @@ Keeping the national course leaves the national tree in place, and the Charter L
 The AI always adopts: the event weights and the decision weight are read from the `africa_continental_programme` script constants.
 South Africa is excluded from both the choice and the replacement and keeps its national tree and its rupture path.
 After any load the helper records `africa_continental_focus_tree_loaded` only once the new tree is active and refreshes the layout.
-`africa_focus_route_ensure_continental_tree_loaded` is a compatibility wrapper around the canonical helper rather than a second implementation.
 Priority packages keep their existing-tree safeguard and also preserve completed-focus history.
 When South Africa's settlement transfers League custody to the saved exile patron, the transfer runs while ROOT is the loyalist winner, so the patron's tree is settled by the loader in the custodian notice `chaosx.nr12.1206`, where ROOT is the patron.
 South Africa never carries the continental tree, so a generic-tree patron receives it directly and a national-tree patron receives the adoption choice, while the separate RSA transfer continues to carry variables, flags, arrays, relationship state, and reconciled relationship counts and capacity caps.

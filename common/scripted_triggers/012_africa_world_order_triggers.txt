@@ -192,24 +192,6 @@ africa_world_package_is_installed = {
 	NOT = { has_global_flag = world_end }
 }
 
-africa_world_package_is_sovereign_complete = {
-	africa_world_package_is_installed = yes
-	has_country_flag = africa_world_package_sovereign_complete
-	check_variable = { africa_world_package_status = constant:africa_world_package_status.settled }
-}
-
-africa_world_package_is_resolved = {
-	africa_world_package_is_installed = yes
-	OR = {
-		has_country_flag = africa_world_package_sovereign_complete
-		has_country_flag = africa_world_union_partner
-		has_country_flag = africa_world_submission_settlement
-		has_country_flag = africa_world_package_exile_path_resolved
-		has_country_flag = africa_world_package_breakup_recorded
-		has_country_flag = africa_world_package_terminally_resolved
-	}
-}
-
 # COUNTRY scope on the Event 12 host. Every required continent has an explicit
 # disposition (installed, pending, or documented absent) before this is set.
 africa_world_roster_is_documented = {
@@ -441,14 +423,6 @@ africa_world_constituent_withdrawal_notice_is_open = {
 	has_country_flag = africa_world_constituent_withdrawal_notice
 	has_country_flag = africa_world_constituent_member
 	NOT = { has_country_flag = africa_world_constituent_withdrawn }
-}
-
-africa_world_constituent_can_accept_counterterms = {
-	africa_world_constituent_counterterms_are_open = yes
-}
-
-africa_world_constituent_can_refuse_counterterms = {
-	africa_world_constituent_counterterms_are_open = yes
 }
 
 africa_world_package_route_is_grounded = {
@@ -793,33 +767,6 @@ africa_scramble_phase_is_settled = {
 	check_variable = { africa_scramble_phase = constant:africa_scramble_phase.settled }
 }
 
-# COUNTRY scope on a frozen Scramble participant. These flags are written by
-# the one-time participant census and are never inferred by a recurring scan.
-africa_scramble_participant_has_former_colonial_relationship = {
-	has_country_flag = africa_scramble_former_colonial_relationship
-}
-
-africa_scramble_participant_is_ideological_rival = {
-	has_country_flag = africa_scramble_ideological_rival
-}
-
-africa_scramble_participant_has_resource_nationalisation_exposure = {
-	has_country_flag = africa_scramble_resource_nationalisation_exposure
-}
-
-africa_scramble_participant_fears_other_continent_unifier = {
-	has_country_flag = africa_scramble_continent_unifier_fear
-}
-
-africa_scramble_participant_has_south_africa_allied_relationship = {
-	has_country_flag = africa_scramble_south_africa_allied_relationship
-}
-
-africa_scramble_participant_is_coalition_member = {
-	has_country_flag = africa_scramble_coalition_member
-	has_country_flag = africa_scramble_participant
-}
-
 africa_scramble_host_has_resource_nationalisation_mandate = {
 	event_target:africa_host = {
 		OR = {
@@ -968,13 +915,6 @@ africa_scramble_can_close_continental_docket = {
 			has_country_flag = africa_world_package_candidate
 			has_country_flag = africa_world_package_implementation_ready
 		}
-	}
-}
-
-africa_world_order_route_is_diplomatic = {
-	OR = {
-		check_variable = { africa_world_order_route = constant:africa_world_order_route.charter_of_continents }
-		check_variable = { africa_world_order_route = constant:africa_world_order_route.balance_of_continents }
 	}
 }
 

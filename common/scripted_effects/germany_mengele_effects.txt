@@ -490,14 +490,6 @@ mengele_clone_army_set_clone_deployment_command_power_cost = {
 	}
 }
 
-mengele_clone_army_spend_clone_deployment_command_power = {
-	# Existing-owner caller output storage.
-	set_temp_variable = { mengele_clone_deployment_command_power_spend = constant:universal_cost_framework.zero }
-	mengele_clone_army_set_clone_deployment_command_power_cost = yes
-	multiply_temp_variable = { mengele_clone_deployment_command_power_spend = -1 }
-	add_command_power = mengele_clone_deployment_command_power_spend
-}
-
 # Event 26 Black Friday adapter for one command-power component. The wrapper
 # quotes and rechecks the current ordinary cost at confirmation, debits once,
 # records the actual paid amount, and settles the receipt before the caller
@@ -1108,12 +1100,6 @@ mengele_clone_army_fortify_continental_borderlands = {
 		}
 		add_building_construction = { type = arms_factory level = 1 instant_build = yes }
 	}
-}
-
-mengele_clone_army_spend_continental_assault_command_power = {
-	set_temp_variable = { mengele_clone_assault_command_power_spend = constant:mengele_clone_decision.continental_assault_command_power }
-	multiply_temp_variable = { mengele_clone_assault_command_power_spend = -1 }
-	add_command_power = mengele_clone_assault_command_power_spend
 }
 
 mengele_hidden_clone_add_facility_marker = {
@@ -2137,11 +2123,6 @@ germany_tibet_cancel_preparation = {
 	set_country_flag = germany_tibet_expedition_blocked
 	set_variable = { aryan_origin_preparation = 0 }
 	add_to_variable = { ahnenerbe_influence = constant:germany_mengele_tibet.ideology_cancel_ahnenerbe }
-}
-
-germany_tibet_record_expedition_stage = {
-	set_temp_variable = { mengele_stage_value = constant:germany_mengele_stage.expedition }
-	germany_mengele_record_stage = yes
 }
 
 germany_tibet_begin_expedition = {

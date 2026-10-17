@@ -16743,27 +16743,6 @@ cannibalism_unified_execute_battlefield_consumption = {
 	}
 }
 
-# Host country scope. Runs the consumption of the current Larder route on the
-# state saved as cannibalism_unified_decision_state.
-cannibalism_unified_execute_current_consumption = {
-	if = {
-		limit = { cannibalism_unified_larder_battlefield_route_is_current = yes }
-		cannibalism_unified_execute_battlefield_consumption = yes
-	}
-	else_if = {
-		limit = { cannibalism_unified_larder_mobile_route_is_current = yes }
-		cannibalism_unified_execute_mobile_consumption = yes
-	}
-	else_if = {
-		limit = { cannibalism_unified_larder_managed_route_is_current = yes }
-		cannibalism_unified_execute_managed_consumption = yes
-	}
-	else_if = {
-		limit = { cannibalism_unified_larder_rapid_route_is_current = yes }
-		cannibalism_unified_execute_rapid_consumption = yes
-	}
-}
-
 # ---------------------------------------------------------------------------
 # Deaths-backed recruitment and paid war-machine operations
 # ---------------------------------------------------------------------------
@@ -16989,23 +16968,6 @@ cannibalism_unified_execute_siege_specialist_recruitment = {
 cannibalism_unified_execute_march_specialist_recruitment = {
 	set_temp_variable = { cannibalism_unified_recruitment_template = constant:cannibalism_unified_recruitment_template.march_predation_column }
 	cannibalism_unified_execute_origin_specialist_recruitment = yes
-}
-
-# Host country scope. Opens the first preserved origin command that has
-# capacity and reserves, on the state saved as cannibalism_unified_decision_state.
-cannibalism_unified_execute_current_origin_specialist_recruitment = {
-	if = {
-		limit = { cannibalism_unified_origin_specialist_is_island = yes }
-		cannibalism_unified_execute_island_specialist_recruitment = yes
-	}
-	else_if = {
-		limit = { cannibalism_unified_origin_specialist_is_siege = yes }
-		cannibalism_unified_execute_siege_specialist_recruitment = yes
-	}
-	else_if = {
-		limit = { cannibalism_unified_origin_specialist_is_march = yes }
-		cannibalism_unified_execute_march_specialist_recruitment = yes
-	}
 }
 
 cannibalism_unified_execute_army_operation = {
@@ -18579,60 +18541,6 @@ cannibalism_prepare_warlord_recruitment_contract = {
 	}
 }
 
-# Host country scope. The selected state is
-# event_target:cannibalism_warlord_recruitment_state. The same ladder the
-# decision shows picks the formation: Feast Cohort, then Scavenger Warband, then
-# an emergency draft.
-cannibalism_raise_basic_formation = {
-	if = {
-		limit = { event_target:cannibalism_warlord_recruitment_state = { cannibalism_state_basic_template_is_feast = yes } }
-		set_temp_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.feast_cohort }
-		set_temp_variable = { cannibalism_warlord_recruitment_population_k = constant:cannibalism_unit_cost.feast_population_k }
-		set_temp_variable = { cannibalism_warlord_larder_cost = constant:cannibalism_unit_cost.feast_larder }
-		cannibalism_execute_warlord_recruitment_transaction = yes
-	}
-	else_if = {
-		limit = { event_target:cannibalism_warlord_recruitment_state = { cannibalism_state_basic_template_is_scavenger = yes } }
-		set_temp_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.scavenger_warband }
-		set_temp_variable = { cannibalism_warlord_recruitment_population_k = constant:cannibalism_unit_cost.scavenger_population_k }
-		set_temp_variable = { cannibalism_warlord_larder_cost = constant:cannibalism_unit_cost.scavenger_larder }
-		cannibalism_execute_warlord_recruitment_transaction = yes
-	}
-	else_if = {
-		limit = { event_target:cannibalism_warlord_recruitment_state = { cannibalism_state_basic_template_is_emergency = yes } }
-		set_temp_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.emergency_reinforcement }
-		set_temp_variable = { cannibalism_warlord_recruitment_population_k = constant:cannibalism_unit_cost.emergency_reinforcement_population_k }
-		set_temp_variable = { cannibalism_warlord_larder_cost = constant:cannibalism_unit_cost.emergency_reinforcement_larder }
-		cannibalism_execute_warlord_recruitment_transaction = yes
-	}
-}
-
-# Host country scope. Same ladder shape for the specialist formations: Bone
-# Guard, then the Host's origin specialist, then a Network Cadre.
-cannibalism_raise_specialist_formation = {
-	if = {
-		limit = { event_target:cannibalism_warlord_recruitment_state = { cannibalism_state_specialist_template_is_bone_guard = yes } }
-		set_temp_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.bone_guard }
-		set_temp_variable = { cannibalism_warlord_recruitment_population_k = constant:cannibalism_unit_cost.bone_guard_population_k }
-		set_temp_variable = { cannibalism_warlord_larder_cost = constant:cannibalism_unit_cost.bone_guard_larder }
-		cannibalism_execute_warlord_recruitment_transaction = yes
-	}
-	else_if = {
-		limit = { event_target:cannibalism_warlord_recruitment_state = { cannibalism_state_specialist_template_is_origin = yes } }
-		set_temp_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.origin_specialist }
-		set_temp_variable = { cannibalism_warlord_recruitment_population_k = constant:cannibalism_unit_cost.origin_specialist_population_k }
-		set_temp_variable = { cannibalism_warlord_larder_cost = constant:cannibalism_unit_cost.origin_specialist_larder }
-		cannibalism_execute_warlord_recruitment_transaction = yes
-	}
-	else_if = {
-		limit = { event_target:cannibalism_warlord_recruitment_state = { cannibalism_state_specialist_template_is_cadre = yes } }
-		set_temp_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.network_cadre }
-		set_temp_variable = { cannibalism_warlord_recruitment_population_k = constant:cannibalism_unit_cost.network_cadre_population_k }
-		set_temp_variable = { cannibalism_warlord_larder_cost = constant:cannibalism_unit_cost.network_cadre_larder }
-		cannibalism_execute_warlord_recruitment_transaction = yes
-	}
-}
-
 cannibalism_spawn_selected_warlord_recruitment_unit = {
 	if = {
 		limit = { check_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.origin_specialist } }
@@ -19227,18 +19135,6 @@ cannibalism_begin_siege_relief_ambush_operation = {
 # hub repair window, starts the preparation modifier, starts the Host-wide
 # raid cooldown, and writes the Host's raid receipt.
 # Output: temp cannibalism_march_raid_result (1 after a strike, else 0).
-# Host country scope. A Host has one origin, so one of the two ambushes applies.
-cannibalism_begin_origin_ambush_operation = {
-	if = {
-		limit = { has_country_flag = cannibalism_origin_island_host }
-		cannibalism_begin_island_convoy_ambush_operation = yes
-	}
-	else_if = {
-		limit = { has_country_flag = cannibalism_origin_siege_commune }
-		cannibalism_begin_siege_relief_ambush_operation = yes
-	}
-}
-
 cannibalism_begin_march_supply_raid_operation = {
 	set_temp_variable = { cannibalism_march_raid_result = 0 }
 	if = {
