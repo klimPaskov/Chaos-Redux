@@ -313,4 +313,4 @@ Build handoff requirements are recorded in `docs/plans/006_independence_wave_pla
 
 ## Historical grouped-consumer evidence
 
-The 2026-08-09 to 2026-08-14 grouped-consumer counts are superseded by the nineteen-family, twenty-category checkpoint above. The archived counts are in [formable_registry_historical_records.md](../../plans/006_independence_wave_plans/formable_registry_historical_records.md).
+The 2026-08-09 to 2026-08-14 grouped-consumer counts are superseded by the nineteen-family, twenty-category checkpoint above. The archived counts are in [formable_registry_historical_records.md](../../../plans/006_independence_wave_plans/formable_registry_historical_records.md).
