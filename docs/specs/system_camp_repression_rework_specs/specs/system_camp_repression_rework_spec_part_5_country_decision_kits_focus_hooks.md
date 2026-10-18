@@ -15,5 +15,5 @@ This specification is split at its top-level sections. Each linked file holds th
 
 | Section range | File | Lines |
 | --- | --- | ---: |
-| Dated implementation reconciliation, 2026-07-11 ... (6 sections) | [system_camp_repression_rework_spec_part_5_country_decision_kits_focus_hooks_block_1_dated_implementation_reconciliation_2026.md](system_camp_repression_rework_spec_part_5_country_decision_kits_focus_hooks_block_1_dated_implementation_reconciliation_2026.md) | 574 |
+| Dated implementation reconciliation, 2026-07-11 ... (6 sections) | [system_camp_repression_rework_spec_part_5_country_decision_kits_focus_hooks_block_1_dated_implementation_reconciliation_2026_07_11.md](system_camp_repression_rework_spec_part_5_country_decision_kits_focus_hooks_block_1_dated_implementation_reconciliation_2026_07_11.md) | 574 |
 | Belgium and Congo package ... (2 sections) | [system_camp_repression_rework_spec_part_5_country_decision_kits_focus_hooks_block_2_belgium_and_congo_package.md](system_camp_repression_rework_spec_part_5_country_decision_kits_focus_hooks_block_2_belgium_and_congo_package.md) | 241 |
