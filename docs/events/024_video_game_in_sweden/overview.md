@@ -594,7 +594,7 @@ The custom experimental icon remains wired to the two foreign modifiers, so the 
 
 The parent replaced 25 stale DDS files from the reviewed source package and reopened all 31 final custom DDS files individually at native size, alongside the two shared vanilla textures.
 Every custom decoded output equals its processed PNG exactly.
-The selected source lineage, exhaustive consumer-to-sprite-to-file table, final paths, sizes, alpha treatment, repairs, and current review evidence are in [the current asset audit](assets_visual_audit_2026-10-03.md).
+The selected source lineage, exhaustive consumer-to-sprite-to-file table, final paths, sizes, alpha treatment, repairs, and current review evidence are in [the current asset audit](../../plans/024_video_game_in_sweden_plans/assets_visual_audit_2026-10-03.md).
 The current contact sheets include source art, native previews, smooth enlargements, and decoded DDS output.
 The complete source workspace remains retained while the event's gameplay and probability work is incomplete.
 
