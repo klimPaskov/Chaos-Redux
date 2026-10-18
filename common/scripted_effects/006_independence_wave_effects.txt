@@ -1403,6 +1403,13 @@ independence_wave_refresh_command_idea = {
 }
 
 independence_wave_refresh_border_idea = {
+	# The permanent-border-war flag mirrors the reclamation-conflict host outcome
+	# that applies the idea, so the flag and the idea are set and removed together.
+	if = {
+		limit = { check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.reclamation_conflict } }
+		set_country_flag = independence_wave_permanent_border_war_active
+	}
+	else = { clr_country_flag = independence_wave_permanent_border_war_active }
 	if = {
 		limit = {
 			OR = {
@@ -1634,6 +1641,7 @@ independence_wave_remove_origin_ideas = {
 	independence_wave_remove_recognition_ideas = yes
 	independence_wave_remove_command_ideas = yes
 	independence_wave_remove_border_ideas = yes
+	clr_country_flag = independence_wave_permanent_border_war_active
 	independence_wave_remove_patron_ideas = yes
 	independence_wave_remove_instability_ideas = yes
 	independence_wave_remove_league_ideas = yes
@@ -2884,6 +2892,7 @@ independence_wave_reform_league = {
 		set_variable = { global.independence_wave_league_reform_date = global.date }
 		set_global_flag = independence_wave_league_reformed
 		clr_global_flag = independence_wave_league_member_war
+		clr_global_flag = independence_wave_league_failed_rescue
 		independence_wave_achievement_refresh_cross_regional_clock = yes
 	}
 }
