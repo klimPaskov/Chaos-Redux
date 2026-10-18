@@ -16,6 +16,9 @@ These history helpers add no on action or scheduler.
 - Output: `fallout_event_transaction_accepted` from `fallout_event_cancel_delayed_result`.
 - Side effects: the delayed row becomes cancelled; the caller keeps its own `fallout_event_<N>_target_invalidated` flag, history stage, and any `fallout_event_prepare_delayed_cleanup` handoff.
 - Call sites: the result and callback resolvers of events 579, 586, 600, 607, 614, 621, 740, and 747.
+- Cleanup handoff: every call site follows the cancellation with `fallout_event_prepare_delayed_cleanup` for the same ticket, so a lost-target row moves to `cleanup_pending` at once and the event's own cleanup resolver releases it and clears its `*_cleanup_ticket` variables.
+  The result resolvers of events 600, 607, 614, 621, 740, and 747 reach this branch only after the result row is already resolved, so the cancellation is rejected there and the handoff takes the resolved row to cleanup directly.
+  The handoff accepts a resolved, cancelled, or already pending row, so repeating it never schedules a second cleanup.
 - Usage: `set_temp_variable = { fallout_event_requested_ticket = fallout_event_614_result_ticket } fallout_event_cancel_target_lost = yes`
 
 ## Helper map
