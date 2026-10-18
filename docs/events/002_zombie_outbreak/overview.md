@@ -1,11 +1,12 @@
 # chaosx.nr2.1 Zombie Outbreak System
 
-## Release QA evidence, 2026-10-06
+## Release status
 
-The bounded source changes, current asset status and remaining release gates are recorded in the [release reconciliation](../../plans/002_zombie_outbreak_plans/release_qa_completion_20261006.md).
-The 12 active fictional portraits and seven creator-category crops are parent-reviewed and installed; protected Event014 Hannibal and the unused fifth horde portrait remain separate unresolved scope items.
-The corrected six-fixture cure panel resolves dynamic text and fits its parent-reviewed four-line body; the former 4px overflow is a historical defect.
-The current main super-event popup is visually accepted, while corrected League description/terminal-tooltip states and model/source-lineage gates keep full release signoff incomplete.
+Release gates, asset status and open scope items are tracked in the [release reconciliation](../../plans/002_zombie_outbreak_plans/release_qa_completion_20261006.md).
+The 12 active fictional portraits and seven creator-category crops are installed.
+The six-fixture cure panel resolves dynamic text within its four-line body, and the main super-event popup is visually accepted.
+The protected Event014 Hannibal portrait and the unused fifth horde portrait remain separate unresolved scope items.
+Full release signoff stays incomplete until the League description and terminal-tooltip states and the model and source-lineage gates are closed.
 
 ## Scope
 
