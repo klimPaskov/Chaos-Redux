@@ -12,14 +12,6 @@ has_bio_outbreak_prevention_tier_3 = {
 	has_tech = integrated_epidemic_control
 }
 
-is_standard_unconventional_air_raid_target_country = {
-	NOT = { is_in_faction_with = FROM }
-}
-
-can_launch_standard_unconventional_air_raid_against = {
-	has_war_with = FROM
-}
-
 is_biowarfare_contaminated_state = {
 	OR = {
 		has_dynamic_modifier = { modifier = anthrax_contaminated_state scope = OWNER }
@@ -298,18 +290,6 @@ mapmode_state_has_live_nuclear_fallout_record = {
 	check_variable = { nuclear_fallout_intensity > constant:cbrn_math.zero }
 	has_variable = nuclear_fallout_expiry_day
 	check_variable = { nuclear_fallout_expiry_day > global.num_days }
-}
-
-mapmode_state_has_tracked_contamination = {
-	OR = {
-		mapmode_state_has_chemical_contamination = yes
-		mapmode_state_has_disease_contamination = yes
-		mapmode_state_has_nuclear_contamination = yes
-		AND = {
-			black_plague_state_is_tracked = yes
-			black_plague_state_is_visible_to_mapmode_player = yes
-		}
-	}
 }
 
 mapmode_state_has_civilian_death_history = {
