@@ -22,7 +22,7 @@ fallout_event_908_callback_can_enter = {
 
 ## Pilot roster
 
-`fallout_orientation_country_memory_is_pilot_roster` lists the twelve country memories of the reviewed orientation pilot. `fallout_orientation_country_memory_has_pilot_resource_mapping` and `fallout_orientation_country_memory_has_pilot_candidate_mapping` both delegate to it, and each keeps its own receipt contract (resource identity row, candidate payload). Add a memory to the roster in one place.
+`fallout_orientation_country_memory_is_pilot_roster` lists the twelve country memories of the reviewed orientation pilot. The resource, government, and candidate mapping gates in the orientation registry builders call it directly (the government mapping trigger `fallout_orientation_country_memory_has_pilot_government_mapping` is a one-line wrapper over it), and each keeps its own receipt contract (resource identity row, candidate payload). Add a memory to the roster in one place.
 
 - Scope: COUNTRY, reading `fallout_country_memory_id`.
 - Side effects: none.
@@ -30,5 +30,5 @@ fallout_event_908_callback_can_enter = {
 ## Example
 
 ```
-limit = { NOT = { fallout_orientation_country_memory_has_pilot_resource_mapping = yes } }
+limit = { NOT = { fallout_orientation_country_memory_is_pilot_roster = yes } }
 ```

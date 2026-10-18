@@ -6,6 +6,18 @@ This section documents the NZL Event Log helpers in `common/scripted_effects/fal
 The package remains dormant because `fallout_nzl_activate_lifeboat_package` is reached only from the dormant B7 successor slice, `fallout_successor_b7_run_vertical_slice`, which has no live caller.
 These history helpers add no on action or scheduler.
 
+## Delayed-result target-loss cancellation
+
+### `fallout_event_cancel_target_lost`
+
+- Scope: COUNTRY.
+- Input: temporary `fallout_event_requested_ticket`, the unissued delayed row to cancel.
+- Defaults: sets `fallout_event_requested_outcome` to `cancelled_before_choice` and `fallout_event_requested_cancellation_reason` to `target_lost` itself.
+- Output: `fallout_event_transaction_accepted` from `fallout_event_cancel_delayed_result`.
+- Side effects: the delayed row becomes cancelled; the caller keeps its own `fallout_event_<N>_target_invalidated` flag, history stage, and any `fallout_event_prepare_delayed_cleanup` handoff.
+- Call sites: the result and callback resolvers of events 579, 586, 600, 607, 614, 621, 740, and 747.
+- Usage: `set_temp_variable = { fallout_event_requested_ticket = fallout_event_614_result_ticket } fallout_event_cancel_target_lost = yes`
+
 ## Helper map
 
 ### `fallout_nzl_event_log_set_payload`

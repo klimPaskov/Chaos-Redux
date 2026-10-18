@@ -13094,8 +13094,11 @@ fallout_orientation_government_branch_3_is_locked = {
 	NOT = { fallout_orientation_cell_lock_condition_is_met = yes }
 }
 
-# Supported scope: COUNTRY. The twelve-memory pilot roster shared by the resource
-# and candidate mapping proofs. Each proof keeps its own receipt contract.
+# Supported scope: COUNTRY. The twelve-memory pilot roster shared by the resource,
+# government, and candidate mapping proofs. The resource proof chooses only the
+# supporting resource and the candidate proof covers the exact mapped payload; each
+# keeps its own package and installation receipts, so a reviewed identity row cannot
+# make unfinished assets, characters, or institutions selectable.
 fallout_orientation_country_memory_is_pilot_roster = {
 	OR = {
 		check_variable = { fallout_country_memory_id = constant:fallout_country_memory.federal_continuity_zone }
@@ -13111,13 +13114,6 @@ fallout_orientation_country_memory_is_pilot_roster = {
 		check_variable = { fallout_country_memory_id = constant:fallout_country_memory.atacama_observatory_state }
 		check_variable = { fallout_country_memory_id = constant:fallout_country_memory.antarctic_listening_government }
 	}
-}
-
-# Supported scope: COUNTRY. Proves the exact twelve-memory resource pilot.
-# The identity row chooses only the supporting resource. A separate package
-# receipt must prove the reviewed capital asset before the row becomes usable.
-fallout_orientation_country_memory_has_pilot_resource_mapping = {
-	fallout_orientation_country_memory_is_pilot_roster = yes
 }
 
 fallout_orientation_resource_mapping_is_current = {
@@ -13194,7 +13190,7 @@ fallout_orientation_resource_registry_is_usable = {
 # Supported scope: COUNTRY. Authenticates the twelve reviewed government rows.
 # It does not approve the government, regional, archetype, or memory surfaces.
 fallout_orientation_country_memory_has_pilot_government_mapping = {
-	fallout_orientation_country_memory_has_pilot_resource_mapping = yes
+	fallout_orientation_country_memory_is_pilot_roster = yes
 }
 
 fallout_orientation_government_mapping_is_current = {
@@ -13260,13 +13256,6 @@ fallout_orientation_government_transaction_row_is_current = {
 	check_variable = { var = fallout_orientation_frozen_archetype_effect_value value = fallout_orientation_government_registry_effect_value compare = equals }
 	check_variable = { var = fallout_orientation_frozen_archetype_effect_days value = fallout_orientation_government_registry_effect_days compare = equals }
 	check_variable = { var = fallout_orientation_frozen_archetype_effect_token value = fallout_orientation_government_registry_effect_token compare = equals }
-}
-
-# Supported scope: COUNTRY. Proves the exact mapped pilot payload. The package
-# and installation receipts are separate so a reviewed identity row cannot make
-# unfinished characters or institutions selectable.
-fallout_orientation_country_memory_has_pilot_candidate_mapping = {
-	fallout_orientation_country_memory_is_pilot_roster = yes
 }
 
 fallout_orientation_candidate_mapping_is_current = {
