@@ -707,13 +707,20 @@ cbrn_country_can_pay_occupied_mask_reservation = {
 	check_variable = { cbrn_mask_reservation_quote > constant:cbrn_math.zero }
 }
 
+# State scope. Quote-free part of cbrn_state_can_reserve_occupied_masks: a valid
+# non-core distribution target in an emergency context. Callers that compute the
+# quote themselves use this in a limit so the quote runs once per state.
+cbrn_state_is_occupied_mask_target = {
+	cbrn_state_is_valid_distribution_target = yes
+	NOT = { is_core_of = ROOT }
+	cbrn_state_has_emergency_context = yes
+}
+
 # Start-only occupied target predicate based on current state ledgers rather
 # than a potentially stale effective-coverage snapshot. It must not be used
 # after the target marker is set if that marker's own lifecycle is being tested.
 cbrn_state_can_reserve_occupied_masks = {
-	cbrn_state_is_valid_distribution_target = yes
-	NOT = { is_core_of = ROOT }
-	cbrn_state_has_emergency_context = yes
+	cbrn_state_is_occupied_mask_target = yes
 	set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }
 	cbrn_quote_occupied_state_mask_reservation = yes
 	check_variable = { cbrn_reservation_quote_state_need > constant:cbrn_math.zero }

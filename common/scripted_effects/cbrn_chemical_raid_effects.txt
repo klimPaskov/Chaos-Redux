@@ -19,7 +19,9 @@
 #   agent, route, and engine outcome from regular event targets.
 # ============================================================================
 
-cbrn_chemical_air_raid_set_agent_class_internal = {
+# Shared agent classifier for the land, air, and missile callers. Reads the
+# scope-less temporary cbrn_action_agent and writes cbrn_action_agent_class.
+cbrn_set_action_agent_class = {
 	set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.none }
 
 	if = {
@@ -182,7 +184,7 @@ cbrn_resolve_chemical_air_raid_reservation = {
 	set_temp_variable = { cbrn_raid_release_proof = constant:cbrn_proof.missing }
 	set_temp_variable = { cbrn_raid_reservation_proof = constant:cbrn_proof.missing }
 
-	cbrn_chemical_air_raid_set_agent_class_internal = yes
+	cbrn_set_action_agent_class = yes
 	cbrn_chemical_air_raid_select_result_internal = yes
 
 	if = {

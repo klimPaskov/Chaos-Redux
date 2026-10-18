@@ -116,28 +116,31 @@ cbrn_occupied_begin_selected_program = {
 		set_temp_variable = { cbrn_occupied_selected_source = cbrn_occupied_fee_source }
 		every_controlled_state = {
 			limit = {
-				cbrn_state_can_reserve_occupied_masks = yes
+				cbrn_state_is_occupied_mask_target = yes
 				NOT = { has_state_flag = cbrn_occupied_mask_escrow_active }
 			}
 			set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }
 			# Scripted trigger, evaluated in a limit for its quote output.
 			if = { limit = { cbrn_quote_occupied_state_mask_reservation = yes } }
-			set_temp_variable = { cbrn_mask_escrow_requested = cbrn_reservation_quote_state_need }
-			set_temp_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero }
-			set_temp_variable = { cbrn_mask_escrow_completed = constant:cbrn_math.zero }
-			cbrn_reserve_requested_masks_to_state = yes
 			if = {
-				limit = {
-					has_state_flag = cbrn_occupied_mask_escrow_active
-					has_state_flag = cbrn_occupied_mask_escrow_native_mismatch
-					var:cbrn_occupied_mask_escrow_donor = { tag = ROOT }
+				limit = { check_variable = { cbrn_reservation_quote_state_need > constant:cbrn_math.zero } }
+				set_temp_variable = { cbrn_mask_escrow_requested = cbrn_reservation_quote_state_need }
+				set_temp_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero }
+				set_temp_variable = { cbrn_mask_escrow_completed = constant:cbrn_math.zero }
+				cbrn_reserve_requested_masks_to_state = yes
+				if = {
+					limit = {
+						has_state_flag = cbrn_occupied_mask_escrow_active
+						has_state_flag = cbrn_occupied_mask_escrow_native_mismatch
+						var:cbrn_occupied_mask_escrow_donor = { tag = ROOT }
+					}
+					set_state_flag = cbrn_occupied_distribution_program_target
 				}
-				set_state_flag = cbrn_occupied_distribution_program_target
-			}
-			if = {
-				limit = { check_variable = { cbrn_mask_escrow_completed > constant:cbrn_math.zero } }
-				set_state_flag = cbrn_occupied_distribution_program_target
-				add_to_temp_variable = { cbrn_occupied_program_reserved = cbrn_mask_escrow_completed }
+				if = {
+					limit = { check_variable = { cbrn_mask_escrow_completed > constant:cbrn_math.zero } }
+					set_state_flag = cbrn_occupied_distribution_program_target
+					add_to_temp_variable = { cbrn_occupied_program_reserved = cbrn_mask_escrow_completed }
+				}
 			}
 		}
 		if = {

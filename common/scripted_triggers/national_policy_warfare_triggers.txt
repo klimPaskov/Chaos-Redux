@@ -4,6 +4,22 @@
 # Exact-target retaliation reuses the bilateral confirmed-use evidence ledger.
 # ============================================================================
 
+# Country scope. Reads the scope-less temporary cbrn_retaliation_policy_family
+# (national_policy_family.chemical or .biological) and checks that the country
+# holds that family's native retaliation law.
+national_policy_family_has_retaliation_law = {
+	OR = {
+		AND = {
+			check_variable = { cbrn_retaliation_policy_family = constant:national_policy_family.chemical }
+			has_idea = national_policy_chemical_retaliation
+		}
+		AND = {
+			check_variable = { cbrn_retaliation_policy_family = constant:national_policy_family.biological }
+			has_idea = national_policy_biological_retaliation
+		}
+	}
+}
+
 national_policy_biological_allows_battlefield_use_against_target_id = {
 	OR = {
 		has_idea = national_policy_biological_unrestricted

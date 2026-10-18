@@ -33,7 +33,7 @@ Disabled civilian death accounting cannot open a qualifying episode.
 
 The achievement requires covert biological operations over a long period without disclosure, a cover-up, strategic civilian release or doomsday release.
 `cbrn_achievement_covert_discovered_history` is set when a covert route is probably or certainly attributed.
-`cbrn_achievement_covert_coverup_history` is set when a cover-up is discovered.
+`cbrn_achievement_covert_coverup_history` is set when a cover-up is discovered, through `cbrn_achievement_record_coverup_discovery`, which `cbrn_convention_expose_covert_program` and `cbrn_occupation_publish_coverup_discovery` both call.
 `cbrn_convention_expose_covert_program` sets it when a covert convention program is exposed, and `cbrn_occupation_publish_coverup_discovery` sets it on the responsible country when an occupation cover-up is published.
 Both flags are permanent campaign history and are never cleared.
 

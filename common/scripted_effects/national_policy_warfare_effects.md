@@ -33,6 +33,7 @@ Permission callers combine that evidence with their own family law.
 `cbrn_diplomacy_classify_retaliation_action` reads the required temporary input `cbrn_retaliation_policy_family`, a `national_policy_family` value whose native retaliation law the acting country must hold.
 Chemical exposure sets `constant:national_policy_family.chemical`, requiring `national_policy_chemical_retaliation`, and biological classification sets `constant:national_policy_family.biological`, requiring `national_policy_biological_retaliation`.
 Scripted effects take no parameter blocks, so the family travels through this temporary variable.
+The law check itself is the country-scope trigger `national_policy_family_has_retaliation_law` (`national_policy_warfare_triggers.txt`), which reads the same temporary input.
 This retains the established relief/classification exception rather than extending it to unrestricted first use.
 
 ```text
