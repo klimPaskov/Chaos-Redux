@@ -770,6 +770,13 @@ migration_local_integration_can_start_in_context = {
 		}
 }
 
+# STATE scope. Owner-published read for other systems: a cohort was locally
+# integrated here recently, so the state gained settled labour. Migration
+# keeps cohorts, reception load and Deaths; readers move no population.
+migration_state_has_recent_local_integration = {
+	has_state_flag = migration_recent_local_integration
+}
+
 # STATE scope: the integration host, with ROOT as the integrating country.
 # The settlement debits the owner's state and national reception ledgers, so
 # the host must be owned and controlled by ROOT and both ledgers must already
@@ -1073,11 +1080,4 @@ migration_negotiate_corridor_cost_pending_is_valid_in_context = {
 	hidden_trigger = {
 			var:humanitarian_action_target = { humanitarian_state_is_valid = yes is_controlled_by = var:humanitarian_action_actor has_state_flag = migration_negotiate_corridor_cost_pending has_variable = migration_negotiate_corridor_cost_payer var:migration_negotiate_corridor_cost_payer = { exists = yes tag = var:humanitarian_action_actor } }
 		}
-}
-
-# STATE scope. Owner-published read for other systems: a cohort was locally
-# integrated here recently, so the state gained settled labour. Migration
-# keeps cohorts, reception load and Deaths; readers move no population.
-migration_state_has_recent_local_integration = {
-	has_state_flag = migration_recent_local_integration
 }
