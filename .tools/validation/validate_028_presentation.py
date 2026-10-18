@@ -234,7 +234,10 @@ old = subprocess.check_output(["git", "show", BASELINE_COMMIT + ":" + str(runtim
 before, after = parse_source(TextSource(old)), parse_source(runtime)
 changed = {key for key in before.keys() | after.keys() if before.get(key) != after.get(key)}
 assert changed == {"asteroid_incoming_mark_visual_strike_state", "asteroid_incoming_play_fragment_visual",
-                   "asteroid_incoming_apply_state_profile", "asteroid_incoming_update_achievements"}, changed
+                   "asteroid_incoming_apply_state_profile", "asteroid_incoming_update_achievements",
+                   # bc12ee47e4 guards the national dust-protection removal with
+                   # has_dynamic_modifier; no gameplay change.
+                   "asteroid_incoming_refresh_national_dust_protection"}, changed
 news_path = "common/scripted_effects/028_asteroid_incoming_presentation_effects.txt"
 news_before = subprocess.check_output(["git", "show", BASELINE_COMMIT + ":" + news_path], cwd=ROOT).decode("utf-8-sig")
 assert parse_source(TextSource(news_before)) == parse_source(ROOT / news_path), "Existing news-delivery module changed"

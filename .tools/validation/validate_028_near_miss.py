@@ -159,7 +159,38 @@ def without_award(body):
 
 before_body = parse_source(TextSource(before_bytes.decode("utf-8-sig")))["asteroid_incoming_resolve_miss"]
 after_body = parse_source(ROOT / RUNTIME)["asteroid_incoming_resolve_miss"]
-assert without_award(before_body) == without_award(after_body), "Non-award miss path changed"
+
+
+def accepted_later_miss_changes(rows):
+    """Apply the accepted post-baseline edits to the non-award miss path.
+
+    The baseline predates three later committed Event 028 changes. Applying them
+    explicitly keeps the comparison exact: any other change to the miss path
+    still fails.
+    - f9cb13c4f8: the target board closes (asteroid_incoming_board_ready cleared).
+    - ac08ed810d: the expected impact date is cleared on the miss.
+    - ad3ea2d7b7: the miss news is queued through asteroid_incoming_queue_news
+      with the presentation constant instead of a direct news_event.
+    """
+    result = [("clr_global_flag", "=", "asteroid_incoming_board_ready")]
+    for row in rows:
+        if row[0] == "if" and any(name == "news_event" for name, _, _ in row[2]):
+            body = []
+            for name, op, value in row[2]:
+                if name == "news_event":
+                    body.append(("set_temp_variable", "=", [("asteroid_incoming_news_id", "=",
+                                                             "constant:asteroid_incoming_presentation.news_miss")]))
+                    body.append(("asteroid_incoming_queue_news", "=", "yes"))
+                else:
+                    body.append((name, op, value))
+            row = (row[0], row[1], body)
+        result.append(row)
+        if row[0] == "set_variable" and row[2][0][0] == "global.asteroid_incoming_close_passage_day":
+            result.append(("clear_variable", "=", "global.asteroid_incoming_expected_impact_date"))
+    return result
+
+
+assert without_award(accepted_later_miss_changes(before_body)) == without_award(after_body), "Non-award miss path changed"
 preview = ["asteroid_incoming_evolution_i_eligible", "asteroid_incoming_evolution_ii_eligible"]
 cases = [
     ("AST_MISS_ENABLED_800", {}, True, True),
@@ -191,5 +222,5 @@ for name, changes, expected, old_expected in cases:
     assert current.global_flags == set(fixture["global_flags"]), name
     print(f"{name}: before={old_expected}, after={expected}")
 print(f"{len(cases)} actual-source award scenarios passed. Native settings and achievement acceptance remain unverified.")
-print("AST_MISS_NO_AFTERMATH_CHANGE: non-award miss operations match the before source exactly.")
+print("AST_MISS_NO_AFTERMATH_CHANGE: non-award miss operations match the before source plus the three accepted later changes.")
 print("Before commit runtime SHA256:", hashlib.sha256(before_bytes).hexdigest())
