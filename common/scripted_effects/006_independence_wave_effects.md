@@ -163,3 +163,100 @@ The latch compares the meter before and after the change, so a meter that stays 
 `independence_wave_reform_league` clears it and returns a meter at or above the captured level to `independence_wave_league.reform_patron_capture` (30, the statehood-incident warning level).
 `independence_wave_dissolve_league_to_network` and `independence_wave_restart_informal_network` clear it with the other failure latches.
 No world iteration is used.
+
+## Event 006 country-registry effects
+
+This section covers only the two lifecycle wrappers needed by the canonical
+Independence Wave origin ledger. The static carrier data lives in the section marked `[source: 006_independence_wave_country_registry_constants.txt]` of
+`common/script_constants/006_independence_wave_constants_registry.txt`;
+the exact country-scope predicates live in the country-registry section of
+`common/scripted_triggers/006_independence_wave_package_triggers.txt`.
+
+### `independence_wave_registry_record_event6_origin`
+
+- Scope: country.
+- Inputs: none; the caller has already validated the Event 006 setup package.
+- Outputs: sets `independence_wave_active_origin`, clears the ended marker, and
+  writes `liberation_origin = constant:liberation_origin.independence_wave`.
+- Side effects: only the normal Event 006 origin markers. It does not create a
+  tag, change ownership, add cores, load a focus tree, or touch Event 012 flags.
+- Call site: `independence_wave_prepare_country_origin` in
+  `common/scripted_effects/006_independence_wave_effects.txt`.
+
+### `independence_wave_registry_clear_event6_origin`
+
+- Scope: country.
+- Inputs: none; called after the Event 006 package and ledger cleanup chain.
+- Outputs: clears the live Event 006 origin, preserves
+  `independence_wave_origin_ended`, and resets `liberation_origin` to `none`.
+- Side effects: no tag, focus, state, or Event 012 mutation.
+- Call site: `independence_wave_end_active_origin` in the same Event 006 effect
+  file.
+
+### Provenance and cleanup contract
+
+Event 012 records its own `africa_priority_origin_*` and package flags. It must
+never call either helper, so an Africa promotion cannot acquire Event 006
+origin provenance by sharing a carrier tag. Event 006's existing package,
+network, event-target, and focus cleanup still runs before the clear wrapper.
+The registry itself owns no event targets: the short-lived setup targets remain
+the existing `independence_wave_setup_former_host` and
+`independence_wave_setup_anchor_state` targets, and the existing Event 006
+cleanup chain remains responsible for clearing them and global targets.
+
+### Static carrier status API
+
+The country-group constants in the `[source: 006_independence_wave_country_registry_constants.txt]` section of
+`common/script_constants/006_independence_wave_constants_registry.txt`
+expose package-row status projections for later callers:
+
+- `selectable_bound_tags` is the current-map-bound selectable pool (138 rows,
+  137 unique carrier scopes).
+- `selectable_unbound_tags` is the explicit fail-closed selectable pool (55
+  rows, 55 unique carrier scopes). Missing geography is preserved; no nearby
+  state or substitute tag is implied.
+- `event6_owned_bound_tags` and `event6_owned_unbound_tags` split custom `X`
+  registrations by current-map status.
+- `registered_reuse_bound_tags` and `registered_reuse_unbound_tags` split
+  vanilla-tag reuse rows by current-map status.
+- `overlay_route_carrier_tags` and its route-specific subsets expose the
+  original carriers for all thirteen non-selectable overlays. Overlay
+  carriers may also appear in a selectable pool when the same vanilla country
+  has a separate Event 006 row; route triggers remain the identity gate.
+
+Country groups de-duplicate tags, so BIA appears in both bound and unbound
+status projections: IW-107 is bound while IW-096 is unbound. Exact package
+identity, anchor, host, reservation group, readiness, scenario rank, and
+package status remain row-level facts in the canonical candidate registry,
+package-id constants, and current-map binding CSV. Use those sources and the
+existing region load/reserve dispatchers when a caller needs a specific row;
+do not infer a row from a carrier tag alone.
+
+The public `chaosx_country_independence_wave_*` collections mirror these
+status and overlay views. Collections are active views and naturally omit
+dormant reserved tags; static country-group constants remain the source for
+registration audits and fail-closed admission checks.
+
+## Event 006 roster checkpoint effects
+
+### `independence_wave_apply_roster_checkpoint`
+
+Country-scope helper for the synchronous Event 006 package-roster receipt.
+The helper is called after a package-specific setup trigger has selected the package country.
+It has no explicit inputs and reads the current `THIS` country scope.
+
+The helper preserves the former `chaosx.nr6.350` immediate branches exactly.
+It writes the TRA, MNT, KOS, KUB, TAT, BSK, RUT, MAC, AXX, BAX, BBX, BOS, NAV, and GLC roster checkpoint flags when their package and command-roster triggers pass.
+It applies the MNT political-carrier portrait overrides for `MNT_kristo_popovic` and `MNT_blazo_jovanovic`.
+It applies the BSK `Yakov Bykin` portrait override once behind `independence_wave_bsk_portrait_override`.
+It applies the RUT `Augustin Voloshyn` portrait override for the Event 006 package scope.
+
+The helper does not release countries, create characters, change package costs, mutate central attestation, open the pre-event UI, or use event targets.
+It has no constants or tuning table because the checkpoint is a fixed roster receipt and the package-specific triggers remain the source of eligibility.
+There is no event-target cleanup plan because the helper does not persist scope pointers.
+
+### Call sites and migration
+
+The active package setup callers use the helper directly in Bosnia, Bashkiria, Iberia, IW043/IW058, IW093/IW098, Karelia/Crimea, Komi, Kosovo, Kuban, Macedonia, the Mediterranean package, Montenegro, the Pacific package, Ruthenia, Tatarstan, Transylvania, and UDM.
+The hidden compatibility event `chaosx.nr6.350` delegates to the same helper so older external references retain the roster and portrait behavior.
+Direct calls are synchronous within the current package setup effect, so immediate checkpoint flag tests observe the flags before setup continues.
