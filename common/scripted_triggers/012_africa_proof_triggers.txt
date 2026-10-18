@@ -933,6 +933,16 @@ africa_first_proof_distinct_credits_are_met = {
 	}
 }
 
+# COUNTRY scope on the host. The first mandate is open and its ledger can
+# still be breached: the host role is current, the ledger is live, the mandate
+# is active, and it has not already failed.
+africa_first_proof_breach_window_is_open = {
+	africa_is_current_host = yes
+	hidden_trigger = { has_country_flag = africa_first_proof_ledger_active }
+	hidden_trigger = { has_country_flag = africa_first_proof_active }
+	NOT = { hidden_trigger = { has_country_flag = africa_first_proof_failed } }
+}
+
 # COUNTRY scope on the host. These are live final gates, not historical proof
 # counters. The refresh effect clears a gate when any credited scope loses its
 # explicit durable semantic flag.

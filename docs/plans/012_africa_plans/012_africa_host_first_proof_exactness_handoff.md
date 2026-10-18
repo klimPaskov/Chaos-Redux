@@ -11,6 +11,12 @@ Every one of the 51 matrix rows now has an explicit country-partner allow-list, 
 
 Primary partial, failure, or cancellation still ends the first mandate and opens the existing recovery contract. Auxiliary actions remain retryable. Partner-corridor and physical-state-corridor credits remain separate arrays and separate minima.
 
+## Breach disposition
+
+The three `africa_breach_first_proof_*` entry points are called through `africa_first_proof_record_force_against_partner` and `africa_first_proof_record_corridor_cut`, and a recorded breach fails the mandate through `africa_fail_first_proof_for_breach`.
+The conditions and hooks are accepted design in the Event 12 core progression specification (First proof mission), accepted by the user on 2026-10-18.
+Implemented in the proof effects, the proof triggers (`africa_first_proof_breach_window_is_open`) and the world-order on actions.
+
 ## Exact map and registry evidence
 
 The state lists were rebound against the installed vanilla histories under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/history/states/`. All 113 state IDs referenced by the homeland trigger exist in the installed build. The 52 original tags used by the partner allow-lists all exist in vanilla or Chaos Redux country-tag files.

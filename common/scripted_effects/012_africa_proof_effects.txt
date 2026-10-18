@@ -1941,6 +1941,132 @@ africa_breach_first_proof_no_coercion = {
 	clr_country_flag = africa_first_proof_ledger_ready
 }
 
+# COUNTRY scope on the host. Ends the first mandate after a recorded breach.
+# The breach flags set by the three entry points above have already voided the
+# credit and the ready flag. The mandate then fails the way a failed primary
+# action fails it: the failure is remembered, the ledger is cleaned (which also
+# resets the breach flags with the rest of the profile), the failed-action host
+# values apply once, and the existing recovery contract (action 101) opens.
+africa_fail_first_proof_for_breach = {
+	if = {
+		limit = { africa_first_proof_breach_window_is_open = yes }
+		clr_country_flag = africa_first_proof_active
+		set_country_flag = africa_first_proof_failed
+		set_country_flag = africa_first_proof_failure_remembered
+		set_country_flag = africa_first_proof_failed_result
+		add_to_variable = { africa_first_proof_failures = constant:africa_value.one }
+		add_to_variable = { africa_charter_authority = constant:africa_action_result.failure_authority }
+		add_to_variable = { africa_integration_burden = constant:africa_action_result.failure_burden }
+		add_to_variable = { africa_colonial_pressure = constant:africa_action_result.failure_pressure }
+		add_to_variable = { africa_emergency_rule_debt = constant:africa_action_result.failure_debt }
+		if = { limit = { NOT = { has_variable = africa_rival_pressure } } set_variable = { africa_rival_pressure = constant:africa_measure.minimum } }
+		add_to_variable = { africa_rival_pressure = constant:africa_action_result.failure_rival_pressure }
+		clamp_variable = { var = africa_rival_pressure min = constant:africa_measure.minimum max = constant:africa_measure.maximum }
+		africa_clamp_host_values = yes
+		africa_cleanup_compound_first_proof_ledger = yes
+		africa_refresh_continental_focus_tree_layout = yes
+	}
+}
+
+# COUNTRY scope on the host. Records force or coercion by the host against one
+# country while the first mandate is open. Input: regular event target
+# africa_first_proof_breach_target, the country acted on. Callers: the war
+# relation, annexation and puppet callbacks in 012_africa_world_order_on_actions
+# (host as attacker, annexer or overlord), and the resolution of a full
+# impose_emergency_administration or enforce_congress_settlement action
+# (africa_first_proof_review_action_breach). Only a geographic partner of the
+# host proof counts. A proof that forbids coercion breaks on any such act, a
+# proof that credited the partner for sovereignty breaks on it, and a proof
+# that credited the partner as its corridor actor loses the corridor.
+africa_first_proof_record_force_against_partner = {
+	if = {
+		limit = {
+			africa_first_proof_breach_window_is_open = yes
+			has_event_target = africa_first_proof_breach_target
+			event_target:africa_first_proof_breach_target = { africa_first_proof_country_is_current_playbook_geographic_partner = yes }
+		}
+		set_temp_variable = { africa_first_proof_breach_recorded = constant:africa_value.zero }
+		if = {
+			limit = { hidden_trigger = { has_country_flag = africa_first_proof_requires_no_coercion } }
+			africa_breach_first_proof_no_coercion = yes
+			set_temp_variable = { africa_first_proof_breach_recorded = constant:africa_value.one }
+		}
+		if = {
+			limit = {
+				hidden_trigger = { has_country_flag = africa_first_proof_requires_sovereignty }
+				is_in_array = { array = africa_first_proof_sovereignty_actor_credits value = event_target:africa_first_proof_breach_target }
+			}
+			africa_breach_first_proof_sovereignty = yes
+			set_temp_variable = { africa_first_proof_breach_recorded = constant:africa_value.one }
+		}
+		if = {
+			limit = {
+				hidden_trigger = { has_country_flag = africa_first_proof_requires_home_corridor }
+				is_in_array = { array = africa_first_proof_corridor_actor_credits value = event_target:africa_first_proof_breach_target }
+			}
+			africa_breach_first_proof_corridor = yes
+			set_temp_variable = { africa_first_proof_breach_recorded = constant:africa_value.one }
+		}
+		if = {
+			limit = { check_variable = { africa_first_proof_breach_recorded = constant:africa_value.one } }
+			africa_fail_first_proof_for_breach = yes
+		}
+	}
+}
+
+# COUNTRY scope on the host. Records that a credited corridor partner aid
+# corridor was cut. Input: regular event target africa_first_proof_breach_target.
+# Caller: africa_first_proof_review_action_breach, when a later open_aid_corridor
+# action toward a credited corridor partner ends partial, failed or cancelled.
+africa_first_proof_record_corridor_cut = {
+	if = {
+		limit = {
+			africa_first_proof_breach_window_is_open = yes
+			has_event_target = africa_first_proof_breach_target
+			hidden_trigger = { has_country_flag = africa_first_proof_requires_home_corridor }
+			is_in_array = { array = africa_first_proof_corridor_actor_credits value = event_target:africa_first_proof_breach_target }
+		}
+		africa_breach_first_proof_corridor = yes
+		africa_fail_first_proof_for_breach = yes
+	}
+}
+
+# COUNTRY scope on the resolved action target, run first by
+# africa_handle_first_proof_action_resolution. A full impose_emergency_administration
+# or enforce_congress_settlement is coercion against the target (the same two
+# actions the achievement recorder treats as coercive). A partial, failed or
+# cancelled open_aid_corridor that is not the proof primary action cuts the
+# corridor already credited for that target.
+africa_first_proof_review_action_breach = {
+	if = {
+		limit = { event_target:africa_host = { africa_first_proof_breach_window_is_open = yes } }
+		if = {
+			limit = {
+				check_variable = { africa_active_action_outcome = constant:africa_action_outcome.full }
+				OR = {
+					check_variable = { africa_active_action_id = constant:africa_action.impose_emergency_administration }
+					check_variable = { africa_active_action_id = constant:africa_action.enforce_congress_settlement }
+				}
+			}
+			save_event_target_as = africa_first_proof_breach_target
+			event_target:africa_host = { africa_first_proof_record_force_against_partner = yes }
+		}
+		else_if = {
+			limit = {
+				check_variable = { africa_active_action_id = constant:africa_action.open_aid_corridor }
+				OR = {
+					check_variable = { africa_active_action_outcome = constant:africa_action_outcome.partial }
+					check_variable = { africa_active_action_outcome = constant:africa_action_outcome.failure }
+					check_variable = { africa_active_action_outcome = constant:africa_action_outcome.cancelled }
+				}
+				event_target:africa_host = { NOT = { africa_resolved_first_proof_action_is_primary = yes } }
+			}
+			save_event_target_as = africa_first_proof_breach_target
+			event_target:africa_host = { africa_first_proof_record_corridor_cut = yes }
+		}
+	}
+}
+
 # ---------------------------------------------------------------------------
 # Action-101 recovery contract
 # ---------------------------------------------------------------------------
@@ -2056,6 +2182,7 @@ africa_consume_first_proof_recovery_ready = {
 # recovery contract. Action 101 has its own full-only recovery result.
 africa_handle_first_proof_action_resolution = {
 	set_temp_variable = { africa_resolved_first_proof_action_id = africa_active_action_id }
+	africa_first_proof_review_action_breach = yes
 	set_temp_variable = { africa_resolved_first_proof_full_context = constant:africa_value.zero }
 	if = {
 		limit = { check_variable = { africa_active_action_outcome = constant:africa_action_outcome.full } }

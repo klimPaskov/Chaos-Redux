@@ -167,6 +167,16 @@ The host must complete one visible act before it can invite ordinary members bro
 
 Failure does not end the event. It lowers confidence, raises colonial pressure, and opens a harder recovery branch.
 
+Accepted design (user approval 2026-10-18): a first proof breaks when the host turns force on a partner of its own proof while the mandate is open.
+Opening a war against such a partner, annexing it, puppeting it, or completing an Impose Emergency Administration or Enforce Congress Settlement action on it is coercion.
+A proof that forbids coercion breaks on any of these acts.
+A proof that credited the partner for sovereignty breaks on them, and a proof that credited the partner as its corridor actor loses its home corridor through them.
+A later Open Aid Corridor action toward a credited corridor partner that ends partial, failed or cancelled also cuts that corridor unless the action is the proof's own primary.
+A breach marks the matching entry point (`africa_breach_first_proof_corridor`, `africa_breach_first_proof_sovereignty`, `africa_breach_first_proof_no_coercion`) and then fails the mandate through `africa_fail_first_proof_for_breach`.
+The failure applies the failed-action host values (`africa_action_result.failure_authority`, `failure_burden`, `failure_pressure`, `failure_debt`, `failure_rival_pressure`) once, remembers the failure, cleans the ledger, and opens the existing recovery contract.
+The hooks are the host branches of `on_war_relation_added`, `on_puppet` and `on_annex` in `012_africa_world_order_on_actions.txt` and the start of `africa_handle_first_proof_action_resolution`.
+Losing a credited corridor state or partner to enemy action stays a live-ledger loss that the host can restore, not a breach.
+
 ## Baseline progression
 
 Baseline stages describe ordinary campaign development. They are not event log evolutions.

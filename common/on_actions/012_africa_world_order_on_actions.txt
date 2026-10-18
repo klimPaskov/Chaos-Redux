@@ -45,6 +45,13 @@ on_actions = {
 				limit = { has_event_target = africa_host }
 				event_target:africa_host = { africa_common_reserve_clear_expired_posture = yes }
 			}
+			# The host opening hostilities against a partner of its first proof
+			# breaks the proof (africa_first_proof_record_force_against_partner).
+			if = {
+				limit = { ROOT = { africa_is_current_host = yes } }
+				FROM = { save_event_target_as = africa_first_proof_breach_target }
+				ROOT = { africa_first_proof_record_force_against_partner = yes }
+			}
 			africa_promoted_tiera_record_stoneborn_human_member_war_relation = yes
 			if = {
 				limit = {
@@ -224,6 +231,12 @@ on_actions = {
 	# foreign overlord before the shared no-foreign-boot receipt is written.
 	on_puppet = {
 		effect = {
+			# A host that puppets a partner of its first proof breaks the proof.
+			if = {
+				limit = { FROM = { africa_is_current_host = yes } }
+				ROOT = { save_event_target_as = africa_first_proof_breach_target }
+				FROM = { africa_first_proof_record_force_against_partner = yes }
+			}
 			if = {
 				limit = {
 					africa_priority_member_has_package = yes
@@ -348,6 +361,12 @@ on_actions = {
 			# callback has classified the annexation. The regular target clears with
 			# this effect chain and cannot leak into a later transaction.
 			ROOT = { save_event_target_as = africa_achievement_annexer }
+			# A host that annexes a partner of its first proof breaks the proof.
+			if = {
+				limit = { ROOT = { africa_is_current_host = yes } }
+				FROM = { save_event_target_as = africa_first_proof_breach_target }
+				ROOT = { africa_first_proof_record_force_against_partner = yes }
+			}
 			# The host must stage its ledger before the annexed country scope is
 			# removed. A recorded constitutional designation can complete the
 			# transfer in this callback; otherwise the annexer receives the explicit
