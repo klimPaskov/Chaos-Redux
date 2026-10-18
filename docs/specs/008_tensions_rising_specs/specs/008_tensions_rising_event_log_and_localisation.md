@@ -1,6 +1,6 @@
 # Event 008: Event Log, Localisation, and Text Direction
 
-Finished player text lives in `localisation/english/008_world_tension_rises_l_english.yml` and the shared event-log localisation; the [5 October localisation handoff](../../../plans/008_tensions_rising_plans/subagent_handoffs/localisation_audit_2026-10-05.md) records its acceptance basis.
+Finished player text lives in `localisation/english/008_tensions_rising_l_english.yml` and the shared event-log localisation; the [5 October localisation handoff](../../../plans/008_tensions_rising_plans/subagent_handoffs/localisation_audit_2026-10-05.md) records its acceptance basis.
 This file keeps the writing direction and the key map so later edits stay aligned across the report, incidents, log, details, and catalog.
 The earlier pasteable draft paragraphs were removed because the final strings supersede them; do not reintroduce draft text as a source.
 

@@ -7,7 +7,7 @@ The tree is a behavioral tree for a dynamic actor, not a national history tree.
 It must feel useful for Luxembourg, Uruguay, or any other eligible small AI country without relying on their exact history.
 
 Tree id: `fury_focus_tree` in `common/national_focus/007_fury_focus_tree.txt`.
-Player text lives in `localisation/english/007_random_expansion_l_english.yml`.
+Player text lives in `localisation/english/007_fury_l_english.yml`.
 
 The tree is compact enough for a repeatable minor event, but deep enough that a Fury actor that survives for years has meaningful branches.
 

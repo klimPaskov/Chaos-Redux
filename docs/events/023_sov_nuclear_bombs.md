@@ -274,7 +274,7 @@ The super-event picture is `GFX_super_event_108_soviet_nuclear_major_exchange` a
 
 ## Source and runtime files
 
-Gameplay entry and presentation files are `events/023_soviet_nukes.txt`, `common/decisions/023_sov_nuclear_bombs_decisions.txt`, `common/decisions/categories/023_sov_nuclear_bombs_categories.txt`, `interface/023_sov_nuclear_bombs.gfx`, `common/ideas/023_sov_nuclear_bombs_ideas.txt`, `common/achievements/chaos_redux_achievements.txt`, `common/scripted_localisation/023_sov_nuclear_bombs_scripted_localisation.txt`, and `localisation/english/023_soviet_nukes_l_english.yml`.
+Gameplay entry and presentation files are `events/023_sov_nuclear_bombs.txt`, `common/decisions/023_sov_nuclear_bombs_decisions.txt`, `common/decisions/categories/023_sov_nuclear_bombs_categories.txt`, `interface/023_sov_nuclear_bombs.gfx`, `common/ideas/023_sov_nuclear_bombs_ideas.txt`, `common/achievements/chaos_redux_achievements.txt`, `common/scripted_localisation/023_sov_nuclear_bombs_scripted_localisation.txt`, and `localisation/english/023_sov_nuclear_bombs_l_english.yml`.
 
 Runtime logic is split between `common/scripted_triggers/023_sov_nuclear_bombs_event_triggers.txt`, `common/scripted_triggers/023_sov_nuclear_bombs_runtime_triggers.txt`, `common/scripted_triggers/023_sov_nuclear_bombs_cost_triggers.txt`, `common/scripted_effects/023_sov_nuclear_bombs_event_effects.txt`, `common/scripted_effects/023_sov_nuclear_bombs_runtime_effects.txt`, `common/scripted_effects/023_sov_nuclear_bombs_cost_effects.txt`, `common/scripted_effects/023_sov_nuclear_bombs_cxt_test_effects.txt`, `common/on_actions/023_sov_nuclear_bombs_on_actions.txt`, `common/on_actions/023_sov_nuclear_bombs_cxt_on_actions.txt`, and `common/script_constants/023_sov_nuclear_bombs_constants.txt`.
 

@@ -10,7 +10,7 @@ Follow `CLAUDE.md` and the `chaos-redux-events`, `chaos-redux-decisions-missions
 
 These items repair consistency with accepted design and need no new design decision:
 
-- `fury_form_war_table_tt` and `fury_assign_terminal_fronts_tt` in `localisation/english/007_random_expansion_l_english.yml` still promise pact cohesion, which is retired; describe the real pact membership, idea, preparation, momentum, and overextension effects instead.
+- `fury_form_war_table_tt` and `fury_assign_terminal_fronts_tt` in `localisation/english/007_fury_l_english.yml` still promise pact cohesion, which is retired; describe the real pact membership, idea, preparation, momentum, and overextension effects instead.
 - `fury_terminal.reserve_cohesion_gain` and `fury_terminal.fronts_cohesion_gain` have no reader and can be removed.
 - Literal tuning values remain in source: momentum additions of `1` and `3` in `common/decisions/007_fury_decisions.txt` and `common/scripted_effects/007_fury_effects.txt`, and overextension gates of `5` and `4` in the target and settlement decisions; move them into the `fury_balance` or `fury_decision_cost` constant blocks.
 

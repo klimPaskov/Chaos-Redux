@@ -67,7 +67,7 @@ Part 7 holds the live decision mapping from each design label to its installed i
 The event has no terminal world-end outcome. The derivative countries are dangerous regional actors, not substitutes for the Zombie Outbreak, Death, golem, or future parent event endgames. No super-event is planned because the normal event, its evolutions, and its requested triggerable scenario do not meet the project threshold for a campaign-defining presentation moment. A later globally dominant derivative revolt could justify a separate improvement proposal, but it is outside this source design.
 
 The planning text distinguishes working labels from stable script identifiers.
-Final in-world English wording is owned by `localisation/english/019_infrantry_spawn_l_english.yml` and its aligned Event 19 documentation and catalog fields.
+Final in-world English wording is owned by `localisation/english/019_infantry_spawn_l_english.yml` and its aligned Event 19 documentation and catalog fields.
 
 ## Process disclosure
 
