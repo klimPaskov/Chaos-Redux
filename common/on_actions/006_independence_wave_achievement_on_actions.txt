@@ -40,6 +40,24 @@ on_actions = {
 					independence_wave_record_league_expulsion_ground = yes
 				}
 			}
+			# A war between two live league members is the league's member-war
+			# failure state. The global latch is read by
+			# independence_wave_enter_league_crisis and is cleared with the other
+			# failure latches when the league is reformed or dissolved. Civil-war
+			# sides are excluded for the same reason as above.
+			if = {
+				limit = {
+					is_independence_wave_active_country = yes
+					has_country_flag = independence_wave_league_member
+					has_civil_war = no
+					FROM = {
+						is_independence_wave_active_country = yes
+						has_country_flag = independence_wave_league_member
+						has_civil_war = no
+					}
+				}
+				set_global_flag = independence_wave_league_member_war
+			}
 		}
 	}
 
