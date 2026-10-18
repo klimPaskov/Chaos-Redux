@@ -505,13 +505,13 @@ def main() -> int:
 	)
 	expected_adapter_ids = {
 		1, 2, 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-		23, 24, 26, 27, 28, 29, 30, 31, 33, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 47, 48,
+		23, 24, 26, 27, 28, 29, 30, 31, 33, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
 		50, 51, 52, 53, 54, 58, 60, 62, 64, 65, 66, 70, 71, 72, 73, 76, 78, 81, 82, 83, 86, 93, 95, 97, 98, 99, 106, 107, 108, 110, 111, 113, 114, 115, 119, 126, 130, 131, 132, 134, 136, 137, 138, 139, 140, 141, 143, 145, 147, 148, 150, 151, 154, 155, 159, 161, 162, 166, 167, 169, 170, 171, 173, 175, 177, 179, 180, 182, 184, 185, 192, 200, 203,
 	}
 	# IW-076 Hadhramaut and IW-131 Comoros stay adapter-only: their research rows
 	# require a sourced incumbent or claimant, or the record of an actual royal
 	# council, and forbid a generated institution (agent decision D34).
-	expected_attested_ids = {1, 2, 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 24, 26, 27, 28, 29, 30, 31, 33, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 47, 48, 50, 51, 52, 53, 54, 58, 60, 62, 64, 65, 66, 70, 71, 72, 73, 78, 81, 82, 83, 86, 93, 95, 97, 98, 99, 106, 107, 108, 110, 111, 113, 114, 115, 119, 126, 130, 132, 134, 136, 137, 138, 139, 140, 141, 143, 145, 147, 148, 150, 151, 154, 155, 159, 161, 162, 166, 167, 169, 170, 171, 173, 175, 177, 180, 182, 184, 185, 192, 200, 203}
+	expected_attested_ids = {1, 2, 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 24, 26, 27, 28, 29, 30, 31, 33, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 50, 51, 52, 53, 54, 58, 60, 62, 64, 65, 66, 70, 71, 72, 73, 78, 81, 82, 83, 86, 93, 95, 97, 98, 99, 106, 107, 108, 110, 111, 113, 114, 115, 119, 126, 130, 132, 134, 136, 137, 138, 139, 140, 141, 143, 145, 147, 148, 150, 151, 154, 155, 159, 161, 162, 166, 167, 169, 170, 171, 173, 175, 177, 180, 182, 184, 185, 192, 200, 203}
 	require(
 		set(adapter_ids) == expected_adapter_ids,
 		"runtime adapter set changed without updating the accepted Event 006 closure: "
@@ -619,7 +619,7 @@ def main() -> int:
 	if len(attested_groups) == len(expected_attested_ids):
 		require(
 			len(set(attested_groups.values())) == 78,
-			"accepted one-hundred-nine-package closure no longer exposes exactly seventy-eight compatible reservation groups: "
+			"accepted one-hundred-ten-package closure no longer exposes exactly seventy-eight compatible reservation groups: "
 			+ repr(attested_groups),
 			errors,
 		)
@@ -636,9 +636,10 @@ def main() -> int:
 			errors,
 		)
 		require(
-			len(set(attested_anchors.values())) == 107
+			len(set(attested_anchors.values())) == 108
 			and attested_anchors.get(43) == attested_anchors.get(44) == 249
-			and attested_groups.get(43) == attested_groups.get(44) == "rg_middle_volga_kazan"
+			and attested_groups.get(43) == attested_groups.get(44) == attested_groups.get(46) == "rg_middle_volga_kazan"
+			and attested_anchors.get(46) == 256
 			and attested_anchors.get(106) == attested_anchors.get(107) == 900
 			and attested_groups.get(106) == attested_groups.get(107) == "rg_nigeria_coarse",
 			"attested package anchors must be pairwise unique except the CHU/TAT Kazan anchor 249 and the "

@@ -223,6 +223,13 @@ Registered tags are reused where their identity fits. New Event 6 country, forma
 
 `CHU` is intentionally shared by `IW-043` Volga Bulgaria and `IW-046` Chuvashia. `BIA` is intentionally shared by `IW-096` Edo Kingdom of Benin and `IW-107` Biafra. Package flags distinguish each identity, and tag plus reservation-group allocation must make each pair mutually exclusive within one wave. Tag identity alone never selects content.
 
+### CHU identity split (accepted design, basis: user approval 2026-10-18)
+
+`IW-046` Chuvashia is a Level 1 regional framework row on the vanilla `CHU` tag at state 256, and `IW-043` Volga Bulgaria keeps its signature package on the same tag.
+The package id, the package flag, the Middle Volga reservation group, and the cosmetic identity split the two.
+`IW-043` applies the Middle Volga cosmetic identity and its own roster, and `IW-046` keeps the vanilla Chuvashia identity and roster.
+Each flag has exactly one setup writer, and the CHU mutex accepts a flag only with its own package id.
+
 The thirteen overlay-only rows are `IW-005 BEL_flanders`, `IW-022 CRO` with the dynamic `dalmatia` identity, `IW-025 HUN` with the dynamic `vojvodina` identity, `IW-035 LIT` with `LIVONIA`, `IW-059 neo_mesopotamia`, `IW-085 LBA` under the Cyrenaica autonomy identity, `IW-101 COG_kingdom_of_kongo`, `IW-102 COG_kingdom_of_kuba`, `IW-105 COG_kingdom_of_loango`, `IW-156` on democratic `TNE`, `IW-196 antilles`, `IW-197 CHL_mapuche_state`, and `IW-204 kingdom_of_araucania_and_patagonia`. These rows are additive route packages. They receive no custom country registration and never enter the selectable release pool.
 
 The state anchor matrix uses a public 763-state baseline and named reservation groups. Numeric IDs are implementation aids. The installed game and mod state files remain the engine authority. When a named package has no unique current-map anchor, it is not selected automatically. It remains a later secession, formable, route, or scenario candidate.

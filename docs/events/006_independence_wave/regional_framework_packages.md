@@ -27,6 +27,7 @@ The source integration and its separate layout/AI evidence limits are recorded i
 - Southeast Asia, East Asia and Oceania (D31): IW-150 Aceh, IW-151 Minangkabau, IW-154 Bugis state, IW-155 Bali, IW-159 Shan federation, IW-161 Mon State, IW-162 Kachin state, IW-166 Laos, IW-167 Champa, IW-169 East Turkestan, IW-170 Inner Mongolia, IW-171 Ryukyu, IW-175 Samoa. See `east_asia_oceania_packages.md`.
 - Americas (D32): IW-180 Quebec, IW-182 Newfoundland, IW-185 Texas, IW-192 Yucatan, IW-200 Guarani state, IW-203 Patagonian state. See `americas_packages.md`.
 - Europe and Caucasus (D33): IW-016 Occitania, IW-020 Venice, IW-021 Trieste Free State, IW-036 Courland, IW-037 Polesia, IW-042 Galicia-Lodomeria, IW-062 Khuzestan, IW-064 Circassia, IW-065 Chechnya, IW-066 Dagestan. See `europe_caucasus_packages.md`.
+- Volga and Urals: IW-046 Chuvashia, which shares the CHU tag with IW-043 and writes its own package flag in its identity block. See `europe_caucasus_packages.md`.
 
 ## How it works
 

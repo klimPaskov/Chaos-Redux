@@ -1,6 +1,6 @@
 # Event 006 Europe and Caucasus packages
 
-Agent decision D33 admits ten remaining Europe, former Russian Empire, Persia and Caucasus rows through the regional framework engine (`regional_framework_packages.md`). The rows that stay blocked are listed below.
+Agent decision D33 admits ten remaining Europe, former Russian Empire, Persia and Caucasus rows through the regional framework engine (`regional_framework_packages.md`). IW-046 Chuvashia is admitted beside them after the CHU identity split described below. The rows that stay blocked are listed below.
 
 ## Admitted rows
 
@@ -59,6 +59,21 @@ Occitania, Trieste, Courland, Polesia, Galicia-Lodomeria and Khuzestan are Level
 - Open the Caspian Ports (diplomatic cost, 120 days): Adds The Caspian Ports and raises Capacity and Recognition. Idea: The Caspian Ports (trade opinion +10%, consumer goods -2%).
 - Incidents: The Winter Pastures (`chaosx.nr6.286`), The Silversmiths of Kubachi (`chaosx.nr6.287`).
 
+## Chuvashia (IW-046) and the CHU identity split
+
+Chuvashia is a Level 1 row of the regional framework on the vanilla CHU tag at state 256, Cheboksary.
+It is admitted as accepted design on the basis of user approval 2026-10-18.
+CHU is shared with the IW-043 Volga Bulgaria signature package, and the two identities are split in four places.
+The package id separates the allocator rows, and the Middle Volga reservation group keeps them out of one wave.
+The package flag is written by one setup path for each row, which is the bespoke IW-043 setup for Volga Bulgaria and the regional framework identity block for Chuvashia.
+IW-043 applies the Middle Volga cosmetic identity and its own institutional roster, while IW-046 keeps the unchanged vanilla Chuvashia name, flag and roster led by Gerasim Ivanov.
+`has_valid_independence_wave_chu_package_mutex` accepts a flag only together with its own package id, rejects both flags at once, and accepts the Chuvashia flag only for a generation the regional framework set up.
+`has_valid_independence_wave_chu_package_mutex_for_setup` gates the Chuvashia identity block, so a generation that already carries the IW-043 flag fails the setup closed.
+The framework runtime-ready check requires the same mutex for any CHU carrier, so final validation fails closed when the flag and the package id disagree.
+The framework clears the Chuvashia flag before each setup attempt and in generation cleanup.
+Chuvashia offers constitutional, popular council, traditional and patron client routes with a central government and provinces power struggle, excludes radical sovereignty, and takes Turkic and Hungarian scholarly contacts.
+It registers no formable family, and the FORM-12 and FORM-13 member checks already reject a carrier that holds the Chuvashia flag.
+
 ## Blocked rows
 
 - IW-003 Cornwall (ACX): stays blocked under the round-2 instruction.
@@ -66,7 +81,6 @@ Occitania, Trieste, Courland, Polesia, Galicia-Lodomeria and Khuzestan are Level
 - IW-011 Faroe Islands (AKX): a scenario variant only.
 - IW-032 Slavonia (BFX), IW-049 Mordovia (BWX), IW-061 Luristan (CIX) and IW-063 Bakhtiari (CKX): no planner gate, loader or reservation.
 - IW-034 Ingria (BHX): formable or route only.
-- IW-046 Chuvashia (CHU): it shares the CHU tag and RG-MIDDLE-VOLGA-KAZAN with the admitted IW-043 Volga Bulgaria signature package; admitting it needs a reviewed identity split between the two CHU packages.
 - IW-055 Nenets (NEN) and IW-056 Evenk (EVE): research-only community variants that need a named community package.
 - IW-057 Far Eastern Republic (FER): blocked by D20 (no sourced roster and no neutral flag with recorded provenance).
 - IW-067 Lazistan (COX): the Laz had no political institution in the 1930s, and its research allows customary authorities only where specifically sourced.
@@ -98,4 +112,4 @@ Imported-node geometry/connectors, native project behavior, full campaign AI and
 ## Future plans
 
 - Sourced institutional leaders for the six custom institutions.
-- A reviewed identity split for the two CHU packages (Volga Bulgaria and Chuvashia).
+- A sourced Chuvash institutional leader beside the vanilla roster of Chuvashia.

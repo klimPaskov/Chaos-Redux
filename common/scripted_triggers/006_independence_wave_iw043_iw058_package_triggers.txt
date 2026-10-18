@@ -60,16 +60,11 @@ is_independence_wave_iw058_country = {
 # grounded visual, rights, role, and package-attestation gates remain separate
 # and fail closed until the sourced-roster reviews pass. They therefore use
 # the same origin-safe tag preflight without being treated as admitted
-# packages. IW-046 remains on the legacy content flag until its own promotion
-# pass; this keeps the CHU reservation mutex fail-closed for that row.
+# packages. IW-046 Chuvashia is a regional framework row that shares CHU; its
+# exact tag preflight lives in 006_independence_wave_regional_framework_triggers.txt.
 is_independence_wave_exact_package_iw_043_tag_available = {
 	original_tag = CHU
 	is_independence_wave_candidate_origin_available = yes
-}
-
-is_independence_wave_exact_package_iw_046_tag_available = {
-	original_tag = CHU
-	is_independence_wave_candidate_tag_available = yes
 }
 
 is_independence_wave_exact_package_iw_058_tag_available = {
@@ -78,7 +73,9 @@ is_independence_wave_exact_package_iw_058_tag_available = {
 }
 
 # CHU owns two allocator rows. A package flag and package ID must agree and the
-# two rows may never coexist in the same active generation.
+# two rows may never coexist in the same active generation. IW-043 writes its
+# flag in its bespoke setup and IW-046 writes its flag in the regional framework
+# identity block, so the flag and the package ID are always set together.
 has_valid_independence_wave_chu_package_mutex = {
 	original_tag = CHU
 	NOT = {
@@ -95,6 +92,8 @@ has_valid_independence_wave_chu_package_mutex = {
 		AND = {
 			has_country_flag = independence_wave_package_iw046_chuvashia
 			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_046 }
+			# The flag only counts for a generation the regional framework set up.
+			has_current_independence_wave_regional_framework_generation = yes
 		}
 	}
 }
