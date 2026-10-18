@@ -272,7 +272,7 @@ Black Plague remains a distinct disease and special-project history from ordinar
 The eight directives appear in the ordinary `conventional_technology_operations` category once the country owns a conventional Weaponization package.
 Their access gates consume durable neutral knowledge, not Kruger ownership, project-health arrays, or the Directorate board.
 An active terminal commitment or the shared world-end state prevents authorization; map-target and infrastructure requirements remain specific to each operation.
-The category reuses the reviewed generated scientific-instrument emblem at `gfx/interface/016_brilliant_scientist/directorate/decision_category_directorate.dds`, registered as `GFX_decision_category_conventional_technology` in `interface/016_conventional_technology.gfx`.
+The category reuses the reviewed generated scientific-instrument emblem at `gfx/interface/decisions/016_brilliant_scientist/decision_category_directorate.dds`, registered as `GFX_decision_category_conventional_technology` in `interface/016_conventional_technology.gfx`.
 No additional scripted GUI, meter, technology, or project family is introduced.
 
 The eight mature conventional directives spend Command Power, support equipment, and fuel at selection and occupy civilian factories for their native decision clock.

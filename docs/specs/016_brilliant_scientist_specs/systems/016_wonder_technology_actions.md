@@ -82,7 +82,7 @@ These eight distinct operations remain directly available in one category when a
 
 ## Icon contract
 
-The ordinary category uses `GFX_decision_category_conventional_technology`, registered in `interface/016_conventional_technology.gfx` against the existing generated scientific-instrument emblem at `gfx/interface/016_brilliant_scientist/directorate/decision_category_directorate.dds`.
+The ordinary category uses `GFX_decision_category_conventional_technology`, registered in `interface/016_conventional_technology.gfx` against the existing generated scientific-instrument emblem at `gfx/interface/decisions/016_brilliant_scientist/decision_category_directorate.dds`.
 
 Each decision reuses the original, already registered Event 016 project-stage icon for its owning family:
 

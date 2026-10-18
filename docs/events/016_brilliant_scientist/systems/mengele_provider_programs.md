@@ -38,7 +38,7 @@ The existing decision lifecycle remains responsible for finishing or cancelling 
 
 | Category ID | Existing sprite | Texture and owning registry |
 | --- | --- | --- |
-| mengele_conventional_programs_category | GFX_decision_category_brilliant_scientist_directorate | gfx/interface/016_brilliant_scientist/directorate/decision_category_directorate.dds, interface/016_brilliant_scientist_directorate.gfx |
+| mengele_conventional_programs_category | GFX_decision_category_brilliant_scientist_directorate | gfx/interface/decisions/016_brilliant_scientist/decision_category_directorate.dds, interface/016_brilliant_scientist_directorate.gfx |
 | mengele_biological_programs_category | GFX_decision_category_brilliant_scientist_krg_exotic_biological | gfx/interface/decisions/016_brilliant_scientist/categories/decision_category_exotic_biological.dds, interface/016_brilliant_scientist_kruger_state_decisions.gfx |
 | mengele_advanced_programs_category | GFX_decision_category_brilliant_scientist_krg_portal_temporal | gfx/interface/decisions/016_brilliant_scientist/categories/decision_category_portal_temporal.dds, interface/016_brilliant_scientist_kruger_state_decisions.gfx |
 
