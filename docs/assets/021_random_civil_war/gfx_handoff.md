@@ -1,7 +1,7 @@
 # Event 021 Random Civil War GFX handoff
 
 The source of truth for explicit sprite registration is `interface/021_random_civil_war.gfx`. Achievement triplets use HOI4's exact-ID lookup from the root `gfx/achievements/` folder and do not have per-achievement GFX sprites.
-The source of truth for asset lineage and per-consumer status is `manifest.md` plus `docs/events/021_random_civil_war/owned_asset_crosswalk.md`.
+The source of truth for asset lineage and per-consumer status is `manifest.md` plus `docs/plans/021_random_civil_war_plans/owned_asset_crosswalk.md`.
 All paths below are runtime paths and do not point into `docs/assets/`.
 
 ## Event and news sprites

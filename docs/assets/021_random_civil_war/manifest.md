@@ -3,7 +3,7 @@
 Status: implementation-ready visual package for the `Needs Testing` release state.
 
 This manifest covers forty active Event 021-owned runtime textures: twenty-two with explicit `.gfx` sprite paths for event/news, category, decision/mission, and idea consumers, plus eighteen achievement triplet DDS files resolved from their exact achievement IDs under `gfx/achievements/`.
-The complete row-level source, processed-PNG, runtime-DDS, dimension, alpha, repair, and consumer evidence is maintained in `docs/events/021_random_civil_war/owned_asset_crosswalk.md` and `validation/visual_asset_audit_2026-09-01.md`.
+The complete row-level source, processed-PNG, runtime-DDS, dimension, alpha, repair, and consumer evidence is maintained in `docs/plans/021_random_civil_war_plans/owned_asset_crosswalk.md` and `validation/visual_asset_audit_2026-09-01.md`.
 The six Event 006 package families reused by Event 021 are separately owned and remain in `validation/reused_event006_asset_audit_2026-09-02.md`.
 
 The 2026-09-25 provenance recheck found the original source/master PNGs missing for six assets: the opening report, both news images, the category picture, Reconstruction, and Relief Corridor.
