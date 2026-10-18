@@ -5,7 +5,7 @@ All listed DDS textures are installed at the exact consumer paths. The parent ha
 | Surface | Existing sprite names | Existing GFX file | Installed DDS path |
 | --- | --- | --- | --- |
 | Recognition idle seal | GFX_independence_wave_recognition_seal_static | interface/006_independence_wave.gfx | gfx/interface/006_independence_wave/animations/independence_wave_recognition_seal_static.dds |
-| League Reserve cost | GFX_independence_wave_form03_league_reserve_texticon | interface/006_independence_wave_small_assets.gfx | gfx/texticons/independence_wave_form03_league_reserve_texticon.dds |
+| League Reserve cost | GFX_independence_wave_form03_league_reserve_texticon | interface/006_independence_wave_small_assets.gfx | gfx/texticons/006_independence_wave/independence_wave_form03_league_reserve_texticon.dds |
 | Network category | GFX_decision_category_independence_wave_network | interface/visual_consistency_repair.gfx | gfx/interface/decisions/visual_consistency_repair/categories/decision_category_independence_wave_network.dds |
 | Borders category | GFX_decision_category_independence_wave_borders | interface/visual_consistency_repair.gfx | gfx/interface/decisions/visual_consistency_repair/categories/decision_category_independence_wave_borders.dds |
 | FORM11 state 234/245 | GFX_independence_wave_form11_state_234/245_unresolved and _qualifying | interface/chaosx_formable_state_puzzles.gfx | gfx/interface/formables/state_puzzles/006_form11_state_puzzle/states/independence_wave_form11_state_234/245_unresolved.dds and _qualifying.dds |

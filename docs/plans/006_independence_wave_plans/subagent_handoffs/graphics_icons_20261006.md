@@ -13,7 +13,7 @@ The 17 installed runtime DDS files are:
 | Runtime DDS | Dimensions | SHA-256 |
 | --- | ---: | --- |
 | gfx/interface/006_independence_wave/animations/independence_wave_recognition_seal_static.dds | 64x64 | 1bcc474fccd3e5868efa522329637273655b552b3a9a8a57eea2f559edafaa2a |
-| gfx/texticons/independence_wave_form03_league_reserve_texticon.dds | 18x18 | fa762ff40aa325f9f01258dbee3b5e1d60ff487eb287847a2c12afcacc6e3bb6 |
+| gfx/texticons/006_independence_wave/independence_wave_form03_league_reserve_texticon.dds | 18x18 | fa762ff40aa325f9f01258dbee3b5e1d60ff487eb287847a2c12afcacc6e3bb6 |
 | gfx/interface/decisions/visual_consistency_repair/categories/decision_category_independence_wave_network.dds | 52x40 | f96cc6c74ed5d87f8516d9018ba1ce6cfc2f281b94a8138c6aede0367746a109 |
 | gfx/interface/decisions/visual_consistency_repair/categories/decision_category_independence_wave_borders.dds | 52x40 | ea2f5b9ede85f88538223c2439d62331027052907ec771faab4e538804d8bc26 |
 | gfx/interface/formables/state_puzzles/006_form11_state_puzzle/states/independence_wave_form11_state_234_unresolved.dds | 123x83 | a43a44a23b99c7b00dc613dfa056830583c9f82f85dbed1046278ce5856e8587 |

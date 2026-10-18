@@ -6,9 +6,9 @@ This handoff records the bounded runtime-asset tranche for the FORM-03 League Re
 
 ## Current wiring
 
-- `interface/006_independence_wave_form03.gfx` already registers `GFX_independence_wave_form03_league_reserve_texticon` against `gfx/texticons/independence_wave_form03_league_reserve_texticon.dds`.
+- `interface/006_independence_wave_form03.gfx` already registers `GFX_independence_wave_form03_league_reserve_texticon` against `gfx/texticons/006_independence_wave/independence_wave_form03_league_reserve_texticon.dds`.
 - `localisation/english/006_independence_wave_form03_l_english.yml` already uses `£GFX_independence_wave_form03_league_reserve_texticon` in the technical-mission cost and blocked-cost rows.
-- The runtime DDS is now tracked at `gfx/texticons/independence_wave_form03_league_reserve_texticon.dds`.
+- The runtime DDS is now tracked at `gfx/texticons/006_independence_wave/independence_wave_form03_league_reserve_texticon.dds`.
 
 ## Asset evidence
 
