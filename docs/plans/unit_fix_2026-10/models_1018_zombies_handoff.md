@@ -250,3 +250,9 @@ No new visible limb collapse or hole was found in the replacement combat renders
 No commit was made, as requested.
 Skills used: `chaos-redux-3d-model-pipeline` and its required operation references, `chaos-redux-event-assets`, `chaos-redux-subagents`, and `chaos-redux-units-divisions`.
 No skill was created or modified.
+
+## Storage cleanup note (18 October 2026)
+
+The parent applied the 3D skill's workspace-size rule to the zombie job roots after reviewing and committing this work, because the user's disk was nearly full.
+Superseded checkpoints, working copies, preview renders, adapter logs and the PNG renders under `evidence/` were deleted, including the contact sheets named above; the parent viewed `final_reimported_actions_contact_sheet.png` before deletion.
+Provider downloads, refs, exports, textures, receipts and the two newest checkpoints per job were kept, so any sheet can be re-rendered from the installed animations.
