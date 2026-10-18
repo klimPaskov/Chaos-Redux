@@ -4849,28 +4849,6 @@ toggle_events_log_cluster_sort_order = {
 	rebuild_events_log_cluster_view = yes
 }
 
-cycle_events_log_cluster_filter_prev = {
-	if = {
-		limit = { check_variable = { settings_events_log_cluster_filter_type > 0 } }
-		subtract_from_variable = { settings_events_log_cluster_filter_type = 1 }
-	}
-	else = {
-		set_variable = { settings_events_log_cluster_filter_type = 4 }
-	}
-	rebuild_events_log_cluster_view = yes
-}
-
-cycle_events_log_cluster_filter_next = {
-	if = {
-		limit = { check_variable = { settings_events_log_cluster_filter_type < 4 } }
-		add_to_variable = { settings_events_log_cluster_filter_type = 1 }
-	}
-	else = {
-		set_variable = { settings_events_log_cluster_filter_type = 0 }
-	}
-	rebuild_events_log_cluster_view = yes
-}
-
 events_log_cluster_append_view_row_from_source = {
 	add_to_array = { array = global.events_log_cluster_view_sequence_entries value = temp_events_log_cluster_source_sequence_entries^events_log_cluster_best_index }
 	add_to_array = { array = global.events_log_cluster_view_date_entries value = temp_events_log_cluster_source_date_entries^events_log_cluster_best_index }

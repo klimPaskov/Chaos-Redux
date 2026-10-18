@@ -1776,7 +1776,6 @@ open_events_log_events_tab = {
 # ============================================================================
 events_log_close_history_details_view = {
 	event021_clear_history_selection = yes
-	clr_country_flag = events_log_history_details_open
 	set_variable = { events_log_history_selected_event_id = 0 }
 	set_variable = { events_log_history_selected_event_type = 0 }
 	set_variable = { events_log_history_selected_date = 0 }
@@ -1802,7 +1801,6 @@ events_log_open_history_event_details_entry = {
 	if = {
 		limit = { check_variable = { events_log_selected_event_id > 0 } }
 		events_log_close_world_end_scenario_details_view = yes
-		clr_country_flag = events_log_history_details_open
 		set_country_flag = events_log_detail_use_history_context
 		clear_array = global.events_log_open_event_detail_entries
 		add_to_array = {
@@ -4800,10 +4798,6 @@ events_log_toggle_selected_evolution_disabled = {
 	}
 
 	rebuild_events_log_evolution_view = yes
-	if = {
-		limit = { has_country_flag = events_log_history_details_open }
-		events_log_rebuild_history_details_view = yes
-	}
 	if = {
 		limit = { has_country_flag = events_log_event_details_open }
 		events_log_rebuild_open_event_details_view = yes
