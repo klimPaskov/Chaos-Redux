@@ -7,7 +7,9 @@ every bone have a non-negative dot product. It never adds, removes or moves a ke
 verifies the result by re-reading the written file.
 
 Usage:
-  python anim_signs.py <in.anim> [<out.anim>]      (default: rewrite in place, keeping <in>.signs_orig)
+  python anim_signs.py <in.anim> [<out.anim>] [--keep-orig]
+  Without <out.anim> the file is rewritten in place; --keep-orig also keeps a <in>.signs_orig copy.
+  The receipt's input hash is taken before writing, so no backup is needed to prove what changed.
 Prints a JSON receipt with before/after negative-dot counts and the input/output SHA-256.
 """
 import hashlib
@@ -50,9 +52,10 @@ def negative_dots(tree):
     return bad, frames
 
 
-def fix(src, dst=None):
+def fix(src, dst=None, keep_orig=False):
     src = Path(src)
     dst = Path(dst) if dst else src
+    sha_in = _sha(src)
     module, _ = pdx_reader.parser()
     tree = module.read_meshfile(str(src.resolve()))
     before, frames = negative_dots(tree)
@@ -73,7 +76,7 @@ def fix(src, dst=None):
                 flipped += 1
             prev = cur
     samples.set('q', flat)
-    if dst == src:
+    if dst == src and keep_orig:
         if not Path(str(src) + '.signs_orig').exists():
             shutil.copy2(src, str(src) + '.signs_orig')
     module.write_animfile(str(dst), tree)
@@ -81,8 +84,9 @@ def fix(src, dst=None):
     after, _ = negative_dots(check)
     # initial-to-first-sample continuity is included above (prev starts at the info quaternion)
     return {'file': str(dst), 'frames': frames, 'negative_dots_before': before, 'samples_negated': flipped,
-            'negative_dots_after': after, 'sha256_in': _sha(str(src) + '.signs_orig' if dst == src else src), 'sha256_out': _sha(dst)}
+            'negative_dots_after': after, 'sha256_in': sha_in, 'sha256_out': _sha(dst)}
 
 
 if __name__ == '__main__':
-    print(json.dumps(fix(*sys.argv[1:3]), indent=1))
+    args = [a for a in sys.argv[1:] if a != '--keep-orig']
+    print(json.dumps(fix(*args[:2], keep_orig='--keep-orig' in sys.argv), indent=1))

@@ -182,6 +182,8 @@ docs/assets/<owner_id>/models_3d/<asset_slug>/
 
 Use the same derived path every time and pass job-relative paths to provider and adapter calls after root-containment checks. Do not use chat assumptions, timestamps, random IDs, pilot names, or workstation paths as the primary path. Keep append-only task history, manifest state, copy provenance, and dependency records inside the job root. Never archive secrets. Final runtime files must not remain runtime-referenced from `docs/assets/`.
 
+Keep the job root small, because every repair round otherwise adds gigabytes. When a stage is accepted, delete the superseded `.blend` checkpoints and working copies except the accepted one and its immediate predecessor, every `.blend1`/`.blend2` and `.signs_orig` file, preview and phase renders of rejected or superseded candidates, and adapter logs of operations that succeeded; keep one contact sheet per accepted action set as the review record. Never delete provider downloads, refs, the accepted export and texture set, manifests, handoffs, receipts, or audio and counter sources, because those cannot be regenerated. When a job is closed, its handoff names the kept checkpoint and the cleanup it performed.
+
 Read and write job YAML, JSON receipts, and Markdown handoffs with explicit UTF-8, preserving the existing BOM and line endings.
 Write metadata updates to a new sibling, parse and validate their required fields and array shapes, then replace the original; an unsupported parser option or failed parse must never overwrite a good receipt with null or `{}`.
 If evidence metadata is recovered, mark it reconstructed and name the surviving measured inputs; leave lost fields unavailable instead of inventing them.

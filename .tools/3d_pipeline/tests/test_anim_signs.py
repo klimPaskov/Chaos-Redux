@@ -45,7 +45,11 @@ class AnimSigns(unittest.TestCase):
             # frame 2 / frame 3 of bone 0 are now the negation of what was written (same rotation)
             self.assertAlmostEqual(q[2 * 8 + 3], 0.995, places=5)
             self.assertAlmostEqual(q[3 * 8 + 3], 0.9887, places=4)
-            self.assertTrue(Path(str(src) + ".signs_orig").exists())
+            self.assertFalse(Path(str(src) + ".signs_orig").exists())
+            kept = Path(folder) / "b.anim"
+            build(kept, frames)
+            anim_signs.fix(kept, keep_orig=True)
+            self.assertTrue(Path(str(kept) + ".signs_orig").exists())
 
 
 if __name__ == "__main__":
