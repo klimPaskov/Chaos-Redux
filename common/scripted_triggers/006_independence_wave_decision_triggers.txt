@@ -269,11 +269,7 @@ is_independence_wave_charter_expulsion_authority = {
 		exists = yes
 		tag = ROOT
 	}
-	OR = {
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.durable_league }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
-	}
+	has_independence_wave_formal_league_phase = yes
 }
 
 # DM-60 consumes a recorded factual ground. The writer is responsible for
@@ -1002,6 +998,15 @@ has_independence_wave_live_league_phase = {
 	}
 }
 
+# Global league phase is formal, durable, or reformed: the league holds a ratified charter that is not in crisis, rival leagues, or the informal network.
+has_independence_wave_formal_league_phase = {
+	OR = {
+		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
+		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.durable_league }
+		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
+	}
+}
+
 # Country scope. Strategic cost palette that also demands stability, war support and the standard diplomatic cost.
 can_pay_independence_wave_strategic_war_support_cost = {
 	NOT = { num_of_civilian_factories_available_for_projects < constant:independence_wave_decision_cost.civilian_factory_standard }
@@ -1014,10 +1019,7 @@ can_pay_independence_wave_strategic_war_support_cost = {
 has_independence_wave_unsettled_host = {
 	OR = {
 		NOT = { has_independence_wave_living_former_host = yes }
-		AND = {
-			has_independence_wave_living_former_host = yes
-			var:independence_wave_former_host = { has_war_with = PREV }
-		}
+		var:independence_wave_former_host = { has_war_with = PREV }
 	}
 }
 
@@ -1025,9 +1027,6 @@ has_independence_wave_unsettled_host = {
 has_independence_wave_unsettled_host_root = {
 	OR = {
 		NOT = { has_independence_wave_living_former_host = yes }
-		AND = {
-			has_independence_wave_living_former_host = yes
-			var:independence_wave_former_host = { has_war_with = ROOT }
-		}
+		var:independence_wave_former_host = { has_war_with = ROOT }
 	}
 }

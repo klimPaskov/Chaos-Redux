@@ -257,11 +257,7 @@ independence_wave_record_league_expulsion_ground = {
 			is_independence_wave_active_country = yes
 			has_country_flag = independence_wave_league_member
 			has_global_flag = independence_wave_charter_anti_puppetry
-			OR = {
-				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
-				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.durable_league }
-				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
-			}
+			has_independence_wave_formal_league_phase = yes
 		}
 		if = {
 			limit = { NOT = { has_variable = independence_wave_charter_violation_count } }
@@ -398,11 +394,7 @@ independence_wave_select_government_route = {
 				limit = {
 					has_country_flag = independence_wave_league_member
 					has_global_flag = independence_wave_charter_anti_puppetry
-					OR = {
-						check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
-						check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.durable_league }
-						check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
-					}
+					has_independence_wave_formal_league_phase = yes
 				}
 				set_temp_variable = { independence_wave_expulsion_ground_input = constant:independence_wave_expulsion_ground.patron_client }
 				set_temp_variable = { independence_wave_expulsion_has_target_input = constant:independence_wave_value.minimum }
@@ -534,7 +526,6 @@ independence_wave_reset_current_generation = {
 	clr_country_flag = independence_wave_government_failure
 	clr_country_flag = independence_wave_recognition_blockade_active
 	clr_country_flag = independence_wave_warlord_command_failure
-	clr_country_flag = independence_wave_permanent_border_war_active
 	clr_country_flag = independence_wave_evolution_feedback_copied_institutions_recorded
 	clr_country_flag = independence_wave_evolution_feedback_dormant_identity_recorded
 	clr_country_flag = independence_wave_evolution_feedback_armed_border_recorded
@@ -1348,10 +1339,7 @@ independence_wave_refresh_recognition_idea = {
 	# Treaty-backed recognition breaks the blockade. The former host's recognition
 	# of the separation lifts it in independence_wave_set_host_outcome.
 	if = {
-		limit = {
-			hidden_trigger = { has_country_flag = independence_wave_recognition_blockade_active }
-			has_independence_wave_treaty_backed_recognition = yes
-		}
+		limit = { has_independence_wave_treaty_backed_recognition = yes }
 		clr_country_flag = independence_wave_recognition_blockade_active
 	}
 	if = {
@@ -1430,20 +1418,9 @@ independence_wave_refresh_command_idea = {
 }
 
 independence_wave_refresh_border_idea = {
-	# The permanent-border-war flag mirrors the reclamation-conflict host outcome
-	# that applies the idea, so the flag and the idea are set and removed together.
+	# The reclamation-conflict host outcome applies the permanent border war idea.
 	if = {
 		limit = { check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.reclamation_conflict } }
-		set_country_flag = independence_wave_permanent_border_war_active
-	}
-	else = { clr_country_flag = independence_wave_permanent_border_war_active }
-	if = {
-		limit = {
-			OR = {
-				hidden_trigger = { has_country_flag = independence_wave_permanent_border_war_active }
-				check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.reclamation_conflict }
-			}
-		}
 		if = {
 			limit = { NOT = { has_idea = independence_wave_permanent_border_war } }
 			independence_wave_remove_border_ideas = yes
@@ -1666,10 +1643,8 @@ independence_wave_refresh_idea_lifecycles = {
 independence_wave_remove_origin_ideas = {
 	independence_wave_remove_government_ideas = yes
 	independence_wave_remove_recognition_ideas = yes
-	clr_country_flag = independence_wave_recognition_blockade_active
 	independence_wave_remove_command_ideas = yes
 	independence_wave_remove_border_ideas = yes
-	clr_country_flag = independence_wave_permanent_border_war_active
 	independence_wave_remove_patron_ideas = yes
 	independence_wave_remove_instability_ideas = yes
 	independence_wave_remove_league_ideas = yes
@@ -2912,6 +2887,42 @@ independence_wave_enter_league_crisis = {
 	}
 }
 
+# GLOBAL scope. Clears the three league failure latches (failed rescue, member
+# war, patron captured). Reform, dissolution, and restart all end them together.
+independence_wave_clear_league_failure_latches = {
+	clr_global_flag = independence_wave_league_failed_rescue
+	clr_global_flag = independence_wave_league_member_war
+	clr_global_flag = independence_wave_league_patron_captured
+}
+
+# GLOBAL scope. Ends the current charter generation: clears the five charter
+# articles, the radical charter marker, the failure latches, and the leadership
+# pointers (country flag, event target, variables). Keeps historical receipts.
+independence_wave_clear_league_charter_and_leader = {
+	clr_global_flag = independence_wave_charter_sovereign_equality
+	clr_global_flag = independence_wave_charter_mutual_defense
+	clr_global_flag = independence_wave_charter_anti_puppetry
+	clr_global_flag = independence_wave_charter_arbitration
+	clr_global_flag = independence_wave_charter_common_development
+	clr_global_flag = independence_wave_radical_charter_active
+	independence_wave_clear_league_failure_latches = yes
+	if = {
+		limit = { has_event_target = independence_wave_league_leader_target }
+		event_target:independence_wave_league_leader_target = {
+			clr_country_flag = independence_wave_league_current_leader
+		}
+	}
+	if = {
+		limit = { has_variable = global.independence_wave_league_leader }
+		var:global.independence_wave_league_leader = {
+			clr_country_flag = independence_wave_league_current_leader
+		}
+	}
+	clear_global_event_target = independence_wave_league_leader_target
+	clear_variable = global.independence_wave_league_leader
+	clear_variable = global.independence_wave_congress_leader
+}
+
 independence_wave_reform_league = {
 	if = {
 		limit = { check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.league_crisis } }
@@ -2919,11 +2930,9 @@ independence_wave_reform_league = {
 		set_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
 		set_variable = { global.independence_wave_league_reform_date = global.date }
 		set_global_flag = independence_wave_league_reformed
-		clr_global_flag = independence_wave_league_member_war
-		clr_global_flag = independence_wave_league_failed_rescue
+		independence_wave_clear_league_failure_latches = yes
 		# The reform ends the outside power's hold, so the meter returns to the
 		# warning level when it stood at or above the captured level.
-		clr_global_flag = independence_wave_league_patron_captured
 		if = {
 			limit = { check_variable = { var = global.independence_wave_league_patron_capture value = constant:independence_wave_league.patron_captured compare = greater_than_or_equals } }
 			set_variable = { global.independence_wave_league_patron_capture = constant:independence_wave_league.reform_patron_capture }
@@ -2939,11 +2948,7 @@ independence_wave_split_league = {
 				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.league_crisis }
 				AND = {
 					has_global_flag = independence_wave_rival_bloc_activation_pending
-					OR = {
-						check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
-						check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.durable_league }
-						check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
-					}
+					has_independence_wave_formal_league_phase = yes
 				}
 			}
 		}
@@ -2986,30 +2991,7 @@ independence_wave_dissolve_league_to_network = {
 		# receipts such as `league_dissolved`, but remove active charter,
 		# radical-route, failure-latch, and leadership pointers before the
 		# network can be restarted for a later founding attempt.
-		clr_global_flag = independence_wave_charter_sovereign_equality
-		clr_global_flag = independence_wave_charter_mutual_defense
-		clr_global_flag = independence_wave_charter_anti_puppetry
-		clr_global_flag = independence_wave_charter_arbitration
-		clr_global_flag = independence_wave_charter_common_development
-		clr_global_flag = independence_wave_radical_charter_active
-		clr_global_flag = independence_wave_league_failed_rescue
-		clr_global_flag = independence_wave_league_member_war
-		clr_global_flag = independence_wave_league_patron_captured
-		if = {
-			limit = { has_event_target = independence_wave_league_leader_target }
-			event_target:independence_wave_league_leader_target = {
-				clr_country_flag = independence_wave_league_current_leader
-			}
-		}
-		if = {
-			limit = { has_variable = global.independence_wave_league_leader }
-			var:global.independence_wave_league_leader = {
-				clr_country_flag = independence_wave_league_current_leader
-			}
-		}
-		clear_global_event_target = independence_wave_league_leader_target
-		clear_variable = global.independence_wave_league_leader
-		clear_variable = global.independence_wave_congress_leader
+		independence_wave_clear_league_charter_and_leader = yes
 		set_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.dissolved_network }
 		set_variable = { global.independence_wave_league_dissolution_date = global.date }
 		set_global_flag = independence_wave_league_dissolved
@@ -3046,30 +3028,7 @@ independence_wave_restart_informal_network = {
 		independence_wave_clear_league_phase_flags = yes
 		# Keep the re-entry boundary idempotent if a saved or scripted state
 		# reaches `dissolved_network` without the normal dissolution caller.
-		clr_global_flag = independence_wave_charter_sovereign_equality
-		clr_global_flag = independence_wave_charter_mutual_defense
-		clr_global_flag = independence_wave_charter_anti_puppetry
-		clr_global_flag = independence_wave_charter_arbitration
-		clr_global_flag = independence_wave_charter_common_development
-		clr_global_flag = independence_wave_radical_charter_active
-		clr_global_flag = independence_wave_league_failed_rescue
-		clr_global_flag = independence_wave_league_member_war
-		clr_global_flag = independence_wave_league_patron_captured
-		if = {
-			limit = { has_event_target = independence_wave_league_leader_target }
-			event_target:independence_wave_league_leader_target = {
-				clr_country_flag = independence_wave_league_current_leader
-			}
-		}
-		if = {
-			limit = { has_variable = global.independence_wave_league_leader }
-			var:global.independence_wave_league_leader = {
-				clr_country_flag = independence_wave_league_current_leader
-			}
-		}
-		clear_global_event_target = independence_wave_league_leader_target
-		clear_variable = global.independence_wave_league_leader
-		clear_variable = global.independence_wave_congress_leader
+		independence_wave_clear_league_charter_and_leader = yes
 		set_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.informal_network }
 		set_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.undecided }
 		set_global_flag = independence_wave_network_reconstituted
@@ -3151,16 +3110,7 @@ independence_wave_clamp_league_values = {
 independence_wave_change_league_values = {
 	if = {
 		limit = {
-			OR = {
-				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.regional_conferences }
-				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.congress_preparation }
-				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.charter_vote }
-				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.consultative_league }
-				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
-				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.durable_league }
-				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.league_crisis }
-				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
-			}
+			has_independence_wave_live_league_phase = yes
 		}
 		set_temp_variable = { independence_wave_league_patron_capture_before = global.independence_wave_league_patron_capture }
 		add_to_variable = { global.independence_wave_league_cohesion = independence_wave_league_cohesion_delta }
@@ -3174,11 +3124,7 @@ independence_wave_change_league_values = {
 		# latch is cleared by reform, dissolution, and restart.
 		if = {
 			limit = {
-				OR = {
-					check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
-					check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.durable_league }
-					check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
-				}
+				has_independence_wave_formal_league_phase = yes
 				check_variable = { var = independence_wave_league_patron_capture_before value = constant:independence_wave_league.patron_captured compare = less_than }
 				check_variable = { var = global.independence_wave_league_patron_capture value = constant:independence_wave_league.patron_captured compare = greater_than_or_equals }
 			}
@@ -3270,7 +3216,6 @@ independence_wave_end_active_origin = {
 		clr_country_flag = independence_wave_government_failure
 		clr_country_flag = independence_wave_recognition_blockade_active
 		clr_country_flag = independence_wave_warlord_command_failure
-		clr_country_flag = independence_wave_permanent_border_war_active
 		clr_country_flag = independence_wave_evolution_feedback_copied_institutions_recorded
 		clr_country_flag = independence_wave_evolution_feedback_dormant_identity_recorded
 		clr_country_flag = independence_wave_evolution_feedback_armed_border_recorded

@@ -122,21 +122,6 @@ independence_wave_initialize_fij_politics = {
 	set_country_flag = independence_wave_fij_provisional_authority
 }
 
-independence_wave_pacific_apply_former_host_settlement = {
-	if = {
-		limit = { has_independence_wave_living_former_host = yes }
-		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
-		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
-		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
-		set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
-		set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
-		set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_standard }
-		set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
-		set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
-		independence_wave_decision_apply_host_deltas = yes
-	}
-}
-
 independence_wave_pacific_apply_administration_progress = {
 	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_value.minor_gain }
 	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
@@ -372,7 +357,7 @@ independence_wave_hbx_focus_settle_federal_asset_ledger = {
 	if = {
 		limit = { is_independence_wave_hbx_package = yes NOT = { has_country_flag = independence_wave_hbx_federal_asset_ledger_settled } }
 		set_country_flag = independence_wave_hbx_federal_asset_ledger_settled
-		independence_wave_pacific_apply_former_host_settlement = yes
+		independence_wave_apply_former_host_claim_loss_settlement = yes
 		independence_wave_focus_reward_diplomatic_step = yes
 	}
 }
@@ -460,7 +445,7 @@ independence_wave_haw_focus_settle_base_and_property_accounts = {
 		set_country_flag = independence_wave_haw_base_accounts_settled
 		set_temp_variable = { independence_wave_pacific_pressure_delta = constant:independence_wave_pacific_pressure.standard_gain }
 		independence_wave_change_haw_shipping_security = yes
-		independence_wave_pacific_apply_former_host_settlement = yes
+		independence_wave_apply_former_host_claim_loss_settlement = yes
 		independence_wave_focus_reward_diplomatic_step = yes
 	}
 }
@@ -609,7 +594,7 @@ independence_wave_fij_focus_settle_colonial_accounts = {
 		set_temp_variable = { independence_wave_fij_defense_readiness_delta = constant:independence_wave_allocation_factor.zero }
 		independence_wave_change_fij_congress_pressure = yes
 		independence_wave_fij_apply_ledger_deltas = yes
-		independence_wave_pacific_apply_former_host_settlement = yes
+		independence_wave_apply_former_host_claim_loss_settlement = yes
 	}
 }
 

@@ -260,3 +260,15 @@ There is no event-target cleanup plan because the helper does not persist scope 
 The active package setup callers use the helper directly in Bosnia, Bashkiria, Iberia, IW043/IW058, IW093/IW098, Karelia/Crimea, Komi, Kosovo, Kuban, Macedonia, the Mediterranean package, Montenegro, the Pacific package, Ruthenia, Tatarstan, Transylvania, and UDM.
 The hidden compatibility event `chaosx.nr6.350` delegates to the same helper so older external references retain the roster and portrait behavior.
 Direct calls are synchronous within the current package setup effect, so immediate checkpoint flag tests observe the flags before setup continues.
+
+## League failure latches and charter cleanup
+
+`independence_wave_clear_league_failure_latches` (global scope) clears the three failure latches `independence_wave_league_failed_rescue`, `independence_wave_league_member_war`, and `independence_wave_league_patron_captured`.
+`independence_wave_reform_league` calls it directly.
+
+`independence_wave_clear_league_charter_and_leader` (global scope) ends the current charter generation.
+It clears the five charter articles and the radical charter marker, calls the failure-latch helper, clears the leader country flag through the saved event target and the stored variable, and clears the leader and congress-leader variables.
+`independence_wave_dissolve_league_to_network` and `independence_wave_restart_informal_network` both call it, so the dissolution and re-entry boundaries clear the same state.
+
+`independence_wave_change_league_values` gates on `has_independence_wave_live_league_phase` and the patron-captured latch on `has_independence_wave_formal_league_phase`, both documented in `006_independence_wave_decision_triggers.md`.
+The permanent border war idea reads the reclamation-conflict host outcome directly; no mirror flag exists.

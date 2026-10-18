@@ -24,7 +24,7 @@ The regional helpers `independence_wave_mediterranean_apply_security_progress`, 
 
 ## Former-host settlement
 
-All three helpers do nothing unless `has_independence_wave_living_former_host` holds. They then set the eight bilateral host deltas and call `independence_wave_decision_apply_host_deltas`.
+All settlement helpers do nothing unless `has_independence_wave_living_former_host` holds. They then set the eight bilateral host deltas and call `independence_wave_decision_apply_host_deltas`.
 
 | Helper | Extra requirement |
 | --- | --- |
@@ -32,7 +32,9 @@ All three helpers do nothing unless `has_independence_wave_living_former_host` h
 | `independence_wave_apply_former_host_settlement_unless_at_war` | The former host is not at war with the calling country (`PREV` inside the host scope) |
 | `independence_wave_apply_former_host_settlement_unless_at_war_with_root` | The former host is not at war with `ROOT` |
 
-The Mediterranean and Pacific packages keep their own former-host packages because their claim delta differs.
+`independence_wave_apply_former_host_claim_loss_settlement` is the same package with the standard claim loss instead of the minor one; the Mediterranean and Pacific packages call it.
+The two `unless_at_war` variants keep their war limit and call `independence_wave_apply_former_host_settlement`; every variant sets the seven shared deltas through `independence_wave_apply_former_host_settlement_deltas`.
+
 
 ## Delta resets
 
