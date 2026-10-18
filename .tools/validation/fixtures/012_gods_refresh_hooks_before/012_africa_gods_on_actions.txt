@@ -1,0 +1,138 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 GODS OF AFRICA TRANSACTION-BOUNDARY CALLBACKS
+# ============================================================================
+# These callbacks touch only the countries named by the engine transaction.
+# ROOT is the capitulated country in on_capitulation and the new subject in
+# on_puppet/release callbacks; FROM is the winner/overlord or annexed country
+# according to the documented callback contract. No recurring world scan is
+# attached to this file.
+# ============================================================================
+
+on_actions = {
+	# Vanilla runs this in the changed country, including both civil-war
+	# sides. Remember the supplied scope without inspecting other countries.
+	on_government_change = {
+		effect = {
+			gods_of_africa_try_register_participant = yes
+		}
+	}
+
+	# Native ROOT is new controller, FROM old controller, FROM.FROM the state.
+	# Recount only Africa and keep foreign army data on the existing owner clock.
+	on_state_control_changed = {
+		effect = {
+			if = {
+				limit = {
+					has_event_target = africa_host
+					FROM.FROM = { is_on_continent = africa }
+					event_target:africa_host = {
+						gods_of_africa_epoch_permission_is_current = yes
+						has_country_flag = gods_of_africa_active
+					}
+					OR = {
+						FROM = { OR = { tag = event_target:africa_host gods_of_africa_strength_member_is_eligible = yes } }
+						ROOT = { OR = { tag = event_target:africa_host gods_of_africa_strength_member_is_eligible = yes } }
+						FROM.FROM = { is_core_of = event_target:africa_host }
+					}
+				}
+				event_target:africa_host = { gods_of_africa_refresh_strength = yes }
+			}
+		}
+	}
+
+	on_capitulation = {
+		effect = {
+			ROOT = {
+				set_country_flag = gods_of_africa_capitulation_callback
+				gods_of_africa_capture_capitulation_victor = yes
+				clr_country_flag = gods_of_africa_capitulation_callback
+			}
+			# The unifier's defeat cancels the complete relationship layer before
+			# the normal host-validity predicates can reject the capitulated scope.
+			if = {
+				limit = {
+					ROOT = {
+						OR = {
+							has_country_flag = gods_of_africa_recovery_open
+							has_country_flag = gods_of_africa_active
+							has_country_flag = gods_of_africa_consolidation_pending
+							has_country_flag = gods_of_africa_activation_clock_scheduled
+						}
+					}
+				}
+				ROOT = { gods_of_africa_cancel_on_unifier_loss = yes }
+			}
+			# A participant's capitulation removes only that participant's active
+			# contract and registry identity; hidden history is not rewritten.
+			if = {
+				limit = {
+					ROOT = { has_country_flag = gods_of_africa_achievement_defied_at_strength }
+					has_event_target = africa_host
+					OR = {
+						ROOT = { has_war_with = event_target:africa_host }
+						FROM = { tag = event_target:africa_host }
+					}
+				}
+				ROOT = { set_country_flag = gods_of_africa_achievement_capitulated_to_africa }
+			}
+			if = {
+				limit = { ROOT = { has_country_flag = gods_of_africa_participant } }
+				ROOT = { gods_of_africa_clean_participant = yes }
+			}
+		}
+	}
+
+	on_annex = {
+		effect = {
+			# Native annexation proof is independent of annexer ROOT. The bounded
+			# Gods cleanup runs even when the shared transfer bridge rejects FROM.
+			FROM = {
+				if = {
+					limit = { has_variable = gods_of_africa_authority_epoch has_variable = gods_of_africa_authority_host_id check_variable = { var = THIS.id value = gods_of_africa_authority_host_id compare = equals } }
+					set_country_flag = gods_of_africa_original_owner_annexed
+					set_country_flag = gods_of_africa_annexation_callback
+					gods_of_africa_cancel_on_unifier_loss = yes
+					clr_country_flag = gods_of_africa_annexation_callback
+				}
+			}
+			# FROM is the annexed country. Cleanup remains bounded to that one
+			# participant and its authoritative africa_host event target.
+			if = {
+				limit = { FROM = { has_country_flag = gods_of_africa_participant } }
+				FROM = { gods_of_africa_clean_participant = yes }
+			}
+		}
+	}
+
+	# These are onboarding witnesses, not census replacements. A released,
+	# puppeted, or peace-conference country is tested individually against the
+	# existing major/player predicate and can never expand the registry past its
+	# configured cap.
+	on_puppet = {
+		effect = {
+			ROOT = { gods_of_africa_try_register_participant = yes }
+			FROM = { gods_of_africa_try_register_participant = yes }
+		}
+	}
+
+	on_release_as_free = {
+		effect = {
+			ROOT = { gods_of_africa_try_register_participant = yes }
+			FROM = { gods_of_africa_try_register_participant = yes }
+		}
+	}
+
+	on_release_as_puppet = {
+		effect = {
+			ROOT = { gods_of_africa_try_register_participant = yes }
+			FROM = { gods_of_africa_try_register_participant = yes }
+		}
+	}
+
+	on_peaceconference_ended = {
+		effect = {
+			ROOT = { gods_of_africa_try_register_participant = yes }
+			FROM = { gods_of_africa_try_register_participant = yes }
+		}
+	}
+}

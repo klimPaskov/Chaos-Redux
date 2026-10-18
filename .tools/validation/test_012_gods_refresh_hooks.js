@@ -1,6 +1,8 @@
 /* Bounded actual-source Event 012 transaction refresh regression.
  * Run from mod root: node .tools/validation/test_012_gods_refresh_hooks.js
- * Optional argv[2]: directory containing the five raw before-source basenames.
+ * Optional argv[2]: directory containing the five raw before-source basenames. The default is
+ * the tracked snapshot of those files at 44013a7f08^ (the parent of the hook commit) in
+ * .tools/validation/fixtures/012_gods_refresh_hooks_before.
  * Imports are silent and write-free. CLI receipts use .tmp/012_gods_refresh_hooks.
  * SourceNoNativeProof: typed country/state/getter fixtures, conservative helper
  * frame cleanup and five-decimal arithmetic, without native callback execution.
@@ -17,6 +19,7 @@ const {unhide} = require('./test_012_gods_industry_helpers.js');
 const {IntegrationVM, runSuite: integrationSuite, decorate, invoke, sample, executeRetained,
 	assertPublished, snapshotPublic, callCount} = require('./test_012_gods_strength_integration.js');
 const root = path.resolve(__dirname, '../..'), scratch = path.join(root, '.tmp/012_gods_refresh_hooks');
+const beforeSnapshot = path.join(__dirname, 'fixtures/012_gods_refresh_hooks_before');
 const main = 'common/scripted_effects/012_africa_gods_effects.txt';
 const inputs = 'common/scripted_effects/012_africa_gods_strength_inputs_effects.txt';
 const evolution = 'common/scripted_effects/012_africa_evolution_effects.txt';
@@ -47,7 +50,7 @@ function auditParse(source) {
 	}
 	const result = block(false); assert.equal(at, ts.length); return result;
 }
-function runSuite(baselineDir = scratch) {
+function runSuite(baselineDir = beforeSnapshot) {
 	const results = [], evidence = {units: {deployed_army_manpower_k: 'thousands of men', strength: '0..100', day: 'native days'},
 		actualBindingReader: 'namedBlock/parse from the existing inputs suite, full source bodies installed by exact identifier'};
 	const hashes = new Map(), bodies = new Map(), localVariables = new Set(), localArrays = new Set(), instances = [];
@@ -334,8 +337,9 @@ function runSuite(baselineDir = scratch) {
 				const removedDeadOwners = ['gods_of_africa_resolve_extension', 'gods_of_africa_terminate_system', 'africa_prepare_first_contact_targets', 'africa_register_first_contact_regional_power', 'africa_register_first_contact_subject', 'africa_register_first_contact_threatened'];
 				for (const name of removedDeadOwners) assert(!current.some(n => n.key === name), name + ' stays removed');
 				// Owners that later shared-helper commits rewrote on purpose (ceeba4d9f first-proof failure transition,
-				// 8db1ce0c5 Event 19 pay and refund provider hooks); none of them carry a Strength hook.
-				const rewrittenAfterHooks = p === relations ? ['africa_record_lost_first_delegation', 'chaos_unit_family_provider_512_event19_pay_management_action', 'chaos_unit_family_provider_512_event19_refund_management_action', 'chaos_unit_family_provider_513_event19_pay_management_action', 'chaos_unit_family_provider_513_event19_refund_management_action'] : [];
+				// 8db1ce0c5 Event 19 pay and refund provider hooks, ed9e980465 Event 19 equipment-token providers started from the
+				// shared default hook); none of them carry a Strength hook.
+				const rewrittenAfterHooks = p === relations ? ['africa_record_lost_first_delegation', 'chaos_unit_family_provider_512_event19_get_equipment_token', 'chaos_unit_family_provider_513_event19_get_equipment_token', 'chaos_unit_family_provider_512_event19_pay_management_action', 'chaos_unit_family_provider_512_event19_refund_management_action', 'chaos_unit_family_provider_513_event19_pay_management_action', 'chaos_unit_family_provider_513_event19_refund_management_action'] : [];
 				const comparable = owners => owners.filter(n => !removedDeadOwners.includes(n.key) && !rewrittenAfterHooks.includes(n.key));
 				for (const name of rewrittenAfterHooks) assert(!walk(current.filter(n => n.key === name)).some(n => n.key === active), name + ' carries no Strength hook');
 				assert.deepEqual(comparable(unhide(projected)), comparable(unhide(before)), p + ': all non-hook AST, guards, prices and weights unchanged');
@@ -375,7 +379,7 @@ function runSuite(baselineDir = scratch) {
 }
 module.exports = {runSuite};
 if (require.main === module) {
-	const report = runSuite(process.argv[2] ? path.resolve(process.argv[2]) : scratch);
+	const report = runSuite(process.argv[2] ? path.resolve(process.argv[2]) : beforeSnapshot);
 	fs.mkdirSync(scratch, {recursive: true}); fs.writeFileSync(path.join(scratch, 'refresh_hooks_results.json'), JSON.stringify(report, null, 2) + '\n');
 	console.log(JSON.stringify({evidenceKind: report.evidenceKind, cases: report.cases, passed: report.passed, failures: report.failures, evidence: '.tmp/012_gods_refresh_hooks/refresh_hooks_results.json'}, null, 2));
 	process.exitCode = report.failures.length ? 1 : 0;
