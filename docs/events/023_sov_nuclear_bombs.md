@@ -124,6 +124,13 @@ Six neutral arms-race hooks record their first moment as global flags with the S
 A coercion dossier opens on one state; its counterpart is the state's independent non-Soviet controller, otherwise its owner.
 Before any threat the dossier can be closed quietly; once a private signal or a public ultimatum has been sent (`sov_nuclear_bombs_event_dossier_threat_made`) it can only be settled, enforced or withdrawn ("Back Down"), and the private signal can be sent once per dossier.
 The target answers `chaosx.nr23.120`; its answer goes through `sov_nuclear_bombs_answer_ultimatum`, which ends the response mission before recording the answer, so the mission's cancel check cannot overwrite an acceptance or clear the pointers the settlement verification needs.
+
+Human response reports use the [bounded report-choice pages](../systems/event_system/report_event_choice_pages.md): the opening offers acceptance and a partial settlement, `92402` offers delay and refusal, `92403` exposure and foreign support, and `92404` evacuation, retaliation and a delivery-chain raid.
+The first response group is also available as `92401`, so Back to responses never reissues the ultimatum.
+Navigation rechecks the original response eligibility and skips unavailable groups, while every page retains the same named actor and state.
+The AI uses the complete original nine-option pool in `chaosx.nr23.92499`, an AI-only event without report art or `hidden = yes`.
+No page changes the independent response mission deadline or dossier cleanup, and the delay response still schedules the original `120` report with its existing duration constant.
+As in the shared pagination pattern, each continuation report has its own native 13-day popup timeout, and the first displayed response remains the native timeout choice for that page.
 Acceptance closes the dossier and opens verification; a partial answer opens the settlement talks, and accepting the partial settlement also closes the dossier.
 Any other answer, and silence until the response mission ends, is a refusal: the dossier stays open, `sov_nuclear_bombs_ultimatum_refused` is set and the 60-day "Refused Demand" mission (`sov_nuclear_bombs_enforcement_window_mission`, `enforcement_window`) starts.
 In that window the Union can prepare a limited strike (which ends the window), stage a wartime demonstration (which ends the window, and when it lands lets the demand be renewed once with a fresh window), or back down; if the window runs out the demand lapses as a back-down, and if the government falls or becomes a subject the dossier closes quietly.
