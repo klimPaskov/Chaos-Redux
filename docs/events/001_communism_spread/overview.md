@@ -146,7 +146,7 @@ Emergency intervention rolls for uprising risk from:
 - communist party support scaled by `45`
 - maximum chance: `90`
 
-If an uprising happens, this system does not use vanilla `start_civil_war`. It marks controlled states for conversion through a priority budget: Level 3 states are selected first, then Level 2, then Level 1. Capital states are excluded from emergency and local breakaway conversion so the original country remains valid for the rebel war declaration. Emergency conversion uses a capped non-capital budget based on revolutionary threat, communist support, and Level 3 state count, and never exceeds `owned states - 1`. This is a deviation from the spec's stated per-level conversion chances and has no recorded acceptance basis.
+If an uprising happens, this system does not use vanilla `start_civil_war`. Each controlled non-capital Level 1 state independently converts at 40%, or 50% with a worker ritual and 55% with a World Revolution whisper. Each controlled non-capital Level 2 state independently converts at 80%, or 90% with a ritual or whisper. Every controlled non-capital Level 3 state converts. Capital states are excluded from emergency and local breakaway conversion so the original country remains valid for the rebel war declaration. Conversion flags are cleared before marking and after the uprising creation attempt, and the one-rebel-war guard remains in force.
 
 A dynamic communist rebel country is created, receives its own communist politics and leader, receives spawned division templates, and takes only the converted controlled states. It does not inherit half the original country's stockpile.
 

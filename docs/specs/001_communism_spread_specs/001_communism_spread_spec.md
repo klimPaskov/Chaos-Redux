@@ -17,7 +17,7 @@ No row has a recorded user or parent acceptance, so each stays unresolved; the p
 | Brief | Source (checked 2026-10-10) | Disposition |
 | --- | --- | --- |
 | Each controlled state adds +0.01 daily, with no cap | `communism_spread_drift` in `001_communism_spread_constants.txt`: base 0.005, 0.01 per state, state contribution capped at 0.90 | Unresolved. The cap binds only above 90 controlled states, so it changes no realistic game. See open question 2. |
-| Conversion chance 40% (Level 1), 80% (Level 2), 100% (Level 3), and Level 3 states always join the rebels | `mark_communist_uprising_conversion_states` selects states from a budget, Level 3 first, then Level 2, then Level 1, never the capital. The budget starts at 1 and gains 1 for each threat step above 49.9, 64.9 and 84.9, 1 each for support above `high_support` and `very_high_support`, and 1 each for one and for more than two Level 3 states, with a ceiling of 8 and never more than controlled states minus one | Unresolved. A country with more Level 3 states than the budget keeps the surplus. See open question 1. |
+| Conversion chance 40% (Level 1), 80% (Level 2), 100% (Level 3), and Level 3 states always join the rebels | `mark_communist_uprising_conversion_states` rolls every controlled non-capital state at the brief's chance for its level (40% Level 1, 80% Level 2, every Level 3 state converts), with the worker ritual and World Revolution whisper raising the Level 1 and Level 2 chances | Implemented. |
 | Revolutionary war warning when half the states are controlled or two Level 3 states exist | `maybe_fire_revolutionary_war_warning` also requires the Revolutionary Threat Meter above 49.9 | Unresolved. Three Level 1 states in a six-state country at 20% communist support meet the brief (half the states) but score only 35 on the meter. See open question 3. |
 | Emergency decision available at 50% controlled or one Level 3 state | `can_launch_communist_emergency_intervention` | Implemented. |
 | Rebel strength by state level, industry, population, country strength | `communism_spread_rebels` unit table and `calculate_communist_rebel_state_unit_count` | Implemented. |
@@ -346,7 +346,7 @@ Instead, if the uprising happens:
 
 The conversion chance should depend on each state’s control level.
 
-State conversion chance (the source uses a budget instead, see Document status):
+State conversion chance:
 - Level 1: 40%
 - Level 2: 80%
 - Level 3: 100%
@@ -972,11 +972,8 @@ Items 1 to 3 reconcile the differences in Document status.
 Items 4 and 5 connect Event 001 to existing systems.
 
 1. Conversion model.
-   The brief gives each state a conversion chance by level, while the source converts a fixed set chosen from a budget.
-   Proposal: keep the budget as the ceiling that protects small countries, and inside it roll each candidate at the brief's chance (Level 1 40%, Level 2 80%, Level 3 100%), taking Level 3 states first.
-   This restores the "scattered cells" feel of a Level 1 conversion, makes Level 3 states join whenever the budget allows, and keeps a weak country from being flooded.
-   The alternative is to amend the acceptance criterion to the budget model and state that surplus Level 3 states stay loyal.
-   Either way the decision belongs to the user, and the change lives in `mark_communist_uprising_conversion_states` with the chances in `communism_spread_emergency`.
+   Implemented as the brief states it: `mark_communist_uprising_conversion_states` rolls each controlled non-capital state at its level's chance from `communism_spread_emergency` (Level 1 40%, Level 2 80%) and converts every Level 3 state.
+   The worker ritual and World Revolution whisper raise the Level 1 and Level 2 chances, and the capital state never converts.
 2. Drift cap.
    Proposal: accept the 0.90 cap as a safety limit and say so in the brief, since it cannot bind below 90 controlled states.
    Removing the constant is the alternative.
