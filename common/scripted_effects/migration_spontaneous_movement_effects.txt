@@ -179,9 +179,12 @@ migration_spontaneous_movement_record_closed_border_rejection = {
 			set_variable = { migration_spontaneous_rejection_origin_owner_id = event_target:migration_spontaneous_origin_owner.id }
 			set_variable = { migration_spontaneous_rejection_generation = migration_flight_request_generation }
 			set_variable = { migration_spontaneous_rejection_transaction_id = global.date }
-			if = {
-				limit = { has_event_target = migration_spontaneous_origin_owner }
-				event_target:migration_spontaneous_origin_owner = { migration_show_report_closed_border = yes }
+			# The report scene is read only by the player's migration windows, so AI owners skip it.
+			event_target:migration_spontaneous_origin_owner = {
+				if = {
+					limit = { is_ai = no }
+					migration_show_report_closed_border = yes
+				}
 			}
 		}
 	}
