@@ -2,6 +2,8 @@
 
 ## Disposition and authority
 
+Current disposition, 2026-10-13: `superseded`. The user directed the removal of Critical new-war dispatch together with the Fracture Cascade, so the scheduler no longer launches wars from the Critical queue and the `chaosx.nr21.18` callback no longer exists. The replacement record is the current scope note in `docs/events/021_random_civil_war/overview.md`. The text below is the historical contract.
+
 Disposition: `implemented`, limited to convergence of the existing Evolution III Critical launch contract; final event acceptance remains unresolved.
 Broad mechanic expansion: `rejected` as unnecessary breadth.
 Implementation status: owner-applied in the current source. The review-to-Critical handoff no longer dispatches every due country, Critical claims retain their queue row until terminal outcome, `chaosx.nr21.18` dispatches on the claimed recipient, and the queue exit enum/receipts are wired through lifecycle cleanup.
