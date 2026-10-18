@@ -137,7 +137,8 @@ Biological weapon use carries major diplomatic costs.
 Repeated use drives increasing international backlash and can reshape your strategic relationships, especially with ideologically opposed blocs.
 
 The first publicly confirmed Smallpox use by a country fires the global news event `chaosx_bioweapon.207`.
-`bio_lifecycle_release_confirmed_condemnation_if_due` and `bio_doomsday_record_current_agent_history` raise it just before they set `used_smallpox_weapon`, so each country announces it once.
+`bio_lifecycle_release_confirmed_condemnation_if_due` and `bio_doomsday_record_current_agent_history` both call the shared helper `bio_lifecycle_mark_agent_weapon_used` (country scope, input temp variable `bio_weapon_used_agent`), which raises it just before it sets `used_smallpox_weapon`, so each country announces it once.
+The companion helper `bio_lifecycle_set_world_confirmed_agent_use` (same input) sets the matching `cbrn_world_confirmed_<agent>_use` global flag for both callers.
 The first Smallpox outbreak detected in a country's controlled state fires `chaosx_bioweapon.208` for that controller.
 `bio_lifecycle_mark_current_agent_detected` raises it and sets `smallpox_victim`, so each controller receives it once.
 

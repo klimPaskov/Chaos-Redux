@@ -1256,6 +1256,13 @@ bio_lifecycle_mark_current_agent_detected = {
 	else_if = {
 		limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } }
 		set_temp_variable = { bio_detection_evidence_add = constant:bio_lifecycle_evidence.detection_smallpox_add }
+		CONTROLLER = {
+			if = {
+				limit = { NOT = { has_country_flag = smallpox_victim } }
+				set_country_flag = smallpox_victim
+				country_event = { id = chaosx_bioweapon.208 }
+			}
+		}
 	}
 	CONTROLLER = {
 		if = {
@@ -1273,16 +1280,6 @@ bio_lifecycle_mark_current_agent_detected = {
 			clamp_variable = { var = bio_agent_[BIO_AGENT]_evidence min = constant:bio_lifecycle_bounds.evidence_min max = constant:bio_lifecycle_bounds.evidence_max }
 		}
 		BIO_AGENT = "[?bio_active_agent|.0]"
-	}
-	if = {
-		limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } }
-		CONTROLLER = {
-			if = {
-				limit = { NOT = { has_country_flag = smallpox_victim } }
-				set_country_flag = smallpox_victim
-				country_event = { id = chaosx_bioweapon.208 }
-			}
-		}
 	}
 	bio_lifecycle_load_current_agent_record = yes
 	bio_lifecycle_update_current_agent_attribution = yes
@@ -1484,6 +1481,53 @@ bio_lifecycle_prepare_condemnation_release = {
 	}
 }
 
+# Country scope. Reads the temporary agent id bio_weapon_used_agent and sets the
+# country's used_<agent>_weapon history flag. The first smallpox use also fires the
+# smallpox first-use news.
+bio_lifecycle_mark_agent_weapon_used = {
+	if = {
+		limit = { check_variable = { var = bio_weapon_used_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } }
+		set_country_flag = used_anthrax_weapon
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_weapon_used_agent value = constant:bio_lifecycle_agent.plague compare = equals } }
+		set_country_flag = used_plague_weapon
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_weapon_used_agent value = constant:bio_lifecycle_agent.tularemia compare = equals } }
+		set_country_flag = used_tularemia_weapon
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_weapon_used_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } }
+		if = {
+			limit = { NOT = { has_country_flag = used_smallpox_weapon } }
+			news_event = { id = chaosx_bioweapon.207 }
+		}
+		set_country_flag = used_smallpox_weapon
+	}
+}
+
+# Any scope. Reads the temporary agent id bio_weapon_used_agent and sets the global
+# cbrn_world_confirmed_<agent>_use flag.
+bio_lifecycle_set_world_confirmed_agent_use = {
+	if = {
+		limit = { check_variable = { var = bio_weapon_used_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } }
+		set_global_flag = cbrn_world_confirmed_anthrax_use
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_weapon_used_agent value = constant:bio_lifecycle_agent.plague compare = equals } }
+		set_global_flag = cbrn_world_confirmed_plague_use
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_weapon_used_agent value = constant:bio_lifecycle_agent.tularemia compare = equals } }
+		set_global_flag = cbrn_world_confirmed_tularemia_use
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_weapon_used_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } }
+		set_global_flag = cbrn_world_confirmed_smallpox_use
+	}
+}
+
 bio_lifecycle_release_probable_condemnation_if_due = {
 	meta_effect = {
 		text = {
@@ -1557,26 +1601,8 @@ bio_lifecycle_release_confirmed_condemnation_if_due = {
 						set_country_flag = used_bioweapon
 						set_country_flag = used_unconventional_weapon
 						set_country_flag = bio_confirmed_use_history
-						if = {
-							limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } }
-							set_country_flag = used_anthrax_weapon
-						}
-						else_if = {
-							limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.plague compare = equals } }
-							set_country_flag = used_plague_weapon
-						}
-						else_if = {
-							limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.tularemia compare = equals } }
-							set_country_flag = used_tularemia_weapon
-						}
-						else_if = {
-							limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } }
-							if = {
-								limit = { NOT = { has_country_flag = used_smallpox_weapon } }
-								news_event = { id = chaosx_bioweapon.207 }
-							}
-							set_country_flag = used_smallpox_weapon
-						}
+						set_temp_variable = { bio_weapon_used_agent = bio_active_agent }
+						bio_lifecycle_mark_agent_weapon_used = yes
 						cbrn_achievement_record_biological_confirmation = yes
 						brilliant_scientist_krg_record_confirmed_offensive_biological_use = yes
 						air_cleanliness_treaty_on_unconventional_use = yes
@@ -1592,22 +1618,8 @@ bio_lifecycle_release_confirmed_condemnation_if_due = {
 				set_state_flag = bio_agent_[BIO_AGENT]_confirmed_condemnation_released
 				set_state_flag = bio_confirmed_attack_history
 				set_global_flag = cbrn_world_confirmed_biological_use
-				if = {
-					limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } }
-					set_global_flag = cbrn_world_confirmed_anthrax_use
-				}
-				else_if = {
-					limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.plague compare = equals } }
-					set_global_flag = cbrn_world_confirmed_plague_use
-				}
-				else_if = {
-					limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.tularemia compare = equals } }
-					set_global_flag = cbrn_world_confirmed_tularemia_use
-				}
-				else_if = {
-					limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } }
-					set_global_flag = cbrn_world_confirmed_smallpox_use
-				}
+				set_temp_variable = { bio_weapon_used_agent = bio_active_agent }
+				bio_lifecycle_set_world_confirmed_agent_use = yes
 				if = {
 					limit = {
 						has_variable = bio_agent_[BIO_AGENT]_victim
@@ -2268,24 +2280,31 @@ bio_lifecycle_prepare_detected_modifier_scale = {
 	round_temp_variable = bio_modifier_days
 }
 
+# State scope. Reads the temporary inputs bio_legacy_antibiotic_rate and
+# bio_legacy_antibiotic_cap and writes the temporary bio_legacy_antibiotic_factory_bonus:
+# the controller's civilian factory count times the rate, limited to the cap.
+bio_lifecycle_calculate_legacy_antibiotic_bonus = {
+	CONTROLLER = {
+		set_temp_variable = { bio_legacy_antibiotic_factory_bonus = num_of_civilian_factories }
+		multiply_temp_variable = { bio_legacy_antibiotic_factory_bonus = bio_legacy_antibiotic_rate }
+		if = {
+			limit = { check_variable = { var = bio_legacy_antibiotic_factory_bonus value = bio_legacy_antibiotic_cap compare = greater_than } }
+			set_temp_variable = { bio_legacy_antibiotic_factory_bonus = bio_legacy_antibiotic_cap }
+		}
+	}
+}
+
+# State scope. Mirrors the active agent's mass-production protection onto the state
+# (flag plus effectiveness variable) while the controller holds the matching idea.
 bio_lifecycle_prepare_legacy_antibiotic_protection = {
-	set_temp_variable = { bio_legacy_antibiotic_factory_bonus = constant:bio_lifecycle_math.zero }
 	if = {
 		limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } }
 		if = {
 			limit = { CONTROLLER = { has_idea = anthrax_antibiotics_mass_production_idea } }
 			set_state_flag = anthrax_antibiotics_protection_active
-			CONTROLLER = {
-				if = {
-					limit = { num_of_civilian_factories > constant:bio_lifecycle_math.zero }
-					set_temp_variable = { bio_legacy_antibiotic_factory_bonus = num_of_civilian_factories }
-					multiply_temp_variable = { bio_legacy_antibiotic_factory_bonus = constant:bio_antibiotics.anthrax.rate }
-					if = {
-						limit = { check_variable = { var = bio_legacy_antibiotic_factory_bonus value = constant:bio_antibiotics.anthrax.cap compare = greater_than } }
-						set_temp_variable = { bio_legacy_antibiotic_factory_bonus = constant:bio_antibiotics.anthrax.cap }
-					}
-				}
-			}
+			set_temp_variable = { bio_legacy_antibiotic_rate = constant:bio_antibiotics.anthrax.rate }
+			set_temp_variable = { bio_legacy_antibiotic_cap = constant:bio_antibiotics.anthrax.cap }
+			bio_lifecycle_calculate_legacy_antibiotic_bonus = yes
 			set_variable = { anthrax_antibiotics_protection_effectiveness = bio_legacy_antibiotic_factory_bonus }
 		}
 		else = {
@@ -2298,17 +2317,9 @@ bio_lifecycle_prepare_legacy_antibiotic_protection = {
 		if = {
 			limit = { CONTROLLER = { has_idea = plague_antibiotics_mass_production_idea } }
 			set_state_flag = plague_antibiotics_protection_active
-			CONTROLLER = {
-				if = {
-					limit = { num_of_civilian_factories > constant:bio_lifecycle_math.zero }
-					set_temp_variable = { bio_legacy_antibiotic_factory_bonus = num_of_civilian_factories }
-					multiply_temp_variable = { bio_legacy_antibiotic_factory_bonus = constant:bio_antibiotics.plague.rate }
-					if = {
-						limit = { check_variable = { var = bio_legacy_antibiotic_factory_bonus value = constant:bio_antibiotics.plague.cap compare = greater_than } }
-						set_temp_variable = { bio_legacy_antibiotic_factory_bonus = constant:bio_antibiotics.plague.cap }
-					}
-				}
-			}
+			set_temp_variable = { bio_legacy_antibiotic_rate = constant:bio_antibiotics.plague.rate }
+			set_temp_variable = { bio_legacy_antibiotic_cap = constant:bio_antibiotics.plague.cap }
+			bio_lifecycle_calculate_legacy_antibiotic_bonus = yes
 			set_variable = { plague_antibiotics_protection_effectiveness = bio_legacy_antibiotic_factory_bonus }
 		}
 		else = {
@@ -2321,17 +2332,9 @@ bio_lifecycle_prepare_legacy_antibiotic_protection = {
 		if = {
 			limit = { CONTROLLER = { has_idea = tularemia_antibiotics_mass_production_idea } }
 			set_state_flag = tularemia_antibiotics_protection_active
-			CONTROLLER = {
-				if = {
-					limit = { num_of_civilian_factories > constant:bio_lifecycle_math.zero }
-					set_temp_variable = { bio_legacy_antibiotic_factory_bonus = num_of_civilian_factories }
-					multiply_temp_variable = { bio_legacy_antibiotic_factory_bonus = constant:bio_antibiotics.tularemia.rate }
-					if = {
-						limit = { check_variable = { var = bio_legacy_antibiotic_factory_bonus value = constant:bio_antibiotics.tularemia.cap compare = greater_than } }
-						set_temp_variable = { bio_legacy_antibiotic_factory_bonus = constant:bio_antibiotics.tularemia.cap }
-					}
-				}
-			}
+			set_temp_variable = { bio_legacy_antibiotic_rate = constant:bio_antibiotics.tularemia.rate }
+			set_temp_variable = { bio_legacy_antibiotic_cap = constant:bio_antibiotics.tularemia.cap }
+			bio_lifecycle_calculate_legacy_antibiotic_bonus = yes
 			set_variable = { tularemia_antibiotics_protection_effectiveness = bio_legacy_antibiotic_factory_bonus }
 		}
 		else = {
@@ -2344,17 +2347,9 @@ bio_lifecycle_prepare_legacy_antibiotic_protection = {
 		if = {
 			limit = { CONTROLLER = { has_idea = smallpox_vaccination_program_idea } }
 			set_state_flag = smallpox_vaccination_protection_active
-			CONTROLLER = {
-				if = {
-					limit = { num_of_civilian_factories > constant:bio_lifecycle_math.zero }
-					set_temp_variable = { bio_legacy_antibiotic_factory_bonus = num_of_civilian_factories }
-					multiply_temp_variable = { bio_legacy_antibiotic_factory_bonus = constant:smallpox_vaccination.weekly_per_10civ }
-					if = {
-						limit = { check_variable = { var = bio_legacy_antibiotic_factory_bonus value = constant:smallpox_vaccination.weekly_cap compare = greater_than } }
-						set_temp_variable = { bio_legacy_antibiotic_factory_bonus = constant:smallpox_vaccination.weekly_cap }
-					}
-				}
-			}
+			set_temp_variable = { bio_legacy_antibiotic_rate = constant:smallpox_vaccination.weekly_per_10civ }
+			set_temp_variable = { bio_legacy_antibiotic_cap = constant:smallpox_vaccination.weekly_cap }
+			bio_lifecycle_calculate_legacy_antibiotic_bonus = yes
 			set_variable = { smallpox_vaccination_protection_effectiveness = bio_legacy_antibiotic_factory_bonus }
 		}
 		else = {
