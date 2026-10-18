@@ -37,8 +37,8 @@ install before reporting a name as unresolved.
    - flags: a `gfx/flags/<TAG>*.tga` file, plus a `medium/` and `small/` file,
      for every real tag in `common/country_tags`. Vanilla ships ideology-suffixed
      flags, so the check accepts `<TAG>.tga` or `<TAG>_<suffix>.tga`. Cosmetic-tag
-     flags are listed as a vanilla-precedent fallback, not counted as missing,
-     because vanilla itself sets cosmetic tags that have no flag file;
+     flags are counted as missing like any other flag, because the mod sets them
+     through `set_cosmetic_tag` and each one needs its own flag file;
    - achievement art: `gfx/achievements/<id>.dds` plus `_grey` and
      `_not_eligible` for every achievement id;
    - character portrait textures: quoted `.dds` or `.tga` paths in `portraits`.
@@ -743,13 +743,6 @@ def audit_implicit(findings: Findings, sprites: Set[str]) -> None:
 	for row in collect_expectations(REPO_ROOT):
 		family = str(row["family"])
 		findings.implicit_checked[family] += 1
-		if family == "flag_cosmetic" and not expectation_resolves(row, sprites, roots):
-			# Vanilla ships cosmetic tags that its own scripts set without a flag file,
-			# so a missing cosmetic flag is reported as a fallback, not as missing.
-			findings.implicit_unverified.append(
-				{"family": "flag_cosmetic_fallback", "file": str(row["file"]), "name": str(row["expected"])}
-			)
-			continue
 		if expectation_resolves(row, sprites, roots):
 			if row["kind"] == "sprite":
 				findings.implicit_ok_names.add(str(row["expected"]))
@@ -869,7 +862,7 @@ def main() -> int:
 		limit=400,
 	)
 	section(
-		"unverified bare event pictures and vanilla-precedent cosmetic flag fallbacks (not counted)",
+		"unverified bare event pictures (not counted)",
 		[f"{r['name']}  <- {r['file']}" for r in findings.implicit_unverified],
 		limit=20,
 	)
