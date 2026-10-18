@@ -6249,6 +6249,21 @@ africa_apply_partial_action_family_values = {
 	}
 }
 
+# COUNTRY scope on the host. Applies the failed-action host values once: Charter
+# authority, burden, colonial pressure, emergency-rule debt and rival pressure,
+# then clamps the host values. Callers add any family-specific value (the
+# ecological wrath of high-chaos actions) before this clamp.
+africa_apply_failed_action_host_values = {
+	add_to_variable = { africa_charter_authority = constant:africa_action_result.failure_authority }
+	add_to_variable = { africa_integration_burden = constant:africa_action_result.failure_burden }
+	add_to_variable = { africa_colonial_pressure = constant:africa_action_result.failure_pressure }
+	add_to_variable = { africa_emergency_rule_debt = constant:africa_action_result.failure_debt }
+	if = { limit = { NOT = { has_variable = africa_rival_pressure } } set_variable = { africa_rival_pressure = constant:africa_measure.minimum } }
+	add_to_variable = { africa_rival_pressure = constant:africa_action_result.failure_rival_pressure }
+	clamp_variable = { var = africa_rival_pressure min = constant:africa_measure.minimum max = constant:africa_measure.maximum }
+	africa_clamp_host_values = yes
+}
+
 africa_apply_failed_action_family_values = {
 	if = {
 		limit = { africa_is_valid_relationship_target = yes }
@@ -6257,18 +6272,11 @@ africa_apply_failed_action_family_values = {
 		clamp_variable = { var = africa_member_confidence min = constant:africa_measure.minimum max = constant:africa_measure.maximum }
 	}
 	event_target:africa_host = {
-		add_to_variable = { africa_charter_authority = constant:africa_action_result.failure_authority }
-		add_to_variable = { africa_integration_burden = constant:africa_action_result.failure_burden }
-		add_to_variable = { africa_colonial_pressure = constant:africa_action_result.failure_pressure }
-		add_to_variable = { africa_emergency_rule_debt = constant:africa_action_result.failure_debt }
 		if = {
 			limit = { PREV = { check_variable = { africa_active_action_family = constant:africa_action_family.high_chaos } } }
 			add_to_variable = { africa_ecological_wrath = constant:africa_action_result.failure_wrath }
 		}
-		if = { limit = { NOT = { has_variable = africa_rival_pressure } } set_variable = { africa_rival_pressure = constant:africa_measure.minimum } }
-		add_to_variable = { africa_rival_pressure = constant:africa_action_result.failure_rival_pressure }
-		clamp_variable = { var = africa_rival_pressure min = constant:africa_measure.minimum max = constant:africa_measure.maximum }
-		africa_clamp_host_values = yes
+		africa_apply_failed_action_host_values = yes
 		if = {
 			limit = {
 				check_variable = {

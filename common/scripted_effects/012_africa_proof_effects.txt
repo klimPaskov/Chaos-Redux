@@ -1941,6 +1941,17 @@ africa_breach_first_proof_no_coercion = {
 	clr_country_flag = africa_first_proof_ledger_ready
 }
 
+# COUNTRY scope on the host. Records the first mandate as failed: the mandate
+# is no longer active, the failure is remembered and counted. Shared by the
+# breach, primary-action failure and lost-delegation paths; each path then
+# writes its own result flag and cleanup.
+africa_first_proof_mark_failed = {
+	clr_country_flag = africa_first_proof_active
+	set_country_flag = africa_first_proof_failed
+	set_country_flag = africa_first_proof_failure_remembered
+	add_to_variable = { africa_first_proof_failures = constant:africa_value.one }
+}
+
 # COUNTRY scope on the host. Ends the first mandate after a recorded breach.
 # The breach flags set by the three entry points above have already voided the
 # credit and the ready flag. The mandate then fails the way a failed primary
@@ -1950,19 +1961,9 @@ africa_breach_first_proof_no_coercion = {
 africa_fail_first_proof_for_breach = {
 	if = {
 		limit = { africa_first_proof_breach_window_is_open = yes }
-		clr_country_flag = africa_first_proof_active
-		set_country_flag = africa_first_proof_failed
-		set_country_flag = africa_first_proof_failure_remembered
+		africa_first_proof_mark_failed = yes
 		set_country_flag = africa_first_proof_failed_result
-		add_to_variable = { africa_first_proof_failures = constant:africa_value.one }
-		add_to_variable = { africa_charter_authority = constant:africa_action_result.failure_authority }
-		add_to_variable = { africa_integration_burden = constant:africa_action_result.failure_burden }
-		add_to_variable = { africa_colonial_pressure = constant:africa_action_result.failure_pressure }
-		add_to_variable = { africa_emergency_rule_debt = constant:africa_action_result.failure_debt }
-		if = { limit = { NOT = { has_variable = africa_rival_pressure } } set_variable = { africa_rival_pressure = constant:africa_measure.minimum } }
-		add_to_variable = { africa_rival_pressure = constant:africa_action_result.failure_rival_pressure }
-		clamp_variable = { var = africa_rival_pressure min = constant:africa_measure.minimum max = constant:africa_measure.maximum }
-		africa_clamp_host_values = yes
+		africa_apply_failed_action_host_values = yes
 		africa_cleanup_compound_first_proof_ledger = yes
 		africa_refresh_continental_focus_tree_layout = yes
 	}
@@ -1999,14 +2000,10 @@ africa_first_proof_record_force_against_partner = {
 			africa_breach_first_proof_sovereignty = yes
 			set_temp_variable = { africa_first_proof_breach_recorded = constant:africa_value.one }
 		}
-		if = {
-			limit = {
-				hidden_trigger = { has_country_flag = africa_first_proof_requires_home_corridor }
-				is_in_array = { array = africa_first_proof_corridor_actor_credits value = event_target:africa_first_proof_breach_target }
-			}
-			africa_breach_first_proof_corridor = yes
-			set_temp_variable = { africa_first_proof_breach_recorded = constant:africa_value.one }
-		}
+		# A credited corridor actor also loses the corridor. The corridor entry
+		# ends the mandate itself; the failure transition below then finds the
+		# window closed and is inert, so the failure applies exactly once.
+		africa_first_proof_record_corridor_cut = yes
 		if = {
 			limit = { check_variable = { africa_first_proof_breach_recorded = constant:africa_value.one } }
 			africa_fail_first_proof_for_breach = yes
@@ -2228,10 +2225,7 @@ africa_handle_first_proof_action_resolution = {
 		}
 		set_country_flag = africa_original_failed_proof_target
 		event_target:africa_host = {
-			clr_country_flag = africa_first_proof_active
-			set_country_flag = africa_first_proof_failed
-			set_country_flag = africa_first_proof_failure_remembered
-			add_to_variable = { africa_first_proof_failures = constant:africa_value.one }
+			africa_first_proof_mark_failed = yes
 			if = {
 				limit = { PREV = { check_variable = { africa_active_action_outcome = constant:africa_action_outcome.partial } } }
 				set_country_flag = africa_first_proof_partial_result
