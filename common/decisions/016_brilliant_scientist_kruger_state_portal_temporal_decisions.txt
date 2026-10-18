@@ -547,33 +547,22 @@ brilliant_scientist_krg_portal_and_temporal_category = {
 		icon = GFX_decision_brilliant_scientist_krg_temporal_anchor
 		visible = {
 			brilliant_scientist_krg_decisions_are_active = yes
-			OR = {
-				brilliant_scientist_kruger_raid_ai_is_active = yes
-				has_country_flag = brilliant_scientist_focus_unlock_bounded_temporal_guard_operations
-			}
+			has_country_flag = brilliant_scientist_focus_unlock_bounded_temporal_guard_operations
 		}
 		available = {
 			brilliant_scientist_kruger_focus_temporal_is_operational = yes
-			OR = {
-				brilliant_scientist_kruger_raid_ai_is_active = yes
-				brilliant_scientist_krg_temporal_actions_are_active = yes
-			}
+			brilliant_scientist_krg_temporal_actions_are_active = yes
 			brilliant_scientist_krg_can_pay_project_batch_cost = yes
 			NOT = { has_country_flag = brilliant_scientist_krg_temporal_guard_batch_committed }
-			OR = {
-				brilliant_scientist_kruger_raid_ai_is_active = yes
-				AND = {
-					check_variable = {
-						var = brilliant_scientist_temporal_sync_capacity
-						value = constant:brilliant_scientist_krg_temporal.temporal_guard_sync_cost
-						compare = greater_than_or_equals
-					}
-					check_variable = {
-						var = brilliant_scientist_temporal_debt
-						value = constant:brilliant_scientist_temporal.debt_maximum
-						compare = less_than
-					}
-				}
+			check_variable = {
+				var = brilliant_scientist_temporal_sync_capacity
+				value = constant:brilliant_scientist_krg_temporal.temporal_guard_sync_cost
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = brilliant_scientist_temporal_debt
+				value = constant:brilliant_scientist_temporal.debt_maximum
+				compare = less_than
 			}
 			check_variable = { brilliant_scientist_krg_temporal_guard_batches < constant:brilliant_scientist_krg_capacity.temporal_guard_batch_maximum }
 		}
