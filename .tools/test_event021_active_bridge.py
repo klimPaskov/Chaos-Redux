@@ -122,6 +122,9 @@ class Runtime:
                 result = data in self.global_targets or data in self.regular_targets
             elif key == 'NOT':
                 result = not any(self.condition([node], actor) for node in data)
+            elif key == 'hidden_trigger':
+                # hidden_trigger only hides its tooltip; it is evaluated like AND.
+                result = self.condition(data, actor)
             elif key == 'check_variable':
                 fields = dict(data)
                 result = {'equals': operator.eq, 'greater_than': operator.gt}[fields['compare']](

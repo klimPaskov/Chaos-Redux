@@ -115,9 +115,10 @@ class CandidateRuntime:
                        'less_than_or_equals': operator.le, 'greater_than': operator.gt,
                        'greater_than_or_equals': operator.ge}
         for key, data in nodes:
-            if key in ('OR', 'AND', 'NOT'):
+            if key in ('OR', 'AND', 'NOT', 'hidden_trigger'):
+                # hidden_trigger only hides its tooltip; it is evaluated like AND.
                 results = [self.condition([node], actor) for node in data]
-                result = any(results) if key == 'OR' else (all(results) if key == 'AND' else not any(results))
+                result = any(results) if key == 'OR' else (all(results) if key in ('AND', 'hidden_trigger') else not any(results))
             elif key == 'check_variable':
                 fields = dict(data)
                 result = comparisons[fields['compare']](self.value(fields['var'], actor),

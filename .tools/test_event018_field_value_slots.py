@@ -1,5 +1,8 @@
-"""Execute the production fourth-slot predicates on declared field fixtures.
+"""Execute the production field-slot predicates on declared field fixtures.
 
+The disturbance and breach slots are the only state-dependent slots and are independent of each
+other (ba19b98377 removed the foreign pressure slot and the breach override on disturbance); a
+suspended field shows neither.
 This checks mutual exclusion and empty/history gates, not native rendering.
 Stored state validity and country history availability are fixture inputs.
 """
@@ -13,6 +16,7 @@ from test_event020_outbreak_entry import parse, ROOT
 SOURCE = ROOT / 'common/scripted_guis/018_resources_found_scripted_gui.txt'
 TRIGGERS = dict(dict(dict(parse(SOURCE.read_text(encoding='utf-8-sig')))['scripted_gui'])["resources_found_field_scripted_gui"])
 TRIGGERS = dict(TRIGGERS['triggers'])
+SLOTS = ('disturbance', 'breach')
 
 
 def evaluate(nodes, flags, valid=True, history=True):
@@ -45,17 +49,18 @@ class SlotTests(unittest.TestCase):
                     ('resources_found_disturbance_revealed', disturbance),
                     ('resources_found_breach_revealed', breach),
                     ('resources_found_field_suspended', suspended)) if enabled}
-                visible = [slot for slot in ('foreign_pressure', 'disturbance', 'breach')
+                visible = [slot for slot in SLOTS
                            if evaluate(TRIGGERS[prefix + slot + '_visible'], flags)]
-                expected = 'foreign_pressure' if suspended else ('breach' if breach else ('disturbance' if disturbance else 'foreign_pressure'))
+                expected = [] if suspended else [slot for slot, revealed in (('disturbance', disturbance), ('breach', breach)) if revealed]
                 with self.subTest(closed=closed, flags=flags):
-                    self.assertEqual(visible, [expected])
+                    self.assertEqual(visible, expected)
                     self.assertFalse(any(evaluate(TRIGGERS[prefix + slot + '_visible'], flags, valid=False)
-                                         for slot in ('foreign_pressure', 'disturbance', 'breach')))
+                                         for slot in SLOTS))
 
     def test_history_does_not_leak_into_active_view(self):
-        for slot in ('foreign_pressure', 'disturbance', 'breach'):
+        for slot in SLOTS:
             flags = {'resources_found_breach_revealed', 'resources_found_disturbance_revealed'}
+            self.assertTrue(evaluate(TRIGGERS['resources_found_gui_' + slot + '_visible'], flags))
             self.assertFalse(evaluate(TRIGGERS['resources_found_gui_closed_' + slot + '_visible'], flags, history=False))
 
 

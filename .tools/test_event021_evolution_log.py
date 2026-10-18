@@ -284,7 +284,7 @@ class EvolutionLogTests(unittest.TestCase):
                         yield data
                     yield from find(data)
 
-        for suffix in ('i', 'ii', 'iii'):
+        for suffix in ('i', 'ii'):
             with self.subTest(stage=suffix):
                 branches = list(find(PARENT['event021_parent_apply_evolution_' + suffix]))
                 self.assertEqual(len(branches), 1)
@@ -292,6 +292,20 @@ class EvolutionLogTests(unittest.TestCase):
                 at = branch.index(selector)
                 self.assertEqual(branch[at - 1], seed)
                 self.assertEqual(branch[at + 1], recorder)
+
+    def test_evolution_iii_keeps_only_its_hidden_lifecycle_state(self):
+        # 0645862e1a: Evolution III is a hidden lifecycle state with no public log row,
+        # so its wrapper must neither select an actor nor record an Event Log entry.
+        def calls(nodes):
+            for key, data in nodes:
+                yield key
+                if isinstance(data, list):
+                    yield from calls(data)
+
+        used = set(calls(PARENT['event021_parent_apply_evolution_iii']))
+        self.assertNotIn('event021_select_verified_evolution_log_actor', used)
+        self.assertNotIn('record_events_log_evolution_entry', used)
+        self.assertIn('event021_apply_evolution_iii', used)
 
     def test_last_valid_row_beyond_numeric_loop_ceiling(self):
         rt = Runtime()

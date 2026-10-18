@@ -136,6 +136,8 @@ class FamineRuntime(_PARSER.Event35Runtime):
         "famine_cleanup_state_registration", "famine_show_report_generic",
         "famine_show_report_island_blockade", "migration_mark_reception_capacity_dirty_if_candidate",
         "humanitarian_achievement_process_state",
+        # Management-panel refresh (5a7e65f7b8); it only publishes state to the UI.
+        "national_policy_panel_publish_state",
     }
     EXTERNAL_FIXTURES = EXTERNAL_EFFECTS
     EXTERNAL_FACTS = {"genocide_state_has_active_camps", "genocide_state_has_atrocity_evidence"}

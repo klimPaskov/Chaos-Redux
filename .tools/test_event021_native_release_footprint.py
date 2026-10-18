@@ -107,9 +107,10 @@ class World:
         for key, data in nodes:
             if key == 'limit':
                 continue
-            if key in ('AND', 'OR', 'NOT'):
+            if key in ('AND', 'OR', 'NOT', 'hidden_trigger'):
+                # hidden_trigger only hides its tooltip; it is evaluated like AND.
                 parts = (self.condition([node], scope, chain) for node in data)
-                result = {'AND': all, 'OR': any}.get(key, lambda p: not any(p))(parts)
+                result = {'AND': all, 'hidden_trigger': all, 'OR': any}.get(key, lambda p: not any(p))(parts)
             elif key == 'check_variable':
                 f = dict(data)
                 result = ops[f['compare']](self.value(f['var'], scope, chain), self.value(f['value'], scope, chain))

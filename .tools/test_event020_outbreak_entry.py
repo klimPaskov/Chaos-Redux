@@ -91,7 +91,8 @@ class Model:
         def match(key, data):
             if key == 'OR':
                 return any(match(k, v) for k, v in data)
-            if key == 'AND':
+            if key in ('AND', 'hidden_trigger'):
+                # hidden_trigger only hides its tooltip; it is evaluated like AND.
                 return self.matches(data, scope)
             if key == 'NOT':
                 return not any(match(k, v) for k, v in data)

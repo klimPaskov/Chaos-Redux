@@ -82,6 +82,9 @@ class ReceiptRuntime:
                 result = any(self.condition([node], actor) for node in data)
             elif key == 'NOT':
                 result = not any(self.condition([node], actor) for node in data)
+            elif key == 'hidden_trigger':
+                # hidden_trigger only hides its tooltip; it is evaluated like AND.
+                result = self.condition(data, actor)
             elif key == 'check_variable':
                 fields = dict(data)
                 result = comparisons[fields['compare']](self.value(fields['var'], actor),
