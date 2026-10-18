@@ -71,3 +71,24 @@ Consolidation proposals left for their owners:
 - 239 image files left orphaned by the removed Event 005 and Event 013 sprites are listed in the cleanup scratch folder and were not deleted.
 - `chaosx_nr25_incident` is declared in both Event 025 field and incident constants files with disjoint keys; it loads without error and was left as it is.
 - `docs/events/005_soviet_collapse/overview.md` and `common/scripted_effects/cbrn_scripted_effects.md` contain stale references but have other uncommitted work.
+
+## Approved design fixes (2026-10-18)
+
+The user approved the design decisions above. Disposition: implemented for the items below; validation is source review, `hoi4_script_validate` with partial coverage, the touched `.tools/test_*` suites, and a hands-off launch. No in-game play was performed.
+Commits `87e19f0a2` to `f1053f375` on master; per-item evidence is in the subagent handoffs `handoff2_{cbrn,core,hum_fallout,iw,events,event19}.md` of the task scratch folder.
+
+Restored or wired:
+- Startup crash and launch errors fixed (`87e19f0a2`); Fallout 852 to 858 restored (`bbe5394fc`) and their comparisons corrected (`f1053f375`); Malta principality flags added (`858bbf3ab`).
+- Smallpox news 207/208 and smallpox vaccination protection; nuclear winter news 5/6 through the Air Winter finalizer; discovered CBRN cover-ups recorded for the achievement; mask distribution disruption from recent bombing or border conflict (`cbrn_mask_distribution.active_bombing_days = 10`).
+- Deaths details refresh by selected country; Event 018 global field news; Mengele checks point at `germany_mengele_faction` and `germany_mengele_victorious`; Brood Succession crisis opens on the Rat Nation; Black Plague scenario Chaos floor through the shared Chaos path; the Black Friday decontamination sale-source trigger delegates.
+- Pingfang bureau opens through the monthly camp Administration pass after 180 days (the legacy decision stays retired); restored French and Belgian camp actions visible to players; closed-border migration report shown on rejected spontaneous flight; Fallout 614/621/740/747 target invalidation; 32 Fallout event-log details wired.
+- Independence Wave league member war, permanent border war flag and failed-rescue latch, IW-093 route lock; Event 039 Veiled Compact founded by The Subject Compact focus after Evolution IV; shared Event 19 provider default hooks.
+- The Event 32 compromised-payload check was removed as obsolete; the Event 021 Critical launch path stays removed by the 2026-10-13 user decision and its docs were corrected.
+
+Launch: two hands-off launches reached the main menu without a crash; the second produced an empty `error.log` and no localisation collisions.
+
+Unresolved (needs new design, not restorable):
+- Event 029 mine quarantine and exhaustion endpoints; Event 012 `africa_breach_first_proof_*` breach conditions.
+- Independence Wave recognition blockade activation, IW-046 Chuvashia admission, league patron capture threshold.
+- `No font with name UPPER_LEFT` appeared only after a campaign map loaded; hands-off launches stay at the main menu, so its absence is not verified.
+- Six `test_event32_*` suites fail independently of these changes.
