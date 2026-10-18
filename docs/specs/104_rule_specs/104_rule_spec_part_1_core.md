@@ -35,7 +35,7 @@ Both are legitimate outcomes.
 
 The user explicitly accepted uploaded planning IDs 104 Rule and companion 105 Random Idea on 10 October 2026.
 The current workbook retains its old numbering, with migration accepted and queued for later authorized catalog work.
-Catalog IDs 107/110 remain held legacy identities unavailable for reuse.
+The user released legacy Rule 107 for Lootboxes 107 on 10 October 2026. Rule keeps planning ID 104, and legacy Random Idea 110 remains held.
 The proposed numerical tuning and expanded behaviour in this package are design decisions made under the request to produce full specifications.
 They are ready for review and implementation planning.
 They are not claims that this event already exists or has passed engine validation.

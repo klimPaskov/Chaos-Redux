@@ -15,7 +15,7 @@ The package was imported into `docs/specs/104_rule_specs/` on 10 October 2026.
 Import and documentation review preserve the submitted design without authorizing its embedded implementation commands or establishing design acceptance from folder placement.
 The package's reported earlier brief and review decisions retain their original provenance in the authority and closure documents.
 The user's 10 October 2026 choice of uploaded IDs accepts 104 Rule and companion 105 Random Idea as planning identities.
-Later catalog migration remains queued for authorized catalog work, and 107/110 remain held legacy identities unavailable for reuse.
+Later catalog migration remains queued for authorized catalog work. The user released legacy Rule 107 for Lootboxes 107 on 10 October 2026, while Rule keeps planning ID 104 and legacy Random Idea 110 remains held. See the [shared identifier registry](../shared_identifier_registry.md#imported-event-identity-proposals).
 Current catalog observations and implementation facts are recorded in [parent import evidence](../../plans/104_rule_plans/104_import_evidence_2026-10-10.json).
 The current documentation handoff is [the import review](../../plans/104_rule_plans/subagent_handoffs/104_import_review_2026-10-10.md).
 New implementation plans and unresolved evidence belong under `docs/plans/104_rule_plans/`.

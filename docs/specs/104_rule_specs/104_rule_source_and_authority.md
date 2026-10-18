@@ -15,7 +15,7 @@ Randomizations is workbook cluster 14 with only Event 46 at Medium severity, whi
 On 10 October 2026, the user explicitly selected "Use uploaded IDs 104 and 105 (Recommended)".
 This establishes 104 Rule and companion 105 Random Idea as accepted planning IDs.
 Catalog migration is accepted and queued for later authorized catalog work because this task edits documentation only.
-The current workbook observations above remain factual old labels and statuses, and 107/110 remain held legacy catalog identities unavailable for reuse.
+The workbook observations above remain factual old labels and statuses. The user released legacy Rule 107 for Lootboxes 107 on 10 October 2026, while Rule keeps planning ID 104 and legacy Random Idea 110 remains held.
 The numbering choice does not approve unrelated mechanics or the proposed 60 percent participation.
 Do not renumber source, retire catalog rows, add membership, or interpret Medium severity as a participation probability during this review.
 

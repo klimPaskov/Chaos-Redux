@@ -4,7 +4,7 @@
 
 This imported technical contract is a future implementation input, rather than permission to change gameplay.
 Use accepted planning IDs 104 Rule and companion 105 Random Idea under the user's 10 October 2026 choice recorded in [source and authority](104_rule_source_and_authority.md#status-and-authority).
-Other acceptance issues remain open, and catalog migration is queued for later authorized catalog work with 107/110 held as legacy identities unavailable for reuse.
+Other acceptance issues remain open, and catalog migration is queued for later authorized catalog work. The user released legacy Rule 107 for Lootboxes 107 on 10 October 2026, while legacy Random Idea 110 remains held.
 The proposed 60 percent participation below remains unresolved pending parent acceptance, and Medium membership denotes severity rather than a selection percentage.
 
 Resolve the native mutation proof gate before building gameplay around an assumed writer.

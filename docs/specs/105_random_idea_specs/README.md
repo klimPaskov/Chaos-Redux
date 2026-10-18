@@ -27,7 +27,7 @@ It labels 104 Stability or War support and 107 Rule, also Unavailable.
 The current parent check found no runtime roots for 104, 105, 107, or 110.
 On 10 October 2026, the user explicitly chose "Use uploaded IDs 104 and 105 (Recommended)", accepting Event 105 Random Idea and independent Event 104 Rule as planning IDs.
 This decision approves numbering only and does not supply fresh approval of all gameplay design or authorize implementation.
-Catalog migration remains later work outside this documentation task, and 107/110 remain held legacy catalog identities rather than free IDs.
+Catalog migration remains later work. The user released legacy Rule 107 for Lootboxes 107 on 10 October 2026, while Rule keeps planning ID 104 and legacy Random Idea 110 remains held. See the [shared identifier registry](../shared_identifier_registry.md#imported-event-identity-proposals).
 Do not renumber, migrate catalog rows, or change status automatically.
 Randomizations cluster 14 is reserved in the shared identifier ledger and catalogs member 46 with Medium severity, but has no current runtime constant.
 This package adds no numeric cluster reservation.

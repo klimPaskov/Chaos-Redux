@@ -5,7 +5,7 @@ Its full supplied-source gate, pinned source citations, Linux paths, and unavail
 Current repository AGENTS.md and owner skills govern future implementation, with [README](README.md#current-import-review-10-october-2026) linking the 10 October import handoff and parent evidence.
 The current parent check confirms the 105/110 and 104/107 catalog mismatches, all four rows Unavailable, and no corresponding runtime roots.
 On 10 October 2026, the user explicitly accepted the uploaded planning IDs 105 Random Idea and independent 104 Rule.
-This numbering decision leaves catalog migration for later work and holds 107/110 as legacy catalog identities, without fresh approval of all gameplay design.
+This numbering decision leaves catalog migration for later work without fresh approval of all gameplay design. The user subsequently released legacy Rule 107 for Lootboxes 107 on 10 October 2026, while legacy Random Idea 110 remains held.
 
 ## Full supplied-project source gate
 

@@ -5,7 +5,7 @@ Read the three spec parts, technical research/handoff, acceptance and usage maps
 README.md owns the current import boundary, source/catalog evidence links, and reusable workflow links.
 Inspect the current checkout and do not assume the pinned research is current implementation.
 Use the user's accepted planning IDs 105 Random Idea and independent 104 Rule, chosen on 10 October 2026.
-The workbook's older 105/110 and 104/107 labels remain recorded facts pending later catalog migration, with 107/110 held as legacy identities.
+The workbook's older 105/110 and 104/107 labels remain recorded facts pending later catalog migration. The user released legacy Rule 107 for Lootboxes 107 on 10 October 2026, while legacy Random Idea 110 remains held.
 No catalog migration or runtime reservation is authorized by this prompt alone.
 
 Preserve the complete loaded technically addable national-idea pool, including hidden, empty, foreign, DLC, event, ideology, specialist-system, and compatible-mod national ideas.

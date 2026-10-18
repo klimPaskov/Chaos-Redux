@@ -7,7 +7,7 @@ The 10 October import preserves that reported design disposition as history, whi
 Current workflow, root/catalog findings, and parent-owned import evidence are linked from [README](README.md#current-import-review-10-october-2026).
 Pinned research below remains historical, and named source paths are future implementation targets.
 The user's 10 October 2026 choice accepts planning IDs 105 Random Idea and independent 104 Rule, as recorded in README.
-Catalog migration remains later work, with 107/110 held as legacy catalog identities rather than available replacements.
+Catalog migration remains later work. The user released legacy Rule 107 for Lootboxes 107 on 10 October 2026, while legacy Random Idea 110 remains held.
 
 The design requires the complete effective loaded set of technically addable national ideas.
 Use supported native runtime discovery if the installed engine exposes it.
