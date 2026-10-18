@@ -1,6 +1,6 @@
 # Migration owner adapters
 
-This file documents `migration_adapter_effects.txt`. These helpers accept only exact cohort and route facts from migration owners and keep food pressure entirely outside the migration surface.
+This file documents `migration_adapter_effects.txt`. Cohort and route helpers accept exact facts from migration owners. The Gods of Africa reception adapter is a separate capacity-only contract and keeps food pressure entirely outside the migration surface.
 
 Migration adapters never initialize or change famine pressure, food stage, reserves, or famine mortality. The exact population transfer owner remains the only owner that debits an origin, accounts route deaths, and credits measured survivors.
 
@@ -19,6 +19,34 @@ Migration adapters never initialize or change famine pressure, food stage, reser
 | `migration_condemn_forced_return` | Exact cohort/people/route/actor forced-return receipt. | Adds the existing Condemnation source with `migration_condemnation_gain.forced_return`; no food pressure or transfer. | Called through `migration_record_exact_decision_condemnation` only after the forced-repatriation transfer finalizes with a positive origin debit and surviving cohort. |
 | `migration_condemn_violent_pushback` | Exact cohort/people/route/actor route-death or hostile pushback receipt. | Adds the existing Condemnation source with `migration_condemnation_gain.violent_pushback`; no second Deaths or population mutation. | Called through `migration_record_exact_decision_condemnation` only after violent border enforcement finalizes an exact positive transfer. |
 | `migration_record_exact_decision_condemnation` | Origin-state scope after a finalized hosted transfer; explicit forced-return or violent-pushback context, exact origin debit, cohort ID, destination target, country actor, transfer generation, and dated request. | Builds the strict condemnation receipt and dispatches the matching migration wrapper. It never repeats population loss or Deaths logging. | `migration_decisions.txt`, exact successful branches of `migration_enforce_closure` and `migration_forced_repatriation`. |
+| `migration_install_gods_of_africa_reception_service` | Selected participant country scope; no arguments, no prior Gods receipt, and a valid owned and controlled capital with a current proven food-safe projection and no existing shelter or medical service. | Returns temporary `migration_gods_reception_install_result` (`migration_capacity.one` on success). Calls both state service setters and stores a hidden participant-owned state pointer, installed amounts, owner proofs, and active flag only after both owner results and fields agree. | Event 012 shelter-focus caller to wire. It supplies capacity only and moves no civilians. |
+| `migration_clear_gods_of_africa_reception_service` | Same participant country scope; no arguments. Uses only the participant's stored state pointer and receipt, even if the capital later moves. | Returns temporary `migration_gods_reception_cleanup_result` (`migration_capacity.one` only when both state services were cleared). Clears both through owner APIs only while owner, controller, both proof fields, and both exact capacities still match the receipt. Always retires the Gods flag and variables. | Event 012 defiance, participant archive/finalization/cancellation, host loss, and settlement callers to wire. |
+
+## Gods of Africa reception service contract
+
+The install helper runs on the selected participant country. An `any_owned_state = { is_capital = yes }` guard rejects countries without an owned capital before entering `capital_scope`. The helper then requires the country to own and control that state and applies the existing `humanitarian_state_is_valid` and `famine_to_migration_food_safety_is_valid` checks. The published food stage must be at or below `constant:migration_capacity.food_safe_stage`. Missing or unsafe projections, an invalid or foreign capital, a prior Gods receipt, or any nonzero shelter, medical, or service-proof field rejects the install. It never overwrites another owner's service, even if that service has no current candidate flag.
+
+The service amounts are people units derived from the capital's `state_population_k * constant:migration_capacity.people_per_k`, rounded after applying `constant:migration_reception_bootstrap.shelter_population_share` (currently 0.40) and `constant:migration_reception_bootstrap.medical_population_share` (currently 0.10). Both requests must be positive. These are the existing Migration reception bootstrap shares, so this adapter adds no tuning constant. The computed amounts are capacity, not a movement request, population credit, debit, or reception load.
+
+The helper calls `migration_set_reception_shelter_service` and `migration_set_reception_medical_service` with positive temporary requests. The current setter source compares each request proof with `migration_capacity.one` using `greater_than`, so this caller builds a proof of two from two `migration_capacity.one` additions. The setter stores an owner service proof of one, clears its request fields, registers the candidate state, and marks the owner capacity dirty. The adapter publishes success only after both owner result variables and the candidate registration result equal `migration_capacity.one`, the candidate flag is active, and both installed state fields and proof values match the requests. On a failed second setter or failed postcondition it clears only newly written values that still match its requests and proof. An accepted install records `migration_gods_reception_state` as a durable country variable pointing to that exact state, `migration_gods_reception_shelter_amount`, `migration_gods_reception_medical_amount`, the two observed owner proof values, and `migration_gods_reception_service_active`. The short-lived event targets used inside the call are not global targets or durable receipts.
+
+The active flag is the caller's stable hidden success receipt. A repeated install returns zero and leaves the existing service and receipt unchanged. The parent must call cleanup on the same participant at defiance, archive/finalization/cancellation, host loss, and settlement. Cleanup targets `var:migration_gods_reception_state`, never the current capital. It clears neither service if the stored state is gone, owned or controlled by another country, either amount changed, either owner proof changed, or any receipt field is missing. It then clears only the Gods flag and receipt variables. This makes repeated cleanup harmless and protects a different service from being erased. The owner may retain the state in its sparse candidate registry after services clear; its validity predicate excludes the empty candidate and the owner dirty marker prompts recomputation.
+
+Example caller on the selected participant:
+
+```hoi4
+migration_install_gods_of_africa_reception_service = yes
+if = {
+	limit = { has_country_flag = migration_gods_reception_service_active }
+	# The Event 012 owner may record its focus-family success here.
+}
+# On each Event 012 teardown path, in the same participant scope:
+migration_clear_gods_of_africa_reception_service = yes
+```
+
+The Migration service fields carry one proof number and one amount per state, without writer identity or revision. Exact matching cannot detect a later writer that deliberately installs the same amounts and proof while leaving the Gods receipt intact. Event 012 should not treat this capacity receipt as proof of a viable migration route, spare national capacity, or an accepted civilian transfer. Only the Migration transfer owner may move population.
+
+The current setters' strict `request_proven > migration_capacity.one` check differs from `migration_capacity_effects.md`, which describes a positive proof, and from the Migration decision caller, which submits one. This adapter follows the executable check. The Migration owner should reconcile that contract separately.
 
 ## Custody proof and idempotence
 
