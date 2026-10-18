@@ -28,8 +28,8 @@ Generated art is appropriate for event scenes, decision icons, state icons, map 
 | Severe-cell report | 210 by 176 | `gfx/event_pictures/033_acid_rain/033_acid_rain_severe.dds` | Forecast or impact |
 | Corroded transport report | 210 by 176 | `gfx/event_pictures/033_acid_rain/033_acid_rain_transport.dds` | Damage and recovery |
 | Dissipation report | 210 by 176 | `gfx/event_pictures/033_acid_rain/033_acid_rain_dissipation.dds` | Event end |
-| Global formation news | 397 by 153 grayscale | `gfx/event_pictures/news/033_acid_rain_news.dds` | Optional news surface |
-| Global-layer news | 397 by 153 grayscale | `gfx/event_pictures/news/033_acid_rain_global_news.dds` | Evolution III milestone |
+| Global formation news | 397 by 153 grayscale | `gfx/event_pictures/033_acid_rain/033_acid_rain_news.dds` | Optional news surface |
+| Global-layer news | 397 by 153 grayscale | `gfx/event_pictures/033_acid_rain/033_acid_rain_global_news.dds` | Evolution III milestone |
 
 One report image can serve several closely related reports when the composition remains accurate; the warning and global event sprites reuse delivered pictures.
 Do not create near-duplicate files without a clear presentation need.
