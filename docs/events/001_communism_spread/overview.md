@@ -1,9 +1,9 @@
 # 001 Communist Insurgency
 
-## Release QA evidence, 2026-10-06
+## Release status
 
-The bounded source changes, current asset status and remaining release gates are recorded in the [release reconciliation](../../plans/001_communism_spread_plans/release_qa_completion_20261006.md).
-Full release signoff remains incomplete; current source, accepted design, historical evidence and unresolved engine validation are distinguished in that report.
+Release gates, asset status and open scope items are tracked in the [release reconciliation](../../plans/001_communism_spread_plans/release_qa_completion_20261006.md).
+Full release signoff remains incomplete; the report separates current source, accepted design, historical evidence and unresolved engine validation.
 
 ## What The Event Is
 

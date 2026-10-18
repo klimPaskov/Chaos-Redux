@@ -1,13 +1,14 @@
 # The Holy Realm
 
-## Release QA evidence, 2026-10-06
+## Release status
 
-The bounded source changes, current asset status and remaining release gates are recorded in the [release reconciliation](../../plans/003_holy_realm_plans/release_qa_completion_20261006.md).
-The 12 active portrait DDS files are parent-reviewed and installed; 48 main-category actions use the five existing tab filters, five unfunded manpower grants are removed and Open Roads is one-time.
-Seven native shortcuts, the above 600 Secure High Passes authorization, twelve reviewed filter icons and parent-accepted 6+3 arrow-to-visible-requirement simplifications are applied without removing gameplay gates or route content.
+The 12 active portrait DDS files are installed.
+48 main-category actions use the five existing tab filters; five unfunded manpower grants are removed and Open Roads is one-time.
+Seven native shortcuts, the above 600 Secure High Passes authorization, twelve filter icons and the parent-accepted 6+3 arrow-to-visible-requirement simplifications are applied without removing gameplay gates or route content.
 Default Refuge1920/UI1 and the final D584 native focus layout are visually reviewed; the other tab/risk/sprite matrix, full AI race and native gameplay remain pending.
+The release gates and open items are tracked in the [release reconciliation](../../plans/003_holy_realm_plans/release_qa_completion_20261006.md).
 
-## Release logic pass, 2026-10-11
+## Refuge roads and restraint
 
 Open refuge roads ease Compassion Drift in the formation event and in `THR_open_refuge_roads`, and the restraint choice in `chaosx.nr3.31` grants the Peacekeeping Mandate like the restraint decision and `THR_lamps_remain_lit`.
 Proclaiming the mandate at formation (`chaosx.nr3.2.e`) raises Spiritual Legitimacy, Final Silence Pressure and Chaos instead of recording an unread memory flag, and the formation event's flat resources read `holy_realm_event` script constants.
@@ -17,7 +18,7 @@ A country that refuses a peace letter is not asked again for a year.
 The late Vow crusade reads Totalen Chaos instead of a calendar date, and no Holy Realm decision or focus weight reads a date.
 Flat Political Power, Command Power, army experience, compliance and resistance values in decisions read `holy_realm_reward` script constants.
 
-## Release design pass, 2026-10-11
+## Release design decisions
 
 The doctrine category holds six actions instead of twenty-one.
 Each merged action applies the strongest balance shift its unlocked tiers allow and the side effects of every tier whose gate holds; the replaced actions are listed in the [specification README](../../specs/003_holy_realm_specs/003_holy_realm_buddhahood_specs/README.md).
