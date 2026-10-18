@@ -444,6 +444,9 @@ The mechanics foundation currently defines visible starting, mitigation, mature,
 - founding instability;
 - league membership.
 
+A failed Demand Recognition by Force or Border Ultimatum closes a Recognition Blockade on a country without treaty-backed recognition.
+The blockade is lifted by treaty-backed recognition, by the former host recognizing the separation, or when the origin ends.
+
 Fourteen regional identity ideas provide the base overlay. Package-specific identity progression and route institutions are implemented by the focus/package tranches and must not be replaced with a generic political identity.
 
 ## IW-010 Saar package

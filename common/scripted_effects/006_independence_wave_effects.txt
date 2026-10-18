@@ -1039,6 +1039,8 @@ independence_wave_set_host_outcome = {
 		else_if = { limit = { check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.reclamation_conflict } } set_country_flag = independence_wave_host_reclamation_conflict }
 		else_if = { limit = { check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.host_collapse } } set_country_flag = independence_wave_host_collapse }
 		else_if = { limit = { check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.voluntary_reunion } } set_country_flag = independence_wave_host_voluntary_reunion }
+		# The former host recognizing the separation lifts the recognition blockade.
+		if = { limit = { check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.recognized_separation } } clr_country_flag = independence_wave_recognition_blockade_active }
 		independence_wave_sync_former_host_ledger = yes
 		independence_wave_refresh_country_state = yes
 		independence_wave_milestone_record_peaceful_treaty = yes
@@ -1326,7 +1328,32 @@ independence_wave_refresh_government_idea = {
 	}
 }
 
+# COUNTRY scope. A failed coercive demand (DM-28 and DM-51) closes a recognition
+# blockade around a state whose recognition is not yet treaty-backed. The flag
+# is set after the recognition loss has been applied, then the idea lifecycle and
+# the once-per-generation dormant-identity feedback read it through the normal
+# country refresh. A treaty-backed state is never blockaded.
+independence_wave_impose_recognition_blockade = {
+	if = {
+		limit = {
+			is_independence_wave_package_content_active = yes
+			NOT = { has_independence_wave_treaty_backed_recognition = yes }
+		}
+		set_country_flag = independence_wave_recognition_blockade_active
+		independence_wave_refresh_country_state = yes
+	}
+}
+
 independence_wave_refresh_recognition_idea = {
+	# Treaty-backed recognition breaks the blockade. The former host's recognition
+	# of the separation lifts it in independence_wave_set_host_outcome.
+	if = {
+		limit = {
+			hidden_trigger = { has_country_flag = independence_wave_recognition_blockade_active }
+			has_independence_wave_treaty_backed_recognition = yes
+		}
+		clr_country_flag = independence_wave_recognition_blockade_active
+	}
 	if = {
 		limit = { hidden_trigger = { has_country_flag = independence_wave_recognition_blockade_active } }
 		if = {
@@ -1639,6 +1666,7 @@ independence_wave_refresh_idea_lifecycles = {
 independence_wave_remove_origin_ideas = {
 	independence_wave_remove_government_ideas = yes
 	independence_wave_remove_recognition_ideas = yes
+	clr_country_flag = independence_wave_recognition_blockade_active
 	independence_wave_remove_command_ideas = yes
 	independence_wave_remove_border_ideas = yes
 	clr_country_flag = independence_wave_permanent_border_war_active

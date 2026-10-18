@@ -683,6 +683,7 @@ independence_wave_recognition_category = {
 		ai_will_do = {
 			base = constant:independence_wave_decision_ai.standard
 			modifier = { factor = constant:independence_wave_decision_ai.modifier_double FROM = { owner = { is_major = yes } } }
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_country_flag = independence_wave_recognition_blockade_active }
 		}
 	}
 
@@ -1034,7 +1035,10 @@ independence_wave_recognition_category = {
 			}
 		}
 		cancel_effect = { independence_wave_decision_clear_diplomatic_counterpart = yes }
-		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double FROM = { owner = { has_country_flag = independence_wave_recognition_blockade_active } } }
+		}
 	}
 }
 
@@ -1709,6 +1713,7 @@ independence_wave_host_relations_category = {
 				set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
 				set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_major }
 				independence_wave_decision_apply_country_deltas = yes
+				independence_wave_impose_recognition_blockade = yes
 			}
 		}
 		cancel_trigger = {
@@ -3827,6 +3832,7 @@ independence_wave_borders_category = {
 				set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
 				set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_major }
 				independence_wave_decision_apply_country_deltas = yes
+				independence_wave_impose_recognition_blockade = yes
 			}
 			set_variable = { independence_wave_last_border_operation_date = global.date }
 		}

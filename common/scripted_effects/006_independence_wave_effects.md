@@ -145,3 +145,12 @@ Outputs and side effects:
   Event 021 parent transaction.
 
 The normal Event 006 entry remains `independence_wave_prepare_country_origin`.
+
+## `independence_wave_impose_recognition_blockade`
+
+Country-scope helper called by the failure branches of DM-28 (Demand Recognition by Force) and DM-51 (Prepare a Border Ultimatum) after their recognition loss has been applied.
+It acts only on an Event 006 package country that does not already hold treaty-backed recognition (`has_independence_wave_treaty_backed_recognition`).
+It sets `independence_wave_recognition_blockade_active` and runs the country refresh, so the Recognition Blockade idea replaces the current recognition idea and the once-per-generation dormant-identity opening-confidence feedback is recorded.
+The flag is cleared when the country reaches treaty-backed recognition (`independence_wave_refresh_recognition_idea`), when the former host's outcome becomes recognized separation (`independence_wave_set_host_outcome`), and when the origin ends (`independence_wave_remove_origin_ideas` and the generation reset).
+DM-11 and DM-16 weigh a blockaded country or blockaded target up for the AI.
+No world iteration is used.

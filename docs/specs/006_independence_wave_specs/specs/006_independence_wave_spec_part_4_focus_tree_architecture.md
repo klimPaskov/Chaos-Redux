@@ -1025,6 +1025,14 @@ Each idea has:
 
 The detailed lifecycle matrix is in `matrices/006_idea_lifecycle_matrix.csv`.
 
+### Recognition blockade (accepted design, basis: user approval 2026-10-18)
+
+The Unrecognized State failure form is the Recognition Blockade idea.
+A failed Demand Recognition by Force (DM-28) or a refused Prepare a Border Ultimatum (DM-51) closes the blockade on a country that does not hold treaty-backed recognition.
+The blockade replaces the country's current recognition idea and records the dormant-identity failure in the cross-generation opening confidence once per generation.
+Treaty-backed recognition, the former host recognizing the separation, or the end of the origin lifts the blockade.
+The AI weighs diplomatic missions up for a blockaded country and recognition campaigns up for a blockaded member, using the existing decision weights doubled.
+
 ## Focus AI
 
 The AI chooses routes in two stages.
