@@ -1,6 +1,14 @@
 # Base Zombie Rig and Walk Review
 
-**Current status: incomplete and blocked for promotion.** The Meshy rig task succeeded as a provider operation, but its skeleton fails the required complete-segment review, and the included walk does not meet zombie-shamble semantics. A later paid Frankenstein walk was also rejected. Seven paid action FBXs passed receipt hash checks and remain unaccepted source candidates. The isolated 90k body candidate still needs topology and full visual review; manual rig/action capability, PDX texture binding, exports, actual-byte reimport proof, and parent runtime wiring remain open. Approval of the optional CC0 Quaternius zombie walk is pending. The sections below preserve the earlier 40-credit review snapshot unless this continuation explicitly updates them.
+**Current status: active rework; not ready for promotion.** The Meshy rig task succeeded as a provider operation, but its skeleton fails the required complete-segment review, and the included walk does not meet zombie-shamble semantics. A later paid Frankenstein walk was also rejected. Seven paid action FBXs passed receipt hash checks and remain unaccepted source candidates. The 90k body, manual rig/action work, PDX texture binding, exports, actual-byte reimport proof, and parent runtime wiring remain open.
+
+## Continuation update — 2026-09-26
+
+The earlier Blender-authoring blocker is resolved. After the user reported that the workflow had been updated, Blender Lab was enabled and connected; `chaosx_blender_hoi4` health reports adapter 1.10.51, Blender 5.2.2, and available `io_pdx_mesh` functions. The approved `blender/working/meshy_rig_glb_reduce_90k/blender/checkpoints/06_runtime_weight4.blend` is open in the live Blender session and remains byte-identical to its recorded SHA-256 `3F487FEB3C56266B09C91371AC21E76047F59EA0D03DE273EE81134C92CED049`.
+
+The Blender fallback is now being used to resolve rig, action, topology, and material defects. Meshy spending is complete at 64 of 64 approved credits; no repeat paid task is authorized or planned. The seven downloaded paid action FBXs are still candidates until each passes deformation and role review. No base-zombie `.mesh`/`.anim` export, byte-bound reimport proof, or runtime entity wiring has yet been accepted at this continuation point. The historical status table and adapter-route paragraphs below describe the earlier blocked review and are not the current tool-availability state.
+
+The earlier optional Quaternius-walk approval is no longer a dependency: the current plan is to author the zombie shamble in Blender, without another Meshy attempt.
 
 ## Approved input and provider lineage
 
@@ -75,6 +83,14 @@ The locked Blender adapter is `chaosx_blender_hoi4` 1.10.51. Its allowlist in `.
 | `death` | blocked | No live keyframe authoring route for an articulated collapse, impact, and settle. |
 
 No `.mesh` or `.anim` runtime candidate has been accepted or exported, and no export/reimport proof exists. The remesh material currently has no verified PDX texture bindings. The three bespoke counter DDS files have passed parent visual review and are installed at their active paths with matching staged hashes; this satisfies only the counter leg, with live consumer review still pending. A CC0 zombie vocal source archive and its licence record are staged under `audio_sources/`, but no attack/death role selection or action synchronization has been accepted. This handoff does not claim runtime completion.
+
+## Texture conversion and live authoring route continuation
+
+The PDX texture source package is preserved at `blender/working/meshy_rig_glb_reduce_90k/textures_pdx/pdx_texture_bind_manifest.json` (SHA-256 `CF1A3CABB774479D6D37D7EF2080FF0C6D0A087F7A98706AE06A08423591AA1A`). It records unchanged provider source-map hashes, a 1024 × 1024 diffuse derivative, PDX-packed normal and specular maps, and three 1024 × 1024 uncompressed 32-bit BGRA DDS files with one mip. The diffuse processing includes a gamma 0.72 adjustment; the material has not been rendered and reviewed after binding, so this is a converted candidate set only.
+
+The `bind_existing_pdx_material` adapter request `9e033ec8f92447e1a91c75f7f9cec2bf` read the expected source checkpoint `06_runtime_weight4.blend` (SHA-256 `3F487FEB3C56266B09C91371AC21E76047F59EA0D03DE273EE81134C92CED049`) and failed before mutation with `Promotion does not support driver/NLA proof scenes.` Evidence is at `logs/adapter/9e033ec8f92447e1a91c75f7f9cec2bf.result.json`. No `07_pdx_material_bound.blend` checkpoint or rendered material preview was created. The DDS SHA-256 values are diffuse `E85352C61F9D8795878905FAC475D448F3F5493FE4E8957E387C90F0A51EDE4F`, normal `722F2456C75B5049483E743A5CEA9E7ED05E70894F8A7C92D3AE435D808F31F0`, and specular `BB09862876FC1037530E3F889354CCF472A4494CAA883052578DD9215BF5E194`.
+
+The active `chaosx_blender_hoi4` service also failed two read-only calls (`inspect_scene` and `health`) for `job_id = zombies`, resolving the job under `docs/assets/chaos_redux_3d_model_pilots/models_3d/zombies` instead of the approved `docs/assets/002_zombie_outbreak/models_3d/zombies` package. The repository adapter config contains a `zombies` job override for the approved package, so the active service has not loaded that mapping. No configuration or Blender process was changed. The task exposes no MCP reload control. The repository 3D skill confines the unrestricted `blender_lab_dev` route to an isolated profile and excludes it from production, so it remains disabled in this task. Consequently manual rig, skin-weight, jaw/finger, and keyframe work remains blocked; no alternative route was used.
 
 ## Recovery path
 
