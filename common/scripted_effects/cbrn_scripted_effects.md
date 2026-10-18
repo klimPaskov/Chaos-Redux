@@ -72,7 +72,7 @@ Side effects: none outside record keeping and Event Log refresh. This helper doe
 Example:
 
 ```txt
-set_temp_variable = { cbrn_unified_record_weapon_class = constant:cbrn_action_record_weapon_class.chemical }
+set_temp_variable = { cbrn_unified_record_weapon_class = constant:cbrn_weapon_class.chemical }
 event_target:cbrn_selected_target_state = {
 	save_event_target_as = cbrn_unified_record_target_state
 }
