@@ -17,6 +17,7 @@ This directory contains mechanics shared by multiple events or owned by the mod 
 ## Independent shared contracts
 
 - [`custom_achievements.md`](custom_achievements.md) documents the root-only achievement registry and shared achievement conventions.
+- [`chaos_ui_wear.md`](chaos_ui_wear.md) documents the Chaos-tier crack overlays on vanilla interface frames and their settings toggle.
 - [`civilian_transfer_system.md`](civilian_transfer_system.md) documents the exact civilian debit and credit primitive.
 - [`famine_system.md`](famine_system.md) and [`migration_system.md`](migration_system.md) document their separate lifecycle contracts and pending validation.
 - [`hoi4_agent_tools_mcp_integration.md`](hoi4_agent_tools_mcp_integration.md) documents the repository's HOI4 agent-tools integration.

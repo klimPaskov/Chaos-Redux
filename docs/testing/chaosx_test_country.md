@@ -79,7 +79,8 @@ The other families were present, often inside mixed formations that could not di
 The scan covers every custom `sub_units` definition, the custom-unit-containing history and scripted templates, and all 31 package directories under `gfx/models/units`.
 Thirty directories have active mesh consumers; `012_africa_strange_forces` is a shared package directory without another standalone consumer.
 Custom meshes resolve for 49 combat types and three attached support types.
-The remaining six combat types use their existing intended entities: elephant, Bone Riders, Network Cadre, Aryan clones, coal golems, and Wendigo zombies.
+Bone Riders, Network Cadre, Aryan clones, coal golems, and Wendigo zombies use their existing intended entities.
+The elephant showcase exposes the `chaosx_elephant` subunit's visual binding; its unresolved `elephantry` entity and authorized custom-model replacement are tracked in [the elephant repair handoff](../plans/unit_fix_2026-10/models_1018_elephant_handoff.md).
 Armored zombie types share their corresponding zombie models; the rat and cave variants share their family models; all have individual unit showcases and retain their existing counters.
 `chaos_battalion` consumes the custom Chaos Assault Battalion model; the empty compatibility file of that name is not another unit definition.
 No custom naval or air sub-unit/model consumer exists in the installed mod, including the Event 043 and Event 080 surfaces, so there is no custom fleet or air wing to add to this roster.
@@ -352,7 +353,14 @@ Event 035's package-owned carrier is `chaosx_cxt_extension_event035_great_depres
 
 Event 028's package-owned carrier is `chaosx_cxt_extension_event028_asteroid_incoming`, its setup effect is `chaosx_cxt_extension_event028_asteroid_incoming_apply`, and its inert readiness flag is `asteroid_incoming_cxt_fixture_ready`. The carrier is registered from `common/on_actions/028_asteroid_incoming_cxt_on_actions.txt` and implemented in `common/scripted_effects/028_asteroid_incoming_cxt_effects.txt`.
 
-Event 029's package-owned carrier is `chaosx_cxt_extension_event029_riches_found`, its idempotent setup effect is `chaosx_cxt_extension_event029_riches_found_apply`, and its inert readiness flag is `riches_found_cxt_fixture_ready`. The carrier is registered from `common/on_actions/029_riches_found_cxt_on_actions.txt` and implemented in `common/scripted_effects/029_riches_found_cxt_effects.txt`; it initializes the bounded registry for inspection without firing Event 029, creating a mine, paying political power, or activating an evolution.
+Event 037's package-owned carrier is `chaosx_cxt_extension_event037_mysterious_people`, its idempotent setup effect is `chaosx_cxt_extension_event037_mysterious_people_apply`, and its receipt is the `mysterious_people_cxt_fixture_initialized` country flag. The carrier is registered from `common/on_actions/037_mysterious_population_on_actions.txt` and implemented in `common/scripted_effects/037_mysterious_population_cxt_effects.txt`. The fixture gives the capital one measured newcomer grant so the category, hotspot actions, pressure and the Newcomers modifier can be inspected, without firing Event 37, recording history or adding Chaos.
+
+Event 029's package-owned carrier is `chaosx_cxt_extension_event029_riches_found` and its idempotent setup effect is `chaosx_cxt_extension_event029_riches_found_apply`.
+The carrier is registered from `common/on_actions/029_riches_found_cxt_on_actions.txt` and implemented in `common/scripted_effects/029_riches_found_cxt_effects.txt`.
+Initial setup or the player-triggered **Apply Registered Systems** action creates one valid capital-state mine fixture, marked by `riches_found_cxt_fixture_mine` and the country guard `riches_found_cxt_fixture_initialized`.
+The fixture uses the bounded registry, regulated operation, public-development policy, state presentation, and current-controller aggregate.
+It does not fire the discovery event or pay its 1,000 political power.
+The daily CXT hook only registers unseen content and marks it pending for the player-triggered action.
 
 Event 032's package-owned carrier is `chaosx_cxt_extension_event032_missiles`, its idempotent setup effect is `chaosx_cxt_extension_event032_missiles_apply`, and its inert readiness flag is `missiles_cxt_fixture_ready`. The carrier is registered from `common/on_actions/032_missiles_cxt_on_actions.txt` and implemented in `common/scripted_effects/032_missiles_cxt_effects.txt`; it initializes only the Event 032 launch-state ledgers without firing the event, granting missile technology, creating a site, or stocking a reserve.
 
@@ -505,3 +513,7 @@ The same player-triggered native ownership probe observes CXT's private Paleogen
 It records selected-pair, authenticated-payment, completed-pair, recovery-ready and payment/construction-uncertain debug flags, plus the serial, both measured construction deltas and the actual PP/support/fuel debit amounts under `chaosx_cxt_event016_paleogenetics_*`.
 The observer grants no stage, building, equipment, payment, refund or provider identity and adds no recurring hook.
 It shares the existing Event016 CXT package and its player-triggered probe entry point, with no new content carrier or periodic grant.
+The staffing extension has the modifier-free carrier `chaosx_cxt_extension_event016_paleogenetics_staff` and matching `_apply` helper in the staffing owner source.
+Its bounded GER startup and CXT-only daily fallback register the token and mark pending work, while player-triggered setup marks `paleo_staff_cxt_fixture_ready` without granting personnel, stores or payment history.
+The same ownership probe observes `chaosx_cxt_event016_staff_held`, `staff_released`, `staff_fee_due`, `staff_transaction` and qualified/release-pending flags.
+Those observations never fund, train, release or acknowledge a production receipt.

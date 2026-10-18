@@ -206,6 +206,8 @@ After renames, action consolidation, or edits that shift line-based candidate id
 A filter containing only current ids can empty the frozen baseline, while removed ids can empty the current side; use the union of verified ids or each side's exact local source selector where supported.
 Keep decision and mission adapters separate, and report unresolved target-scope and eligibility inputs rather than treating a definition-level comparison as target-level probabilities.
 
+For event-option audits, qualify a reused option identifier with its parent event identifier and supply every option in that event's local candidate pool. Verify the installed server version and connected tool schema before building scenarios; when supported, put each scenario's date at its top level and supply explicit state-controller maps and typed scope bindings. Inspect the returned `poolComplete` and `unresolved` fields before interpreting a normalized option share. Treat `candidateOverrides` as declared eligibility assumptions, not proof of live eligibility. A conditional option share given that the event fires does not include the event's firing chance.
+
 For deterministic max-score selector implementation, apply [Deterministic max-score selection](../../.agents/skills/chaos-redux-events/references/scripted-systems-and-country-integration.md#deterministic-max-score-selection).
 
 ## HTTP and troubleshooting

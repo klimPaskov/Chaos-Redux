@@ -4,6 +4,12 @@ This framework lets an owner apply active source ratios to an ordinary current p
 
 The framework is neutral and does not own Event 026 lifecycle, purchase eligibility, cooldowns, reserve floors, AI weights, event targets, or player-facing event text.
 
+The occupation Seal State and Destroy Attack Evidence adapters consume the current Condemnation-scaled Political Power price through `universal_cost_quote_exact`.
+They preserve fractional ordinary prices, use one final integer ceiling with an eligible source, and store typed primary-component receipts before dispatching the original state outcome.
+Their payer-owned recovery queue retains failed refund or settlement work, including unvisited rows beyond the native loop limit.
+Their per-receipt payment-time eligibility proof is separate from current achievement gates, preventing delayed recovery from qualifying a formerly ineligible payment.
+See [the owner contract](../../common/scripted_effects/cbrn_occupation_coverup_cost_effects.md) and the `BF-CBRN-COVERUP` registry rows for source evidence and unresolved native acceptance.
+
 ## Public helper map
 
 | Helper | Scope | Inputs | Outputs | Side effects |

@@ -155,6 +155,8 @@ A minimum state size, a minimum request and a per-state cooldown keep the regist
 This covers wars created by event owners, such as civil wars and collapse wars, without editing their files.
 When a special Chaos Redux power that runs no civilian system (the walking dead, a rat swarm, ZIN, Death, a revolutionary or terror command) takes a state, that state leaves both mechanics, so `humanitarian_handle_special_front_capture` sends 2% (4% for a nonhuman captor) of each neighbouring state the former owner still holds into flight instead: people run from the advancing front.
 
+Event 037 Mysterious People requests flight from crowded states at Overpopulation Pressure 80 or more through `migration_request_flight_pressure` (source `event`), for 2% of the state's newcomers without homes each month. Migration decides who leaves and where they go. When the transfer primitive finalizes a move, Event 037's hook lowers the origin's unsettled backlog by the measured departures and blends the destination's newcomer share. Arrivals become ordinary reception load.
+
 ## Management panel and state list
 
 Refreshing the Migration panel rebuilds `migration_panel_states` directly from relevant owned and controlled states, then deduplicates and validates current ownership/control. Relevance includes published movement data and qualifying prepared, mission, corridor, workforce, or pending work, not mere ownership or zero-filled fields. States with trapped civilians appear first; other qualifying states retain native collection order. It does not use `migration_header_states` or `global.migration_active_states` as the panel's list source. A selected row changes the panel's selected state; the separate Show on Map button centres the map on that selection.
@@ -165,8 +167,8 @@ Final panel renderer evidence is tracked in the [national policy panels implemen
 
 ## Assets and mapmode
 
-Migration assets use `migration_*` filenames and sprite identifiers.
-Evacuate the Vulnerable, Evacuate Civil Administrators, and Evacuate Workers reuse `GFX_migration_decision_evacuate`; the state and country workforce modifiers reuse `GFX_migration_state_exodus`. The added English keys live in `localisation/english/migration_priority_l_english.yml`; no new sprite or gfx consumer is required. `interface/migration_system.gfx` owns the category, decision, state-modifier, and achievement sprites; `interface/chaosx_texticons.gfx` owns the migration Deaths texticon; `interface/migration_report_pictures.gfx` and `interface/migration_report_header.gui` own the compact migration report art consumer; `interface/mapmodes_interface.gfx` owns the two migration mapmode button states.
+Migration assets use `migration_*` filenames and sprite identifiers. `interface/migration_system.gfx` owns the category, decision, state-modifier, and achievement sprites; `interface/chaosx_texticons.gfx` owns the migration Deaths texticon; `interface/migration_report_pictures.gfx` and `interface/migration_report_header.gui` own the compact migration report art consumer; `interface/mapmodes_interface.gfx` owns the two migration mapmode button states.
+Evacuate the Vulnerable, Evacuate Civil Administrators, and Evacuate Workers reuse `GFX_migration_decision_evacuate`; the state and country workforce modifiers reuse `GFX_migration_state_exodus`. The added English keys live in `localisation/english/migration_priority_l_english.yml`; no new sprite or gfx consumer is required.
 
 The migration mapmode colors lifecycle state and independently marks trapped populations, overcrowding, border status, corridor safety, reception pressure, and flight pressure. It does not read famine relief state.
 

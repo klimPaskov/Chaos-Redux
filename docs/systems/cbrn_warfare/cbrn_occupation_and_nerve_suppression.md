@@ -39,6 +39,19 @@ The retained response decisions are Seal State, Destroy Contaminated Records, Ad
 
 Seal State and Destroy Contaminated Records retain Political Power as their only payment. Their ordinary 40 and 60 Political Power costs scale with current public Condemnation from 1× to 3× and appear once in custom cost rows; a failed exact-record dispatch refunds the amount just charged. At Condemnation 0, 500, and 1000 the two quotes are 40/60, 80/120, and 120/180 respectively. The [occupation cover-up cost correction](../../specs/chaos_warfare_system_specs/corrections/2026-09-27_occupation_coverup_pp_scale.md) records the shared quote, inclusive affordability, settlement, and AI-hint source limits. Native row rendering and execution remain unverified.
 
+The universal cost source multiplies the current ordinary price after that Condemnation scaling and rounds once to a whole Political Power when an eligible source applies.
+At the same three Condemnation values, Black Friday prices are 20/30, 40/60, and 60/90, and Evolution I prices are 10/15, 20/30, and 30/45.
+Without a source, the ordinary represented fractional price remains unchanged and the cost display preserves its five-decimal precision.
+Both actions use shared payment and typed receipts, dispatch the original exact-state outcome once, and settle before achievement credit.
+Each payment also retains its achievement eligibility by exact receipt ID, and a later control-mode change cannot convert an AI or debug purchase into a qualifying payment.
+Failed dispatch returns the stored amount actually paid, including after the sale changes or expires.
+Rejected record, refund, or settlement work remains in normal payer-owned receipt fields and a pending queue, with no outcome replay or second debit on recovery.
+A validated refund retry displays Payment recovery, and malformed pending proof does not offer a fresh payment.
+Recovery follows existing paid-cover-up clicks or the explicit payer-owned recovery helper and does not add a daily country-wide scan.
+If ordinary target gates hide all cover-up actions after an exceptional refund rejection, automatic recovery availability is not established.
+Native saving-hint behavior at a discounted exact balance, cost-row rendering, cooldown behavior, serialization, and multiplayer still require evidence.
+See [the adapter contract](../../../common/scripted_effects/cbrn_occupation_coverup_cost_effects.md) and the Event 26 `BF-CBRN-COVERUP` registry rows for the bounded implementation and audit limits.
+
 Stored state trauma retains its resistance and compliance effects and its exact-state decay schedule. A pending delayed backlash remains tied to its due day and responsible controller. A control change removes temporary operational benefits while retaining responsibility, trauma, evidence, deaths, and discovery liability. These readers and scheduled effects preserve historical aftermath; the retired occupied-state attack route does not generate new records for them.
 
 ## Separate camp method and native raids

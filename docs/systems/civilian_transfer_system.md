@@ -34,6 +34,8 @@ A transaction is valid only with a positive measured debit and zero conservation
 
 The movement owner supplies the cohort and route meaning. The transfer primitive owns physical population mutation and conservation only. The original hazard owner retains direct mortality ownership, and the migration owner retains cohort, reception, settlement, and return state.
 
+The only non-movement hook is `mysterious_people_on_civilian_transfer`, called once at the origin after a valid projection. It reads the measured debit, survivor credit and destination population to keep the Event 037 newcomer ledger inside real population and changes no population itself.
+
 ## Scheduling
 
 The primitive executes only from an exact owner transaction. It has no recurring scan or independent pacing.
