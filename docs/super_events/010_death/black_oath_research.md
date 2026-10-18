@@ -31,4 +31,4 @@ The quote intentionally uses only the opening clause. The full verse continues i
 - Text research status: complete
 - Localisation status: implemented
 - Super-event image status: `GFX_super_event_death_black_oath` is registered in `interface/chaosx_super_events.gfx`
-- Runtime audio status: `sound/010_death/super_event_36_death_black_oath.wav` is registered through `sound/chaosx_sound.asset` and the settings-aware sound helper for audio ID `36`
+- Runtime audio status: `Documents/chaos_redux_lfs_archive/sound/010_death/super_event_36_death_black_oath.wav` is the original recording of the OGG registered in `music/chaosx_super_event_music.asset` and reached through the settings-aware music helper for audio ID `36`

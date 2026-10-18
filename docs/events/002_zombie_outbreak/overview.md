@@ -1003,17 +1003,13 @@ Existing outbreak-related assets already used by the system:
 Audio assets:
 
 - slot `1`, initial outbreak:
-  - music file: `sound/002_zombie_outbreak/super_event_1_zombies.wav`
-  - sound definition: `chaosx_super_event_zombies_track`
+  - music file: `music/002_zombie_outbreak/super_event_1_zombies.ogg`
 - slot `2`, Anti-Zombie League:
-  - music file: `sound/002_zombie_outbreak/super_event_2_alliance_of_man.wav`
-  - sound definition: `chaosx_super_event_alliance_of_man_track`
+  - music file: `music/002_zombie_outbreak/super_event_2_alliance_of_man.ogg`
 - slot `3`, zombie apocalypse:
-  - music file: `sound/002_zombie_outbreak/super_event_3_zombie_apocalypse.wav`
-  - sound definition: `chaosx_super_event_zombie_apocalypse_track`
+  - music file: `music/002_zombie_outbreak/super_event_3_zombie_apocalypse.ogg`
 - slot `5`, final zombie defeat:
-  - music file: `sound/002_zombie_outbreak/super_event_5_zombies_defeat.wav`
-  - sound definition: `chaosx_super_event_zombies_defeat_track`
+  - music file: `music/002_zombie_outbreak/super_event_5_zombies_defeat.ogg`
 
 Audio source, license, duration, and conversion notes are recorded in `docs/super_events/super_event_audio_packages.md`.
 

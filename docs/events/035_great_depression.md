@@ -551,7 +551,7 @@ The scene files are `report_event_great_depression.dds`, `report_event_great_dep
 
 The super-event uses visible slot `105`, playback ID `106`, the researched Roosevelt quote, the Keynes reaction, and the unique CC0 recording of Chopin's *Funeral March in C minor, Op. posth. 72 no. 2* performed by Aya Higuchi.
 
-The runtime audio is `sound/035_great_depression/super_event_106_second_great_depression.wav`, while the source, processed OGG, rights evidence, and checksums remain under `docs/assets/035_great_depression/`.
+The runtime audio is `music/035_great_depression/super_event_106_second_great_depression.ogg`, while the source, processed OGG, rights evidence, and checksums remain under `docs/assets/035_great_depression/`.
 
 ## Localisation, logs, and catalog
 

@@ -58,7 +58,7 @@ Original source SHA-256: `540F340E6433C622ED1F58598693B04A1F596E07550768B0BD119E
 
 The local source SHA-1 is `2C38126257D167B1265C13BBF8EDA81C838B3546`, matching the checksum published on the Wikimedia Commons file page.
 
-Final game-ready WAV: `sound/028_asteroid_incoming/super_event_028_asteroid_impact.wav`.
+Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/028_asteroid_incoming/super_event_028_asteroid_impact.wav`.
 
 Final format: PCM signed 16-bit little-endian, stereo, 44,100 Hz, 115.000000 seconds, 20,286,212 bytes.
 

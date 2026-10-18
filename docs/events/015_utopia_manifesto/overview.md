@@ -365,7 +365,7 @@ Shared integration surfaces:
 - `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`
 - `localisation/english/chaosx_event_names_l_english.yml`
 - `localisation/english/chaosx_gui_l_english.yml`
-- `sound/chaosx_sound.asset`
+- `music/chaosx_super_event_music.asset`
 
 Recorded finalization evidence:
 

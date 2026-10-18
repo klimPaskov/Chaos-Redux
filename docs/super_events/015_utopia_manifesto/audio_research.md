@@ -22,8 +22,8 @@ The final cue is a real orchestral performance. It is not generated audio, a MID
 | Playback audio ID | `57` |
 | Current super-event display slots | `96`, `97`, `98`, `99`, `100` |
 | Preserved source | `docs/super_events/source_audio/015_utopia_manifesto/brahms_symphony_3_iii_poco_allegretto_musopen_cc0_original.ogg` |
-| Final WAV | `sound/015_utopia_manifesto/super_event_57_utopia_has_neighbors.wav` |
-| Final sound WAV | `sound/015_utopia_manifesto/super_event_57_utopia_has_neighbors.wav` |
+| Original WAV (LFS archive) | `Documents/chaos_redux_lfs_archive/sound/015_utopia_manifesto/super_event_57_utopia_has_neighbors.wav` |
+| Original WAV (LFS archive) | `Documents/chaos_redux_lfs_archive/sound/015_utopia_manifesto/super_event_57_utopia_has_neighbors.wav` |
 
 ## Rights verification
 
@@ -116,19 +116,11 @@ The following keys were verified in the live repository on `2026-07-14`:
 - display slots: `utopia_manifesto_super_event.consent_display = 96` through `utopia_manifesto_super_event.joke_understood_display = 100`
 - OGG stem: `super_event_57_utopia_has_neighbors`
 - WAV stem: `super_event_57_utopia_has_neighbors`
-- sound wrappers:
-  - `chaosx_super_event_57_sound_0_5`
-  - `chaosx_super_event_57_sound_1_0`
-  - `chaosx_super_event_57_sound_1_5`
-  - `chaosx_super_event_57_sound_2_0`
-  - `chaosx_super_event_57_sound_2_5`
-  - `chaosx_super_event_57_sound_3_0`
-- underlying sound ID: `chaosx_super_event_utopia_manifesto_regional_proclamation_track`
-- sound wrappers: `chaosx_super_event_57_sound_0_5` through `chaosx_super_event_57_sound_3_0`
-- music display localisation: `chaosx_super_event_57_sound_0_5` through `chaosx_super_event_57_sound_3_0`
+- music variants: `chaosx_super_event_57_0_5` through `chaosx_super_event_57_3_0`
+- music display localisation: `chaosx_super_event_57_0_5` through `chaosx_super_event_57_3_0`
 - catalogue row: `music/chaosx_music_track_list.html`, playback audio ID `57`, display slots `96`-`100`
 
-The six sound wrappers point only to the Event 015 WAV through the Event 015 base sound. `utopia_manifesto_emit_regional_proclamation` assigns audio ID `57` before invoking the settings-aware playback helper. No historical `151` or `152` audio mapping remains in the active Event 015 package.
+The six music variants point only to the Event 015 OGG. `utopia_manifesto_emit_regional_proclamation` assigns audio ID `57` before invoking the settings-aware playback helper. No historical `151` or `152` audio mapping remains in the active Event 015 package.
 
 ## Candidate disposition
 
@@ -153,7 +145,7 @@ Music registration, music localisation, sound/WAV registration, script constants
 
 ## Runtime digest review, 5 October 2026
 
-The runtime WAV at `sound/015_utopia_manifesto/super_event_57_utopia_has_neighbors.wav` has SHA-256 `05da5a30ba49c6592e5295dd499e9ad3e97279586bb7e7d51228ad236ce58655`.
+The original WAV at `Documents/chaos_redux_lfs_archive/sound/015_utopia_manifesto/super_event_57_utopia_has_neighbors.wav` has SHA-256 `05da5a30ba49c6592e5295dd499e9ad3e97279586bb7e7d51228ad236ce58655`.
 The other previously duplicated ?Final WAV? digest does not identify that current file and is retained as historical unbound evidence rather than an alternate current WAV claim.
 The five display slots are route-specific visual/text variants of the same Event 015 regional proclamation moment and its single playback cue.
 No audio content or runtime registration is changed in this documentation repair.

@@ -66,7 +66,7 @@ The opening gives the reveal ritual form, predatory intelligence, and a discipli
 - Applied a `0.25 s` fade-in and `6.00 s` fade-out.
 - Two-pass loudness normalization targeted `-18 LUFS`. The peak target was reduced to `-1.8 dBTP` so the final Vorbis encode remained below the `-1.5 dBTP` delivery ceiling.
 - Exported one-shot; no loop.
-- Runtime WAV: `sound/014_cannibalism/super_event_49_hannibal_reveal.wav`
+- Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/014_cannibalism/super_event_49_hannibal_reveal.wav`
 
 ## 2. Ordinary Hannibal Lecter world-end
 
@@ -99,7 +99,7 @@ The funeral march supplies military weight, mass procession, and terminal finali
 - Applied a `0.25 s` fade-in and `6.00 s` fade-out.
 - Two-pass loudness normalization targeted `-18 LUFS` and a `-1.5 dBTP` ceiling.
 - Exported one-shot; no loop.
-- Runtime WAV: `sound/014_cannibalism/super_event_50_hannibal_world_end.wav`
+- Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/014_cannibalism/super_event_50_hannibal_world_end.wav`
 
 ## 3. Wendigo Hannibal Lecter world-end
 
@@ -131,7 +131,7 @@ The string lament is cold, sparse, and funeral in character. It makes the Wendig
 - Resampled the 48 kHz FLAC source to 44.1 kHz.
 - Two-pass loudness normalization targeted `-18 LUFS` and a `-1.5 dBTP` ceiling.
 - Exported one-shot; no loop.
-- Runtime WAV: `sound/014_cannibalism/super_event_53_wendigo_hannibal_world_end.wav`
+- Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/014_cannibalism/super_event_53_wendigo_hannibal_world_end.wav`
 
 ## 4. Eligible global defeat aftermath
 
@@ -163,7 +163,7 @@ The cello-and-piano elegy is human-scale, wounded, and reflective. It supports i
 - Applied a `0.25 s` fade-in and `6.00 s` fade-out.
 - Two-pass loudness normalization targeted `-18 LUFS`. The peak target was reduced to `-1.8 dBTP` to keep the delivered Vorbis encode below `-1.5 dBTP`.
 - Exported one-shot; no loop.
-- Runtime WAV: `sound/014_cannibalism/super_event_52_global_defeat_aftermath.wav`
+- Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/014_cannibalism/super_event_52_global_defeat_aftermath.wav`
 
 ## Technical verification
 

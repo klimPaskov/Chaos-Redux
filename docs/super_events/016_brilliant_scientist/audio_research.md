@@ -10,12 +10,12 @@ The earlier parent reservation of audio/super-event IDs 88 through 93 is superse
 
 | ID | Package | Work and recording | Composition rights | Recording rights | Confidence | Final file |
 | ---: | --- | --- | --- | --- | --- | --- |
-| 90 | International recognition | Claude Debussy, *Première Arabesque*; Patrizia Prati, live piano, Madrid, 17 May 2016 | Public domain | CC BY-SA 4.0 | High | `sound/016_brilliant_scientist/super_event_90_international_recognition.wav` |
-| 91 | Kruger State formation | Johannes Brahms, *Academic Festival Overture*, Op. 80; Skidmore College Orchestra / Musopen | Public domain | Worldwide public-domain dedication with unconditional fallback grant | High | `sound/016_brilliant_scientist/super_event_91_kruger_state_formation.wav` |
-| 92 | Global Kruger threat | Richard Wagner, *Ride of the Valkyries*; Ulm Philharmonic, James Allen Gähres conducting, 3 June 2014 | Public domain | EFF Open Audio License 1.0 | High | `sound/016_brilliant_scientist/super_event_92_global_kruger_threat.wav` |
-| 93 | Laboratory World | Johan Halvorsen, *Passacaglia on a Theme by Handel*; Roxana Pavel Goldstein and Elias Goldstein | Public domain | CC BY-SA 2.0 | High | `sound/016_brilliant_scientist/super_event_93_laboratory_world.wav` |
-| 94 | Strategic Singularity | Gustav Mahler, Symphony No. 5, II. *Stürmisch bewegt, mit größter Vehemenz*; Peabody Symphony Orchestra | Public domain | CC0 1.0 | High | `sound/016_brilliant_scientist/super_event_94_strategic_singularity.wav` |
-| 95 | Qualifying defeat aftermath | Frédéric Chopin, Nocturne No. 1 in B-flat minor, Op. 9 No. 1; Vadim Chaimovich | Public domain | CC0 1.0 | High | `sound/016_brilliant_scientist/super_event_95_qualifying_defeat_aftermath.wav` |
+| 90 | International recognition | Claude Debussy, *Première Arabesque*; Patrizia Prati, live piano, Madrid, 17 May 2016 | Public domain | CC BY-SA 4.0 | High | `Documents/chaos_redux_lfs_archive/sound/016_brilliant_scientist/super_event_90_international_recognition.wav` |
+| 91 | Kruger State formation | Johannes Brahms, *Academic Festival Overture*, Op. 80; Skidmore College Orchestra / Musopen | Public domain | Worldwide public-domain dedication with unconditional fallback grant | High | `Documents/chaos_redux_lfs_archive/sound/016_brilliant_scientist/super_event_91_kruger_state_formation.wav` |
+| 92 | Global Kruger threat | Richard Wagner, *Ride of the Valkyries*; Ulm Philharmonic, James Allen Gähres conducting, 3 June 2014 | Public domain | EFF Open Audio License 1.0 | High | `Documents/chaos_redux_lfs_archive/sound/016_brilliant_scientist/super_event_92_global_kruger_threat.wav` |
+| 93 | Laboratory World | Johan Halvorsen, *Passacaglia on a Theme by Handel*; Roxana Pavel Goldstein and Elias Goldstein | Public domain | CC BY-SA 2.0 | High | `Documents/chaos_redux_lfs_archive/sound/016_brilliant_scientist/super_event_93_laboratory_world.wav` |
+| 94 | Strategic Singularity | Gustav Mahler, Symphony No. 5, II. *Stürmisch bewegt, mit größter Vehemenz*; Peabody Symphony Orchestra | Public domain | CC0 1.0 | High | `Documents/chaos_redux_lfs_archive/sound/016_brilliant_scientist/super_event_94_strategic_singularity.wav` |
+| 95 | Qualifying defeat aftermath | Frédéric Chopin, Nocturne No. 1 in B-flat minor, Op. 9 No. 1; Vadim Chaimovich | Public domain | CC0 1.0 | High | `Documents/chaos_redux_lfs_archive/sound/016_brilliant_scientist/super_event_95_qualifying_defeat_aftermath.wav` |
 
 No generated sound, ambience substitute, commercial game or film score, placeholder, or reused final track is present.
 
@@ -185,12 +185,12 @@ The sound files were rendered independently from the preserved original recordin
 
 | ID | Runtime WAV | Bytes | WAV SHA-256 |
 | ---: | --- | ---: | --- |
-| 90 | `sound/016_brilliant_scientist/super_event_90_international_recognition.wav` | `20,286,078` | `ceb731053a8a043270b09af02c54bcf883891bb60b9029b3b83fce09f4f829c1` |
-| 91 | `sound/016_brilliant_scientist/super_event_91_kruger_state_formation.wav` | `20,286,078` | `8761543231fc465a22038c0999d85fda9be602b74dd4b7aac52ce8ffda7de64d` |
-| 92 | `sound/016_brilliant_scientist/super_event_92_global_kruger_threat.wav` | `20,286,166` | `cf1a5c54b30b42c7b8559d01f72ba246da135b48596b422e5e14ed722e298ab8` |
-| 93 | `sound/016_brilliant_scientist/super_event_93_laboratory_world.wav` | `20,286,078` | `c3e7a901719faf2e863d93be7f9ea5de53a6b172d39f4e27276bf939191ca134` |
-| 94 | `sound/016_brilliant_scientist/super_event_94_strategic_singularity.wav` | `20,286,078` | `28752423ffdbcd7245394508925263fe2edfc8c53289ba593b9ec8c18ff13037` |
-| 95 | `sound/016_brilliant_scientist/super_event_95_qualifying_defeat_aftermath.wav` | `20,286,078` | `1e3d4a6f56bac99d2269946395346ee16539f9461c7cc66b4f9c116d0343c1da` |
+| 90 | `Documents/chaos_redux_lfs_archive/sound/016_brilliant_scientist/super_event_90_international_recognition.wav` | `20,286,078` | `ceb731053a8a043270b09af02c54bcf883891bb60b9029b3b83fce09f4f829c1` |
+| 91 | `Documents/chaos_redux_lfs_archive/sound/016_brilliant_scientist/super_event_91_kruger_state_formation.wav` | `20,286,078` | `8761543231fc465a22038c0999d85fda9be602b74dd4b7aac52ce8ffda7de64d` |
+| 92 | `Documents/chaos_redux_lfs_archive/sound/016_brilliant_scientist/super_event_92_global_kruger_threat.wav` | `20,286,166` | `cf1a5c54b30b42c7b8559d01f72ba246da135b48596b422e5e14ed722e298ab8` |
+| 93 | `Documents/chaos_redux_lfs_archive/sound/016_brilliant_scientist/super_event_93_laboratory_world.wav` | `20,286,078` | `c3e7a901719faf2e863d93be7f9ea5de53a6b172d39f4e27276bf939191ca134` |
+| 94 | `Documents/chaos_redux_lfs_archive/sound/016_brilliant_scientist/super_event_94_strategic_singularity.wav` | `20,286,078` | `28752423ffdbcd7245394508925263fe2edfc8c53289ba593b9ec8c18ff13037` |
+| 95 | `Documents/chaos_redux_lfs_archive/sound/016_brilliant_scientist/super_event_95_qualifying_defeat_aftermath.wav` | `20,286,078` | `1e3d4a6f56bac99d2269946395346ee16539f9461c7cc66b4f9c116d0343c1da` |
 
 ## Settings-aware playback plan
 
@@ -205,7 +205,7 @@ The current framework uses one mastered file per audio ID and six definition-lev
 | `_2_5` | `3.33` |
 | `_3_0` | `4.00` |
 
-Every ID from 90 through 95 has `chaosx_super_event_<ID>_sound_<suffix>` wrappers pointing to the matching source-rendered WAV.
+Every ID from 90 through 95 has `chaosx_super_event_<ID>_<suffix>` music variants pointing to the matching OGG rendered from the source.
 
 ## Rights risks rejected during selection
 

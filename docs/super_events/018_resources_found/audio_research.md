@@ -10,7 +10,7 @@ This package supplies three unique, real musical recordings for the accepted Eve
 
 The source and rights pages were rechecked on 2026-07-12. Composition rights and recording rights were evaluated separately. Exact source downloads and frozen licence evidence were held under the temporary `docs/assets/018_resources_found/source/audio/` production tranche and were deleted after their durable facts were promoted. A separate bounded cave-monster reconstruction tranche currently keeps the event-scoped temporary workspace present while final evidence gates remain open. This file retains the super-event source identities, rights conclusions, hashes, and conversion facts. Final runtime cues are unique 60-to-120-second, 44.1 kHz stereo signed 16-bit PCM WAV files.
 
-The duration repair did not change visible slots, audio IDs, helper IDs, sound wrappers, base sound IDs, or runtime filenames. ID `55` was replaced at its stable paths because the former United States Air Force recording had only a U.S.-federal public-domain basis. Its replacement recording is CC0 1.0 and supplies worldwide redistribution and adaptation rights.
+The duration repair did not change visible slots, audio IDs, helper IDs, music variants, or runtime filenames. ID `55` was replaced at its stable paths because the former United States Air Force recording had only a U.S.-federal public-domain basis. Its replacement recording is CC0 1.0 and supplies worldwide redistribution and adaptation rights.
 
 ## Final identifier disposition
 
@@ -69,8 +69,8 @@ The earlier 34-second cadence was too short for the source brief. The final 115-
 - Applied fixed `-2.6 dB` gain; no dynamic compression or limiting.
 - Resampled 48 kHz to 44.1 kHz with SoXr precision 28.
 - Exported PCM s16le WAV, then encoded the matching OGG at Vorbis quality 6.
-- Final WAV: `sound/018_resources_found/super_event_54_oth_kesh_emergence.wav`
-- Final WAV: `sound/018_resources_found/super_event_54_oth_kesh_emergence.wav`
+- Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/018_resources_found/super_event_54_oth_kesh_emergence.wav`
+- Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/018_resources_found/super_event_54_oth_kesh_emergence.wav`
 
 ### Courtesy attribution
 
@@ -114,8 +114,8 @@ The retained passage begins with a quieter repeated figure, grows in weight and 
 - Preserved source level and dynamics; no gain change, compression, or limiting.
 - Resampled 48 kHz to 44.1 kHz with SoXr precision 28.
 - Exported PCM s16le WAV, then encoded the matching OGG at Vorbis quality 6.
-- Final WAV: `sound/018_resources_found/super_event_55_deep_war_crosses_seas.wav`
-- Final WAV: `sound/018_resources_found/super_event_55_deep_war_crosses_seas.wav`
+- Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/018_resources_found/super_event_55_deep_war_crosses_seas.wav`
+- Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/018_resources_found/super_event_55_deep_war_crosses_seas.wav`
 
 ### Courtesy attribution
 
@@ -160,8 +160,8 @@ Using nearly the complete performance restores the intended reflective arc: sust
 - Applied fixed `+6.5 dB` gain; no dynamic compression or limiting.
 - Retained the source 44.1 kHz rate.
 - Exported PCM s16le WAV, then encoded the matching OGG at Vorbis quality 6.
-- Final WAV: `sound/018_resources_found/super_event_56_last_depth_sealed.wav`
-- Final WAV: `sound/018_resources_found/super_event_56_last_depth_sealed.wav`
+- Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/018_resources_found/super_event_56_last_depth_sealed.wav`
+- Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/018_resources_found/super_event_56_last_depth_sealed.wav`
 
 ### Required attribution and change notice
 
@@ -224,8 +224,8 @@ The durable rights record is this document, which retains the source URLs, licen
 
 Stable sound integration remains:
 
-- `sound/chaosx_sound.asset` registers one runtime WAV, one base sound definition, and six soundeffect wrappers for each Event 018 audio ID.
-- Event 018 dispatch assigns `global.current_super_event_audio_id` and invokes the settings-aware sound helper.
+- `music/chaosx_super_event_music.asset` registers the volume variants of one OGG for each Event 018 audio ID.
+- Event 018 dispatch assigns `global.current_super_event_audio_id` and invokes the settings-aware music helper.
 - The canonical `music/chaosx_music_track_list.html` catalogue retains the three source, rights, and duration rows; its edit remains parent-owned.
 - `docs/super_events/super_event_audio_packages.md`: the Event 018 package carries the final sources, edits, and required CC BY attribution.
 

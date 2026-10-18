@@ -56,15 +56,14 @@ Performer and recording source: Igor Markevitch conducting the Orchestre Lamoure
 
 Suggested catalogue title: `The Exchange Has Begun`.
 
-Runtime sound definition ID: `chaosx_super_event_108_track`.
 
 Runtime playback audio ID: `108`.
 
 Runtime visible super-event slot: `108`; the playback audio ID and visible slot share the same verified Event 023 allocation.
 
-Runtime settings-aware wrapper IDs: `chaosx_super_event_108_sound_0_5`, `chaosx_super_event_108_sound_1_0`, `chaosx_super_event_108_sound_1_5`, `chaosx_super_event_108_sound_2_0`, `chaosx_super_event_108_sound_2_5`, and `chaosx_super_event_108_sound_3_0`.
+Runtime settings-aware music variant IDs: `chaosx_super_event_108_0_5`, `chaosx_super_event_108_1_0`, `chaosx_super_event_108_1_5`, `chaosx_super_event_108_2_0`, `chaosx_super_event_108_2_5`, and `chaosx_super_event_108_3_0`.
 
-Final runtime WAV: `sound/023_sov_nuclear_bombs/super_event_108_first_major_exchange.wav`.
+Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/023_sov_nuclear_bombs/super_event_108_first_major_exchange.wav`.
 
 No companion OGG is retained; the installed sound route consumes the verified PCM WAV.
 
@@ -117,7 +116,7 @@ Preserved rights evidence:
 
 ## Final WAV metadata
 
-Final path: `sound/023_sov_nuclear_bombs/super_event_108_first_major_exchange.wav`.
+Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/023_sov_nuclear_bombs/super_event_108_first_major_exchange.wav`.
 
 Final format: WAV, PCM signed 16-bit little-endian (`pcm_s16le`), stereo, 44,100 Hz.
 
@@ -177,12 +176,12 @@ The 115-second excerpt meets the repository's normal one-to-two-minute super-eve
 
 Rechecked 2026-09-26: the current runtime uses playback audio ID `108` and visible super-event slot `108`. The reciprocal-exchange path sets the current audio id from the Event 23 constant, sets the matching timed visibility flag, and calls the settings-aware playback helper for human countries.
 
-The current `interface/chaosx_super_events.gfx` entry resolves the Event 23 image, `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt` maps slot `108` to that sprite and to the `.108` title, description, remark, and quote keys, and `sound/chaosx_sound.asset` registers the dedicated WAV plus all six volume wrappers. The canonical `music/chaosx_music_track_list.html` row records the track, source, rights status, 01:55 duration, final SHA-256, and the Event 23 slot.
+The current `interface/chaosx_super_events.gfx` entry resolves the Event 23 image, `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt` maps slot `108` to that sprite and to the `.108` title, description, remark, and quote keys, and `music/chaosx_super_event_music.asset` registers the dedicated OGG plus all six volume variants. The canonical `music/chaosx_music_track_list.html` row records the track, source, rights status, 01:55 duration, final SHA-256, and the Event 23 slot.
 
 ## Uncertainty and blockers
 
 No audio-production blocker remains: the source is legitimate, the original is preserved, the final WAV exists in the requested event-scoped runtime folder, and the format and checksum are recorded.
 
-The visible slot `108`, playback audio ID `108`, sprite, sound wrappers, and Event 023 constants were reported aligned by the source-wiring pass. The answered-exchange trigger and live sound, timing, and image consumer review remain open.
+The visible slot `108`, playback audio ID `108`, sprite, music variants, and Event 023 constants were reported aligned by the source-wiring pass. The answered-exchange trigger and live sound, timing, and image consumer review remain open.
 
 The Wikimedia Commons public-domain declaration and the Internet Archive Public Domain Mark support the recording's reuse, while neither source gives a jurisdiction-specific legal opinion. The package retains both source-page captures, the Public Domain Mark reference, attribution, and matching source/final hashes as evidence. The source record also warns that copyright status can differ by jurisdiction.

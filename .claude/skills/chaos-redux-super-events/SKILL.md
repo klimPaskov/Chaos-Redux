@@ -411,7 +411,7 @@ Never describe a final cue with placeholder provenance such as "restored legacy"
 
 Before looking outside the repository, check whether an approved suitable track already exists in the repo. Inspect:
 
-- existing `music/*.ogg` and preserved source recordings, including `sound/**/*.wav`
+- existing `music/*.ogg` and preserved source recordings in the event-scoped `docs/assets/<event_id>_<event_slug>/` source-audio workspaces and the LFS archive (`Documents/chaos_redux_lfs_archive/sound/`)
 - `music/chaosx_super_event_music.asset`, `music/chaosx_super_event_music.txt`, and `interface/chaosx_super_events.gui`
 - `music/chaosx_music_track_list.html`
 - existing docs or manifests that identify source and license
@@ -477,7 +477,7 @@ For every super-event audio package:
 3. Download the selected audio from its legitimate source.
 4. Preserve the downloaded source file under the temporary event-scoped `docs/assets/<event_id>_<event_slug>/` source-audio path when practical. Before the event goal is fully complete, promote durable source, license, attribution, and conversion facts into the permanent audio documentation, verify that no runtime reference points into `docs/assets/`, and delete the event-scoped workspace. Keep it for blocked or incomplete work.
 5. When using `chaosx_super_event_audio_researcher`, receive its final game-ready `.ogg`, preserved original recording, source documentation, licensing notes, and conversion handoff.
-6. After accepting the file, place the `.ogg` under `music/` using the established runtime path. Preserve original recordings and existing WAV sources without replacing or deleting them.
+6. After accepting the file, place the `.ogg` under `music/` using the established runtime path. The game plays a super-event cue only through that music route, so keep the original recording in the source-audio workspace or the LFS archive and add no `.wav`, `sound` or `soundeffect` definition under `sound/` for it.
 7. Add or update the music definitions with song ids in `music/chaosx_super_event_music.asset` so they point to the final OGG and have unique song ids.
 8. Register each song in `music/chaosx_super_event_music.txt` under `music_station = "chaosx_super_event_station"`, following the existing super-event selection gates, and preserve the station definition in `interface/chaosx_super_events.gui`. Define every settings-volume variant with the naming contract `chaosx_super_event_<audio_id>_<volume_suffix>`, including suffixes `0_5`, `1_0`, `1_5`, `2_0`, `2_5`, `3_0`, and silent `0`, where `<audio_id>` is `global.current_super_event_audio_id`. The silent variant must still replace the previous cue.
 9. Set `global.current_super_event_audio_id` to the correct unique audio id and call `play_current_super_event_audio = yes`, the settings-aware music helper.

@@ -192,7 +192,7 @@ All three v2 triplets passed strict 64x64 BGRA and source/template equality audi
 
 ## Audio
 
-The unique Event 023 exchange cue is `sound/023_sov_nuclear_bombs/super_event_108_first_major_exchange.wav`. Its public-domain source, rights evidence, conversion command, metadata, and checksum are recorded in `docs/super_events/023_sov_nuclear_bombs_super_event_research.md` and `provenance/`. The shared sound registry owns the playback definition `chaosx_super_event_108_track` and settings-aware wrappers.
+The unique Event 023 exchange cue plays from `music/023_sov_nuclear_bombs/super_event_108_first_major_exchange.ogg`, and its original WAV is kept in the LFS archive at `Documents/chaos_redux_lfs_archive/sound/023_sov_nuclear_bombs/super_event_108_first_major_exchange.wav`. Its public-domain source, rights evidence, conversion command, metadata, and checksum are recorded in `docs/super_events/023_sov_nuclear_bombs_super_event_research.md` and `provenance/`. The shared sound registry owns the playback definition `chaosx_super_event_108_track` and settings-aware wrappers.
 
 ## Picture reuse for the round 2 report and news events
 

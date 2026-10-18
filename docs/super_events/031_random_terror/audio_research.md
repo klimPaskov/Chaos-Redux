@@ -82,7 +82,7 @@ Suggested super-event use: The False Revelation, the first public appearance and
 
 Why it fits: The low-register orchestral opening and processional escalation give the reveal an immediate sense of coercive ceremony and approaching catastrophe. The cue is structured orchestral music rather than a drone or sound-effect bed, and the excerpt leaves enough room for the public uncertainty in the final text.
 
-Final runtime path: `sound/031_random_terror/super_event_104_false_revelation_reveal.wav`.
+Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/031_random_terror/super_event_104_false_revelation_reveal.wav`.
 
 Final duration: 110.000 seconds, or 01:50.
 
@@ -134,7 +134,7 @@ Suggested super-event use: The Broken Claim, the reflective liberation and recon
 
 Why it fits: The spare piano pulse, recurring phrases, and restrained harmonic motion convey relief that is real but incomplete. It supports survivors, damaged public life, and vigilance without becoming a clean victory march or making a claim about what the entity was.
 
-Final runtime path: `sound/031_random_terror/super_event_105_false_revelation_defeat_aftermath.wav`.
+Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/031_random_terror/super_event_105_false_revelation_defeat_aftermath.wav`.
 
 Final duration: 110.000 seconds, or 01:50.
 
@@ -152,8 +152,8 @@ The following IDs extend the catalogue baseline that ended at playback audio ID 
 
 | Role | Proposed playback audio ID | Proposed base sound definition ID | Final runtime file |
 |---|---:|---|---|
-| False Revelation reveal | `104` | `chaosx_super_event_random_terror_false_revelation_reveal_track` | `sound/031_random_terror/super_event_104_false_revelation_reveal.wav` |
-| False Revelation defeat aftermath | `105` | `chaosx_super_event_random_terror_false_revelation_defeat_aftermath_track` | `sound/031_random_terror/super_event_105_false_revelation_defeat_aftermath.wav` |
+| False Revelation reveal | `104` | `chaosx_super_event_random_terror_false_revelation_reveal_track` | `Documents/chaos_redux_lfs_archive/sound/031_random_terror/super_event_104_false_revelation_reveal.wav` |
+| False Revelation defeat aftermath | `105` | `chaosx_super_event_random_terror_false_revelation_defeat_aftermath_track` | `Documents/chaos_redux_lfs_archive/sound/031_random_terror/super_event_105_false_revelation_defeat_aftermath.wav` |
 
 Proposed reveal volume wrappers are `chaosx_super_event_104_sound_0_5`, `chaosx_super_event_104_sound_1_0`, `chaosx_super_event_104_sound_1_5`, `chaosx_super_event_104_sound_2_0`, `chaosx_super_event_104_sound_2_5`, and `chaosx_super_event_104_sound_3_0`.
 

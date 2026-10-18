@@ -45,7 +45,7 @@ The 2026-08-10 static reconstruction freshly reimported the installed mesh and a
 
 ## Super-event audio, quotes, and rights
 
-Event 018 owns super-event displays 82 through 84 and audio IDs 54 through 56. Their final WAV cues are 115, 110, and 109 seconds, with stable sound wrappers, volume variants, music localisation, and catalogue entries.
+Event 018 owns super-event displays 82 through 84 and audio IDs 54 through 56. Their final WAV cues are 115, 110, and 109 seconds, with stable music variants, volume variants, music localisation, and catalogue entries.
 
 - Emergence uses Mussorgsky's *Bydlo*, performed by the Skidmore College Orchestra from the documented worldwide public-domain release, with Job 28:5 as its sourced quotation.
 - World End uses Brahms's Symphony No. 1, movement I, under the documented CC0 recording grant, with the sourced *Prometheus Bound* quotation.

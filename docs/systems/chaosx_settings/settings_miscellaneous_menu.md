@@ -47,7 +47,7 @@ Super-event playback is routed through the settings-aware music helper in:
 Behavior:
 - Super-event runtime audio uses the music channel, so each new track replaces the previous track.
 - The dispatcher assigns `global.current_super_event_audio_id` and resolves `chaosx_super_event_<audio_id>_<volume_suffix>` in `music/chaosx_super_event_music.asset`.
-- Each super-event keeps its source WAV under `sound/<event_id>_<event_slug>/...` and uses its matching OGG recording under `music/`.
+- Each super-event plays its OGG recording under `music/<event_id>_<event_slug>/...`; no super-event WAV or `soundeffect` is registered under `sound/`.
 - `0x` plays the current track at zero volume, replacing any previous audible super-event track.
 - `1.5x` preserves the previous loudness as the default volume tier.
 
@@ -183,7 +183,6 @@ The related `common/scripted_effects/fallout_consolidated_effects.txt` exists, b
 - `interface/chaosx.gui`
 - `sound/chaosx_sound.asset`
 - `common/scripted_effects/fallout_world_end_effects.txt`
-- `sound/fallout_world_end_sound.asset`
 - `common/scripted_localisation/chaosx_scripted_localisation_settings.txt`
 - `localisation/english/chaosx_gui_l_english.yml`
 
@@ -208,22 +207,14 @@ Existing assets used:
   - `yearslider_rightbutton`
 
 Audio assets used:
-- Sound definition file:
-  - `sound/chaosx_sound.asset`
-- Sound sources:
-  - `sound/002_zombie_outbreak/super_event_1_zombies.wav`
-  - `sound/002_zombie_outbreak/super_event_2_alliance_of_man.wav`
-  - `sound/002_zombie_outbreak/super_event_3_zombie_apocalypse.wav`
-  - `sound/002_zombie_outbreak/super_event_5_zombies_defeat.wav`
-  - `sound/002_zombie_outbreak/super_event_6_wendigo.wav`
-  - `sound/003_holy_realm/super_event_7_buddha_mandate.wav`
-  - `sound/003_holy_realm/super_event_8_final_silence.wav`
-  - `sound/003_holy_realm/super_event_9_final_silence_thermonuclear.wav`
-  - `sound/003_holy_realm/super_event_10_mandala_breaks.wav`
-  - `sound/003_holy_realm/super_event_11_divine_sovereignty.wav`
-  - `sound/003_holy_realm/super_event_28_mandala_of_nations.wav`
-  - `sound/003_holy_realm/super_event_12_angel_directorate.wav`
-  - `sound/003_holy_realm/super_event_13_angelic_world_order.wav`
+- Music definition files:
+  - `music/chaosx_super_event_music.asset`
+  - `music/020_black_plague_super_events.asset`
+  - `music/fallout_world_end_music.asset`
+- Station registration:
+  - `music/chaosx_super_event_music.txt`
+- Runtime recordings:
+  - the OGG under `music/<event_id>_<event_slug>/` named by each music definition
 - Dedicated Fallout blackout assets are documented by the separate Fallout system record.
 - Audio source and license documentation:
   - `docs/super_events/super_event_audio_packages.md`
@@ -235,5 +226,5 @@ If custom art is later desired for the Miscellaneous menu or sync controls:
 
 ## Future plans
 - Replace the selected-country/state sync buttons with a true automatic map-selection hook if Paradox exposes a documented callback for selection changes in scripted GUI.
-- Document each super-event source WAV, runtime OGG, music definition, station registration, audio ID, and catalogue row together with its presentation wiring.
+- Document each super-event runtime OGG, music definition, station registration, audio ID, and catalogue row together with its presentation wiring.
 - Add a live preview button for super-event sound cues and loudness testing inside the Miscellaneous panel.

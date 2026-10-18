@@ -60,8 +60,8 @@ The image is a dedicated Oth-Kesh emergence composition and is not reused by eit
 - **Source and rights:** [Wikimedia Commons Musopen/VRTS copy](https://commons.wikimedia.org/wiki/File:Modest_Mussorgsky_-_pictures_at_an_exhibition_-_iv._bydlo_-_sempre_moderato%2C_pesante.ogg). The page records a worldwide public-domain release and an unconditional grant where waiver is unavailable, confirmed through Wikimedia VRTS ticket `2008012110017088`.
 - **Historical source path (deleted temporary evidence, not retained):** `docs/assets/018_resources_found/source/audio/mussorgsky_bydlo_musopen_vrts_original.ogg`, SHA-256 `87da8f6bc6a03900ce0eac2879e7b027de707d1173c1cadc82db1caa081a88d4`.
 - **Edit:** retained `00:24.000–02:18.750`, quarter-sine fades, fixed `-2.6 dB` gain, `0.250 s` zero tail, 44.1 kHz stereo delivery.
-- **Runtime WAV:** `sound/018_resources_found/super_event_54_oth_kesh_emergence.wav`, `115.000000 s`, SHA-256 `88d3b749fd51bcc106daf352ae9791c51d3452e7bce9a01ebf8971dad57385c0`.
-- **WAV file:** `sound/018_resources_found/super_event_54_oth_kesh_emergence.wav`, `115.000000 s`, SHA-256 `daf27599720d281eaa96fe828dc38337553026054b634a57d652a41236050575`.
+- **Original WAV (LFS archive):** `Documents/chaos_redux_lfs_archive/sound/018_resources_found/super_event_54_oth_kesh_emergence.wav`, `115.000000 s`, SHA-256 `88d3b749fd51bcc106daf352ae9791c51d3452e7bce9a01ebf8971dad57385c0`.
+- **WAV file (LFS archive):** `Documents/chaos_redux_lfs_archive/sound/018_resources_found/super_event_54_oth_kesh_emergence.wav`, `115.000000 s`, SHA-256 `daf27599720d281eaa96fe828dc38337553026054b634a57d652a41236050575`.
 - **Attribution treatment:** no legal attribution is required by the stated grant; courtesy credit is retained in the audio records.
 
 ## Slot 83 — cross-continent World End
@@ -99,8 +99,8 @@ The image depicts cross-continent rupture and is distinct from the country-emerg
 - **Source and rights:** [Wikimedia Commons file page](https://commons.wikimedia.org/wiki/File:Brahms,_Symphony_No._1_in_C_Minor,_Op._68_-_I._Un_poco_sostenuto_-_Allegro.ogg); [CC0 1.0 Universal deed](https://creativecommons.org/publicdomain/zero/1.0/). The file-specific licence is CC0 1.0, which supplies worldwide copying, adaptation, distribution, and performance rights to the extent permitted by law.
 - **Historical source path (deleted temporary evidence, not retained):** `docs/assets/018_resources_found/source/audio/brahms_symphony_1_i_musopen_cc0_original.ogg`, SHA-256 `f86f1df2f97b79c9bc92dac63b0da1bf868675005af4fe9c05ab886291af9b95`; its SHA-1 matches the Commons structured checksum.
 - **Edit:** retained `08:40.000–10:29.750`, quarter-sine fades, original dynamics, `0.250 s` zero tail, 44.1 kHz stereo delivery.
-- **Runtime WAV:** `sound/018_resources_found/super_event_55_deep_war_crosses_seas.wav`, `110.000000 s`, SHA-256 `b6888c95658dafbf40dd822550d05c505e9a653ce4daa01191e00a6500c28215`.
-- **WAV file:** `sound/018_resources_found/super_event_55_deep_war_crosses_seas.wav`, `110.000000 s`, SHA-256 `f0ee745abfbe432cd26b37ad14fb800ab4bcbf77e442eb11d06f8f8f991e1266`.
+- **Original WAV (LFS archive):** `Documents/chaos_redux_lfs_archive/sound/018_resources_found/super_event_55_deep_war_crosses_seas.wav`, `110.000000 s`, SHA-256 `b6888c95658dafbf40dd822550d05c505e9a653ce4daa01191e00a6500c28215`.
+- **WAV file (LFS archive):** `Documents/chaos_redux_lfs_archive/sound/018_resources_found/super_event_55_deep_war_crosses_seas.wav`, `110.000000 s`, SHA-256 `f0ee745abfbe432cd26b37ad14fb800ab4bcbf77e442eb11d06f8f8f991e1266`.
 - **Attribution treatment:** CC0 imposes no attribution requirement; courtesy performer and source credit is retained.
 
 The former Debussy / United States Air Force Band candidate is not live. Its U.S.-federal public-domain basis did not provide the clean worldwide grant required for a distributable mod, so it was replaced at the stable ID `55` paths. The preserved rejected source exists only as research history and is not named by a runtime definition, localisation label, catalogue row, or final cue.
@@ -140,8 +140,8 @@ The image is a dedicated multinational reconstruction scene and is not used by t
 - **Source and rights:** [Wikimedia Commons file page](https://commons.wikimedia.org/wiki/File:Ivan_Ili%C4%87-Chopin_Prelude_Opus_28_n.4.ogg); [Creative Commons Attribution 3.0 Unported](https://creativecommons.org/licenses/by/3.0/).
 - **Historical source path (deleted temporary evidence, not retained):** `docs/assets/018_resources_found/source/audio/chopin_prelude_op28_no4_ivan_ilic_original.ogg`, SHA-256 `c64c302948b73e251478b4e4a9e44d0e92ceec2e34f95e02d6c1130420dcd7cf`.
 - **Edit:** retained `00:00.450–01:49.200`, quarter-sine fades, fixed `+6.5 dB` gain, `0.250 s` zero tail, 44.1 kHz stereo delivery.
-- **Runtime WAV:** `sound/018_resources_found/super_event_56_last_depth_sealed.wav`, `109.000000 s`, SHA-256 `b1131b009a715c20598bf720d485c05038d583accbc1e46744dbc182d1f7631e`.
-- **WAV file:** `sound/018_resources_found/super_event_56_last_depth_sealed.wav`, `109.000000 s`, SHA-256 `9be248a28861b96a8c454ab729af8d710727c2b3289eb4820efa98b1cba8fcc9`.
+- **Original WAV (LFS archive):** `Documents/chaos_redux_lfs_archive/sound/018_resources_found/super_event_56_last_depth_sealed.wav`, `109.000000 s`, SHA-256 `b1131b009a715c20598bf720d485c05038d583accbc1e46744dbc182d1f7631e`.
+- **WAV file (LFS archive):** `Documents/chaos_redux_lfs_archive/sound/018_resources_found/super_event_56_last_depth_sealed.wav`, `109.000000 s`, SHA-256 `9be248a28861b96a8c454ab729af8d710727c2b3289eb4820efa98b1cba8fcc9`.
 - **Required treatment:** credit Chopin and Ivan Ilić, link the source and CC BY 3.0 licence, state the excerpt/fade/gain/tail/encoding changes, impose no additional restriction, and imply no endorsement. The full change notice is retained in the audio manifest and detailed audio research.
 
 ## Runtime trigger and presentation contract
@@ -152,7 +152,7 @@ The constants in `common/script_constants/018_resources_found_cave_constants.txt
 - **World End:** only the final focus `DHO_the_world_opens_below` calls `resources_found_cave_begin_world_end`. The shared effect rechecks verified control of every eligible origin-continent state, chaos above the configured gate, enabled World End settings, no active World End, and the completed preparation state before setting the terminal flags, suspending incompatible field progression, transforming DHO, opening resource-weighted footholds, and emitting slot `83`.
 - **Defeat:** regional defeat uses its own news path and cannot emit slot `84`. The defeat super-event requires `resources_found_cave_global_defeat_eligible`, which is set only when the cave threat became global through World End/footholds or met the near-global long-campaign condition. It fires once after complete DHO defeat and cleanup routing.
 
-`common/scripted_localisation/chaosx_scripted_localisation_super_events.txt` maps the three display values to the three image sprites. `localisation/english/018_resources_found_system_l_english.yml` supplies `.t`, `.d`, `.q`, and `.a` for each slot. `common/scripted_effects/018_resources_found_cave_effects.txt` assigns the matching audio ID and dispatches the settings-aware sound helper. `sound/chaosx_sound.asset` retains one base sound definition and six soundeffect wrappers per cue for the runtime WAV files, while the canonical `music/chaosx_music_track_list.html` catalogue remains parent-owned.
+`common/scripted_localisation/chaosx_scripted_localisation_super_events.txt` maps the three display values to the three image sprites. `localisation/english/018_resources_found_system_l_english.yml` supplies `.t`, `.d`, `.q`, and `.a` for each slot. `common/scripted_effects/018_resources_found_cave_effects.txt` assigns the matching audio ID and dispatches the settings-aware music helper. `music/chaosx_super_event_music.asset` registers the volume variants of one OGG per cue, while the canonical `music/chaosx_music_track_list.html` catalogue remains parent-owned.
 
 ## Technical and uniqueness disposition
 

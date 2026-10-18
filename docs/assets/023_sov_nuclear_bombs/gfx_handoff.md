@@ -9,7 +9,7 @@ This handoff records the final consumer wiring for `sov_nuclear_bombs`. Gameplay
 | Event reports, news, decisions, missions, ideas, and category | `interface/023_sov_nuclear_bombs.gfx` | 53 ordinary sprite aliases; all paths are stable and use the `gfx/.../023_sov_nuclear_bombs/` runtime folders |
 | Super-event image | `interface/chaosx_super_events.gfx` | `GFX_super_event_108_soviet_nuclear_major_exchange` uses the shared slot-108 registry |
 | Achievement triplets | `interface/chaosx_achievements.gfx` | The seven Event 023 achievement IDs each resolve to eligible, grey, and not-eligible sprites |
-| Super-event audio | `sound/chaosx_sound.asset` | `chaosx_super_event_108_track` and six settings-aware wrappers use the final PCM WAV |
+| Super-event audio | `music/chaosx_super_event_music.asset` | `chaosx_super_event_108_*` music variants play `music/023_sov_nuclear_bombs/super_event_108_first_major_exchange.ogg` |
 
 ## Category and event-picture wiring
 

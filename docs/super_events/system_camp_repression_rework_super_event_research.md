@@ -2,7 +2,7 @@
 
 ## Live implementation disposition, 2026-07-11
 
-All five camp-repression super events are implemented and wired. Final English strings live in `localisation/english/camp_repression_rework_l_english.yml` for slots `74` through `77` and `localisation/english/germany_mengele_l_english.yml` for slot `12`. Scripted-localisation routing lives in `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`; playback helpers live in `common/scripted_effects/camp_repression_super_event_effects.txt` and `common/scripted_effects/germany_mengele_effects.txt`; sprite registration lives in `interface/chaosx_super_events.gfx`; sound registration lives in `sound/chaosx_sound.asset` for one runtime WAV, a base sound definition, six soundeffect wrappers, and each audio ID.
+All five camp-repression super events are implemented and wired. Final English strings live in `localisation/english/camp_repression_rework_l_english.yml` for slots `74` through `77` and `localisation/english/germany_mengele_l_english.yml` for slot `12`. Scripted-localisation routing lives in `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`; playback helpers live in `common/scripted_effects/camp_repression_super_event_effects.txt` and `common/scripted_effects/germany_mengele_effects.txt`; sprite registration lives in `interface/chaosx_super_events.gfx`; music registration lives in `music/chaosx_super_event_music.asset` for one runtime OGG and its volume variants per audio ID.
 
 The final art is under `gfx/super_events/system_camp_repression_rework/`. The five unique audio packages, source provenance, and processed runtime files are recorded in `docs/assets/system_camp_repression_rework/audio_manifest.md` and `docs/assets/system_camp_repression_rework/audio_handoff.md`. No placeholder image or shared fallback track remains in these slots.
 
@@ -198,8 +198,8 @@ Recommended attribution:
 
 - Retained source interval: `00:00.000–01:52.000`
 - Processing: `0.25`-second fade-in, `5.00`-second fade-out from `01:47`, two-pass loudness normalization targeting `-18 LUFS` and `-1.5 dBTP`, 44.1 kHz stereo export
-- Final WAV: `sound/system_camp_repression_rework/super_event_44_global_atrocity_evidence_discovery.wav`
-- Final WAV: `sound/system_camp_repression_rework/super_event_44_global_atrocity_evidence_discovery.wav`
+- Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/system_camp_repression_rework/super_event_44_global_atrocity_evidence_discovery.wav`
+- Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/system_camp_repression_rework/super_event_44_global_atrocity_evidence_discovery.wav`
 - Tone fit: the exposed, hesitant piano line keeps the discovery focused on testimony, records, and the weight of recognition. It is sober and unsettled without turning the evidence reveal into generic apocalypse or military triumph.
 
 ## Audio ID 45: Angel of Death Directorate Revolt
@@ -232,8 +232,8 @@ Recommended attribution:
 
 - Retained source interval: `00:10.169–02:04.169`; the edit removes the opening silence and ends well before the later *Hail to the Chief* quotation documented on the source page.
 - Processing: `0.25`-second fade-in, `6.00`-second fade-out from `01:48`, two-pass loudness normalization targeting `-18 LUFS` and `-1.5 dBTP`, resampling from 48 kHz to 44.1 kHz stereo
-- Final WAV: `sound/system_camp_repression_rework/super_event_45_angel_of_death_directorate_revolt.wav`
-- Final WAV: `sound/system_camp_repression_rework/super_event_45_angel_of_death_directorate_revolt.wav`
+- Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/system_camp_repression_rework/super_event_45_angel_of_death_directorate_revolt.wav`
+- Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/system_camp_repression_rework/super_event_45_angel_of_death_directorate_revolt.wav`
 - Tone fit: the repeating bass design and accumulating counterpoint sound controlled, procedural, and inexorable. The cue supplies scientific-horror severity and disciplined momentum without borrowing an existing martial super-event track or becoming a triumphant march.
 
 ## Audio ID 46: Soviet Famine Catastrophe
@@ -266,8 +266,8 @@ Recommended attribution:
 
 - Retained source interval: `00:00.000–01:56.000`
 - Processing: audio stream isolated from the preserved WebM; non-monotonic source timestamps repaired with asynchronous resampling; `0.35`-second fade-in; `6.00`-second fade-out from `01:50`; two-pass loudness normalization targeting `-18 LUFS` and `-1.5 dBTP`; 44.1 kHz stereo export
-- Final WAV: `sound/system_camp_repression_rework/super_event_46_soviet_famine_catastrophe.wav`
-- Final WAV: `sound/system_camp_repression_rework/super_event_46_soviet_famine_catastrophe.wav`
+- Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/system_camp_repression_rework/super_event_46_soviet_famine_catastrophe.wav`
+- Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/system_camp_repression_rework/super_event_46_soviet_famine_catastrophe.wav`
 - Tone fit: the unaccompanied lament puts human loss ahead of state spectacle. Its Ukrainian voice gives the famine branch historical and regional gravity while the slow choral contour supports mass hunger, administrative fear, and collapse rather than victory.
 
 ## Audio ID 47: Pingfang Exposure
@@ -300,8 +300,8 @@ Recommended attribution:
 
 - Retained source interval: `00:01.402–01:50.802`; the edit removes the documented leading silence and ends at the first extended musical pause.
 - Processing: `0.25`-second fade-in, `5.00`-second fade-out from `01:44.400`, two-pass loudness normalization targeting `-18 LUFS` and `-1.5 dBTP`, 44.1 kHz stereo export
-- Final WAV: `sound/system_camp_repression_rework/super_event_47_pingfang_exposure.wav`
-- Final WAV: `sound/system_camp_repression_rework/super_event_47_pingfang_exposure.wav`
+- Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/system_camp_repression_rework/super_event_47_pingfang_exposure.wav`
+- Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/system_camp_repression_rework/super_event_47_pingfang_exposure.wav`
 - Tone fit: the spare guqin performance is severe without becoming sensational. A Chinese farewell repertory places attention on occupied-territory witnesses and absence, supporting an investigative and tribunal-facing exposure rather than centering the perpetrators.
 
 ## Audio ID 48: Colonial Reckoning
@@ -334,8 +334,8 @@ Recommended attribution:
 
 - Retained source interval: `00:00.000–01:50.000`
 - Processing: `0.25`-second fade-in, `6.00`-second fade-out from `01:44`, two-pass loudness normalization targeting `-18 LUFS` and `-1.5 dBTP`, 44.1 kHz stereo export
-- Final WAV: `sound/system_camp_repression_rework/super_event_48_colonial_reckoning.wav`
-- Final WAV: `sound/system_camp_repression_rework/super_event_48_colonial_reckoning.wav`
+- Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/system_camp_repression_rework/super_event_48_colonial_reckoning.wav`
+- Original WAV (LFS archive): `Documents/chaos_redux_lfs_archive/sound/system_camp_repression_rework/super_event_48_colonial_reckoning.wav`
 - Tone fit: the Exodus refrain is a direct musical language of captivity and release. The choral treatment is solemn and political, making the cue appropriate for exposed forced labor, survivor testimony, decolonization pressure, and imperial accountability.
 
 ## Technical result

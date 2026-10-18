@@ -430,7 +430,7 @@ Shared or non-event systems may use a clear shared/system folder. Do not force s
 
 When moving or adding an asset, update every `.gfx`, `.gui`, event, idea, decision, focus, localisation, and documentation reference that names the old path or sprite. Keep sprite names stable unless the engine-facing identifier itself has to change, as with achievement ids.
 
-Super-event audio follows the `chaos-redux-super-events` convention. Register the final OGG cue as music under `music/` with the song, volume-variant, and station contract in that skill. Preserve original recordings, existing WAV sources, and source downloads under docs/assets source-audio paths.
+Super-event audio follows the `chaos-redux-super-events` convention. Register the final OGG cue as music under `music/` with the song, volume-variant, and station contract in that skill. Preserve original recordings and source downloads under docs/assets source-audio paths or in the LFS archive, and add no super-event `.wav` or `soundeffect` under `sound/`.
 
 ### `.gfx` handoff and main-agent wiring
 

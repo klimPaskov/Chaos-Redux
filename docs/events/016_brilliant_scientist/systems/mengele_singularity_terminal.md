@@ -19,7 +19,7 @@ Kruger's project array, terminal commitment, fired flag, and achievements are no
 The visible terminal control uses `GFX_decision_brilliant_scientist_project_strategic_singularity_weaponization` in `interface/016_brilliant_scientist_project_icons.gfx` and `gfx/interface/decisions/016_brilliant_scientist/projects/strategic_singularity_weaponization.dds`.
 The existing Strategic Singularity super-event retains its registered art and sound; no new terminal asset or 3D model is required.
 Its existing image is `gfx/super_events/016_brilliant_scientist/super_event_016_strategic_singularity.dds`, registered in `interface/016_brilliant_scientist_super_events.gfx`.
-Its existing unique music file is `sound/016_brilliant_scientist/super_event_94_strategic_singularity.wav`, with volume wrappers in `sound/chaosx_sound.asset` and attribution in the Event 016 super-event music catalog.
+Its existing unique music file is `music/016_brilliant_scientist/super_event_94_strategic_singularity.ogg`, with volume variants in `music/chaosx_super_event_music.asset` and attribution in the Event 016 super-event music catalog.
 
 The private physical-site construction decisions and provider cleanup are documented in `mengele_singularity_construction.md`.
 Full CXT fixture coverage, catalog alignment, final completion audits, and linked MCP validation remain required before Event 016 can be accepted as complete.

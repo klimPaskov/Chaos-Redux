@@ -108,14 +108,13 @@ The button uses the exact lexical fragment `look about you` with standalone capi
 - audio ID `43`
 - final duration `86.101746` seconds
 - preserved source `docs/assets/011_secret_alliance/source_audio/revelation_us_marine_band_commons_source.ogg`
-- runtime WAV `sound/011_secret_alliance/super_event_43_public_reveal.wav`
-- sound ID `chaosx_super_event_secret_alliance_public_reveal_track`
-- sound registration `sound/chaosx_sound.asset`
+- runtime WAV `Documents/chaos_redux_lfs_archive/sound/011_secret_alliance/super_event_43_public_reveal.wav`
+- music registration `music/chaosx_super_event_music.asset`
 - dispatcher state `global.current_super_event_audio_id`
 - canonical HTML audio catalogue `music/chaosx_music_track_list.html` remains parent-owned
 - detailed handoff `docs/plans/011_secret_alliance_plans/subagent_handoffs/super_event_audio_research.md`
 
-The cue has a formal martial shape and remains tag-neutral. It supports a dangerous public coalition without implying a terminal scenario. The settings-aware sound helper controls its runtime playback.
+The cue has a formal martial shape and remains tag-neutral. It supports a dangerous public coalition without implying a terminal scenario. The settings-aware music helper controls its runtime playback.
 
 ## Image package
 
@@ -137,4 +136,4 @@ The historical selector plan, source comparison, and wiring checklist are in:
 
 `docs/plans/011_secret_alliance_plans/subagent_handoffs/super_event_text_research.md`
 
-That handoff's old image and wiring blockers are superseded by the final implementation package. No quote, remark, title, audio, image, or route-text fallback was used. The settings-aware sound variants, audio ID table, image selector, explicit fractured and weakened route descriptions, durable 14-day presentation context, day-15 cleanup, reveal effect, and audio catalogue row are fully wired. The holistic verdict is owned by `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`; this super-event record does not replace it.
+That handoff's old image and wiring blockers are superseded by the final implementation package. No quote, remark, title, audio, image, or route-text fallback was used. The settings-aware music variants, audio ID table, image selector, explicit fractured and weakened route descriptions, durable 14-day presentation context, day-15 cleanup, reveal effect, and audio catalogue row are fully wired. The holistic verdict is owned by `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`; this super-event record does not replace it.

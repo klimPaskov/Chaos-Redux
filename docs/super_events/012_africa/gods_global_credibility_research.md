@@ -14,7 +14,7 @@ It is a global-response role: the description shows several governments answerin
 | Field | Value |
 | --- | --- |
 | Display slot | `118` (`africa_world_super_event.gods_global_credibility_slot`), free in the 2026-10-05 scan of every `super_event_visible` getter and script-constant slot reservation (used or reserved: 1-3, 5-24, 49-53, 59-77, 82-87, 90-105, 108, 109, 111-117) |
-| Audio id | `118` (`africa_world_super_event.gods_global_credibility_audio`), free in the same scan of `sound/*.asset` (`chaosx_super_event_<id>_sound_*`); the base sound and six volume wrappers are installed in `sound/chaosx_sound.asset` |
+| Audio id | `118` (`africa_world_super_event.gods_global_credibility_audio`), free in the same scan of the music keys (`chaosx_super_event_<id>_*`); the six volume variants are installed in `music/chaosx_super_event_music.asset` |
 | Localisation | `chaosx_super_event.118.t`, `.q`, `.a`, `.d` in `localisation/english/012_africa_super_events_l_english.yml` |
 | Getters | slot 118 rows in `GetSuperEventImage`, `GetSuperEventTitle`, `GetSuperEventQuote`, `GetSuperEventRemark` and `GetSuperEventDesc` (`common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`) |
 | Image sprite | `GFX_super_event_012_africa_gods_global_credibility` in `interface/012_africa_event_pictures.gfx`, texture `gfx/super_events/012_africa/super_event_012_africa_gods_global_credibility.dds` |
@@ -83,7 +83,7 @@ Prompt summary: a painted historical illustration in the style of the reference 
 
 Selected: the complete 104.068481-second White House performance of *Nkosi Sikelel’ iAfrika* (Enoch Sontonga, 1897), performed by the United States military band and recorded by White House Television on 4 October 1994.
 The original FLAC is `docs/super_events/source_audio/012_africa/role_05_nkosi_sikelel_iafrika_white_house_1994_source.flac`, SHA-256 `469F76CBCF528EC9B01BA8F15BDEBE8EC5EB17C3C201EC0E1F570C61B291C2D7`.
-The runtime WAV is `sound/012_africa/super_event_118_gods_of_africa.wav`, SHA-256 `85D077D977C38D67159DE9B9663ABE4BA34A9451168DBFE16C203DF9C2F56F10`, stereo PCM16 44.1 kHz.
+The original WAV (LFS archive) is `Documents/chaos_redux_lfs_archive/sound/012_africa/super_event_118_gods_of_africa.wav`, SHA-256 `85D077D977C38D67159DE9B9663ABE4BA34A9451168DBFE16C203DF9C2F56F10`, stereo PCM16 44.1 kHz.
 It preserves the whole performance, applies -6.7 dB gain and 0.1/2-second qsin fades, and has -19 LUFS integrated loudness and -6.6 dBTP true peak.
 The cue's mean level (-22.6 dBFS) is within the existing Event 012 family (-22.4 to -19.9 dBFS), with a lower peak than those references.
 The complete 1:44 performance is an intentional duration choice within the skill's one to two minute range, replacing the earlier approximate 110 to 120-second target.
@@ -95,9 +95,8 @@ The [NARA permissions guide](https://www.archives.gov/research/motion-pictures/p
 This record does not describe that federal status as a worldwide Creative Commons waiver.
 The primary source/rights, metadata, rejected candidates and edit details are preserved in `docs/plans/012_africa_plans/subagent_handoffs/takeover_super_audio_2026-10-06.md`.
 
-The unique base definition is `chaosx_super_event_118_gods_of_africa_track`.
-Its six settings-aware wrappers are `chaosx_super_event_118_sound_0_5`, `_1_0`, `_1_5`, `_2_0`, `_2_5` and `_3_0` in the Effects category.
+Its six settings-aware music variants are `chaosx_super_event_118_0_5`, `_1_0`, `_1_5`, `_2_0`, `_2_5` and `_3_0`, plus the silent `chaosx_super_event_118_0`, all playing `music/012_africa/super_event_118_gods_of_africa.ogg`.
 Both Strength refresh and activation call the one-time emitter.
-The Event 012 presenter selects audio ID 118 and uses `play_current_super_event_audio`, which calls the existing settings-aware sound helper and respects mute.
+The Event 012 presenter selects audio ID 118 and uses `play_current_super_event_audio`, which calls the existing settings-aware music helper and respects mute.
 The canonical catalogue row in `music/chaosx_music_track_list.html` records slot/audio ID 118, attribution, source and final hashes.
 No audible audition was performed by the agents, and the exact in-game playback check remains in the takeover status report.

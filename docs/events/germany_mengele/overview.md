@@ -232,7 +232,7 @@ Integration:
 - `interface/chaosx_pictures.gfx`
 - `interface/chaosx_super_events.gfx`
 - `interface/germany_mengele_world_order.gfx`
-- `sound/chaosx_sound.asset`
+- `music/chaosx_super_event_music.asset`
 - `localisation/english/germany_mengele_l_english.yml`
 - `localisation/english/chaosx_chaos_meter_l_english.yml`
 - `docs/spreadsheets/chaos_redux_events_catalog.xlsx`
@@ -256,9 +256,7 @@ The super-event image is registered under the final filename and currently conta
 Registered super-event audio:
 
 - slot and audio ID: `12`
-- music file: `sound/003_holy_realm/super_event_12_angel_directorate.wav`
-- sound definition: `chaosx_super_event_angel_directorate_track`
-- sound derivative: `sound/003_holy_realm/super_event_12_angel_directorate.wav`
+- music file: `music/003_holy_realm/super_event_12_angel_directorate.ogg`
 - source, license, duration, and conversion notes: `docs/super_events/super_event_audio_packages.md`
 
 Registered leader portrait:
