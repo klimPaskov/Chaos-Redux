@@ -53,6 +53,11 @@ for path in ['common/script_constants/national_policy_constants.txt', 'common/sc
                     C['constant:' + group.key + '.' + n.key] = float(n.value)
                 except ValueError:
                     pass
+# File-scoped @ macros of the law file (ai_will_do base factor does not parse script
+# constants, so common/ideas/national_policy_laws.txt defines @national_policy_ai_base = 1;
+# introduced by 87e19f0a2f replacing the removed constant:national_policy_ai.base).
+for m in re.finditer(r'(?m)^(@\w+)\s*=\s*([0-9.]+)\s*$', (ROOT / 'common/ideas/national_policy_laws.txt').read_text(encoding='utf-8-sig')):
+    C[m[1]] = float(m[2])
 I = {}
 S = {}
 for slot in next((n.value for n in parse('common/ideas/national_policy_laws.txt') if n.key == 'ideas')):
@@ -94,6 +99,7 @@ class R:
     def num(self, v):
         if v in C:
             return C[v]
+        assert not v.startswith(('@', 'constant:')), ('Unresolved constant token', v)
         try:
             return float(v)
         except ValueError:
@@ -345,6 +351,7 @@ scenarios['quiet_default'] = {i: r.score(i) for i in I}
 assert all((v == 0 or i in r.ideas for (i, v) in scenarios['quiet_default'].items()))
 r.facts.update({'migration_pending_reception_issue_is_valid': True, 'migration_reception_capacity_is_valid': True})
 r.v.update({'migration_reception_load': 0, 'migration_reception_capacity': 100})
+# 64 = @national_policy_ai_base (1) * constant:national_policy_ai.response (64).
 assert r.score('national_policy_reception_humanitarian') == 64
 scenarios['offer_with_capacity'] = {i: r.score(i) for i in I if S[i] == 'refugee_reception'}
 r.facts['migration_decision_reception_capacity_exhausted_is_valid'] = True

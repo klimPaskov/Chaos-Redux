@@ -181,6 +181,7 @@ class Scope:
     variables: dict = field(default_factory=dict)
     arrays: dict = field(default_factory=dict)
     flags: set = field(default_factory=set)
+    ideas: set = field(default_factory=set)  # Explicit per-scope national policy ideas.
     techs: set = field(default_factory=set)
     projects: set = field(default_factory=set)
     wars: set = field(default_factory=set)
@@ -390,6 +391,10 @@ class Machine:
             return v in self.targets
         if k == "has_country_flag":
             return v in self.current.flags
+        if k == "has_idea":
+            if self.current.kind != "country":
+                raise AssertionError("COUNTRY idea predicate outside COUNTRY")
+            return v in self.current.ideas
         if k == "has_global_flag":
             return v in self.global_flags
         if k == "has_state_flag":
@@ -717,6 +722,8 @@ class ChemicalReceipts(unittest.TestCase):
     def configure(self, agent="chlorine", route="strategic_chemical_raid", who=None):
         who = who or self.actor
         kind, tech, project = AGENTS[agent]
+        # Unrestricted authorization is the native national policy law, not a variable.
+        who.ideas = {"national_policy_chemical_unrestricted"}
         who.techs = {"chemical_air_interdiction"}
         who.projects = set()
         if tech:
@@ -724,7 +731,6 @@ class ChemicalReceipts(unittest.TestCase):
         if project:
             who.projects.add(project)
         who.variables.update({"cbrn_air_payload_agent": self.c(f"cbrn_agent.{agent}"),
-                              "cbrn_use_policy": self.c("cbrn_use_policy.unrestricted_authorization"),
                               "cbrn_payload_request_consumer": self.c("cbrn_payload_receipt_consumer.missiles"),
                               "cbrn_payload_request_nonce": D(1),
                               "cbrn_payload_request_site": self.site,
@@ -766,7 +772,7 @@ class ChemicalReceipts(unittest.TestCase):
 
     def snapshot_scope(self, who):
         return (dict(who.variables), {key: list(values) for key, values in who.arrays.items()},
-                set(who.flags), set(who.techs), set(who.projects), dict(who.stocks), dict(who.timed_flags))
+                set(who.flags), set(who.ideas), set(who.techs), set(who.projects), dict(who.stocks), dict(who.timed_flags))
 
     def prepare_other_actor_hold(self, agent="chlorine"):
         self.configure(agent, who=self.enemy)
@@ -852,7 +858,7 @@ class ChemicalReceipts(unittest.TestCase):
                 elif reason == "profile":
                     self.actor.variables["cbrn_air_payload_agent"] = self.c("cbrn_agent.phosgene")
                 elif reason == "policy":
-                    self.actor.variables["cbrn_use_policy"] = ZERO
+                    self.actor.ideas.clear()
                 elif reason == "source":
                     self.site.controller = self.foreign
                 elif reason == "missile_custody":
@@ -1281,7 +1287,7 @@ class ChemicalReceipts(unittest.TestCase):
                 elif reason == "profile_busy":
                     self.actor.flags.add("cbrn_air_profile_change_in_progress")
                 elif reason == "policy":
-                    self.actor.variables["cbrn_use_policy"] = ZERO
+                    self.actor.ideas.clear()
                 elif reason == "war":
                     self.enemy.wars.clear()
                 elif reason == "target":
@@ -1310,7 +1316,7 @@ class ChemicalReceipts(unittest.TestCase):
                 elif reason == "profile":
                     self.actor.variables["cbrn_air_payload_agent"] = self.c("cbrn_agent.phosgene")
                 elif reason == "policy":
-                    self.actor.variables["cbrn_use_policy"] = ZERO
+                    self.actor.ideas.clear()
                 elif reason == "source":
                     self.site.controller = self.foreign
                 elif reason == "model":
@@ -1419,7 +1425,7 @@ class ChemicalReceipts(unittest.TestCase):
         self.reserve()
         self.actor.techs.clear()
         self.actor.projects.clear()
-        self.actor.variables["cbrn_use_policy"] = ZERO
+        self.actor.ideas.clear()
         self.enemy.wars.clear()
         self.call("cbrn_return_payload_reservation", root=self.foreign)
         self.assert_result("accepted")
