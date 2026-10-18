@@ -8,7 +8,7 @@ This map routes Event 005 documentation and distinguishes current evidence from 
 
 ## 2026-10-05 Current Reconciliation
 
-- `docs/events/005_soviet_collapse_implementation_audit.md` is the current implementation and validation-status report. It separates user-authorized work, source facts, historical evidence, unaccepted design, and current blockers.
+- `docs/plans/005_soviet_collapse_plans/implementation_audit_2026-10-05.md` is the current implementation and validation-status report. It separates user-authorized work, source facts, historical evidence, unaccepted design, and current blockers.
 - `chaosx.nr5.1` now guards its normal opening dispatch with SOV existence, non-capitulation, and owned-state checks, then routes absent, capitulated, or state-less SOV to `chaosx.nr5.138` in the Settings-selected root country. The event and localization keys are present in source; this narrow implementation fact does not establish completion of the full event chain.
 - The latest focus audit reports seven of 43 trees with authored-layout failures: Ukraine, generic breakaway, internal republic, Caucasus, Central Asia, Moldova, and NLC. It also leaves the eligible fallback-country set unresolved for `soviet_collapse_breakaway_focus_tree` because the release pool is dynamic. The detailed 2026-08-21 geometry handoff remains useful historical evidence, not a current MCP artifact.
 - The 2026-08-09 probability handoff remains historical scenario evidence. A fresh `hoi4.probability_inspect` timed out after 600 seconds without an artifact or revision, so current probability status is blocked. Event inspect/render/compare and decision inspect likewise returned no current artifacts or revisions.
@@ -110,7 +110,7 @@ This map routes Event 005 documentation and distinguishes current evidence from 
 | Source | Why accepted |
 | --- | --- |
 | `docs/events/005_soviet_collapse/overview.md` | Current compact overview and completion boundary. It is a summary, not a blanket deletion of older evidence. |
-| `docs/events/005_soviet_collapse_implementation_audit.md` | Current 2026-10-05 source, audit, and route-status report. |
+| `docs/plans/005_soviet_collapse_plans/implementation_audit_2026-10-05.md` | Current 2026-10-05 source, audit, and route-status report. |
 | `docs/events/005_soviet_collapse/patron_rivalry_and_reconsolidation.md` | Current implementation note for Patron Rivalry and Reconsolidation and Aftermath. It records that no further implementation is required for these chains. |
 | `docs/plans/005_soviet_collapse_plans/documentation_state.md` | Current resume/status packet, accepted constraints, known contradictions, completed design labels, and terminal rewrite boundary. |
 | `docs/plans/005_soviet_collapse_plans/source_of_truth_map.md` | Current documentation routing map. |

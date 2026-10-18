@@ -4,7 +4,7 @@ Updated: 2026-10-05
 Role: `chaosx_documentation_curator`
 Scope: documentation-only current-state ledger for Event005 Soviet Collapse.
 
-This file is a resumability aid. The 2026-08-09 completion and probability notes below are historical snapshots; current blockers are recorded first and in `docs/events/005_soviet_collapse_implementation_audit.md`.
+This file is a resumability aid. The 2026-08-09 completion and probability notes below are historical snapshots; current blockers are recorded first and in `docs/plans/005_soviet_collapse_plans/implementation_audit_2026-10-05.md`.
 
 ## Current 2026-10-05 Audit
 
@@ -62,7 +62,7 @@ This file is a resumability aid. The 2026-08-09 completion and probability notes
 
 ## Historical 2026-08-09 Resume Packet, Superseded By Current Audit
 
-The historical packet below predates the 2026-10-05 audit. Current priorities are recorded in `docs/events/005_soviet_collapse_implementation_audit.md`.
+The historical packet below predates the 2026-10-05 audit. Current priorities are recorded in `docs/plans/005_soviet_collapse_plans/implementation_audit_2026-10-05.md`.
 
 1. The 2026-08-09 scenario-specific probability handoff recorded zero unresolved inputs for its named scenarios; current probability revalidation is blocked.
 2. The bounded Command and Corridors loop, selected-target lifecycle, Patron Rivalry, Reconsolidation and Aftermath, UWR/KMB packages, map consumers, and catalog parity remain supported by their dated handoffs. Whole-package asset provenance is unresolved.
@@ -106,7 +106,7 @@ The historical packet below predates the 2026-10-05 audit. Current priorities ar
 | Patron Rivalry | Events `chaosx.nr5.50` through `chaosx.nr5.70` are present in the current event source with the documented patron desks, rivalry states, and persistent outputs. | Implemented; no further Event 005 implementation required. |
 | Reconsolidation and Aftermath | Events `chaosx.nr5.96` and `chaosx.nr5.97` are present in the current event source with settlement and aftermath branches. | Implemented; no further Event 005 implementation required. Later unrelated events may consume persistent flags. |
 | Successor Relations | The Black International, Free Soviet Congress, and Iron Production Bloc founding decisions, shared helpers, faction membership lifecycle, route-aware AI, and charter events `chaosx.nr5.33`, `chaosx.nr5.34`, and `chaosx.nr5.37` are present in current source. | Implemented; the former queued design label is closed. |
-| Focus layout diagnostics | Fresh 2026-10-05 audit reports seven of 43 tree layouts incomplete; see `docs/events/005_soviet_collapse_implementation_audit.md`. | Unresolved; semantic reward depth and visual layout are separate findings. |
+| Focus layout diagnostics | Fresh 2026-10-05 audit reports seven of 43 tree layouts incomplete; see `docs/plans/005_soviet_collapse_plans/implementation_audit_2026-10-05.md`. | Unresolved; semantic reward depth and visual layout are separate findings. |
 | Probability completion | The 2026-08-09 handoff records complete historical scenario results. Fresh probability inspection timed out after 600 seconds without an artifact or revision. | Historical evidence retained; current revalidation blocked. |
 | Event and decision MCP coverage | Fresh event inspect/render/compare and decision inspect calls stalled without artifacts or revisions. | Blocked; source review does not replace the required MCP evidence. |
 | Localization | The final handoff records 10,600 unique keys, no duplicates, BOM/CRLF, 159 report/news rewrites, `.138` keys, 60 broad G3 rewrites, and 19 additional source-backed rewrites. One hundred initial G3 candidates had no consumers across 2,536 current source files and remain dormant; 232 other matches were reviewed and retained as in-world or grammatical. | Implemented for the audited scope; see the exact-key inventory and per-string before/after rationale in `subagent_handoffs/2026_10_05_event005_report_news_prose_patch.md`. |

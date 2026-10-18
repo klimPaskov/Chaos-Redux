@@ -106,7 +106,7 @@ The separate full-ledger, focus-tree, balance, mission and validation report fil
 
 Two documents carry the coverage obligation:
 
-- `docs/events/005_soviet_collapse_implementation_audit.md` is the single current implementation, coverage and validation-status report.
+- `docs/plans/005_soviet_collapse_plans/implementation_audit_2026-10-05.md` is the single current implementation, coverage and validation-status report.
 - `docs/assets/005_soviet_collapse/manifest.md` is the asset manifest.
   It is absent in the current checkout, so asset provenance remains `unresolved`.
 
