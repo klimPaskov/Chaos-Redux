@@ -15,7 +15,7 @@ Overall verdict: **PASS**
 ## Evidence
 
 - Final advisor DDS: `gfx/interface/ideas/016_brilliant_scientist/idea_doctor_warren_kruger_stage_0.dds`
-- Identity source DDS: `gfx/leaders/KRG/leader_doctor_warren_kruger_stage_0.dds`
+- Identity source DDS: `gfx/leaders/016_brilliant_scientist/leader_doctor_warren_kruger_stage_0.dds`
 - Canonical advisor references: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/advisors/contact_sheet.png`
 - Native decoded advisor evidence: `C:/Users/klimp/AppData/Local/Temp/kruger_advisor_manual_preview.png`
 - Nearest-neighbour enlarged advisor evidence: `C:/Users/klimp/AppData/Local/Temp/kruger_advisor_manual_preview_10x.png`

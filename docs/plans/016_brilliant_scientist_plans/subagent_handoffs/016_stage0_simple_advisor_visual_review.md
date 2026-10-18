@@ -28,7 +28,7 @@ The reproducible command is:
 
 ```powershell
 python -B .agents/skills/chaos-redux-event-assets/tools/create_advisor_icon.py `
-	--source gfx/leaders/KRG/leader_doctor_warren_kruger_stage_0.dds `
+	--source gfx/leaders/016_brilliant_scientist/leader_doctor_warren_kruger_stage_0.dds `
 	--portrait-size 33 46 `
 	--rotation -6 `
 	--portrait-offset -1 -1 `

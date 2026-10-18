@@ -54,7 +54,7 @@ The `156x210` stage-0 file is therefore the shared scientist `large` portrait an
 | `docs/assets/016_brilliant_scientist/source_dds/originals/portrait_generic_biowarfare_europe_male_01.dds` | `156x210`, eight mips | `5D0CF3F973B6099DB895C96A6FED9544F30873076985DDF885032793C5183075` | Immutable source copy |
 | `docs/assets/016_brilliant_scientist/source_png/portraits/portrait_generic_biowarfare_europe_male_01_decoded.png` | `156x210` | `13BE2B86DB91C89A2C3588DC7B2A22D64563DB9B8632AB82DCC334272114318D` | Main-mip RGBA inspection and generation reference |
 | `docs/assets/016_brilliant_scientist/processed_png/portraits/leader_doctor_warren_kruger_stage_0.png` | `156x210` | `13BE2B86DB91C89A2C3588DC7B2A22D64563DB9B8632AB82DCC334272114318D` | Pixel-identical processed preview for the shared large portrait |
-| `gfx/leaders/KRG/leader_doctor_warren_kruger_stage_0.dds` | `156x210`, eight mips | `5D0CF3F973B6099DB895C96A6FED9544F30873076985DDF885032793C5183075` | Byte-identical stage-0 runtime copy |
+| `gfx/leaders/016_brilliant_scientist/leader_doctor_warren_kruger_stage_0.dds` | `156x210`, eight mips | `5D0CF3F973B6099DB895C96A6FED9544F30873076985DDF885032793C5183075` | Byte-identical stage-0 runtime copy |
 | `docs/assets/016_brilliant_scientist/processed_png/portraits/idea_doctor_warren_kruger_stage_0.png` | `65x67` | `2725A4E73BBBB230E80254C9E3D23A55C06245173509DCD6332C6AAB863C9980` | Face-preserving advisor composition |
 | `gfx/interface/ideas/016_brilliant_scientist/idea_doctor_warren_kruger_stage_0.dds` | `65x67`, one level | `487F5D52167543FAFB998A103C1576321AC1DE67FFFDCF804F3B3AAF55122503` | Standard converter output, legacy uncompressed BGRA |
 
@@ -72,7 +72,7 @@ Target file: `interface/016_brilliant_scientist.gfx`
 spriteTypes = {
 	spriteType = {
 		name = "GFX_portrait_KRG_doctor_warren_kruger_stage_0"
-		texturefile = "gfx/leaders/KRG/leader_doctor_warren_kruger_stage_0.dds"
+		texturefile = "gfx/leaders/016_brilliant_scientist/leader_doctor_warren_kruger_stage_0.dds"
 	}
 
 	spriteType = {

@@ -29,12 +29,12 @@ There are 15 final `156x210` leader DDS files including Stage 0 and 15 final `65
 
 | Route output | Frames | Runtime sheet | Static fallback |
 | --- | ---: | --- | --- |
-| Clone | 10 | `gfx/interface/leader_frames/016_brilliant_scientist/doctor_warren_kruger_stage_4_clone_sheet.dds` | `gfx/leaders/KRG/leader_doctor_warren_kruger_stage_4_clone.dds` |
-| Machine | 10 | `gfx/interface/leader_frames/016_brilliant_scientist/doctor_warren_kruger_stage_4_machine_sheet.dds` | `gfx/leaders/KRG/leader_doctor_warren_kruger_stage_4_machine.dds` |
-| Temporal | 12 | `gfx/interface/leader_frames/016_brilliant_scientist/doctor_warren_kruger_stage_4_temporal_sheet.dds` | `gfx/leaders/KRG/leader_doctor_warren_kruger_stage_4_temporal.dds` |
-| Xenobiological | 10 | `gfx/interface/leader_frames/016_brilliant_scientist/doctor_warren_kruger_stage_4_xenobiological_sheet.dds` | `gfx/leaders/KRG/leader_doctor_warren_kruger_stage_4_xenobiological.dds` |
-| Alien-revealed | 10 | `gfx/interface/leader_frames/016_brilliant_scientist/doctor_warren_kruger_stage_4_alien_revealed_sheet.dds` | `gfx/leaders/KRG/leader_doctor_warren_kruger_stage_4_alien_revealed.dds` |
-| Synthesis | 12 | `gfx/interface/leader_frames/016_brilliant_scientist/doctor_warren_kruger_stage_4_synthesis_sheet.dds` | `gfx/leaders/KRG/leader_doctor_warren_kruger_stage_4_synthesis.dds` |
+| Clone | 10 | `gfx/interface/leader_frames/016_brilliant_scientist/doctor_warren_kruger_stage_4_clone_sheet.dds` | `gfx/leaders/016_brilliant_scientist/leader_doctor_warren_kruger_stage_4_clone.dds` |
+| Machine | 10 | `gfx/interface/leader_frames/016_brilliant_scientist/doctor_warren_kruger_stage_4_machine_sheet.dds` | `gfx/leaders/016_brilliant_scientist/leader_doctor_warren_kruger_stage_4_machine.dds` |
+| Temporal | 12 | `gfx/interface/leader_frames/016_brilliant_scientist/doctor_warren_kruger_stage_4_temporal_sheet.dds` | `gfx/leaders/016_brilliant_scientist/leader_doctor_warren_kruger_stage_4_temporal.dds` |
+| Xenobiological | 10 | `gfx/interface/leader_frames/016_brilliant_scientist/doctor_warren_kruger_stage_4_xenobiological_sheet.dds` | `gfx/leaders/016_brilliant_scientist/leader_doctor_warren_kruger_stage_4_xenobiological.dds` |
+| Alien-revealed | 10 | `gfx/interface/leader_frames/016_brilliant_scientist/doctor_warren_kruger_stage_4_alien_revealed_sheet.dds` | `gfx/leaders/016_brilliant_scientist/leader_doctor_warren_kruger_stage_4_alien_revealed.dds` |
+| Synthesis | 12 | `gfx/interface/leader_frames/016_brilliant_scientist/doctor_warren_kruger_stage_4_synthesis_sheet.dds` | `gfx/leaders/016_brilliant_scientist/leader_doctor_warren_kruger_stage_4_synthesis.dds` |
 
 Every animation frame is `156x210`.
 

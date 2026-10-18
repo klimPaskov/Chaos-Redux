@@ -154,7 +154,7 @@ Kruger AI no longer waits for a second authority board. The human scientific rep
 No new art is required for this tranche.
 
 - Decisions reuse registered generic decision sprites.
-- The machine government reuses `gfx/leaders/KRG/leader_doctor_warren_kruger_stage_4_machine.dds` through `GFX_portrait_KRG_doctor_warren_kruger_stage_4_machine` in `interface/016_brilliant_scientist.gfx`.
+- The machine government reuses `gfx/leaders/016_brilliant_scientist/leader_doctor_warren_kruger_stage_4_machine.dds` through `GFX_portrait_KRG_doctor_warren_kruger_stage_4_machine` in `interface/016_brilliant_scientist.gfx`.
 - Route command offices reuse the existing vanilla generic scientist DDS shelf through the stable `GFX_portrait_generic_*` names.
 - Canonical biological raids and intelligence operations keep their existing agent, equipment, map, and operation artwork.
 
