@@ -103,7 +103,8 @@ class Runtime:
                 result = not self.condition(data, actor)
             elif key == "OR":
                 result = any(self.condition([item], actor) for item in data)
-            elif key == "AND":
+            elif key in ("AND", "hidden_trigger"):
+                # hidden_trigger only hides the tooltip; the engine evaluates it like AND.
                 result = self.condition(data, actor)
             elif key == "any_of_scopes":
                 array = dict(data)["array"]
