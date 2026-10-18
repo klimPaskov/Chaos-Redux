@@ -2,8 +2,9 @@
 
 ## Management-window presentation
 
-Camp Administration shares the dark red Chaos Redux management-window skin with Migration and Famine: the rust-metal frame, black title slot, inset cards, rust buttons, red selection plates and brown-grey locked buttons are painted from the Welcome window palette.
-The skin lives in `interface/humanitarian_panels.gfx` (`GFX_chaosx_panel_frame`, `_card`, `_button`, `_accent`, `_locked` and `_title`, textures in `gfx/interface/humanitarian_panels/chaosx_panel_*.dds`); the window is 900×564 so the content clears the 48-pixel base bar.
+Camp Administration shares the vanilla-framed management window with Migration and Famine, in the Chaos Redux colours of the Welcome window.
+The title bar is a native-size crop of the Welcome window art (`GFX_chaosx_welcome_bg`, rust metal with its black title slot) inside a clipping container, and tabs, the selected-view plate and list selection use `GFX_humanitarian_panel_tab`, a cornered tile of the vanilla `sort_button_202x29.dds` (frame 1 idle, frame 2 the green chevron active state), the same art as the Chaos Meter and event log tabs.
+Cards, buttons and locked buttons keep the vanilla `GFX_tiled_*` sprites.
 Its Administration, Locations, Records and policy pickers preserve existing actions and accounting, with status colors, complete scroll rows and concise text.
 There is no manual refresh control or hourly presentation observer.
 Native GUI state reevaluates each tick, and synchronous owner publications rebuild cached display fields after their owning transaction settles, including while the game is paused.
