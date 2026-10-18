@@ -1,6 +1,6 @@
 # Visual component catalog
 
-These bundled PNG and PSD files are available offline in the asset skill. Inspect the matching vanilla or Chaos Redux consumer and the canonical reference family before using a component. The local filename is the source identifier for this workflow.
+These bundled PNG files are available offline in the asset skill; the layered PSD sources listed below are ignored by Git and exist only in a local checkout that has them. Inspect the matching vanilla or Chaos Redux consumer and the canonical reference family before using a component. The local filename is the source identifier for this workflow.
 
 Use `reference` items to guide composition and style. A `background_template` may be kept as a backdrop layer beneath original ImageGen subject art when its canvas, alpha, and presentation fit the actual consumer. Preserve the background layer, ImageGen source, processed preview, and final DDS separately.
 
