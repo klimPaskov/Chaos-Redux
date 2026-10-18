@@ -41,13 +41,13 @@ The rebellion resolver is a country-scoped 90-day mission. It becomes eligible o
 
 | Tier | Conditions | Revolt probability per pulse |
 | --- | --- | ---: |
-| Low | Any eligible state outside the medium and high tiers, including six or seven arrivals at the base gates and at least ten arrivals with chaos 600 to 799 and Pact Strain 30 to 49 | 10 percent |
-| Medium | Eight or nine arrivals, Pact Strain at least 50, or chaos at least 800, unless the high tier also applies | 20 percent |
+| Low | Any eligible state outside the medium and high tiers, including six or seven arrivals at the base gates | 10 percent |
+| Medium | At least eight arrivals, Pact Strain at least 50, or chaos at least 800, unless the high tier also applies | 20 percent |
 | High | At least ten arrivals and chaos at least 800 | 40 percent |
 
 The resolver checks the high tier before the medium tier and derives the no-revolt weight from a 100-point total. A failed roll reactivates only that host’s mission. Landing and Accord refresh calls never restart an already-active pulse, so each live mission retains its original 90-day deadline. There is no daily, weekly, or monthly country scan.
 
-The otherwise uncovered state with at least ten arrivals, chaos 600 to 799, and Pact Strain 30 to 49 is explicitly locked to the 10-percent low tier. The medium arrival clause remains exactly eight or nine rather than broadening to every value above eight.
+An eligible pulse with at least ten arrivals, chaos 600 to 799, and Pact Strain 30 to 49 uses the 20-percent medium tier. The 40-percent high tier retains precedence when both its arrival and Chaos thresholds hold, following the final completion contract’s at-least-eight medium threshold.
 
 On rebellion, `chaosx.nr16.47` calls `dhrondan_start_revolt = yes` in the pact-host country scope. Only the parent-owned verified-success branch sets `dhrondan_rebellion_bridge_called` after DHR exists and owns a viable marked state. If formation cannot commit, the caller clears the unresolved trigger and refreshes the country pulse so the transaction can retry without a false success receipt. The country effect reads the locked landing-state and host ledgers and owns all DHR creation, transfer, claim, capital, unit, stockpile, initial-force, and formation-news side effects.
 
