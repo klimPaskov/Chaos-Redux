@@ -127,6 +127,415 @@ country_event = {
 	}
 
 	option = {
+		trigger = { is_ai = no }
+		name = chaosx.nr29.1.a
+		custom_effect_tooltip = chaosx.nr29.1.a.tt
+		ai_chance = {
+			base = constant:riches_found_ai_weight.policy_public_development
+			modifier = { add = constant:riches_found_ai_weight.policy_democratic_public_add has_government = democratic }
+		}
+		hidden_effect = {
+			event_target:riches_found_mine_state = {
+				set_state_flag = riches_found_opening_choice_made
+				set_variable = { riches_found_policy = constant:riches_found_policy.public_development }
+				add_to_variable = { riches_found_mine_development = constant:riches_found_value.two }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_value.negative_one }
+				add_to_variable = { riches_found_local_order = constant:riches_found_value.two }
+				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_value.four }
+				riches_found_clamp_mine_values = yes
+				riches_found_refresh_mine_presentation = yes
+				riches_found_refresh_mine_contribution = yes
+			}
+		}
+	}
+
+	option = {
+		trigger = { is_ai = no }
+		name = chaosx.nr29.1.b
+		custom_effect_tooltip = chaosx.nr29.1.b.tt
+		ai_chance = {
+			base = constant:riches_found_ai_weight.policy_state_extraction
+			modifier = { add = constant:riches_found_ai_weight.policy_authoritarian_state_add OR = { has_government = fascism has_government = communism } }
+			modifier = { add = constant:riches_found_ai_weight.policy_major_state_add is_major = yes }
+			modifier = { add = constant:riches_found_ai_weight.policy_war_state_add has_war = yes }
+		}
+		hidden_effect = {
+			event_target:riches_found_mine_state = {
+				set_state_flag = riches_found_opening_choice_made
+				set_variable = { riches_found_policy = constant:riches_found_policy.state_extraction }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_value.four }
+				add_to_variable = { riches_found_mine_development = constant:riches_found_value.two }
+				add_to_variable = { riches_found_local_order = constant:riches_found_value.one }
+				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_value.negative_one }
+				riches_found_clamp_mine_values = yes
+				riches_found_refresh_mine_presentation = yes
+				riches_found_refresh_mine_contribution = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx_event_more_options
+		trigger = { is_ai = no }
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr29.92902 } }
+	}
+
+	option = {
+		name = chaosx_event_ai_resolution
+		trigger = { is_ai = yes }
+		hidden_effect = { country_event = { id = chaosx.nr29.92999 } }
+	}
+
+	after = {
+		# Navigation leaves the opening notice intact until a policy is chosen.
+		if = {
+			limit = {
+				is_ai = no
+				has_event_target = riches_found_mine_state
+				event_target:riches_found_mine_state = { has_state_flag = riches_found_opening_choice_made }
+			}
+			if = {
+				limit = { has_event_target = riches_found_mine_state }
+				event_target:riches_found_mine_state = {
+					clr_state_flag = riches_found_opening_notice_pending
+					riches_found_refresh_mine_presentation = yes
+					riches_found_refresh_mine_contribution = yes
+					riches_found_refresh_evolution_gates = yes
+				}
+			}
+			clr_country_flag = riches_found_discovery_pending
+		}
+	}
+}
+
+# Opening policy pages reuse the discovery context without committing another mine.
+# The AI companion deliberately has no hidden flag: hidden events pick option one.
+
+country_event = {
+	id = chaosx.nr29.92901
+	title = chaosx.nr29.1.t
+	desc = {
+		text = chaosx.nr29.1.desc.evolution_iii
+		trigger = { event_target:riches_found_mine_state = { has_state_flag = riches_found_prefire_evolution_iii } }
+	}
+	desc = {
+		text = chaosx.nr29.1.desc.evolution_ii
+		trigger = {
+			event_target:riches_found_mine_state = {
+				has_state_flag = riches_found_prefire_evolution_ii
+				NOT = { has_state_flag = riches_found_prefire_evolution_iii }
+			}
+		}
+	}
+	desc = {
+		text = chaosx.nr29.1.desc.evolution_i
+		trigger = {
+			event_target:riches_found_mine_state = {
+				has_state_flag = riches_found_prefire_evolution_i
+				NOT = { has_state_flag = riches_found_prefire_evolution_ii }
+				NOT = { has_state_flag = riches_found_prefire_evolution_iii }
+			}
+		}
+	}
+	desc = {
+		text = chaosx.nr29.1.desc
+		trigger = {
+			event_target:riches_found_mine_state = {
+				NOT = { has_state_flag = riches_found_prefire_evolution_i }
+				NOT = { has_state_flag = riches_found_prefire_evolution_ii }
+				NOT = { has_state_flag = riches_found_prefire_evolution_iii }
+			}
+		}
+	}
+	# The report shows the deposit profile of the mine just found.
+	picture = "[GetRichesFoundDiscoveryPicture]"
+	is_triggered_only = yes
+
+	trigger = { is_ai = no }
+
+	immediate = {
+		hidden_effect = {
+			# Rebind only the picture getter to this page's inherited mine context.
+			if = {
+				limit = { has_event_target = riches_found_mine_state }
+				set_variable = { riches_found_last_discovered_mine = event_target:riches_found_mine_state }
+			}
+		}
+	}
+
+	option = {
+		trigger = { is_ai = no }
+		name = chaosx.nr29.1.a
+		custom_effect_tooltip = chaosx.nr29.1.a.tt
+		ai_chance = {
+			base = constant:riches_found_ai_weight.policy_public_development
+			modifier = { add = constant:riches_found_ai_weight.policy_democratic_public_add has_government = democratic }
+		}
+		hidden_effect = {
+			event_target:riches_found_mine_state = {
+				set_state_flag = riches_found_opening_choice_made
+				set_variable = { riches_found_policy = constant:riches_found_policy.public_development }
+				add_to_variable = { riches_found_mine_development = constant:riches_found_value.two }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_value.negative_one }
+				add_to_variable = { riches_found_local_order = constant:riches_found_value.two }
+				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_value.four }
+				riches_found_clamp_mine_values = yes
+				riches_found_refresh_mine_presentation = yes
+				riches_found_refresh_mine_contribution = yes
+			}
+		}
+	}
+
+	option = {
+		trigger = { is_ai = no }
+		name = chaosx.nr29.1.b
+		custom_effect_tooltip = chaosx.nr29.1.b.tt
+		ai_chance = {
+			base = constant:riches_found_ai_weight.policy_state_extraction
+			modifier = { add = constant:riches_found_ai_weight.policy_authoritarian_state_add OR = { has_government = fascism has_government = communism } }
+			modifier = { add = constant:riches_found_ai_weight.policy_major_state_add is_major = yes }
+			modifier = { add = constant:riches_found_ai_weight.policy_war_state_add has_war = yes }
+		}
+		hidden_effect = {
+			event_target:riches_found_mine_state = {
+				set_state_flag = riches_found_opening_choice_made
+				set_variable = { riches_found_policy = constant:riches_found_policy.state_extraction }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_value.four }
+				add_to_variable = { riches_found_mine_development = constant:riches_found_value.two }
+				add_to_variable = { riches_found_local_order = constant:riches_found_value.one }
+				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_value.negative_one }
+				riches_found_clamp_mine_values = yes
+				riches_found_refresh_mine_presentation = yes
+				riches_found_refresh_mine_contribution = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx_event_more_options
+		trigger = { is_ai = no }
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr29.92902 } }
+	}
+
+	after = {
+		# Navigation leaves the opening notice intact until a policy is chosen.
+		if = {
+			limit = {
+				is_ai = no
+				has_event_target = riches_found_mine_state
+				event_target:riches_found_mine_state = { has_state_flag = riches_found_opening_choice_made }
+			}
+			if = {
+				limit = { has_event_target = riches_found_mine_state }
+				event_target:riches_found_mine_state = {
+					clr_state_flag = riches_found_opening_notice_pending
+					riches_found_refresh_mine_presentation = yes
+					riches_found_refresh_mine_contribution = yes
+					riches_found_refresh_evolution_gates = yes
+				}
+			}
+			clr_country_flag = riches_found_discovery_pending
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr29.92902
+	title = chaosx.nr29.1.t
+	desc = {
+		text = chaosx.nr29.1.desc.evolution_iii
+		trigger = { event_target:riches_found_mine_state = { has_state_flag = riches_found_prefire_evolution_iii } }
+	}
+	desc = {
+		text = chaosx.nr29.1.desc.evolution_ii
+		trigger = {
+			event_target:riches_found_mine_state = {
+				has_state_flag = riches_found_prefire_evolution_ii
+				NOT = { has_state_flag = riches_found_prefire_evolution_iii }
+			}
+		}
+	}
+	desc = {
+		text = chaosx.nr29.1.desc.evolution_i
+		trigger = {
+			event_target:riches_found_mine_state = {
+				has_state_flag = riches_found_prefire_evolution_i
+				NOT = { has_state_flag = riches_found_prefire_evolution_ii }
+				NOT = { has_state_flag = riches_found_prefire_evolution_iii }
+			}
+		}
+	}
+	desc = {
+		text = chaosx.nr29.1.desc
+		trigger = {
+			event_target:riches_found_mine_state = {
+				NOT = { has_state_flag = riches_found_prefire_evolution_i }
+				NOT = { has_state_flag = riches_found_prefire_evolution_ii }
+				NOT = { has_state_flag = riches_found_prefire_evolution_iii }
+			}
+		}
+	}
+	# The report shows the deposit profile of the mine just found.
+	picture = "[GetRichesFoundDiscoveryPicture]"
+	is_triggered_only = yes
+
+	trigger = { is_ai = no }
+
+	immediate = {
+		hidden_effect = {
+			# Rebind only the picture getter to this page's inherited mine context.
+			if = {
+				limit = { has_event_target = riches_found_mine_state }
+				set_variable = { riches_found_last_discovered_mine = event_target:riches_found_mine_state }
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr29.1.c
+		custom_effect_tooltip = chaosx.nr29.1.c.tt
+		ai_chance = {
+			base = constant:riches_found_ai_weight.policy_concession_economy
+			modifier = { add = constant:riches_found_ai_weight.policy_poor_concession_add num_of_civilian_factories < constant:riches_found_foreign_interest_threshold.weak_factory_count }
+			modifier = { add = constant:riches_found_ai_weight.policy_minor_concession_add is_major = no }
+		}
+		hidden_effect = {
+			event_target:riches_found_mine_state = {
+				set_state_flag = riches_found_opening_choice_made
+				set_variable = { riches_found_policy = constant:riches_found_policy.concession_economy }
+				add_to_variable = { riches_found_local_order = constant:riches_found_value.negative_one }
+				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_value.one }
+				add_to_variable = { riches_found_mine_development = constant:riches_found_value.four }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_value.two }
+				add_to_variable = { riches_found_concession_exposure = constant:riches_found_value.four }
+				riches_found_clamp_mine_values = yes
+				riches_found_refresh_mine_presentation = yes
+				riches_found_refresh_mine_contribution = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr29.1.d
+		custom_effect_tooltip = chaosx.nr29.1.d.tt
+		ai_chance = {
+			base = constant:riches_found_ai_weight.policy_militarized
+			modifier = { add = constant:riches_found_ai_weight.policy_war_militarized_add has_war = yes }
+			modifier = { add = constant:riches_found_ai_weight.policy_authoritarian_militarized_add OR = { has_government = fascism has_government = communism } }
+		}
+		hidden_effect = {
+			event_target:riches_found_mine_state = {
+				set_state_flag = riches_found_opening_choice_made
+				set_variable = { riches_found_policy = constant:riches_found_policy.militarized }
+				add_to_variable = { riches_found_mine_development = constant:riches_found_value.one }
+				add_to_variable = { riches_found_local_order = constant:riches_found_value.four }
+				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_value.negative_one }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_value.four }
+				add_to_variable = { riches_found_private_security_autonomy = constant:riches_found_value.two }
+				riches_found_clamp_mine_values = yes
+				riches_found_refresh_mine_presentation = yes
+				riches_found_refresh_mine_contribution = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr29.1.e
+		custom_effect_tooltip = chaosx.nr29.1.e.tt
+		ai_chance = {
+			base = constant:riches_found_ai_weight.policy_predatory
+			modifier = { add = constant:riches_found_ai_weight.policy_desperate_predatory_add has_war = yes }
+			modifier = { add = constant:riches_found_ai_weight.policy_desperate_predatory_add has_stability < constant:riches_found_achievement_threshold.account_stability_floor }
+			modifier = { add = constant:riches_found_ai_weight.policy_authoritarian_predatory_add OR = { has_government = fascism has_government = communism } }
+		}
+		hidden_effect = {
+			event_target:riches_found_mine_state = {
+				set_state_flag = riches_found_opening_choice_made
+				set_variable = { riches_found_policy = constant:riches_found_policy.predatory }
+				add_to_variable = { riches_found_mine_development = constant:riches_found_value.four }
+				add_to_variable = { riches_found_local_order = constant:riches_found_value.negative_one }
+				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_value.negative_one }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_value.four }
+				add_to_variable = { riches_found_illicit_capture = constant:riches_found_value.four }
+				riches_found_clamp_mine_values = yes
+				riches_found_refresh_mine_presentation = yes
+				riches_found_refresh_mine_contribution = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx_event_back_to_choices
+		trigger = { is_ai = no }
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr29.92901 } }
+	}
+
+	after = {
+		# Navigation leaves the opening notice intact until a policy is chosen.
+		if = {
+			limit = {
+				is_ai = no
+				has_event_target = riches_found_mine_state
+				event_target:riches_found_mine_state = { has_state_flag = riches_found_opening_choice_made }
+			}
+			if = {
+				limit = { has_event_target = riches_found_mine_state }
+				event_target:riches_found_mine_state = {
+					clr_state_flag = riches_found_opening_notice_pending
+					riches_found_refresh_mine_presentation = yes
+					riches_found_refresh_mine_contribution = yes
+					riches_found_refresh_evolution_gates = yes
+				}
+			}
+			clr_country_flag = riches_found_discovery_pending
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr29.92999
+	title = chaosx.nr29.1.t
+	desc = {
+		text = chaosx.nr29.1.desc.evolution_iii
+		trigger = { event_target:riches_found_mine_state = { has_state_flag = riches_found_prefire_evolution_iii } }
+	}
+	desc = {
+		text = chaosx.nr29.1.desc.evolution_ii
+		trigger = {
+			event_target:riches_found_mine_state = {
+				has_state_flag = riches_found_prefire_evolution_ii
+				NOT = { has_state_flag = riches_found_prefire_evolution_iii }
+			}
+		}
+	}
+	desc = {
+		text = chaosx.nr29.1.desc.evolution_i
+		trigger = {
+			event_target:riches_found_mine_state = {
+				has_state_flag = riches_found_prefire_evolution_i
+				NOT = { has_state_flag = riches_found_prefire_evolution_ii }
+				NOT = { has_state_flag = riches_found_prefire_evolution_iii }
+			}
+		}
+	}
+	desc = {
+		text = chaosx.nr29.1.desc
+		trigger = {
+			event_target:riches_found_mine_state = {
+				NOT = { has_state_flag = riches_found_prefire_evolution_i }
+				NOT = { has_state_flag = riches_found_prefire_evolution_ii }
+				NOT = { has_state_flag = riches_found_prefire_evolution_iii }
+			}
+		}
+	}
+	is_triggered_only = yes
+
+	trigger = { is_ai = yes }
+
+	option = {
 		name = chaosx.nr29.1.a
 		custom_effect_tooltip = chaosx.nr29.1.a.tt
 		ai_chance = {

@@ -31,6 +31,18 @@ The persistent state record contains the mine sequence, original discoverer, cur
 Each mine is an alluvial field, deep vein, gemstone bed or platinum lode (`riches_found_mine_profile`).
 The discovery report and category header name it; it sets the quality factor, shifts incident weights (claims and rush crime for alluvial, theft and smuggling for gemstones, foreign interference for platinum, collapse for deep veins), raises foreign interest for platinum and gemstones, adds collapse pressure to unreinforced deep veins, and steers AI development priorities.
 
+### Opening policy reports
+
+The opening report shows Public Development and State Extraction with More options.
+`chaosx.nr29.92902` shows Concession Economy, Militarized Mine and Predatory Extraction with Back to responses, which returns to `chaosx.nr29.92901`.
+Both continuation pages reuse the original title, deposit picture, evolved descriptions and mine event target without repeating discovery initialization, the 1,000-political-power grant or history recording.
+Their immediate effect binds the existing picture getter to the inherited mine target, so another discovery cannot change the deposit picture when returning to this report.
+Navigation leaves `riches_found_opening_notice_pending` intact.
+The original final cleanup runs after a policy is chosen, including the native timeout choice, and the existing policy effects and tooltips remain unchanged.
+AI recipients use `chaosx.nr29.92999`, an AI-only companion without report art that retains the complete original five-option weighted pool and cleanup.
+It remains visible in engine terms because `hidden = yes` would force its first option instead of evaluating that pool.
+As in the shared [report-page contract](../../systems/event_system/report_event_choice_pages.md), each continuation starts a fresh native timeout, so browsing extends the available response time.
+
 ### Opening conditions
 
 `riches_found_apply_starting_conditions` shapes each mine's opening values once, at discovery, from `riches_found_starting_value`: the owner's stability below 0.4 lowers Local Order and Revenue Legitimacy and above 0.7 raises them, a core state starts more legitimate and a non-core state less legitimate and less orderly, each infrastructure level adds Mine Development, an owner at war or local resistance above its band lowers order, a Chaos Meter above its band raises Extraction Pressure, and a democratic owner starts with more legitimacy and less illicit capture.
