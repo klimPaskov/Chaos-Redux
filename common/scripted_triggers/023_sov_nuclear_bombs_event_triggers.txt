@@ -83,15 +83,6 @@ sov_nuclear_bombs_event_has_evolution_iv = {
 	has_country_flag = sov_nuclear_bombs_evolution_iv_active
 }
 
-sov_nuclear_bombs_event_is_evolution_enabled = {
-	OR = {
-		sov_nuclear_bombs_event_has_evolution_i = yes
-		sov_nuclear_bombs_event_has_evolution_ii = yes
-		sov_nuclear_bombs_event_has_evolution_iii = yes
-		sov_nuclear_bombs_event_has_evolution_iv = yes
-	}
-}
-
 # Country scope. Event 23's scripted release goes through launch_nuke behind
 # this preflight, which mirrors the vanilla nuclear_strike raid: atomic
 # weapons, at least ten deployed strategic bombers (the strategic_bomber
@@ -292,11 +283,6 @@ sov_nuclear_bombs_event_state_is_valid_reactor_site = {
 		building = nuclear_reactor
 		size > 0
 	}
-}
-
-sov_nuclear_bombs_event_state_has_pending_reactor_completion = {
-	has_state_flag = sov_nuclear_bombs_reactor_site_pending
-	nuclear_reactor > 0
 }
 
 sov_nuclear_bombs_event_has_pending_reactor_construction = {
@@ -1037,10 +1023,6 @@ sov_nuclear_bombs_event_has_production_capacity = {
 	}
 }
 
-sov_nuclear_bombs_event_has_selected_state = {
-	has_event_target = sov_nuclear_bombs_selected_state
-}
-
 sov_nuclear_bombs_event_selected_test_site_is_valid = {
 	has_event_target = sov_nuclear_bombs_selected_test_state
 	event_target:sov_nuclear_bombs_selected_test_state = {
@@ -1762,10 +1744,6 @@ sov_nuclear_bombs_event_can_reactivate_moratorium = {
 	sov_nuclear_bombs_event_has_serious_crisis = yes
 	custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_operational_device_available_tt check_variable = { var = global.sov_nuclear_bombs_ledger_operational value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals } }
 	custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_devices_reconciled_tt check_variable = { var = global.sov_nuclear_bombs_ledger_reconciliation value = constant:sov_nuclear_bombs_ledger.clean compare = equals } }
-}
-
-sov_nuclear_bombs_event_has_local_delivery_capability = {
-	sov_nuclear_bombs_event_has_delivery_route = yes
 }
 
 sov_nuclear_bombs_event_has_serious_crisis = {
