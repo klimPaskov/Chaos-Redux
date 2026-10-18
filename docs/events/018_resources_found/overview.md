@@ -196,7 +196,7 @@ Definitions, visible requirements, and icon triplets are documented in `docs/ach
 Event art:
 
 - reports: `gfx/event_pictures/018_resources_found/`, registered in `interface/018_resources_found.gfx`.
-- news: `gfx/event_pictures/news/018_resources_found/`, registered in the same GFX file.
+- news: `gfx/event_pictures/018_resources_found/`, registered in the same GFX file.
 - super-events: `gfx/super_events/018_resources_found/`, registered in `interface/chaosx_super_events.gfx`.
 - portraits: `gfx/leaders/018_resources_found/`, registered in `interface/chaosx_characters.gfx`.
 - flags: `gfx/flags/DHO*.tga` and matching medium/small files.

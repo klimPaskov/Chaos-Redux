@@ -90,7 +90,7 @@ Each runtime portrait change updates the same persistent character token. It doe
 
 ## Visual assets
 
-Each evolution incident has a dedicated `210x176` report-event DDS under `gfx/event_pictures/016_brilliant_scientist/`. Kruger's stage portraits use full `156x210` textures under `gfx/leaders/KRG/` and separate native `65x67` advisor dossier textures under `gfx/interface/ideas/016_brilliant_scientist/`.
+Each evolution incident has a dedicated `210x176` report-event DDS under `gfx/event_pictures/016_brilliant_scientist/`. Kruger's stage portraits use full `156x210` textures under `gfx/leaders/016_brilliant_scientist/` and separate native `65x67` advisor dossier textures under `gfx/interface/ideas/016_brilliant_scientist/`.
 
 Severe animated portraits require real frame-by-frame source animation, a static fallback, a frame sheet, and state-specific runtime selection. Transform-only motion is not accepted.
 

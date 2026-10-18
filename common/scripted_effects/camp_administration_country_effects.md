@@ -140,7 +140,7 @@ Existing exceptional crisis events remain; normal paid administration is silent.
 
 ## Icons and future work
 
-Native decisions reuse `GFX_decision_germany_ss_camp_administration`, `GFX_decision_japan_army_medical_review`, `GFX_decision_sov_gulag_expansion`, and `GFX_decision_sov_gulag_dismantlement` from `interface/camp_repression_rework.gfx` and existing `gfx/interface/camp_repression/icons/` DDS files.
+Native decisions reuse `GFX_decision_germany_ss_camp_administration`, `GFX_decision_japan_army_medical_review`, `GFX_decision_sov_gulag_expansion`, and `GFX_decision_sov_gulag_dismantlement` from `interface/camp_repression_rework.gfx` and existing `gfx/interface/decisions/system_camp_repression_rework/` DDS files.
 The state-88 setup decision specifically reuses the existing `GFX_decision_germany_ss_camp_administration` definition and `gfx/interface/decisions/system_camp_repression_rework/GFX_decision_germany_ss_camp_administration.dds`; no new icon or image was produced for it, and no new art provenance is claimed.
 No new portrait, art, sprite or event image is required by these helpers.
 Potential future work is a separately accepted set of additional named industrial hosts with documented geography and independent cohort provenance.

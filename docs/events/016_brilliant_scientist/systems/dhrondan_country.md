@@ -143,7 +143,7 @@ The country package consumes these sprites and runtime paths:
 - Two-World Compact decision: `GFX_decision_dhrondan_two_world_compact`.
 - Terrestrial Partner Accord decision: reuses `GFX_decision_dhrondan_two_world_compact` and the existing `GFX_report_event_016_dhrondan_diplomatic_compact` picture; no new art or GUI is required.
 - Portrait sprites: `interface/016_dhrondan_portraits.gfx`.
-- Full portraits: `gfx/leaders/DHR/`.
+- Full portraits: `gfx/leaders/016_brilliant_scientist/`.
 - Advisor, high-command, and commander cards: `gfx/interface/ideas/016_dhrondan/`.
 - Base and cosmetic flags: `gfx/flags/DHR*`, `gfx/flags/medium/DHR*`, and `gfx/flags/small/DHR*`.
 

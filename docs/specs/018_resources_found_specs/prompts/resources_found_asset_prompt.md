@@ -51,7 +51,7 @@ Proposed final game folders:
 
 ```text
 gfx/event_pictures/018_resources_found/
-gfx/event_pictures/news/018_resources_found/
+gfx/event_pictures/018_resources_found/
 gfx/super_events/018_resources_found/
 gfx/interface/ideas/018_resources_found/
 gfx/interface/goals/018_resources_found/

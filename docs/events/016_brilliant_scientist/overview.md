@@ -175,7 +175,7 @@ Stage-0 and later portrait sprites, static fallbacks, and severe animation frame
 
 | Family | Planned path | Planned registration |
 | --- | --- | --- |
-| Kruger portraits | `gfx/leaders/KRG/` and Event 016 source folders | `interface/016_brilliant_scientist.gfx` and character portrait blocks |
+| Kruger portraits | `gfx/leaders/016_brilliant_scientist/` and Event 016 source folders | `interface/016_brilliant_scientist.gfx` and character portrait blocks |
 | Directorate background, frames, meters, cards, warnings | `gfx/interface/016_brilliant_scientist/` | `interface/016_brilliant_scientist.gfx` and `.gui` |
 | Ideas and advisor icons | `gfx/interface/ideas/016_brilliant_scientist/` | `interface/016_brilliant_scientist_idea_icons.gfx` |
 | Focus icons | `gfx/interface/goals/016_brilliant_scientist/` | `interface/016_brilliant_scientist.gfx` |

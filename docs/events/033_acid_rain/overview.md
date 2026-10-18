@@ -151,8 +151,8 @@ All Event 033 sprites are registered in `interface/033_acid_rain.gfx`.
 
 | Family | Files | Sprites and consumers |
 | --- | --- | --- |
-| Super-event, event, report and news pictures | `gfx/event_pictures/super_events/`, `gfx/event_pictures/033_acid_rain/`, `gfx/event_pictures/news/` | `GFX_super_event_033_acid_rain`; `GFX_event_033_acid_rain_{arrival,warning,severe,shelter,transport,dissipation,global}`; `GFX_report_event_033_acid_rain_{arrival,severe,shelter,transport,dissipation}`; `GFX_news_event_033_acid_rain` and `GFX_news_event_033_acid_rain_global` |
-| Decision category and decisions | `gfx/interface/033_acid_rain/decisions/` | `GFX_decision_category_acid_rain` and one `GFX_decision_acid_rain_<group>_<name>` icon per decision, named after the decision identifier |
+| Super-event, event, report and news pictures | `gfx/super_events/033_acid_rain/`, `gfx/event_pictures/033_acid_rain/` | `GFX_super_event_033_acid_rain`; `GFX_event_033_acid_rain_{arrival,warning,severe,shelter,transport,dissipation,global}`; `GFX_report_event_033_acid_rain_{arrival,severe,shelter,transport,dissipation}`; `GFX_news_event_033_acid_rain` and `GFX_news_event_033_acid_rain_global` |
+| Decision category and decisions | `gfx/interface/decisions/033_acid_rain/` | `GFX_decision_category_acid_rain` and one `GFX_decision_acid_rain_<group>_<name>` icon per decision, named after the decision identifier |
 | Modifiers | `gfx/interface/033_acid_rain/modifiers/` | `GFX_modifier_acid_rain_{ordinary,strong,severe_cell,global_layer,global_superstorm}` and `GFX_modifier_acid_rain_aftermath_{1,2,3}` |
 | Dashboard art | `gfx/interface/033_acid_rain/gui/` | `GFX_acid_rain_map_base`, `GFX_acid_rain_region_overlay_1` to `_7`, `GFX_acid_rain_{visited,warning,ordinary,global}_veil`, marker, card, coverage, Preparedness badge and component pip sprites |
 | Animations | `gfx/interface/033_acid_rain/animation/` | `GFX_acid_rain_{front,warning,severe,global}_animated` frame sheets with `GFX_acid_rain_*_static` still partners |

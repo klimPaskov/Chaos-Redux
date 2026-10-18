@@ -259,7 +259,7 @@ All current final Air Winter art is Fallout-owned and uses dedicated paths.
 | Disease modifier | `GFX_air_winter_disease_pressure_state` | `gfx/interface/air_cleanliness_winter/modifiers/air_winter_disease_pressure_state.dds` | `interface/fallout_consolidated.gfx` |
 | Report events | `GFX_report_event_air_winter_phase_1` through `GFX_report_event_air_winter_phase_6`, `GFX_report_event_air_winter_recovery`, `GFX_report_event_air_winter_island_refugee_harbor`, `GFX_report_event_air_winter_desert_water_convoy`, and `GFX_report_event_air_winter_dead_city_salvage` | `gfx/event_pictures/fallout/` | `interface/fallout_consolidated.gfx` |
 | Map mode button | Selected and deselected sprites for the single Air Winter phase mapmode | `gfx/interface/mapmode/custom/` | `interface/mapmodes_interface.gfx` |
-| Response decisions | `GFX_decision_air_winter_*` | `gfx/interface/air_cleanliness_winter/decisions/` | `interface/fallout_consolidated.gfx` |
+| Response decisions | `GFX_decision_air_winter_*` | `gfx/interface/decisions/air_cleanliness_winter/` | `interface/fallout_consolidated.gfx` |
 | Regional ground and props | `air_winter_class_<class>_phase_<phase>_entity` and class prop aliases | `gfx/models/air_cleanliness_winter/regional/` | `gfx/entities/air_cleanliness_winter_regional_visuals.asset` |
 | Regional weather | Snow, cold-rain, ash, and thaw particle entities | `gfx/particles/air_cleanliness_winter/` | `gfx/entities/air_cleanliness_winter_regional_particles.asset` |
 
