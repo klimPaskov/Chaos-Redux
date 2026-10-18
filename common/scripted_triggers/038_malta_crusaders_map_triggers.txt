@@ -173,3 +173,23 @@ malta_state_is_landing_candidate = {
 		malta_state_is_levant_frontier = yes
 	}
 }
+
+# A registry state the actor may claim and list as a target. The Holy Land,
+# the bridge and the island footholds are always open. The other regions open
+# with the focuses that name them.
+malta_state_is_open_for_claims = {
+	OR = {
+		malta_state_is_holy_land = yes
+		malta_state_is_bridge_link = yes
+		AND = { malta_state_is_levant_frontier = yes MLT = { has_country_flag = malta_region_levant } }
+		AND = { malta_state_is_greek_mainland = yes MLT = { has_country_flag = malta_region_greece } }
+		AND = { malta_state_is_anatolian_march = yes MLT = { has_country_flag = malta_region_anatolia } }
+		AND = { malta_state_is_north_african_coast = yes MLT = { has_country_flag = malta_region_north_africa } }
+		AND = { malta_state_is_rome = yes MLT = { has_country_flag = malta_western_question } }
+	}
+}
+
+# Rome. It becomes a campaign target only after the western question is opened.
+malta_state_is_rome = {
+	state = 2
+}

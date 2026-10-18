@@ -1260,3 +1260,82 @@ clear_nonhuman_country_human_systems = {
 		force_update_dynamic_modifier = yes
 	}
 }
+
+# Public state-scope positive civilian population transaction, the neutral
+# counterpart of the loss helper below. Input state_population_gain_request
+# (people); output state_population_gain_applied (measured people) and
+# state_population_gain_reconciled (recruitable credit removed). See
+# chaosx_dynamic_effects.md for the contract.
+apply_state_population_gain_without_recruitable_manpower_gain = {
+	set_temp_variable = { state_population_gain_applied = constant:chaos_meter_deaths.zero }
+	set_temp_variable = { state_population_gain_reconciled = constant:chaos_meter_deaths.zero }
+	if = {
+		limit = { NOT = { has_variable = state_population_gain_request } }
+		set_temp_variable = { state_population_gain_request = constant:chaos_meter_deaths.zero }
+	}
+	clamp_temp_variable = { var = state_population_gain_request min = constant:chaos_meter_deaths.zero }
+	round_temp_variable = state_population_gain_request
+	if = {
+		limit = { check_variable = { state_population_gain_request > constant:chaos_meter_deaths.zero } }
+		set_temp_variable = { state_population_gain_before = state_population_k }
+		multiply_temp_variable = { state_population_gain_before = constant:chaos_meter_deaths.people_per_k }
+		round_temp_variable = state_population_gain_before
+		set_temp_variable = { state_population_gain_owner_before_k = constant:chaos_meter_deaths.zero }
+		set_temp_variable = { state_population_gain_controller_before_k = constant:chaos_meter_deaths.zero }
+		OWNER = { set_temp_variable = { state_population_gain_owner_before_k = manpower_k } }
+		if = {
+			limit = { NOT = { is_owned_and_controlled_by = OWNER } }
+			CONTROLLER = { set_temp_variable = { state_population_gain_controller_before_k = manpower_k } }
+		}
+		add_manpower = var:state_population_gain_request
+		set_temp_variable = { state_population_gain_applied = state_population_k }
+		multiply_temp_variable = { state_population_gain_applied = constant:chaos_meter_deaths.people_per_k }
+		round_temp_variable = state_population_gain_applied
+		subtract_from_temp_variable = { state_population_gain_applied = state_population_gain_before }
+		clamp_temp_variable = {
+			var = state_population_gain_applied
+			min = constant:chaos_meter_deaths.zero
+			max = state_population_gain_request
+		}
+		OWNER = {
+			set_temp_variable = { state_population_gain_owner_credit = manpower_k }
+			subtract_from_temp_variable = { state_population_gain_owner_credit = state_population_gain_owner_before_k }
+			multiply_temp_variable = { state_population_gain_owner_credit = constant:chaos_meter_deaths.people_per_k }
+			round_temp_variable = state_population_gain_owner_credit
+			clamp_temp_variable = {
+				var = state_population_gain_owner_credit
+				min = constant:chaos_meter_deaths.zero
+				max = state_population_gain_applied
+			}
+			if = {
+				limit = { check_variable = { state_population_gain_owner_credit > constant:chaos_meter_deaths.zero } }
+				set_temp_variable = { state_population_gain_owner_correction = state_population_gain_owner_credit }
+				multiply_temp_variable = { state_population_gain_owner_correction = constant:chaos_meter_deaths.negative_one }
+				add_manpower = var:state_population_gain_owner_correction
+				add_to_temp_variable = { state_population_gain_reconciled = state_population_gain_owner_credit }
+			}
+		}
+		if = {
+			limit = { NOT = { is_owned_and_controlled_by = OWNER } }
+			CONTROLLER = {
+				set_temp_variable = { state_population_gain_controller_credit = manpower_k }
+				subtract_from_temp_variable = { state_population_gain_controller_credit = state_population_gain_controller_before_k }
+				multiply_temp_variable = { state_population_gain_controller_credit = constant:chaos_meter_deaths.people_per_k }
+				round_temp_variable = state_population_gain_controller_credit
+				clamp_temp_variable = {
+					var = state_population_gain_controller_credit
+					min = constant:chaos_meter_deaths.zero
+					max = state_population_gain_applied
+				}
+				if = {
+					limit = { check_variable = { state_population_gain_controller_credit > constant:chaos_meter_deaths.zero } }
+					set_temp_variable = { state_population_gain_controller_correction = state_population_gain_controller_credit }
+					multiply_temp_variable = { state_population_gain_controller_correction = constant:chaos_meter_deaths.negative_one }
+					add_manpower = var:state_population_gain_controller_correction
+					add_to_temp_variable = { state_population_gain_reconciled = state_population_gain_controller_credit }
+				}
+			}
+		}
+	}
+	set_temp_variable = { state_population_gain_request = constant:chaos_meter_deaths.zero }
+}
