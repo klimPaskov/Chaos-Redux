@@ -46,60 +46,53 @@ malta_anchor_malta_held = {
 # COUNTRY. Jerusalem is held and has been for the proof period. The counter
 # lives on the actor and is advanced by the weekly pulse.
 malta_anchor_jerusalem_held = {
-	owns_state = 454
-	controls_state = 454
+	454 = { malta_state_is_held_by_realm = yes }
 	check_variable = { var = malta_jerusalem_days value = constant:malta_standing.jerusalem_days compare = greater_than_or_equals }
 }
 
 # COUNTRY. Jerusalem is held now, whatever the counter says.
 malta_holds_jerusalem_now = {
-	owns_state = 454
-	controls_state = 454
+	454 = { malta_state_is_held_by_realm = yes }
 }
 
 # COUNTRY. At least one bridge state links Malta to the Holy Land by sea.
 malta_anchor_sea_road_held = {
 	malta_anchor_malta_held = yes
-	any_owned_state = {
-		malta_state_is_bridge_link = yes
-		is_controlled_by = MLT
+	OR = {
+		any_owned_state = {
+			malta_state_is_bridge_link = yes
+			is_controlled_by = MLT
+		}
+		any_subject_country = {
+			malta_is_chartered_principality = yes
+			any_owned_state = {
+				malta_state_is_bridge_link = yes
+				is_controlled_by = PREV
+			}
+		}
 	}
 }
 
 # COUNTRY. A port of the Holy Land command.
 malta_anchor_port_held = {
 	OR = {
-		AND = {
-			owns_state = 454
-			controls_state = 454
-		}
-		AND = {
-			owns_state = 455
-			controls_state = 455
-		}
+		454 = { malta_state_is_held_by_realm = yes }
+		455 = { malta_state_is_held_by_realm = yes }
 	}
 }
 
 # COUNTRY. Every state of the Holy Land command is held.
 malta_holds_holy_land = {
-	owns_state = 454
-	controls_state = 454
-	owns_state = 455
-	controls_state = 455
+	454 = { malta_state_is_held_by_realm = yes }
+	455 = { malta_state_is_held_by_realm = yes }
 }
 
 # COUNTRY. The actor holds no state of the Holy Land command.
 malta_holy_land_lost = {
 	NOT = {
 		OR = {
-			AND = {
-				owns_state = 454
-				controls_state = 454
-			}
-			AND = {
-				owns_state = 455
-				controls_state = 455
-			}
+			454 = { malta_state_is_held_by_realm = yes }
+			455 = { malta_state_is_held_by_realm = yes }
 		}
 	}
 }
@@ -488,4 +481,30 @@ malta_stands_alone_proof = {
 	NOT = { has_country_flag = malta_foreign_help_used }
 	NOT = { has_country_flag = malta_eleventh_seen }
 	malta_holds_jerusalem_now = yes
+}
+
+# ---------------------------------------------------------------------------
+# Evolution content. The stage flags are global and set by the pre-fire
+# package. The live flags are set on the actor when a stage activates later.
+# ---------------------------------------------------------------------------
+
+malta_stage_1_content = {
+	OR = {
+		has_global_flag = malta_stage_1_active
+		has_country_flag = malta_evolution_1_live
+	}
+}
+
+malta_stage_2_content = {
+	OR = {
+		has_global_flag = malta_stage_2_active
+		has_country_flag = malta_evolution_2_live
+	}
+}
+
+malta_stage_3_content = {
+	OR = {
+		has_global_flag = malta_stage_3_active
+		has_country_flag = malta_evolution_3_live
+	}
 }

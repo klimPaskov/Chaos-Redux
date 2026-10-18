@@ -1,0 +1,945 @@
+@malta_focus_unit = 7
+
+# ============================================================================
+# CHAOS REDUX - EVENT 038 CRUSADER PRINCIPALITY FOCUS TREE
+# ============================================================================
+# The shared tree of the chartered principalities of Evolution II. Every
+# principality loads it. Four lanes and a regional mission give each identity
+# its own course:
+#
+#   Charter politics      Read the Charter Aloud (x 2)     courts, estates, succession laws,
+#                                                          and one of three routes: the loyal
+#                                                          crown, the seat in the federation or
+#                                                          the claim of independence
+#   Local military        Muster the Garrisons (x 8)       garrisons, castles, reserve, arsenal
+#   Infrastructure        Repair the Roads (x 30)          roads, harbours, granaries, markets
+#   Malta and the Holy See Envoy to Malta (x 36)           the duty (soldiers or silver) and the
+#                                                          form: Papal vicariate, patron order or
+#                                                          council of notables
+#   Regional mission      The Mission of the Land (x 19)   one pair of focuses for each of the
+#                                                          seven identities, visible only to that
+#                                                          identity (allow_branch on the tag)
+#
+# The tree adds no national spirits. Values come from the malta_focus and
+# malta_pr_focus constants. Loaded by malta_pr_finish_setup.
+# ============================================================================
+
+focus_tree = {
+	id = malta_principality_focus_tree
+
+	country = {
+		factor = 0
+		modifier = {
+			add = 100
+			has_country_flag = malta_pr_tree
+		}
+	}
+
+	default = no
+	continuous_focus_position = { x = 1800 y = 1000 }
+	initial_show_position = { focus = mpf_survive_the_first_year }
+
+	focus = {
+		id = mpf_survive_the_first_year
+		icon = GFX_goal_generic_fortify_city
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 19
+		y = 0
+		cost = 5
+		completion_reward = {
+			custom_effect_tooltip = mpf_survive_the_first_year_tt
+			hidden_effect = {
+				add_political_power = constant:malta_focus.pp_small
+				add_stability = constant:malta_focus.stability_small
+				set_country_flag = malta_pr_first_year
+			}
+		}
+		ai_will_do = {
+			base = 60
+		}
+	}
+
+	focus = {
+		id = mpf_the_mission_of_the_land
+		icon = GFX_goal_generic_national_unity
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNAL_AFFAIRS }
+		x = 19
+		y = 1
+		cost = 5
+		prerequisite = { focus = mpf_survive_the_first_year }
+		completion_reward = {
+			custom_effect_tooltip = mpf_the_mission_of_the_land_tt
+			hidden_effect = {
+				set_country_flag = malta_pr_mission_open
+				set_temp_variable = { malta_pr_delta = constant:malta_pr_focus.loyalty_small }
+				malta_pr_change_loyalty = yes
+				malta_pr_publish_band = yes
+			}
+		}
+		ai_will_do = {
+			base = 60
+		}
+	}
+
+	focus = {
+		id = mpf_guard_of_the_sepulchre
+		icon = GFX_goal_generic_defence
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_ARMY_XP }
+		x = 13
+		y = 2
+		cost = 5
+		prerequisite = { focus = mpf_the_mission_of_the_land }
+		allow_branch = { original_tag = MQJ }
+		completion_reward = {
+			custom_effect_tooltip = mpf_guard_of_the_sepulchre_tt
+			hidden_effect = {
+				set_temp_variable = { malta_focus_equipment = constant:malta_focus.equipment_partial }
+				set_temp_variable = { malta_pr_focus_spawn_template = constant:malta_template.guard }
+				set_temp_variable = { malta_pr_focus_spawn_count = 2 }
+				malta_pr_focus_spawn = yes
+				add_stability = constant:malta_focus.stability_small
+			}
+		}
+		ai_will_do = {
+			base = 40
+		}
+	}
+
+	focus = {
+		id = mpf_the_pilgrim_kingdom
+		icon = GFX_goal_generic_positive_trade_relations
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 13
+		y = 3
+		cost = 10
+		prerequisite = { focus = mpf_guard_of_the_sepulchre }
+		allow_branch = { original_tag = MQJ }
+		completion_reward = {
+			custom_effect_tooltip = mpf_the_pilgrim_kingdom_tt
+			hidden_effect = {
+				add_political_power = constant:malta_focus.pp_medium
+				add_stability = constant:malta_focus.stability_small
+				MLT = { set_temp_variable = { malta_legitimacy_by_value = constant:malta_focus.leg_medium } malta_legitimacy_by = yes }
+				set_temp_variable = { malta_timer_days = constant:malta_focus.timed_year }
+				add_timed_idea = { idea = malta_pilgrim_routes_open days = malta_timer_days }
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+	focus = {
+		id = mpf_walls_of_the_north
+		icon = GFX_goal_generic_fortify_city
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_INDUSTRY }
+		x = 15
+		y = 2
+		cost = 5
+		prerequisite = { focus = mpf_the_mission_of_the_land }
+		allow_branch = { original_tag = MQA }
+		completion_reward = {
+			custom_effect_tooltip = mpf_walls_of_the_north_tt
+			hidden_effect = {
+				set_temp_variable = { malta_focus_equipment = constant:malta_focus.equipment_partial }
+				set_temp_variable = { malta_pr_focus_spawn_template = constant:malta_template.fortress }
+				set_temp_variable = { malta_pr_focus_spawn_count = 1 }
+				malta_pr_focus_spawn = yes
+				set_temp_variable = { malta_focus_equipment = constant:malta_focus.equipment_partial }
+				set_temp_variable = { malta_pr_focus_spawn_template = constant:malta_template.siege }
+				set_temp_variable = { malta_pr_focus_spawn_count = 1 }
+				malta_pr_focus_spawn = yes
+			}
+		}
+		ai_will_do = {
+			base = 40
+		}
+	}
+
+	focus = {
+		id = mpf_the_frontier_charter
+		icon = GFX_goal_generic_military_deal
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		x = 15
+		y = 3
+		cost = 10
+		prerequisite = { focus = mpf_walls_of_the_north }
+		allow_branch = { original_tag = MQA }
+		completion_reward = {
+			custom_effect_tooltip = mpf_the_frontier_charter_tt
+			hidden_effect = {
+				add_manpower = constant:malta_focus.manpower_medium
+				add_stability = constant:malta_focus.stability_small
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+	focus = {
+		id = mpf_the_harbour_board
+		icon = GFX_goal_generic_construct_naval_dockyard
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_INTERNATIONAL_TRADE }
+		x = 17
+		y = 2
+		cost = 5
+		prerequisite = { focus = mpf_the_mission_of_the_land }
+		allow_branch = { original_tag = MQC }
+		completion_reward = {
+			custom_effect_tooltip = mpf_the_harbour_board_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_focus_build_coastal_type = token:dockyard }
+				set_temp_variable = { malta_pr_focus_build_coastal_level = 1 }
+				set_temp_variable = { malta_pr_focus_build_coastal_slots = 1 }
+				malta_pr_focus_build_coastal = yes
+				set_temp_variable = { malta_grant_convoys = constant:malta_focus.convoys_small }
+				add_equipment_to_stockpile = { type = convoy_1 amount = malta_grant_convoys producer = MLT }
+			}
+		}
+		ai_will_do = {
+			base = 40
+		}
+	}
+
+	focus = {
+		id = mpf_the_sea_princes_seat
+		icon = GFX_goal_generic_alliance
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNATIONAL_TRADE }
+		x = 17
+		y = 3
+		cost = 10
+		prerequisite = { focus = mpf_the_harbour_board }
+		allow_branch = { original_tag = MQC }
+		completion_reward = {
+			custom_effect_tooltip = mpf_the_sea_princes_seat_tt
+			hidden_effect = {
+				set_temp_variable = { malta_grant_convoys = constant:malta_focus.convoys_large }
+				add_equipment_to_stockpile = { type = convoy_1 amount = malta_grant_convoys producer = MLT }
+				add_political_power = constant:malta_focus.pp_small
+				MLT = { set_temp_variable = { malta_legitimacy_by_value = constant:malta_focus.leg_small } malta_legitimacy_by = yes }
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+	focus = {
+		id = mpf_the_cedar_road
+		icon = GFX_goal_generic_construct_infrastructure
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_INTERNATIONAL_TRADE }
+		x = 19
+		y = 2
+		cost = 5
+		prerequisite = { focus = mpf_the_mission_of_the_land }
+		allow_branch = { original_tag = MQT }
+		completion_reward = {
+			custom_effect_tooltip = mpf_the_cedar_road_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_focus_infra_level = 1 }
+				malta_pr_focus_infra = yes
+				add_political_power = constant:malta_focus.pp_small
+			}
+		}
+		ai_will_do = {
+			base = 40
+		}
+	}
+
+	focus = {
+		id = mpf_regency_for_the_coast
+		icon = GFX_goal_generic_neutrality_focus
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 19
+		y = 3
+		cost = 10
+		prerequisite = { focus = mpf_the_cedar_road }
+		allow_branch = { original_tag = MQT }
+		completion_reward = {
+			custom_effect_tooltip = mpf_regency_for_the_coast_tt
+			hidden_effect = {
+				add_stability = constant:malta_focus.stability_small
+				add_political_power = constant:malta_focus.pp_medium
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+	focus = {
+		id = mpf_league_of_the_islands
+		icon = GFX_goal_generic_navy_anti_submarine
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 21
+		y = 2
+		cost = 5
+		prerequisite = { focus = mpf_the_mission_of_the_land }
+		allow_branch = { original_tag = MQE }
+		completion_reward = {
+			custom_effect_tooltip = mpf_league_of_the_islands_tt
+			hidden_effect = {
+				set_temp_variable = { malta_grant_convoys = constant:malta_focus.convoys_small }
+				add_equipment_to_stockpile = { type = convoy_1 amount = malta_grant_convoys producer = MLT }
+				set_temp_variable = { malta_focus_equipment = constant:malta_focus.equipment_partial }
+				set_temp_variable = { malta_pr_focus_spawn_template = constant:malta_template.fortress }
+				set_temp_variable = { malta_pr_focus_spawn_count = 1 }
+				malta_pr_focus_spawn = yes
+			}
+		}
+		ai_will_do = {
+			base = 40
+		}
+	}
+
+	focus = {
+		id = mpf_council_of_admirals
+		icon = GFX_goal_generic_build_nay
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 21
+		y = 3
+		cost = 10
+		prerequisite = { focus = mpf_league_of_the_islands }
+		allow_branch = { original_tag = MQE }
+		completion_reward = {
+			custom_effect_tooltip = mpf_council_of_admirals_tt
+			hidden_effect = {
+				army_experience = constant:malta_focus.xp_small
+				add_political_power = constant:malta_focus.pp_small
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+	focus = {
+		id = mpf_passes_of_the_taurus
+		icon = GFX_goal_generic_fortify_city
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_ARMY_XP }
+		x = 23
+		y = 2
+		cost = 5
+		prerequisite = { focus = mpf_the_mission_of_the_land }
+		allow_branch = { original_tag = MQO }
+		completion_reward = {
+			custom_effect_tooltip = mpf_passes_of_the_taurus_tt
+			hidden_effect = {
+				set_temp_variable = { malta_focus_equipment = constant:malta_focus.equipment_partial }
+				set_temp_variable = { malta_pr_focus_spawn_template = constant:malta_template.fortress }
+				set_temp_variable = { malta_pr_focus_spawn_count = 2 }
+				malta_pr_focus_spawn = yes
+			}
+		}
+		ai_will_do = {
+			base = 40
+		}
+	}
+
+	focus = {
+		id = mpf_the_komturs_march
+		icon = GFX_goal_generic_army_artillery
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		x = 23
+		y = 3
+		cost = 10
+		prerequisite = { focus = mpf_passes_of_the_taurus }
+		allow_branch = { original_tag = MQO }
+		completion_reward = {
+			custom_effect_tooltip = mpf_the_komturs_march_tt
+			hidden_effect = {
+				set_temp_variable = { malta_focus_equipment = constant:malta_focus.equipment_partial }
+				set_temp_variable = { malta_pr_focus_spawn_template = constant:malta_template.knight }
+				set_temp_variable = { malta_pr_focus_spawn_count = 1 }
+				malta_pr_focus_spawn = yes
+				army_experience = constant:malta_focus.xp_small
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+	focus = {
+		id = mpf_wells_and_ports
+		icon = GFX_goal_generic_oil_refinery
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_INTERNATIONAL_TRADE }
+		x = 25
+		y = 2
+		cost = 5
+		prerequisite = { focus = mpf_the_mission_of_the_land }
+		allow_branch = { original_tag = MQN }
+		completion_reward = {
+			custom_effect_tooltip = mpf_wells_and_ports_tt
+			hidden_effect = {
+				set_temp_variable = { malta_grant_fuel = constant:malta_focus.fuel_medium }
+				add_fuel = malta_grant_fuel
+				set_temp_variable = { malta_grant_convoys = constant:malta_focus.convoys_small }
+				add_equipment_to_stockpile = { type = convoy_1 amount = malta_grant_convoys producer = MLT }
+			}
+		}
+		ai_will_do = {
+			base = 40
+		}
+	}
+
+	focus = {
+		id = mpf_mounted_columns
+		icon = GFX_goal_generic_cavalry
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		x = 25
+		y = 3
+		cost = 10
+		prerequisite = { focus = mpf_wells_and_ports }
+		allow_branch = { original_tag = MQN }
+		completion_reward = {
+			custom_effect_tooltip = mpf_mounted_columns_tt
+			hidden_effect = {
+				set_temp_variable = { malta_focus_equipment = constant:malta_focus.equipment_partial }
+				set_temp_variable = { malta_pr_focus_spawn_template = constant:malta_template.mounted }
+				set_temp_variable = { malta_pr_focus_spawn_count = 2 }
+				malta_pr_focus_spawn = yes
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+	focus = {
+		id = mpf_read_the_charter_aloud
+		icon = GFX_goal_generic_propaganda
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 2
+		y = 1
+		cost = 5
+		prerequisite = { focus = mpf_survive_the_first_year }
+		completion_reward = {
+			custom_effect_tooltip = mpf_read_the_charter_aloud_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_delta = constant:malta_pr_focus.loyalty_small }
+				malta_pr_change_loyalty = yes
+				malta_pr_publish_band = yes
+				add_political_power = constant:malta_focus.pp_small
+				set_country_flag = malta_pr_charter_read
+			}
+		}
+		ai_will_do = {
+			base = 40
+		}
+	}
+
+	focus = {
+		id = mpf_the_princes_court
+		icon = GFX_goal_generic_political_pressure
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNAL_AFFAIRS }
+		x = 0
+		y = 2
+		cost = 5
+		prerequisite = { focus = mpf_read_the_charter_aloud }
+		completion_reward = {
+			custom_effect_tooltip = mpf_the_princes_court_tt
+			hidden_effect = {
+				add_stability = constant:malta_focus.stability_small
+				add_command_power = constant:malta_focus.cp_small
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+	focus = {
+		id = mpf_estates_of_the_land
+		icon = GFX_goal_generic_scientific_exchange
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		x = 4
+		y = 2
+		cost = 5
+		prerequisite = { focus = mpf_read_the_charter_aloud }
+		completion_reward = {
+			custom_effect_tooltip = mpf_estates_of_the_land_tt
+			hidden_effect = {
+				add_manpower = constant:malta_focus.manpower_small
+				set_temp_variable = { malta_pr_delta = constant:malta_pr_focus.loyalty_small }
+				malta_pr_change_loyalty = yes
+				malta_pr_publish_band = yes
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+	focus = {
+		id = mpf_laws_of_succession
+		icon = GFX_goal_generic_forceful_treaty
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNAL_AFFAIRS }
+		x = 2
+		y = 3
+		cost = 10
+		prerequisite = { focus = mpf_the_princes_court }
+		prerequisite = { focus = mpf_estates_of_the_land }
+		completion_reward = {
+			custom_effect_tooltip = mpf_laws_of_succession_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_delay = constant:malta_pr_focus.succession_delay_days }
+				malta_pr_focus_delay_succession = yes
+				set_country_flag = malta_pr_succession_law
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+	focus = {
+		id = mpf_the_loyal_crown
+		icon = GFX_goal_generic_major_alliance
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 0
+		y = 4
+		cost = 10
+		prerequisite = { focus = mpf_laws_of_succession }
+		mutually_exclusive = { focus = mpf_seat_in_the_federation focus = mpf_the_claim_of_independence }
+		completion_reward = {
+			custom_effect_tooltip = mpf_the_loyal_crown_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_delta = constant:malta_pr_focus.loyalty_large }
+				malta_pr_change_loyalty = yes
+				malta_pr_publish_band = yes
+				MLT = { set_temp_variable = { malta_legitimacy_by_value = constant:malta_focus.leg_small } malta_legitimacy_by = yes }
+				set_country_flag = malta_pr_route_loyal
+			}
+		}
+		ai_will_do = {
+			base = 50
+		}
+	}
+
+	focus = {
+		id = mpf_seat_in_the_federation
+		icon = GFX_goal_generic_alliance
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNATIONAL_TRADE }
+		x = 2
+		y = 4
+		cost = 10
+		prerequisite = { focus = mpf_laws_of_succession }
+		mutually_exclusive = { focus = mpf_the_loyal_crown focus = mpf_the_claim_of_independence }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = mpf_seat_in_the_federation_avail_tt
+				hidden_trigger = { MLT = { has_country_flag = malta_pr_federation } }
+			}
+		}
+		completion_reward = {
+			custom_effect_tooltip = mpf_seat_in_the_federation_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_delta = constant:malta_pr_focus.loyalty_medium }
+				malta_pr_change_loyalty = yes
+				malta_pr_publish_band = yes
+				add_stability = constant:malta_focus.stability_small
+				set_country_flag = malta_pr_route_federation
+			}
+		}
+		ai_will_do = {
+			base = 40
+		}
+	}
+
+	focus = {
+		id = mpf_the_claim_of_independence
+		icon = GFX_goal_generic_dangerous_deal
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
+		x = 4
+		y = 4
+		cost = 10
+		prerequisite = { focus = mpf_laws_of_succession }
+		mutually_exclusive = { focus = mpf_the_loyal_crown focus = mpf_seat_in_the_federation }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = mpf_the_claim_of_independence_avail_tt
+				hidden_trigger = { NOT = { malta_pr_is_cooperative_or_better = yes } }
+			}
+		}
+		completion_reward = {
+			custom_effect_tooltip = mpf_the_claim_of_independence_tt
+			hidden_effect = {
+				malta_pr_break_away = yes
+				set_country_flag = malta_pr_route_independence
+			}
+		}
+		ai_will_do = {
+			base = 5
+		}
+	}
+
+	focus = {
+		id = mpf_muster_the_garrisons
+		icon = GFX_goal_generic_allies_build_infantry
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		x = 8
+		y = 1
+		cost = 5
+		prerequisite = { focus = mpf_survive_the_first_year }
+		completion_reward = {
+			custom_effect_tooltip = mpf_muster_the_garrisons_tt
+			hidden_effect = {
+				set_temp_variable = { malta_focus_equipment = constant:malta_focus.equipment_partial }
+				set_temp_variable = { malta_pr_focus_spawn_template = constant:malta_template.guard }
+				set_temp_variable = { malta_pr_focus_spawn_count = 1 }
+				malta_pr_focus_spawn = yes
+				add_manpower = constant:malta_focus.manpower_small
+			}
+		}
+		ai_will_do = {
+			base = 50
+		}
+	}
+
+	focus = {
+		id = mpf_wardens_of_the_castles
+		icon = GFX_goal_generic_construct_military
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 6
+		y = 2
+		cost = 5
+		prerequisite = { focus = mpf_muster_the_garrisons }
+		completion_reward = {
+			custom_effect_tooltip = mpf_wardens_of_the_castles_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_focus_infra_level = 1 }
+				malta_pr_focus_infra = yes
+				set_temp_variable = { malta_grant_infantry = constant:malta_focus.infantry_small }
+				add_equipment_to_stockpile = { type = infantry_equipment amount = malta_grant_infantry producer = MLT }
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+	focus = {
+		id = mpf_mobile_reserve
+		icon = GFX_goal_generic_army_motorized
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		x = 10
+		y = 2
+		cost = 5
+		prerequisite = { focus = mpf_muster_the_garrisons }
+		completion_reward = {
+			custom_effect_tooltip = mpf_mobile_reserve_tt
+			hidden_effect = {
+				set_temp_variable = { malta_focus_equipment = constant:malta_focus.equipment_partial }
+				set_temp_variable = { malta_pr_focus_spawn_template = constant:malta_template.knight }
+				set_temp_variable = { malta_pr_focus_spawn_count = 1 }
+				malta_pr_focus_spawn = yes
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+	focus = {
+		id = mpf_the_arsenal
+		icon = GFX_goal_generic_construct_mil_factory
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_MANPOWER }
+		x = 8
+		y = 3
+		cost = 10
+		prerequisite = { focus = mpf_wardens_of_the_castles }
+		prerequisite = { focus = mpf_mobile_reserve }
+		completion_reward = {
+			custom_effect_tooltip = mpf_the_arsenal_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_focus_build_type = token:arms_factory }
+				set_temp_variable = { malta_pr_focus_build_level = 1 }
+				set_temp_variable = { malta_pr_focus_build_slots = 1 }
+				malta_pr_focus_build = yes
+				set_temp_variable = { malta_grant_infantry = constant:malta_focus.infantry_medium }
+				add_equipment_to_stockpile = { type = infantry_equipment amount = malta_grant_infantry producer = MLT }
+			}
+		}
+		ai_will_do = {
+			base = 40
+		}
+	}
+
+	focus = {
+		id = mpf_the_war_council
+		icon = GFX_goal_generic_position_armies
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_POLITICAL }
+		x = 8
+		y = 4
+		cost = 10
+		prerequisite = { focus = mpf_the_arsenal }
+		completion_reward = {
+			custom_effect_tooltip = mpf_the_war_council_tt
+			hidden_effect = {
+				army_experience = constant:malta_focus.xp_medium
+				set_temp_variable = { malta_focus_equipment = constant:malta_focus.equipment_partial }
+				set_temp_variable = { malta_pr_focus_spawn_template = constant:malta_template.engineers }
+				set_temp_variable = { malta_pr_focus_spawn_count = 1 }
+				malta_pr_focus_spawn = yes
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+	focus = {
+		id = mpf_repair_the_roads
+		icon = GFX_goal_generic_construct_infrastructure
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 30
+		y = 1
+		cost = 5
+		prerequisite = { focus = mpf_survive_the_first_year }
+		completion_reward = {
+			custom_effect_tooltip = mpf_repair_the_roads_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_focus_infra_level = 1 }
+				malta_pr_focus_infra = yes
+			}
+		}
+		ai_will_do = {
+			base = 40
+		}
+	}
+
+	focus = {
+		id = mpf_harbour_works
+		icon = GFX_goal_generic_construct_naval_dockyard
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_INTERNATIONAL_TRADE }
+		x = 28
+		y = 2
+		cost = 5
+		prerequisite = { focus = mpf_repair_the_roads }
+		completion_reward = {
+			custom_effect_tooltip = mpf_harbour_works_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_focus_build_coastal_type = token:dockyard }
+				set_temp_variable = { malta_pr_focus_build_coastal_level = 1 }
+				set_temp_variable = { malta_pr_focus_build_coastal_slots = 1 }
+				malta_pr_focus_build_coastal = yes
+				set_temp_variable = { malta_grant_convoys = constant:malta_focus.convoys_small }
+				add_equipment_to_stockpile = { type = convoy_1 amount = malta_grant_convoys producer = MLT }
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+	focus = {
+		id = mpf_granaries
+		icon = GFX_goal_generic_production
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 32
+		y = 2
+		cost = 5
+		prerequisite = { focus = mpf_repair_the_roads }
+		completion_reward = {
+			custom_effect_tooltip = mpf_granaries_tt
+			hidden_effect = {
+				set_temp_variable = { malta_grant_fuel = constant:malta_focus.fuel_medium }
+				add_fuel = malta_grant_fuel
+				set_temp_variable = { malta_grant_support = constant:malta_focus.support_small }
+				add_equipment_to_stockpile = { type = support_equipment amount = malta_grant_support producer = MLT }
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+	focus = {
+		id = mpf_pilgrim_roads
+		icon = GFX_goal_generic_positive_trade_relations
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_INTERNATIONAL_TRADE }
+		x = 30
+		y = 3
+		cost = 10
+		prerequisite = { focus = mpf_harbour_works }
+		prerequisite = { focus = mpf_granaries }
+		completion_reward = {
+			custom_effect_tooltip = mpf_pilgrim_roads_tt
+			hidden_effect = {
+				set_temp_variable = { malta_timer_days = constant:malta_focus.timed_year }
+				add_timed_idea = { idea = malta_pilgrim_routes_open days = malta_timer_days }
+				add_political_power = constant:malta_focus.pp_small
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+	focus = {
+		id = mpf_the_common_market
+		icon = GFX_goal_generic_trade
+		search_filters = { FOCUS_FILTER_INTERNATIONAL_TRADE FOCUS_FILTER_INDUSTRY }
+		x = 30
+		y = 4
+		cost = 10
+		prerequisite = { focus = mpf_pilgrim_roads }
+		completion_reward = {
+			custom_effect_tooltip = mpf_the_common_market_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_focus_build_type = token:industrial_complex }
+				set_temp_variable = { malta_pr_focus_build_level = 1 }
+				set_temp_variable = { malta_pr_focus_build_slots = 1 }
+				malta_pr_focus_build = yes
+				add_political_power = constant:malta_focus.pp_medium
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+	focus = {
+		id = mpf_envoy_to_malta
+		icon = GFX_goal_generic_intelligence_exchange
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNATIONAL_TRADE }
+		x = 36
+		y = 1
+		cost = 5
+		prerequisite = { focus = mpf_survive_the_first_year }
+		completion_reward = {
+			custom_effect_tooltip = mpf_envoy_to_malta_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_delta = constant:malta_pr_focus.loyalty_small }
+				malta_pr_change_loyalty = yes
+				malta_pr_publish_band = yes
+				add_command_power = constant:malta_focus.cp_small
+			}
+		}
+		ai_will_do = {
+			base = 40
+		}
+	}
+
+	focus = {
+		id = mpf_pay_the_duty_in_soldiers
+		icon = GFX_goal_generic_allies_build_infantry
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		x = 34
+		y = 2
+		cost = 5
+		prerequisite = { focus = mpf_envoy_to_malta }
+		mutually_exclusive = { focus = mpf_pay_the_duty_in_silver }
+		completion_reward = {
+			custom_effect_tooltip = mpf_pay_the_duty_in_soldiers_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_duty_type = constant:malta_pr_duty.manpower }
+				malta_pr_focus_duty = yes
+				set_country_flag = malta_pr_duty_chosen
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+	focus = {
+		id = mpf_pay_the_duty_in_silver
+		icon = GFX_goal_generic_military_deal
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNATIONAL_TRADE }
+		x = 38
+		y = 2
+		cost = 5
+		prerequisite = { focus = mpf_envoy_to_malta }
+		mutually_exclusive = { focus = mpf_pay_the_duty_in_soldiers }
+		completion_reward = {
+			custom_effect_tooltip = mpf_pay_the_duty_in_silver_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_duty_type = constant:malta_pr_duty.political_power }
+				malta_pr_focus_duty = yes
+				set_country_flag = malta_pr_duty_chosen
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+	focus = {
+		id = mpf_appeal_to_rome
+		icon = GFX_focus_generic_pope
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 34
+		y = 3
+		cost = 10
+		prerequisite = { focus = mpf_pay_the_duty_in_soldiers focus = mpf_pay_the_duty_in_silver }
+		mutually_exclusive = { focus = mpf_invite_a_patron_order focus = mpf_a_council_of_notables }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = mpf_appeal_to_rome_avail_tt
+				hidden_trigger = { MLT = { has_country_flag = malta_papal_supremacy } }
+			}
+		}
+		completion_reward = {
+			custom_effect_tooltip = mpf_appeal_to_rome_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_form = constant:malta_pr_form.papal }
+				malta_pr_focus_form = yes
+				MLT = { set_temp_variable = { malta_legitimacy_by_value = constant:malta_focus.leg_small } malta_legitimacy_by = yes }
+				set_country_flag = malta_pr_form_chosen
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = mpf_invite_a_patron_order
+		icon = GFX_goal_generic_special_forces
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 36
+		y = 3
+		cost = 10
+		prerequisite = { focus = mpf_pay_the_duty_in_soldiers focus = mpf_pay_the_duty_in_silver }
+		mutually_exclusive = { focus = mpf_appeal_to_rome focus = mpf_a_council_of_notables }
+		completion_reward = {
+			custom_effect_tooltip = mpf_invite_a_patron_order_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_form = constant:malta_pr_form.order }
+				malta_pr_focus_form = yes
+				army_experience = constant:malta_focus.xp_small
+				set_country_flag = malta_pr_form_chosen
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+	focus = {
+		id = mpf_a_council_of_notables
+		icon = GFX_goal_generic_national_unity
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 38
+		y = 3
+		cost = 10
+		prerequisite = { focus = mpf_pay_the_duty_in_soldiers focus = mpf_pay_the_duty_in_silver }
+		mutually_exclusive = { focus = mpf_appeal_to_rome focus = mpf_invite_a_patron_order }
+		completion_reward = {
+			custom_effect_tooltip = mpf_a_council_of_notables_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_form = constant:malta_pr_form.local }
+				malta_pr_focus_form = yes
+				add_stability = constant:malta_focus.stability_small
+				set_country_flag = malta_pr_form_chosen
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+}

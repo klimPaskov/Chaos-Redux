@@ -23,6 +23,10 @@ malta_demand_interval = {
 		factor = constant:malta_demand.rivalry_factor
 		malta_cohesion_is_open_rivalry = yes
 	}
+	modifier = {
+		factor = constant:malta_demand.rotation_factor
+		has_country_flag = malta_offices_rotating
+	}
 }
 
 # ---------------------------------------------------------------------------
@@ -74,7 +78,7 @@ malta_ai_refuse_demand = {
 		malta_can_pay_open_demand_half = no
 	}
 	modifier = {
-		add = 12
+		add = 10
 		malta_cohesion_is_working_or_better = yes
 		check_variable = { var = malta_order_influence^malta_demand_order value = 0 compare = equals }
 	}
@@ -114,7 +118,7 @@ malta_ai_arbitrate_jerusalem = {
 malta_ai_seize_treasury = {
 	base = 0
 	modifier = {
-		add = 8
+		add = 10
 		malta_can_seize_treasury = yes
 		has_political_power < 30
 		malta_cohesion_is_working_or_better = yes
@@ -160,7 +164,7 @@ malta_ai_repair_rail = {
 malta_ai_fortify_port = {
 	base = 0
 	modifier = {
-		add = 28
+		add = 30
 		malta_can_pay_port_fortify = yes
 		has_war = yes
 	}
@@ -192,7 +196,7 @@ malta_ai_air_bridge = {
 malta_ai_raise_knights = {
 	base = 0
 	modifier = {
-		add = 32
+		add = 30
 		malta_can_pay_raise_banner = yes
 		malta_banner_slot_free = yes
 		has_manpower > constant:malta_ai.banner_manpower_reserve
@@ -202,7 +206,7 @@ malta_ai_raise_knights = {
 malta_ai_raise_mounted = {
 	base = 0
 	modifier = {
-		add = 22
+		add = 20
 		malta_can_pay_raise_banner = yes
 		malta_banner_slot_free = yes
 		has_manpower > constant:malta_ai.banner_manpower_reserve
@@ -212,7 +216,7 @@ malta_ai_raise_mounted = {
 malta_ai_raise_ranged = {
 	base = 0
 	modifier = {
-		add = 27
+		add = 25
 		malta_can_pay_raise_banner = yes
 		malta_banner_slot_free = yes
 		has_manpower > constant:malta_ai.banner_manpower_reserve
@@ -222,13 +226,13 @@ malta_ai_raise_ranged = {
 malta_ai_raise_siege = {
 	base = 0
 	modifier = {
-		add = 18
+		add = 20
 		malta_can_pay_raise_siege = yes
 		malta_banner_slot_free = yes
 		has_manpower > constant:malta_ai.banner_manpower_reserve
 	}
 	modifier = {
-		add = 12
+		add = 10
 		has_active_mission = malta_guard_jordan_corridor_mission
 	}
 }
@@ -236,7 +240,7 @@ malta_ai_raise_siege = {
 malta_ai_train_engineers = {
 	base = 0
 	modifier = {
-		add = 12
+		add = 10
 		malta_can_pay_train_engineers = yes
 		malta_banner_slot_free = yes
 	}
@@ -272,7 +276,7 @@ malta_ai_regional_crusade = {
 malta_ai_settle_direct = {
 	base = 0
 	modifier = {
-		add = 28
+		add = 30
 		malta_can_pay_settlement = yes
 		malta_standing_is_recognized_or_better = yes
 	}
@@ -281,12 +285,12 @@ malta_ai_settle_direct = {
 malta_ai_settle_order_grant = {
 	base = 0
 	modifier = {
-		add = 18
+		add = 20
 		malta_can_pay_settlement = yes
 		malta_cohesion_is_strained = yes
 	}
 	modifier = {
-		add = 12
+		add = 10
 		malta_can_pay_settlement = yes
 		malta_council_is_quiet = yes
 	}
@@ -295,7 +299,7 @@ malta_ai_settle_order_grant = {
 malta_ai_settle_return = {
 	base = 0
 	modifier = {
-		add = 4
+		add = 5
 		malta_can_pay_settlement = yes
 		malta_standing_is_fractured = yes
 	}
@@ -373,5 +377,38 @@ malta_ai_accept_fortress = {
 		add = 35
 		check_variable = { var = malta_eleventh_failures value = constant:malta_ai.fortress_failures compare = greater_than_or_equals }
 		has_country_flag = malta_island_fortified
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Principalities
+# ---------------------------------------------------------------------------
+
+# Days between succession crises of one principality (COUNTRY scope: the
+# principality). A Papal appointee and a federated principality rule longer, a
+# local council is changed more often.
+malta_pr_succession_interval = {
+	base = constant:malta_pr_succession.interval_days
+	modifier = {
+		factor = constant:malta_pr_succession.papal_factor
+		check_variable = { var = malta_pr_form_id value = constant:malta_pr_form.papal compare = equals }
+	}
+	modifier = {
+		factor = constant:malta_pr_succession.local_factor
+		check_variable = { var = malta_pr_form_id value = constant:malta_pr_form.local compare = equals }
+	}
+	modifier = {
+		factor = constant:malta_pr_succession.federated_factor
+		has_country_flag = malta_pr_federated
+	}
+}
+
+# Score of chartering a principality (COUNTRY scope: the actor). A stretched
+# footprint makes a charter more attractive.
+malta_ai_pr_charter = {
+	base = constant:malta_pr_ai.charter_weight
+	modifier = {
+		add = constant:malta_pr_ai.charter_when_stretched
+		check_variable = { var = malta_expedition_count value = constant:malta_pr_ai.stretched_states compare = greater_than_or_equals }
 	}
 }

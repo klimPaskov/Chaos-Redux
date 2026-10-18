@@ -11,3 +11,249 @@ malta_is_chartered_principality = {
 	has_country_flag = malta_principality
 	is_subject_of = MLT
 }
+
+# COUNTRY (MLT). The category appears once the charters are open or a
+# principality exists.
+malta_shows_principality_category = {
+	malta_is_active_actor = yes
+	malta_stage_2_content = yes
+	OR = {
+		has_country_flag = malta_charters_open
+		check_variable = { var = malta_pr_active_count value = 0 compare = greater_than }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Charter
+# ---------------------------------------------------------------------------
+
+# COUNTRY (MLT). Reads the temporary results of malta_pr_survey and the kind in
+# temp malta_pr_kind. The one place that decides whether a charter may be drawn.
+malta_pr_charter_checks_pass = {
+	malta_stage_2_content = yes
+	malta_standing_is_recognized_or_better = yes
+	check_variable = { var = malta_pr_capital_held value = 1 compare = equals }
+	check_variable = { var = malta_pr_region_count value = malta_pr_min_states compare = greater_than_or_equals }
+	check_variable = { var = malta_pr_active_count value = constant:malta_pr_limit.max_active compare = less_than }
+	NOT = { malta_pr_kind_is_active = yes }
+	OR = {
+		check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.first_minor compare = less_than }
+		check_variable = { var = malta_pr_minor_count value = constant:malta_pr_limit.max_minor compare = less_than }
+	}
+}
+
+# COUNTRY (MLT). Room for one more principality, and for one more march.
+malta_pr_has_room = {
+	check_variable = { var = malta_pr_active_count value = constant:malta_pr_limit.max_active compare = less_than }
+}
+
+malta_pr_has_room_for_march = {
+	malta_pr_has_room = yes
+	check_variable = { var = malta_pr_minor_count value = constant:malta_pr_limit.max_minor compare = less_than }
+}
+
+# COUNTRY (MLT). The kind in temp malta_pr_kind is in play.
+malta_pr_kind_is_active = {
+	OR = {
+		AND = {
+			check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.jerusalem }
+			has_country_flag = malta_pr_active_jerusalem
+		}
+		AND = {
+			check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.antioch }
+			has_country_flag = malta_pr_active_antioch
+		}
+		AND = {
+			check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.cyprus }
+			has_country_flag = malta_pr_active_cyprus
+		}
+		AND = {
+			check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.tripoli }
+			has_country_flag = malta_pr_active_tripoli
+		}
+		AND = {
+			check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.aegean }
+			has_country_flag = malta_pr_active_aegean
+		}
+		AND = {
+			check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.anatolia }
+			has_country_flag = malta_pr_active_anatolia
+		}
+		AND = {
+			check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.africa }
+			has_country_flag = malta_pr_active_africa
+		}
+	}
+}
+
+# COUNTRY (MLT). The region of each kind is held, capital included. Aegean and
+# Anatolia need one more state of their region.
+malta_pr_ready_jerusalem = {
+	454 = { malta_state_is_held_directly = yes }
+}
+
+malta_pr_ready_antioch = {
+	799 = { malta_state_is_held_directly = yes }
+}
+
+malta_pr_ready_cyprus = {
+	183 = { malta_state_is_held_directly = yes }
+}
+
+malta_pr_ready_tripoli = {
+	553 = { malta_state_is_held_directly = yes }
+}
+
+malta_pr_ready_aegean = {
+	164 = { malta_state_is_held_directly = yes }
+	OR = {
+		187 = { malta_state_is_held_directly = yes }
+		182 = { malta_state_is_held_directly = yes }
+	}
+}
+
+malta_pr_ready_anatolia = {
+	345 = { malta_state_is_held_directly = yes }
+	OR = {
+		342 = { malta_state_is_held_directly = yes }
+		344 = { malta_state_is_held_directly = yes }
+	}
+}
+
+malta_pr_ready_africa = {
+	661 = { malta_state_is_held_directly = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Targets. These run in the scope of the principality (FROM of the decision).
+# ---------------------------------------------------------------------------
+
+# COUNTRY (a principality). In the array of the actor and still chartered.
+malta_pr_is_listed = {
+	has_country_flag = malta_principality
+	NOT = { has_country_flag = malta_pr_integrating }
+}
+
+# COUNTRY (a principality). The band of the public status, by the hidden loyalty.
+malta_pr_is_guarded_or_better = {
+	check_variable = { var = malta_pr_loyalty value = constant:malta_pr_loyalty.guarded compare = greater_than_or_equals }
+}
+
+malta_pr_is_cooperative_or_better = {
+	check_variable = { var = malta_pr_loyalty value = constant:malta_pr_loyalty.cooperative compare = greater_than_or_equals }
+}
+
+malta_pr_can_request_levy = {
+	NOT = { has_country_flag = malta_pr_levy_cooldown }
+	check_variable = { var = malta_pr_loyalty value = constant:malta_pr_loyalty.guarded compare = greater_than_or_equals }
+}
+
+# COUNTRY (a principality). Threatened, or not confident in the charter.
+malta_pr_needs_relief = {
+	NOT = { has_country_flag = malta_pr_relief_cooldown }
+	OR = {
+		has_war = yes
+		any_owned_state = { NOT = { is_controlled_by = PREV } }
+		check_variable = { var = malta_pr_loyalty value = constant:malta_pr_loyalty.cooperative compare = less_than }
+	}
+}
+
+malta_pr_can_be_enforced = {
+	NOT = { has_country_flag = malta_pr_enforce_cooldown }
+	NOT = { has_country_flag = malta_pr_enforced }
+	check_variable = { var = malta_pr_loyalty value = constant:malta_pr_loyalty.guarded compare = less_than }
+}
+
+malta_pr_can_lighten_tribute = {
+	NOT = { has_country_flag = malta_pr_revise_cooldown }
+	check_variable = { var = malta_pr_tribute value = constant:malta_pr_limit.tribute_light compare = greater_than }
+}
+
+malta_pr_can_burden_tribute = {
+	NOT = { has_country_flag = malta_pr_revise_cooldown }
+	check_variable = { var = malta_pr_tribute value = constant:malta_pr_limit.tribute_heavy compare = less_than }
+	check_variable = { var = malta_pr_loyalty value = constant:malta_pr_loyalty.cooperative compare = greater_than_or_equals }
+}
+
+malta_pr_has_succession_crisis = {
+	has_country_flag = malta_pr_succession_crisis
+}
+
+# COUNTRY (a principality). Full proof for a staged integration.
+malta_pr_can_integrate = {
+	NOT = { has_country_flag = malta_pr_succession_crisis }
+	NOT = { has_country_flag = malta_pr_independent }
+	check_variable = { var = malta_pr_loyalty value = constant:malta_pr_integration.minimum_loyalty compare = greater_than_or_equals }
+	check_variable = { var = malta_pr_age value = constant:malta_pr_integration.minimum_age_weeks compare = greater_than_or_equals }
+	NOT = { any_owned_state = { NOT = { is_controlled_by = PREV } } }
+}
+
+# COUNTRY (a principality). Failed: it has lost heart or most of its land.
+malta_pr_has_failed = {
+	OR = {
+		check_variable = { var = malta_pr_loyalty value = constant:malta_pr_loyalty.defiant compare = less_than }
+		NOT = { any_owned_state = { is_controlled_by = PREV } }
+	}
+}
+
+# COUNTRY (MLT). The federation can be formed: every principality is Cooperative
+# or better and the high court has been held.
+malta_pr_can_federate = {
+	has_country_flag = malta_high_court
+	NOT = { has_country_flag = malta_pr_federation }
+	malta_cohesion_is_working_or_better = yes
+	check_variable = { var = malta_pr_active_count value = constant:malta_pr_federation.minimum_members compare = greater_than_or_equals }
+	check_variable = { var = malta_pr_loyal_count value = malta_pr_active_count compare = equals }
+}
+
+# ---------------------------------------------------------------------------
+# Payment. Each reads the published cost.
+# ---------------------------------------------------------------------------
+
+malta_can_pay_charter_major = {
+	NOT = { has_political_power < global.malta_cost_charter_major_political_power }
+	NOT = { command_power < global.malta_cost_charter_major_command_power }
+	NOT = { has_equipment = { support_equipment < global.malta_cost_charter_major_support } }
+}
+
+malta_can_pay_charter_minor = {
+	NOT = { has_political_power < global.malta_cost_charter_minor_political_power }
+	NOT = { command_power < global.malta_cost_charter_minor_command_power }
+	NOT = { has_equipment = { support_equipment < global.malta_cost_charter_minor_support } }
+}
+
+malta_can_pay_pr_levy = {
+	NOT = { command_power < global.malta_cost_pr_levy_command_power }
+}
+
+malta_can_pay_pr_relief = {
+	NOT = { has_equipment = { infantry_equipment < global.malta_cost_pr_relief_equipment } }
+	NOT = { has_fuel < global.malta_cost_pr_relief_fuel }
+}
+
+malta_can_pay_pr_enforce = {
+	NOT = { command_power < global.malta_cost_pr_enforce_command_power }
+	NOT = { has_equipment = { infantry_equipment < global.malta_cost_pr_enforce_equipment } }
+}
+
+malta_can_pay_pr_revise = {
+	NOT = { has_political_power < global.malta_cost_pr_revise_political_power }
+}
+
+malta_can_pay_pr_arbitrate = {
+	NOT = { has_political_power < global.malta_cost_pr_arbitrate_political_power }
+}
+
+malta_can_pay_pr_integrate = {
+	NOT = { has_political_power < global.malta_cost_pr_integrate_political_power }
+	NOT = { has_equipment = { support_equipment < global.malta_cost_pr_integrate_support } }
+}
+
+malta_can_pay_pr_dissolve = {
+	NOT = { has_political_power < global.malta_cost_pr_dissolve_political_power }
+}
+
+malta_can_pay_pr_federate = {
+	NOT = { has_political_power < global.malta_cost_pr_federate_political_power }
+	NOT = { command_power < global.malta_cost_pr_federate_command_power }
+}

@@ -16,8 +16,8 @@ The Order of Saint John rises as a crusader state. Malta is released at once tog
 | Phase | Content | State |
 | --- | --- | --- |
 | 1 | Opening release transaction, Malta package, Crusade Council values and header, baseline decisions and missions, failure comeback, reactions, reports, news, event log, cluster, constants, baseline achievements | implemented, never run in game |
-| 2 | Focus tree, principalities and governance | see the phase 2 section when present |
-| 3 | Evolutions I to III | see the phase 3 section when present |
+| 2 | Focus tree, governments, principalities | implemented, never run in game, see the phase 2 section |
+| 3 | Evolutions I to III as separate rows, hidden routes, Holy World | not implemented, see Deferred by decision |
 
 ## Deferred by decision
 
@@ -139,6 +139,13 @@ Missions: Hold the Four Anchors, Keep the Sea Road Open, Guard the Jordan Corrid
 
 A sustained loss opens the recovery: no Holy Land state for 60 days, or no expedition state at all, while Malta is held. Phase 1 (survivors): evacuate and fortify Malta. Phase 2 (rebuild): volunteers, transports and workshops, a gathering mission, the choice of a landing. The landing spawns a bounded force on the chosen coast and opens a mission to hold it. A failed landing raises the costs by a quarter of the base, and after three failures only the Fortress Malta settlement remains. Restoring the Holy Land command needs Jerusalem held for 60 days.
 
+## Phase 2: focus trees, governments and principalities
+
+- Focus tree `malta_crusaders_focus_tree` (`common/national_focus/038_malta_crusaders_focus.txt`, 108 focuses). Loaded by `malta_initialize_country_package` for a country that carries `malta_origin`. Lanes: Logistics, Army, Orders, Settlement, Holy Land, Diplomacy, Principalities, Eleventh Crusade and the Church. The three settlement routes exclude each other. Localisation is in `038_malta_crusaders_focus_l_english.yml`.
+- Governments (`038_malta_crusaders_governance_effects.txt`). Variable `malta_government` selects the Grand Magistry (cosmetic `CRU_ORDER`), the Confederation of the Langues (`CRU_CONFED`), the Crusader Kingdom (`CRU_KINGDOM`), the Holy See (`CRU_HOLYSEE`) and the Kingdom of God (`CRU_GOD`). The cosmetic tags are in `common/countries/038_malta_crusaders_cosmetic.txt`. The orders line of national spirits holds one idea at a time, so the focus tree adds no spirit beyond the three of the opening package. Six primacy seats and the dominant order are handled by the same file.
+- Principalities (`038_malta_crusaders_principality_effects.txt`, `038_malta_crusaders_principality_decisions.txt`, `038_malta_crusaders_principality_triggers.txt`). Seven carriers (`MQJ` Jerusalem, `MQA` Antioch, `MQC` Cyprus, `MQT` Tripoli, `MQE` Aegean, `MQO` Anatolia, `MQN` Africa) are registered in `common/country_tags/038_malta_crusaders_principality_countries.txt` with an inert history file each and are consumed by `create_dynamic_country`. Seven charter decisions, eleven management decisions and the federation decision work on the array `global.malta_principalities`. Each principality loads `malta_principality_focus_tree` (39 focuses). Events `.40` to `.47` report charter, succession dispute, defiance, break-away, integration, end of a failed principality, a settled succession and the federation.
+- Runtime-built tokens of the new characters and ideas are registered in `common/synchronized_dynamic_tokens/chaosx_runtime_tokens.txt`.
+
 ## AI
 
 Decisions use the MTTH entries of `common/mtth/038_malta_crusaders_mtth.txt`. Survival rows (escort, air bridge, rail, harbour, recovery) outrank banners and expansion. Target rows add inline factors for the target (major powers, divisions, adjacent islands and Levant). Demand and incident options use the same scores as the decisions. The calculation was done by hand from the script. No MCP probability run was made.
@@ -156,7 +163,7 @@ Decisions use the MTTH entries of `common/mtth/038_malta_crusaders_mtth.txt`. Su
 
 ## Icons and assets
 
-All icons are vanilla stand-ins. No asset was created.
+Spirits, decisions and categories mostly use vanilla stand-ins. The mod has its own sprites for the Event 38 decision icons, idea icons, report pictures and the corridor mission (`interface/038_malta_crusaders_*.gfx`).
 
 | Surface | Sprite | File |
 | --- | --- | --- |
@@ -166,7 +173,7 @@ All icons are vanilla stand-ins. No asset was created.
 | events and news | `GFX_news_crusaders` | existing mod sprite |
 | leader | `GFX_portrait_CRU_crusader` | `interface/chaosx_characters.gfx`, placeholder from the Library of Congress archive, HOI4-style final pending from the user |
 
-Assets still needed: Malta flags for each political form and the Holy See, the Kingdom of God and the cosmetic identities of phase 2 (`gfx/flags/`, three sizes each), achievement art (`gfx/achievements/chaos_redux_038_*.dds`), idea icons for the spirits and seats, decision icons, event report pictures for the opening, the Eleventh Crusade and the council scenes, portraits of the officers (`chaosx_portrait_creator`), the custom unit families with counters, audio and animation, and the Crusade Council window with its reference image.
+Flags exist for `CRU`, `CRU_ORDER`, `CRU_CONFED`, `CRU_KINGDOM`, `CRU_HOLYSEE`, `CRU_GOD` and the seven principality carriers (`gfx/flags/`, `medium/`, `small/`). Assets still needed: portraits of the officers (`chaosx_portrait_creator`), the custom unit families with counters, audio and animation, the super-event art registrations and the Crusade Council window with its reference image. Art files without a registration or consumer (equipment technology icons, five extra mission icons, the Holy World faction emblem, the Eleventh Return super-event picture and the crusade-begins news picture) were produced for the deferred parts and stay out of the repository until they are wired.
 
 ## Limitations
 

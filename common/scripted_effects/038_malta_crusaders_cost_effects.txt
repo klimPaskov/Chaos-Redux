@@ -11,6 +11,12 @@
 # player sees, what is checked and what is paid are one number.
 # Stockpile debits use the shared helpers of chaosx_dynamic_effects.txt.
 # The four demand actions also publish a half cost for the compromise answer.
+# The completed focuses that lower a cost set a discount flag; malta_apply_cost_discounts
+# applies the factor of malta_cost_scale.discount after every publication.
+# The completed focuses that lower a cost set a discount flag; malta_apply_cost_discounts
+# applies the factor of malta_cost_scale.discount after every publication.
+# The completed focuses that lower a cost set a discount flag; malta_apply_cost_discounts
+# applies the factor of malta_cost_scale.discount after every publication.
 # ============================================================================
 
 # COUNTRY (MLT). Publishes every action cost as global.malta_cost_<action>_<resource>.
@@ -225,6 +231,372 @@ malta_publish_costs = {
 	multiply_temp_variable = { malta_cost_value = malta_cost_scale_eleventh }
 	round_temp_variable = malta_cost_value
 	set_variable = { global.malta_cost_launch_convoys = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.charter_major_political_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_charter_major_political_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.charter_major_command_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_charter_major_command_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.charter_major_support }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_charter_major_support = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.charter_minor_political_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_charter_minor_political_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.charter_minor_command_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_charter_minor_command_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.charter_minor_support }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_charter_minor_support = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.pr_levy_command_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_pr_levy_command_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.pr_relief_equipment }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_pr_relief_equipment = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.pr_relief_fuel }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_pr_relief_fuel = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.pr_enforce_command_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_pr_enforce_command_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.pr_enforce_equipment }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_pr_enforce_equipment = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.pr_revise_political_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_pr_revise_political_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.pr_arbitrate_political_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_pr_arbitrate_political_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.pr_integrate_political_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_pr_integrate_political_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.pr_integrate_support }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_pr_integrate_support = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.pr_dissolve_political_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_pr_dissolve_political_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.pr_federate_political_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_pr_federate_political_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.pr_federate_command_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_pr_federate_command_power = malta_cost_value }
+	malta_apply_cost_discounts = yes
+}
+
+# ----------------------------------------------------------------------------
+# Focus discounts
+# ----------------------------------------------------------------------------
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of demand treasury.
+malta_discount_demand_treasury = {
+	multiply_variable = { global.malta_cost_demand_treasury_political_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_demand_treasury_political_power
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of demand command.
+malta_discount_demand_command = {
+	multiply_variable = { global.malta_cost_demand_command_command_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_demand_command_command_power
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of demand levy.
+malta_discount_demand_levy = {
+	multiply_variable = { global.malta_cost_demand_levy_manpower = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_demand_levy_manpower
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of demand headquarters.
+malta_discount_demand_headquarters = {
+	multiply_variable = { global.malta_cost_demand_headquarters_political_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_demand_headquarters_political_power
+	multiply_variable = { global.malta_cost_demand_headquarters_xp = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_demand_headquarters_xp
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of joint command.
+malta_discount_joint_command = {
+	multiply_variable = { global.malta_cost_joint_command_xp = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_joint_command_xp
+	multiply_variable = { global.malta_cost_joint_command_command_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_joint_command_command_power
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of arbitrate.
+malta_discount_arbitrate = {
+	multiply_variable = { global.malta_cost_arbitrate_political_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_arbitrate_political_power
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of seize.
+malta_discount_seize = {
+	multiply_variable = { global.malta_cost_seize_command_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_seize_command_power
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of escort.
+malta_discount_escort = {
+	multiply_variable = { global.malta_cost_escort_fuel = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_escort_fuel
+	multiply_variable = { global.malta_cost_escort_convoys = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_escort_convoys
+	multiply_variable = { global.malta_cost_escort_command_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_escort_command_power
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of rail.
+malta_discount_rail = {
+	multiply_variable = { global.malta_cost_rail_trains = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_rail_trains
+	multiply_variable = { global.malta_cost_rail_support = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_rail_support
+	multiply_variable = { global.malta_cost_rail_political_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_rail_political_power
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of port.
+malta_discount_port = {
+	multiply_variable = { global.malta_cost_port_support = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_port_support
+	multiply_variable = { global.malta_cost_port_political_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_port_political_power
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of air bridge.
+malta_discount_air_bridge = {
+	multiply_variable = { global.malta_cost_air_bridge_fuel = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_air_bridge_fuel
+	multiply_variable = { global.malta_cost_air_bridge_command_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_air_bridge_command_power
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of raise banner.
+malta_discount_raise_banner = {
+	multiply_variable = { global.malta_cost_raise_banner_manpower = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_raise_banner_manpower
+	multiply_variable = { global.malta_cost_raise_banner_equipment = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_raise_banner_equipment
+	multiply_variable = { global.malta_cost_raise_banner_xp = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_raise_banner_xp
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of raise siege.
+malta_discount_raise_siege = {
+	multiply_variable = { global.malta_cost_raise_siege_manpower = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_raise_siege_manpower
+	multiply_variable = { global.malta_cost_raise_siege_equipment = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_raise_siege_equipment
+	multiply_variable = { global.malta_cost_raise_siege_support = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_raise_siege_support
+	multiply_variable = { global.malta_cost_raise_siege_xp = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_raise_siege_xp
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of engineers.
+malta_discount_engineers = {
+	multiply_variable = { global.malta_cost_engineers_support = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_engineers_support
+	multiply_variable = { global.malta_cost_engineers_xp = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_engineers_xp
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of ultimatum.
+malta_discount_ultimatum = {
+	multiply_variable = { global.malta_cost_ultimatum_political_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_ultimatum_political_power
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of crusade.
+malta_discount_crusade = {
+	multiply_variable = { global.malta_cost_crusade_command_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_crusade_command_power
+	multiply_variable = { global.malta_cost_crusade_equipment = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_crusade_equipment
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of settle.
+malta_discount_settle = {
+	multiply_variable = { global.malta_cost_settle_political_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_settle_political_power
+	multiply_variable = { global.malta_cost_settle_support = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_settle_support
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of evacuate.
+malta_discount_evacuate = {
+	multiply_variable = { global.malta_cost_evacuate_convoys = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_evacuate_convoys
+	multiply_variable = { global.malta_cost_evacuate_fuel = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_evacuate_fuel
+	multiply_variable = { global.malta_cost_evacuate_command_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_evacuate_command_power
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of fortify malta.
+malta_discount_fortify_malta = {
+	multiply_variable = { global.malta_cost_fortify_malta_support = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_fortify_malta_support
+	multiply_variable = { global.malta_cost_fortify_malta_political_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_fortify_malta_political_power
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of volunteers.
+malta_discount_volunteers = {
+	multiply_variable = { global.malta_cost_volunteers_convoys = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_volunteers_convoys
+	multiply_variable = { global.malta_cost_volunteers_political_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_volunteers_political_power
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of rebuild.
+malta_discount_rebuild = {
+	multiply_variable = { global.malta_cost_rebuild_support = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_rebuild_support
+	multiply_variable = { global.malta_cost_rebuild_fuel = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_rebuild_fuel
+	multiply_variable = { global.malta_cost_rebuild_political_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_rebuild_political_power
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of launch.
+malta_discount_launch = {
+	multiply_variable = { global.malta_cost_launch_command_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_launch_command_power
+	multiply_variable = { global.malta_cost_launch_equipment = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_launch_equipment
+	multiply_variable = { global.malta_cost_launch_convoys = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_launch_convoys
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of charter major.
+malta_discount_charter_major = {
+	multiply_variable = { global.malta_cost_charter_major_political_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_charter_major_political_power
+	multiply_variable = { global.malta_cost_charter_major_command_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_charter_major_command_power
+	multiply_variable = { global.malta_cost_charter_major_support = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_charter_major_support
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of charter minor.
+malta_discount_charter_minor = {
+	multiply_variable = { global.malta_cost_charter_minor_political_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_charter_minor_political_power
+	multiply_variable = { global.malta_cost_charter_minor_command_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_charter_minor_command_power
+	multiply_variable = { global.malta_cost_charter_minor_support = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_charter_minor_support
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of pr levy.
+malta_discount_pr_levy = {
+	multiply_variable = { global.malta_cost_pr_levy_command_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_pr_levy_command_power
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of pr relief.
+malta_discount_pr_relief = {
+	multiply_variable = { global.malta_cost_pr_relief_equipment = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_pr_relief_equipment
+	multiply_variable = { global.malta_cost_pr_relief_fuel = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_pr_relief_fuel
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of pr enforce.
+malta_discount_pr_enforce = {
+	multiply_variable = { global.malta_cost_pr_enforce_command_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_pr_enforce_command_power
+	multiply_variable = { global.malta_cost_pr_enforce_equipment = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_pr_enforce_equipment
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of pr revise.
+malta_discount_pr_revise = {
+	multiply_variable = { global.malta_cost_pr_revise_political_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_pr_revise_political_power
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of pr arbitrate.
+malta_discount_pr_arbitrate = {
+	multiply_variable = { global.malta_cost_pr_arbitrate_political_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_pr_arbitrate_political_power
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of pr integrate.
+malta_discount_pr_integrate = {
+	multiply_variable = { global.malta_cost_pr_integrate_political_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_pr_integrate_political_power
+	multiply_variable = { global.malta_cost_pr_integrate_support = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_pr_integrate_support
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of pr dissolve.
+malta_discount_pr_dissolve = {
+	multiply_variable = { global.malta_cost_pr_dissolve_political_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_pr_dissolve_political_power
+}
+
+# COUNTRY (MLT). Applies the focus discount to the published cost of pr federate.
+malta_discount_pr_federate = {
+	multiply_variable = { global.malta_cost_pr_federate_political_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_pr_federate_political_power
+	multiply_variable = { global.malta_cost_pr_federate_command_power = constant:malta_cost_scale.discount }
+	round_variable = global.malta_cost_pr_federate_command_power
+}
+
+# COUNTRY (MLT). Applies the discounts of the completed focuses to the published costs.
+malta_apply_cost_discounts = {
+	if = {
+		limit = { has_country_flag = malta_port_program }
+		malta_discount_port = yes
+	}
+	if = {
+		limit = { has_country_flag = malta_convoy_republic }
+		malta_discount_escort = yes
+		malta_discount_air_bridge = yes
+	}
+	if = {
+		limit = { has_country_flag = malta_order_workshops }
+		malta_discount_raise_banner = yes
+		malta_discount_raise_siege = yes
+		malta_discount_engineers = yes
+	}
+	if = {
+		limit = { has_country_flag = malta_land_grants_arbitrated }
+		malta_discount_settle = yes
+	}
+	if = {
+		limit = { has_country_flag = malta_siege_trains }
+		malta_discount_crusade = yes
+	}
+	if = {
+		limit = { has_country_flag = malta_chancery }
+		malta_discount_ultimatum = yes
+		malta_discount_charter_major = yes
+		malta_discount_charter_minor = yes
+	}
 }
 
 # ----------------------------------------------------------------------------
@@ -280,7 +652,7 @@ malta_pay_demand_headquarters = {
 	add_political_power = malta_pay
 	set_temp_variable = { malta_pay = global.malta_cost_demand_headquarters_xp }
 	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
-	add_army_experience = malta_pay
+	army_experience = malta_pay
 }
 
 # COUNTRY (MLT). Pays the published cost of demand headquarters (half, the compromise).
@@ -290,14 +662,14 @@ malta_pay_demand_headquarters_half = {
 	add_political_power = malta_pay
 	set_temp_variable = { malta_pay = global.malta_cost_demand_headquarters_xp_half }
 	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
-	add_army_experience = malta_pay
+	army_experience = malta_pay
 }
 
 # COUNTRY (MLT). Pays the published cost of joint command.
 malta_pay_joint_command = {
 	set_temp_variable = { malta_pay = global.malta_cost_joint_command_xp }
 	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
-	add_army_experience = malta_pay
+	army_experience = malta_pay
 	set_temp_variable = { malta_pay = global.malta_cost_joint_command_command_power }
 	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
 	add_command_power = malta_pay
@@ -366,7 +738,7 @@ malta_pay_raise_banner = {
 	remove_infantry_equipment_from_stockpile = yes
 	set_temp_variable = { malta_pay = global.malta_cost_raise_banner_xp }
 	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
-	add_army_experience = malta_pay
+	army_experience = malta_pay
 }
 
 # COUNTRY (MLT). Pays the published cost of raise siege.
@@ -380,7 +752,7 @@ malta_pay_raise_siege = {
 	remove_support_equipment_from_stockpile = yes
 	set_temp_variable = { malta_pay = global.malta_cost_raise_siege_xp }
 	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
-	add_army_experience = malta_pay
+	army_experience = malta_pay
 }
 
 # COUNTRY (MLT). Pays the published cost of engineers.
@@ -389,7 +761,7 @@ malta_pay_engineers = {
 	remove_support_equipment_from_stockpile = yes
 	set_temp_variable = { malta_pay = global.malta_cost_engineers_xp }
 	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
-	add_army_experience = malta_pay
+	army_experience = malta_pay
 }
 
 # COUNTRY (MLT). Pays the published cost of ultimatum.
@@ -466,4 +838,92 @@ malta_pay_launch = {
 	remove_infantry_equipment_from_stockpile = yes
 	set_temp_variable = { equipment_stockpile_removal_amount = global.malta_cost_launch_convoys }
 	remove_convoys_from_stockpile = yes
+}
+
+# COUNTRY (MLT). Pays the published cost of charter major.
+malta_pay_charter_major = {
+	set_temp_variable = { malta_pay = global.malta_cost_charter_major_political_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_political_power = malta_pay
+	set_temp_variable = { malta_pay = global.malta_cost_charter_major_command_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_command_power = malta_pay
+	set_temp_variable = { equipment_stockpile_removal_amount = global.malta_cost_charter_major_support }
+	remove_support_equipment_from_stockpile = yes
+}
+
+# COUNTRY (MLT). Pays the published cost of charter minor.
+malta_pay_charter_minor = {
+	set_temp_variable = { malta_pay = global.malta_cost_charter_minor_political_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_political_power = malta_pay
+	set_temp_variable = { malta_pay = global.malta_cost_charter_minor_command_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_command_power = malta_pay
+	set_temp_variable = { equipment_stockpile_removal_amount = global.malta_cost_charter_minor_support }
+	remove_support_equipment_from_stockpile = yes
+}
+
+# COUNTRY (MLT). Pays the published cost of pr levy.
+malta_pay_pr_levy = {
+	set_temp_variable = { malta_pay = global.malta_cost_pr_levy_command_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_command_power = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of pr relief.
+malta_pay_pr_relief = {
+	set_temp_variable = { equipment_stockpile_removal_amount = global.malta_cost_pr_relief_equipment }
+	remove_infantry_equipment_from_stockpile = yes
+	set_temp_variable = { fuel_stockpile_removal_amount = global.malta_cost_pr_relief_fuel }
+	remove_fuel_from_stockpile = yes
+}
+
+# COUNTRY (MLT). Pays the published cost of pr enforce.
+malta_pay_pr_enforce = {
+	set_temp_variable = { malta_pay = global.malta_cost_pr_enforce_command_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_command_power = malta_pay
+	set_temp_variable = { equipment_stockpile_removal_amount = global.malta_cost_pr_enforce_equipment }
+	remove_infantry_equipment_from_stockpile = yes
+}
+
+# COUNTRY (MLT). Pays the published cost of pr revise.
+malta_pay_pr_revise = {
+	set_temp_variable = { malta_pay = global.malta_cost_pr_revise_political_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_political_power = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of pr arbitrate.
+malta_pay_pr_arbitrate = {
+	set_temp_variable = { malta_pay = global.malta_cost_pr_arbitrate_political_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_political_power = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of pr integrate.
+malta_pay_pr_integrate = {
+	set_temp_variable = { malta_pay = global.malta_cost_pr_integrate_political_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_political_power = malta_pay
+	set_temp_variable = { equipment_stockpile_removal_amount = global.malta_cost_pr_integrate_support }
+	remove_support_equipment_from_stockpile = yes
+}
+
+# COUNTRY (MLT). Pays the published cost of pr dissolve.
+malta_pay_pr_dissolve = {
+	set_temp_variable = { malta_pay = global.malta_cost_pr_dissolve_political_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_political_power = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of pr federate.
+malta_pay_pr_federate = {
+	set_temp_variable = { malta_pay = global.malta_cost_pr_federate_political_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_political_power = malta_pay
+	set_temp_variable = { malta_pay = global.malta_cost_pr_federate_command_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_command_power = malta_pay
 }

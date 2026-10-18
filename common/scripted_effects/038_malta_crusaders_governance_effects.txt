@@ -1,0 +1,315 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 038 MALTA CRUSADERS GOVERNMENT AND FOCUS HELPERS
+# ============================================================================
+# Government forms of the Malta-led realm, the dominant order, the Papal route
+# and the small helpers the focus tree rewards call. All effects run in
+# COUNTRY scope on the actor (MLT).
+#
+# Government forms (variable malta_government):
+#   1 Sovereign Order of Malta (Grand Magistry)   cosmetic CRU_ORDER
+#   2 Confederation of the Military Orders        cosmetic CRU_CONFED
+#   3 Crusader Kingdom of Malta                   cosmetic CRU_KINGDOM
+#   4 The Holy See                                cosmetic CRU_HOLYSEE
+#   5 Kingdom of God                              cosmetic CRU_GOD
+# The orders line of the national spirits (The Orders Recalled, The Orders
+# United, the six primacy institutions, the Assembly of the Langues, the Civil
+# Constitution, the Papal Administration, the Kingdom of God) holds one idea
+# at a time, so the route never exceeds the three focus-tree spirits.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# The orders line of the national spirits
+# ---------------------------------------------------------------------------
+
+# COUNTRY (MLT). Removes whatever idea currently holds the orders line.
+malta_clear_orders_line = {
+	if = { limit = { has_idea = malta_orders_recalled } remove_ideas = malta_orders_recalled }
+	if = { limit = { has_idea = malta_orders_united } remove_ideas = malta_orders_united }
+	if = { limit = { has_idea = malta_primacy_hospitallers } remove_ideas = malta_primacy_hospitallers }
+	if = { limit = { has_idea = malta_primacy_templars } remove_ideas = malta_primacy_templars }
+	if = { limit = { has_idea = malta_primacy_naval } remove_ideas = malta_primacy_naval }
+	if = { limit = { has_idea = malta_primacy_teutonic } remove_ideas = malta_primacy_teutonic }
+	if = { limit = { has_idea = malta_primacy_lazarus } remove_ideas = malta_primacy_lazarus }
+	if = { limit = { has_idea = malta_primacy_siege } remove_ideas = malta_primacy_siege }
+	if = { limit = { has_idea = malta_assembly_of_langues } remove_ideas = malta_assembly_of_langues }
+	if = { limit = { has_idea = malta_civil_constitution } remove_ideas = malta_civil_constitution }
+	if = { limit = { has_idea = malta_papal_administration } remove_ideas = malta_papal_administration }
+	if = { limit = { has_idea = malta_kingdom_of_god } remove_ideas = malta_kingdom_of_god }
+}
+
+# ---------------------------------------------------------------------------
+# Government forms
+# ---------------------------------------------------------------------------
+
+# Input: temp malta_form (1 to 5). Sets the identity, the party, the leader's
+# role and the orders-line spirit of the chosen form. Forms 1 to 3 end the
+# provisional council and complete the settlement of the command.
+malta_set_government_form = {
+	set_variable = { malta_government = malta_form }
+	clr_country_flag = malta_gov_grand_magistry
+	clr_country_flag = malta_gov_confederation
+	clr_country_flag = malta_gov_kingdom
+	clr_country_flag = malta_gov_holy_see
+	clr_country_flag = malta_gov_kingdom_of_god
+	if = {
+		limit = { check_variable = { var = malta_form value = constant:malta_government.grand_magistry compare = equals } }
+		set_country_flag = malta_gov_grand_magistry
+		set_country_flag = malta_settlement_complete
+		set_cosmetic_tag = CRU_ORDER
+		set_politics = { ruling_party = neutrality elections_allowed = no long_name = malta_party_grand_magistry name = malta_party_grand_magistry_short }
+		add_country_leader_role = { character = malta_grand_master promote_leader = yes country_leader = { ideology = despotism expire = "1965.1.1.1" } }
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_form value = constant:malta_government.confederation compare = equals } }
+		set_country_flag = malta_gov_confederation
+		set_country_flag = malta_settlement_complete
+		set_cosmetic_tag = CRU_CONFED
+		set_politics = { ruling_party = neutrality elections_allowed = no long_name = malta_party_assembly name = malta_party_assembly_short }
+		malta_clear_orders_line = yes
+		add_ideas = malta_assembly_of_langues
+		add_country_leader_role = { character = malta_grand_master promote_leader = yes country_leader = { ideology = centrism expire = "1965.1.1.1" } }
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_form value = constant:malta_government.kingdom compare = equals } }
+		set_country_flag = malta_gov_kingdom
+		set_country_flag = malta_settlement_complete
+		set_cosmetic_tag = CRU_KINGDOM
+		set_politics = { ruling_party = democratic elections_allowed = no long_name = malta_party_christian_social name = malta_party_christian_social_short }
+		malta_clear_orders_line = yes
+		add_ideas = malta_civil_constitution
+		add_country_leader_role = { character = malta_grand_master promote_leader = yes country_leader = { ideology = conservatism expire = "1965.1.1.1" } }
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_form value = constant:malta_government.holy_see compare = equals } }
+		set_country_flag = malta_gov_holy_see
+		set_cosmetic_tag = CRU_HOLYSEE
+		set_politics = { ruling_party = neutrality elections_allowed = no long_name = malta_party_papal_administration name = malta_party_papal_administration_short }
+		malta_clear_orders_line = yes
+		add_ideas = malta_papal_administration
+		malta_install_pope = yes
+	}
+	else = {
+		set_country_flag = malta_gov_kingdom_of_god
+		set_cosmetic_tag = CRU_GOD
+		set_politics = { ruling_party = neutrality elections_allowed = no long_name = malta_party_kingdom_of_god name = malta_party_kingdom_of_god_short }
+		malta_clear_orders_line = yes
+		add_ideas = malta_kingdom_of_god
+	}
+	malta_refresh_standing = yes
+}
+
+# Seats the Pope as supreme ruler and moves the political capital to Rome.
+# Jerusalem stays the sacred and military centre.
+malta_install_pope = {
+	set_temp_variable = { chaosx_recruit_character_token = token:malta_pope }
+	chaosx_recruit_character = yes
+	add_country_leader_role = { character = malta_pope promote_leader = yes country_leader = { ideology = oligarchism expire = "1965.1.1.1" } }
+	set_capital = { state = 2 remember_old_capital = yes }
+	set_country_flag = malta_papal_supremacy
+	set_country_flag = malta_jerusalem_sacred_centre
+}
+
+# ---------------------------------------------------------------------------
+# Dominant order
+# ---------------------------------------------------------------------------
+
+# Input: temp malta_order (1 to 6). The order becomes the formal dominant
+# order: its voice is high, its rivals fall to low and resent it, and its
+# primacy institution takes the orders line of the national spirits. Cohesion
+# is read as obedience to the dominant order from now on.
+malta_name_dominant_order = {
+	set_variable = { malta_dominant_order = malta_order }
+	set_country_flag = malta_dominant_named
+	set_temp_variable = { malta_named_order = malta_order }
+	for_loop_effect = {
+		start = constant:malta_order.hospitallers
+		end = constant:malta_council.order_count
+		compare = less_than_or_equals
+		value = malta_scan
+		if = {
+			limit = { check_variable = { var = malta_scan value = malta_named_order compare = equals } }
+			set_variable = { malta_order_influence^malta_scan = constant:malta_influence.high }
+			set_variable = { malta_order_grievance^malta_scan = 0 }
+		}
+		else = {
+			set_variable = { malta_order_influence^malta_scan = constant:malta_influence.low }
+			set_temp_variable = { malta_order = malta_scan }
+			malta_raise_grievance = yes
+		}
+	}
+	set_temp_variable = { malta_order = malta_named_order }
+	malta_clear_orders_line = yes
+	if = { limit = { check_variable = { var = malta_named_order value = constant:malta_order.hospitallers compare = equals } } add_ideas = malta_primacy_hospitallers }
+	else_if = { limit = { check_variable = { var = malta_named_order value = constant:malta_order.templars compare = equals } } add_ideas = malta_primacy_templars }
+	else_if = { limit = { check_variable = { var = malta_named_order value = constant:malta_order.naval compare = equals } } add_ideas = malta_primacy_naval }
+	else_if = { limit = { check_variable = { var = malta_named_order value = constant:malta_order.teutonic compare = equals } } add_ideas = malta_primacy_teutonic }
+	else_if = { limit = { check_variable = { var = malta_named_order value = constant:malta_order.lazarus compare = equals } } add_ideas = malta_primacy_lazarus }
+	else = { add_ideas = malta_primacy_siege }
+	set_temp_variable = { malta_change = constant:malta_dominant.cohesion }
+	malta_change_cohesion = yes
+	malta_refresh_standing = yes
+}
+
+# One wrapper per order, for the focus rewards.
+malta_name_dominant_order_hospitallers = {
+	set_temp_variable = { malta_order = constant:malta_order.hospitallers }
+	malta_name_dominant_order = yes
+}
+
+malta_name_dominant_order_templars = {
+	set_temp_variable = { malta_order = constant:malta_order.templars }
+	malta_name_dominant_order = yes
+}
+
+malta_name_dominant_order_naval = {
+	set_temp_variable = { malta_order = constant:malta_order.naval }
+	malta_name_dominant_order = yes
+}
+
+malta_name_dominant_order_teutonic = {
+	set_temp_variable = { malta_order = constant:malta_order.teutonic }
+	malta_name_dominant_order = yes
+}
+
+malta_name_dominant_order_lazarus = {
+	set_temp_variable = { malta_order = constant:malta_order.lazarus }
+	malta_name_dominant_order = yes
+}
+
+malta_name_dominant_order_siege = {
+	set_temp_variable = { malta_order = constant:malta_order.siege }
+	malta_name_dominant_order = yes
+}
+
+# ---------------------------------------------------------------------------
+# Focus reward helpers
+# ---------------------------------------------------------------------------
+
+# Input: temp malta_cohesion_by_value (signed). Changes Cohesion by that amount.
+malta_cohesion_by = {
+	set_temp_variable = { malta_change = malta_cohesion_by_value }
+	malta_change_cohesion = yes
+}
+
+# Input: temp malta_legitimacy_by_value (signed). Changes Legitimacy by that amount.
+malta_legitimacy_by = {
+	set_temp_variable = { malta_change = malta_legitimacy_by_value }
+	malta_change_legitimacy = yes
+}
+
+# Input: temp malta_focus_seat_order_order (1 to 6). Seats that order when the seat is empty and applies its idea.
+malta_focus_seat_order = {
+	set_temp_variable = { malta_seat_order = malta_focus_seat_order_order }
+	malta_seat_order_now = yes
+	set_temp_variable = { malta_order = malta_focus_seat_order_order }
+	malta_sync_seat_idea = yes
+}
+
+# Input: temp malta_focus_favour_order_order. Raises the influence of that order and lowers its grievance.
+malta_focus_favour_order = {
+	set_temp_variable = { malta_order = malta_focus_favour_order_order }
+	malta_raise_influence = yes
+	malta_lower_grievance = yes
+}
+
+# Input: temp malta_focus_senior_seat_name, a token of hospitallers, templars, naval, teutonic,
+# lazarus or siege. Adds the senior seat idea of that order.
+malta_focus_senior_seat = {
+	meta_effect = {
+		text = {
+			if = {
+				limit = { NOT = { has_idea = malta_seat_[NAME]_senior } }
+				add_ideas = malta_seat_[NAME]_senior
+			}
+		}
+		NAME = "[?malta_focus_senior_seat_name.GetTokenKey]"
+	}
+}
+
+# Input: temps malta_focus_spawn_template, malta_focus_spawn_count and malta_focus_spawn_state.
+# Spawns that many divisions of the template id in the state (Malta when the state is not
+# held). The caller sets temp malta_focus_equipment, the equipment fill of the new divisions.
+malta_focus_spawn = {
+	save_event_target_as = malta_spawn_owner
+	set_variable = { global.malta_spawn_template = malta_focus_spawn_template }
+	set_variable = { global.malta_spawn_xp = constant:malta_force.experience_factor }
+	set_variable = { global.malta_spawn_equipment = malta_focus_equipment }
+	set_variable = { global.malta_spawn_manpower = constant:malta_force.manpower_factor }
+	set_temp_variable = { malta_spawn_count = malta_focus_spawn_count }
+	set_temp_variable = { malta_spawn_in_state = malta_focus_spawn_state }
+	malta_spawn_in = yes
+}
+
+# Input: temps malta_focus_build_state (state id), malta_focus_build_type (building token),
+# malta_focus_build_level and malta_focus_build_slots. Adds the levels of the building and the
+# shared building slots to the state when the actor owns it.
+malta_focus_build = {
+	meta_effect = {
+		text = {
+			if = {
+				limit = { owns_state = [STATE] }
+				[STATE] = {
+					add_extra_state_shared_building_slots = [SLOTS]
+					add_building_construction = { type = [TYPE] level = [LEVEL] instant_build = yes }
+				}
+			}
+		}
+		STATE = "[?malta_focus_build_state|.0]"
+		TYPE = "[?malta_focus_build_type.GetTokenKey]"
+		LEVEL = "[?malta_focus_build_level|.0]"
+		SLOTS = "[?malta_focus_build_slots|.0]"
+	}
+}
+
+# Input: temp malta_focus_expedition_roads_level. Adds that many levels of infrastructure to
+# every owned state of the actor that the trigger malta_state_is_expedition_state accepts, at
+# most two.
+malta_focus_expedition_roads = {
+	set_temp_variable = { malta_roads_done = 0 }
+	every_owned_state = {
+		limit = {
+			malta_state_is_expedition_state = yes
+			is_controlled_by = MLT
+			NOT = { has_state_flag = malta_roads_done }
+		}
+		if = {
+			limit = { check_variable = { var = malta_roads_done value = 2 compare = less_than } }
+			set_state_flag = malta_roads_done
+			meta_effect = {
+				text = {
+					add_building_construction = { type = infrastructure level = [LEVEL] instant_build = yes }
+				}
+				LEVEL = "[?malta_focus_expedition_roads_level|.0]"
+			}
+			add_to_temp_variable = { malta_roads_done = 1 }
+		}
+	}
+}
+
+# Input: temps malta_focus_resource_state (state id), malta_focus_resource_type (resource token)
+# and malta_focus_resource_amount. Adds the resource to the state when the actor owns it.
+malta_focus_resource = {
+	meta_effect = {
+		text = {
+			if = {
+				limit = { owns_state = [STATE] }
+				[STATE] = { add_resource = { type = [TYPE] amount = [AMOUNT] } }
+			}
+		}
+		STATE = "[?malta_focus_resource_state|.0]"
+		TYPE = "[?malta_focus_resource_type.GetTokenKey]"
+		AMOUNT = "[?malta_focus_resource_amount|.0]"
+	}
+}
+
+# Adds the cores of the actor to the owned and controlled registry states that
+# the caller has held for a while. Staged: only Holy Land states are cored.
+malta_focus_core_holy_land = {
+	every_owned_state = {
+		limit = {
+			malta_state_is_holy_land = yes
+			is_controlled_by = MLT
+		}
+		add_core_of = MLT
+	}
+}

@@ -126,6 +126,27 @@ malta_state_is_campaign_pool = {
 		malta_state_is_island_foothold = yes
 		malta_state_is_holy_land = yes
 		malta_state_is_bridge = yes
+		malta_state_is_rome = yes
+	}
+}
+
+# Rome. It becomes a campaign target only after the western question is opened.
+malta_state_is_rome = {
+	state = 2
+}
+
+# A registry state the actor may claim and list as a target. The Holy Land,
+# the bridge and the island footholds are always open. The other regions open
+# with the focuses that name them.
+malta_state_is_open_for_claims = {
+	OR = {
+		malta_state_is_holy_land = yes
+		malta_state_is_bridge_link = yes
+		AND = { malta_state_is_levant_frontier = yes MLT = { has_country_flag = malta_region_levant } }
+		AND = { malta_state_is_greek_mainland = yes MLT = { has_country_flag = malta_region_greece } }
+		AND = { malta_state_is_anatolian_march = yes MLT = { has_country_flag = malta_region_anatolia } }
+		AND = { malta_state_is_north_african_coast = yes MLT = { has_country_flag = malta_region_north_africa } }
+		AND = { malta_state_is_rome = yes MLT = { has_country_flag = malta_western_question } }
 	}
 }
 
@@ -174,22 +195,153 @@ malta_state_is_landing_candidate = {
 	}
 }
 
-# A registry state the actor may claim and list as a target. The Holy Land,
-# the bridge and the island footholds are always open. The other regions open
-# with the focuses that name them.
-malta_state_is_open_for_claims = {
+# ---------------------------------------------------------------------------
+# Principality regions (Evolution II)
+# ---------------------------------------------------------------------------
+# Seven regions, one per principality kind. They never overlap and each lies
+# inside the registry above. A principality takes the states of its region that
+# the actor owns and controls. The capital is a fixed state of the region.
+#
+#   Kind  Principality              Region                       Capital
+#   1     Kingdom of Jerusalem      454, 455                     454 Israel (Jerusalem)
+#   2     Principality of Antioch   799, 677                     799 Hatay (Antioch)
+#   3     Crusader Cyprus           183                          183 Cyprus
+#   4     County of Tripoli         553                          553 Lebanon (Tripoli)
+#   5     Aegean Crusader State     164, 187, 182                164 Dodecanese (Rhodes)
+#   6     Anatolian Order State     342, 345, 344                345 Mersin
+#   7     North African March       661, 663                     661 Tripolitania
+
+malta_state_is_pr_region_jerusalem = {
 	OR = {
-		malta_state_is_holy_land = yes
-		malta_state_is_bridge_link = yes
-		AND = { malta_state_is_levant_frontier = yes MLT = { has_country_flag = malta_region_levant } }
-		AND = { malta_state_is_greek_mainland = yes MLT = { has_country_flag = malta_region_greece } }
-		AND = { malta_state_is_anatolian_march = yes MLT = { has_country_flag = malta_region_anatolia } }
-		AND = { malta_state_is_north_african_coast = yes MLT = { has_country_flag = malta_region_north_africa } }
-		AND = { malta_state_is_rome = yes MLT = { has_country_flag = malta_western_question } }
+		state = 454
+		state = 455
 	}
 }
 
-# Rome. It becomes a campaign target only after the western question is opened.
-malta_state_is_rome = {
-	state = 2
+malta_state_is_pr_region_antioch = {
+	OR = {
+		state = 799
+		state = 677
+	}
+}
+
+malta_state_is_pr_region_cyprus = {
+	state = 183
+}
+
+malta_state_is_pr_region_tripoli = {
+	state = 553
+}
+
+malta_state_is_pr_region_aegean = {
+	OR = {
+		state = 164
+		state = 187
+		state = 182
+	}
+}
+
+malta_state_is_pr_region_anatolia = {
+	OR = {
+		state = 342
+		state = 345
+		state = 344
+	}
+}
+
+malta_state_is_pr_region_africa = {
+	OR = {
+		state = 661
+		state = 663
+	}
+}
+
+# STATE scope. The state lies in the region of the kind in temp malta_pr_kind.
+malta_state_is_pr_region = {
+	OR = {
+		AND = {
+			check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.jerusalem }
+			malta_state_is_pr_region_jerusalem = yes
+		}
+		AND = {
+			check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.antioch }
+			malta_state_is_pr_region_antioch = yes
+		}
+		AND = {
+			check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.cyprus }
+			malta_state_is_pr_region_cyprus = yes
+		}
+		AND = {
+			check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.tripoli }
+			malta_state_is_pr_region_tripoli = yes
+		}
+		AND = {
+			check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.aegean }
+			malta_state_is_pr_region_aegean = yes
+		}
+		AND = {
+			check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.anatolia }
+			malta_state_is_pr_region_anatolia = yes
+		}
+		AND = {
+			check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.africa }
+			malta_state_is_pr_region_africa = yes
+		}
+	}
+}
+
+# STATE scope. The capital of the kind in temp malta_pr_kind.
+malta_state_is_pr_capital = {
+	OR = {
+		AND = {
+			check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.jerusalem }
+			state = 454
+		}
+		AND = {
+			check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.antioch }
+			state = 799
+		}
+		AND = {
+			check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.cyprus }
+			state = 183
+		}
+		AND = {
+			check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.tripoli }
+			state = 553
+		}
+		AND = {
+			check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.aegean }
+			state = 164
+		}
+		AND = {
+			check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.anatolia }
+			state = 345
+		}
+		AND = {
+			check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.africa }
+			state = 661
+		}
+	}
+}
+
+# STATE scope. The state is held by the realm: by the actor itself or by one
+# of its chartered principalities. The anchors and the campaign proofs read it,
+# so that chartering a state does not break the command that holds it.
+malta_state_is_held_by_realm = {
+	OR = {
+		AND = {
+			is_owned_by = MLT
+			is_controlled_by = MLT
+		}
+		AND = {
+			owner = { malta_is_chartered_principality = yes }
+			controller = { malta_is_chartered_principality = yes }
+		}
+	}
+}
+
+# STATE scope. The actor itself owns and controls the state.
+malta_state_is_held_directly = {
+	is_owned_by = MLT
+	is_controlled_by = MLT
 }

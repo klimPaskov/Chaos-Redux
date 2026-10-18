@@ -1,0 +1,292 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 038 CRUSADER PRINCIPALITY CONSTANTS
+# ============================================================================
+# Tuning of the chartered principalities of Evolution II: identities, limits,
+# loyalty bands and changes, obligations, requests, succession, integration,
+# federation and the starting package of a new principality. Loyalty is a
+# hidden 0 to 100 score on each principality. The public status is the band it
+# falls in (Loyal, Cooperative, Guarded, Defiant, Rebellious). Costs of the
+# Malta actions live with the other action costs in malta_cost.
+# Bands and durations follow docs/specs/038_malta_crusaders_specs/28_balance_tuning_tables.md.
+# ============================================================================
+
+# Identities. Kinds 1 to 3 are the major principalities, kinds 4 to 7 the minor marches.
+malta_pr_kind = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	jerusalem = 1
+	antioch = 2
+	cyprus = 3
+	tripoli = 4
+	aegean = 5
+	anatolia = 6
+	africa = 7
+	first_minor = 4
+}
+
+# Charter forms. The form is chosen by the council when the charter is drawn.
+malta_pr_form = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	crown = 1
+	order = 2
+	local = 3
+	papal = 4
+}
+
+# What a principality contributes under its charter.
+malta_pr_duty = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	manpower = 1
+	equipment = 2
+	convoys = 3
+	fuel = 4
+	political_power = 5
+}
+
+# Limits. The review runs every review_weeks pulses of the actor.
+malta_pr_limit = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	max_active = 4
+	max_minor = 2
+	review_weeks = 4
+	duty_reviews = 3
+	tribute_light = 1
+	tribute_standard = 2
+	tribute_heavy = 3
+	minimum_states = 1
+	minimum_states_composite = 2
+}
+
+# Hidden loyalty. The bands name the lowest score of each status.
+malta_pr_loyalty = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	min = 0
+	max = 100
+	start = 60
+	loyal = 75
+	cooperative = 55
+	guarded = 40
+	defiant = 25
+	rebellious_reviews = 2
+}
+
+# Loyalty changes. A review applies the monthly values once.
+malta_pr_change = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	monthly_protected = 5
+	monthly_occupied = -5
+	monthly_light_tribute = 5
+	monthly_heavy_tribute = -5
+	monthly_order_patron = 5
+	monthly_federation = 5
+	levy = -5
+	relief = 10
+	enforce = 10
+	revise_lighter = 10
+	revise_heavier = -10
+	arbitrate_heir = 0
+	arbitrate_order = -10
+	arbitrate_local = 10
+	arbitrate_papal = -5
+	succession_lapse = -15
+	federation_join = 10
+	integration_begin = -10
+	refused_duty = -5
+}
+
+# Effects of the principality actions on the public values of Malta.
+malta_pr_public = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	charter_legitimacy = 5
+	enforce_legitimacy = -5
+	arbitrate_order_cohesion = 5
+	arbitrate_papal_legitimacy = 5
+	arbitrate_local_legitimacy = 5
+	integrate_legitimacy = 5
+	integrate_cohesion = -5
+	federation_cohesion = 10
+	federation_legitimacy = 10
+	breakaway_legitimacy = -10
+	breakaway_cohesion = -5
+	dissolve_legitimacy = -5
+}
+
+# Requests and duties. Amounts for the standard tribute level are multiplied by
+# the level (1 light, 2 standard, 3 heavy) and halved again for the light level.
+malta_pr_duty_amount = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	manpower = 2500
+	equipment = 250
+	convoys = 10
+	fuel = 1000
+	political_power = 25
+	levy_manpower = 10000
+	levy_equipment = 500
+	relief_days = 120
+	request_cooldown_days = 90
+	relief_cooldown_days = 120
+	revise_cooldown_days = 120
+	enforce_cooldown_days = 60
+	enforce_grace_days = 120
+}
+
+# Succession. The first crisis cannot open before the principality is
+# first_crisis_weeks old, the next ones follow the malta_pr_succession_interval pacing.
+malta_pr_succession = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	first_crisis_weeks = 40
+	interval_days = 540
+	deadline_days = 60
+	papal_factor = 1.5
+	federated_factor = 1.5
+	local_factor = 0.75
+}
+
+# Integration. The count is in review-free weeks, the actor pulse counts down.
+malta_pr_integration = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_age_weeks = 25
+	weeks = 50
+	high_court_reduction = 10
+	minimum_loyalty = 55
+}
+
+# Federation of the principalities.
+malta_pr_federation = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_members = 2
+}
+
+# Starting package of a new principality. Counts are divisions.
+malta_pr_package = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	political_power = 100
+	command_power = 25
+	manpower = 20000
+	infantry_equipment = 2000
+	support_equipment = 200
+	convoys = 20
+	fuel = 2500
+	stability = 0.6
+	war_support = 0.5
+	research_slots = 1
+	per_extra_state = 1
+	extra_state_cap = 2
+	equipment_factor = 0.75
+	experience_factor = 0.1
+	manpower_factor = 0.75
+	protect_value = 200
+}
+
+
+# AI thresholds of Malta for the principality actions.
+malta_pr_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	charter_weight = 30
+	charter_when_stretched = 30
+	stretched_states = 5
+	relief_score = 40
+	enforce_score = 35
+	levy_score = 20
+	lighten_score = 25
+	arbitrate_score = 60
+	levy_loyalty_floor = 65
+	enforce_loyalty_ceiling = 30
+	integration_loyalty_floor = 70
+	integration_score = 10
+	federate_score = 30
+}
+
+# Opening divisions of each identity, by template (see malta_template). The
+# capital receives them. Each further state of the region receives one guard.
+malta_pr_force = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	jerusalem_guard = 2
+	jerusalem_knight = 1
+	jerusalem_ranged = 1
+	antioch_fortress = 1
+	antioch_siege = 1
+	antioch_knight = 1
+	antioch_guard = 1
+	cyprus_fortress = 2
+	cyprus_ranged = 1
+	tripoli_guard = 2
+	tripoli_ranged = 1
+	aegean_guard = 2
+	aegean_fortress = 1
+	anatolia_knight = 2
+	anatolia_siege = 1
+	anatolia_fortress = 1
+	africa_mounted = 2
+	africa_guard = 1
+}
+
+# Rewards of the principality focus tree. Loyalty values are changes of the
+# hidden loyalty, the delay pushes the next succession crisis back.
+malta_pr_focus = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	loyalty_small = 5
+	loyalty_medium = 10
+	loyalty_large = 15
+	loyalty_loss_small = -5
+	succession_delay_days = 270
+}

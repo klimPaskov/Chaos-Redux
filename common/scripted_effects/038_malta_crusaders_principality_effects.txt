@@ -1,0 +1,1251 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 038 CRUSADER PRINCIPALITIES
+# ============================================================================
+# Evolution II turns held territory into chartered principalities: real
+# subject countries with a capital, a government, a leader, forces, a stock of
+# equipment and the shared principality focus tree. Seven identities exist
+# (kinds 1 to 7, see malta_pr_kind), each on a dormant carrier tag (MQJ, MQA,
+# MQC, MQT, MQE, MQO, MQN) created with create_dynamic_country.
+#
+# Scopes. The actor (MLT) charters, requests, arbitrates, integrates and
+# federates. Each principality keeps its own hidden state:
+#   malta_pr_id               kind (1 to 7)
+#   malta_pr_loyalty          0 to 100, the public status is the band it is in
+#   malta_pr_form_id          charter form (1 crown, 2 order, 3 local, 4 papal)
+#   malta_pr_tribute          1 light, 2 standard, 3 heavy
+#   malta_pr_duty_id          what the charter owes (malta_pr_duty)
+#   malta_pr_age              weeks since the charter
+#   malta_pr_duty_clock       reviews since the last duty
+#   malta_pr_rebel_count      consecutive reviews below the Defiant band
+#   malta_pr_band             last status band published (5 Loyal to 1 Rebellious)
+#   malta_pr_next_succession  day the next succession crisis may open
+#   malta_pr_succession_by    day the open crisis lapses
+#   malta_pr_integration_left weeks left of a staged integration
+# Flags: malta_principality, malta_pr_tree (focus tree), malta_pr_succession_crisis,
+# malta_pr_integrating, malta_pr_federated, malta_pr_independent.
+#
+# The actor keeps global.malta_principalities (the array every decision aims at),
+# the flags malta_pr_active_<kind> (kinds in play), malta_pr_active_count, malta_pr_minor_count
+# and malta_pr_week. The weekly pulse of the actor drives every principality in
+# the array. There is no world scan: the array holds at most four countries.
+#
+# Temporary inputs: malta_pr_kind (kind), malta_pr_form (form).
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Kind data and checks
+# ---------------------------------------------------------------------------
+
+# Any scope. Input: temp malta_pr_kind. Output: temp malta_pr_min_states (the
+# states of the region that must be held) and malta_pr_duty_type.
+malta_pr_load_kind = {
+	set_temp_variable = { malta_pr_min_states = constant:malta_pr_limit.minimum_states }
+	if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.jerusalem } }
+		set_temp_variable = { malta_pr_duty_type = constant:malta_pr_duty.manpower }
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.antioch } }
+		set_temp_variable = { malta_pr_duty_type = constant:malta_pr_duty.equipment }
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.cyprus } }
+		set_temp_variable = { malta_pr_duty_type = constant:malta_pr_duty.convoys }
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.tripoli } }
+		set_temp_variable = { malta_pr_duty_type = constant:malta_pr_duty.political_power }
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.aegean } }
+		set_temp_variable = { malta_pr_duty_type = constant:malta_pr_duty.convoys }
+		set_temp_variable = { malta_pr_min_states = constant:malta_pr_limit.minimum_states_composite }
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.anatolia } }
+		set_temp_variable = { malta_pr_duty_type = constant:malta_pr_duty.manpower }
+		set_temp_variable = { malta_pr_min_states = constant:malta_pr_limit.minimum_states_composite }
+	}
+	else = {
+		set_temp_variable = { malta_pr_duty_type = constant:malta_pr_duty.fuel }
+	}
+}
+
+# COUNTRY (MLT). Input: temp malta_pr_kind. Counts the region states the actor
+# owns and controls into temp malta_pr_region_count and sets temp
+# malta_pr_capital_held to 1 when the capital is among them.
+malta_pr_survey = {
+	set_temp_variable = { malta_pr_region_count = 0 }
+	set_temp_variable = { malta_pr_capital_held = 0 }
+	every_owned_state = {
+		limit = {
+			malta_state_is_pr_region = yes
+			is_controlled_by = MLT
+		}
+		add_to_temp_variable = { malta_pr_region_count = 1 }
+		if = {
+			limit = { malta_state_is_pr_capital = yes }
+			set_temp_variable = { malta_pr_capital_held = 1 }
+		}
+	}
+}
+
+# COUNTRY (MLT). Output: temp malta_pr_form from the government form of the realm.
+# The Grand Magistry gives an order state, the Confederation a local council,
+# the Holy See and the Kingdom of God a Papal administration, the others a crown.
+malta_pr_pick_form = {
+	set_temp_variable = { malta_pr_form = constant:malta_pr_form.crown }
+	if = {
+		limit = { check_variable = { var = malta_government value = constant:malta_government.grand_magistry } }
+		set_temp_variable = { malta_pr_form = constant:malta_pr_form.order }
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_government value = constant:malta_government.confederation } }
+		set_temp_variable = { malta_pr_form = constant:malta_pr_form.local }
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_government value = constant:malta_government.holy_see } }
+		set_temp_variable = { malta_pr_form = constant:malta_pr_form.papal }
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_government value = constant:malta_government.kingdom_of_god } }
+		set_temp_variable = { malta_pr_form = constant:malta_pr_form.papal }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Charter
+# ---------------------------------------------------------------------------
+# COUNTRY (MLT). Input: temp malta_pr_kind. Marks the kind as in play. The decision
+# rows read these flags, one per kind.
+malta_pr_set_kind_flag = {
+	if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.jerusalem } }
+		set_country_flag = malta_pr_active_jerusalem
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.antioch } }
+		set_country_flag = malta_pr_active_antioch
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.cyprus } }
+		set_country_flag = malta_pr_active_cyprus
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.tripoli } }
+		set_country_flag = malta_pr_active_tripoli
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.aegean } }
+		set_country_flag = malta_pr_active_aegean
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.anatolia } }
+		set_country_flag = malta_pr_active_anatolia
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.africa } }
+		set_country_flag = malta_pr_active_africa
+	}
+}
+
+# COUNTRY (MLT). Input: temp malta_pr_kind. The kind is free again.
+malta_pr_clear_kind_flag = {
+	if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.jerusalem } }
+		clr_country_flag = malta_pr_active_jerusalem
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.antioch } }
+		clr_country_flag = malta_pr_active_antioch
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.cyprus } }
+		clr_country_flag = malta_pr_active_cyprus
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.tripoli } }
+		clr_country_flag = malta_pr_active_tripoli
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.aegean } }
+		clr_country_flag = malta_pr_active_aegean
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.anatolia } }
+		clr_country_flag = malta_pr_active_anatolia
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.africa } }
+		clr_country_flag = malta_pr_active_africa
+	}
+}
+
+
+# COUNTRY (MLT). Input: temp malta_pr_kind (1 to 7). Output: temp malta_pr_created
+# (1 when the principality exists). The charter checks run again here, so a stale
+# click creates nothing and costs nothing. The states of the region that the
+# actor owns and controls move to the new country, which becomes a puppet.
+malta_charter_principality = {
+	set_temp_variable = { malta_pr_created = 0 }
+	malta_pr_load_kind = yes
+	malta_pr_survey = yes
+	if = {
+		limit = { malta_pr_charter_checks_pass = yes }
+		if = {
+			limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.first_minor compare = less_than } }
+			malta_pay_charter_major = yes
+		}
+		else = {
+			malta_pay_charter_minor = yes
+		}
+		malta_pr_pick_form = yes
+		malta_pr_create_carrier = yes
+		every_owned_state = {
+			limit = {
+				malta_state_is_pr_region = yes
+				is_controlled_by = MLT
+			}
+			if = {
+				limit = { malta_state_is_pr_capital = yes }
+				save_event_target_as = malta_pr_capital_state
+			}
+			transfer_state_to = event_target:malta_new_principality
+		}
+		event_target:malta_new_principality = { malta_pr_finish_setup = yes }
+		set_autonomy = {
+			target = event_target:malta_new_principality
+			autonomy_state = autonomy_puppet
+		}
+		add_to_array = { global.malta_principalities = event_target:malta_new_principality }
+		malta_pr_set_kind_flag = yes
+		add_to_variable = { malta_pr_active_count = 1 }
+		if = {
+			limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.first_minor compare = greater_than_or_equals } }
+			add_to_variable = { malta_pr_minor_count = 1 }
+		}
+		set_temp_variable = { malta_change = constant:malta_pr_public.charter_legitimacy }
+		malta_change_legitimacy = yes
+		event_target:malta_new_principality = { country_event = { id = chaosx.nr38.40 } }
+		malta_count_expedition_states = yes
+		malta_refresh_standing = yes
+		malta_publish_costs = yes
+		set_temp_variable = { malta_pr_created = 1 }
+	}
+}
+
+# COUNTRY (MLT). Input: temp malta_pr_kind. Creates the dynamic country of the kind
+# on its carrier tag and saves it as event target malta_new_principality.
+malta_pr_create_carrier = {
+	if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.jerusalem } }
+		create_dynamic_country = {
+			original_tag = MQJ
+			save_event_target_as = malta_new_principality
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.antioch } }
+		create_dynamic_country = {
+			original_tag = MQA
+			save_event_target_as = malta_new_principality
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.cyprus } }
+		create_dynamic_country = {
+			original_tag = MQC
+			save_event_target_as = malta_new_principality
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.tripoli } }
+		create_dynamic_country = {
+			original_tag = MQT
+			save_event_target_as = malta_new_principality
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.aegean } }
+		create_dynamic_country = {
+			original_tag = MQE
+			save_event_target_as = malta_new_principality
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.anatolia } }
+		create_dynamic_country = {
+			original_tag = MQO
+			save_event_target_as = malta_new_principality
+		}
+	}
+	else = {
+		create_dynamic_country = {
+			original_tag = MQN
+			save_event_target_as = malta_new_principality
+		}
+	}
+}
+
+# COUNTRY (the new principality). Inputs: temp malta_pr_kind, malta_pr_form and
+# event target malta_pr_capital_state. Hidden state, capital, government, leader,
+# ideas, stocks, technology, templates, forces and AI strategy.
+malta_pr_finish_setup = {
+	set_country_flag = malta_principality
+	set_country_flag = malta_pr_tree
+	set_variable = { malta_pr_id = malta_pr_kind }
+	set_variable = { malta_pr_loyalty = constant:malta_pr_loyalty.start }
+	set_variable = { malta_pr_tribute = constant:malta_pr_limit.tribute_standard }
+	set_variable = { malta_pr_duty_id = malta_pr_duty_type }
+	set_variable = { malta_pr_age = 0 }
+	set_variable = { malta_pr_duty_clock = 0 }
+	set_variable = { malta_pr_rebel_count = 0 }
+	set_variable = { malta_pr_band = 5 }
+	set_variable = { malta_pr_chartered_day = global.num_days }
+
+	set_capital = {
+		state = event_target:malta_pr_capital_state
+		remember_old_capital = no
+	}
+	malta_pr_install_leaders = yes
+	malta_pr_apply_form = yes
+	malta_pr_schedule_succession = yes
+	malta_pr_add_pressure_idea = yes
+	add_ideas = malta_pr_chartered_realm
+	malta_pr_grant_package = yes
+	malta_apply_baseline_technology = yes
+	malta_create_templates = yes
+	malta_pr_spawn_forces = yes
+	meta_effect = {
+		text = {
+			add_ai_strategy = { type = protect id = "MLT" value = [VALUE] }
+		}
+		VALUE = "[?constant:malta_pr_package.protect_value|.0]"
+	}
+	load_focus_tree = { tree = malta_principality_focus_tree }
+	malta_pr_publish_band = yes
+}
+
+# COUNTRY (the principality). Input: persistent malta_pr_id. The leader is the
+# office of the kind. Two roles exist, so the government form decides who leads:
+# a neutral court or a democratic council.
+malta_pr_install_leaders = {
+	meta_effect = {
+		text = {
+			add_country_leader_role = {
+				character = malta_pr_leader_[KEY]
+				promote_leader = yes
+				country_leader = {
+					ideology = oligarchism
+					expire = "1965.1.1.1"
+				}
+			}
+			add_country_leader_role = {
+				character = malta_pr_leader_[KEY]
+				promote_leader = yes
+				country_leader = {
+					ideology = conservatism
+					expire = "1965.1.1.1"
+				}
+			}
+		}
+		KEY = "[This.GetMaltaPrKey]"
+	}
+	if = {
+		limit = { check_variable = { var = malta_pr_id value = constant:malta_pr_kind.first_minor compare = less_than } }
+		meta_effect = {
+			text = {
+				recruit_character = malta_pr_officer_[KEY]
+			}
+			KEY = "[This.GetMaltaPrKey]"
+		}
+	}
+}
+
+# COUNTRY (the principality). Input: temp malta_pr_form. Sets the form: the
+# party, the ruling ideology and the form spirit.
+malta_pr_apply_form = {
+	if = { limit = { has_idea = malta_pr_form_crown } remove_ideas = malta_pr_form_crown }
+	if = { limit = { has_idea = malta_pr_form_order } remove_ideas = malta_pr_form_order }
+	if = { limit = { has_idea = malta_pr_form_local } remove_ideas = malta_pr_form_local }
+	if = { limit = { has_idea = malta_pr_form_papal } remove_ideas = malta_pr_form_papal }
+	set_variable = { malta_pr_form_id = malta_pr_form }
+	if = {
+		limit = { check_variable = { var = malta_pr_form value = constant:malta_pr_form.crown } }
+		add_ideas = malta_pr_form_crown
+		set_politics = { ruling_party = neutrality elections_allowed = no long_name = malta_pr_party_crown name = malta_pr_party_crown_short }
+		set_popularities = { neutrality = 60 democratic = 25 fascism = 5 communism = 10 }
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_form value = constant:malta_pr_form.order } }
+		add_ideas = malta_pr_form_order
+		set_politics = { ruling_party = neutrality elections_allowed = no long_name = malta_pr_party_order name = malta_pr_party_order_short }
+		set_popularities = { neutrality = 65 democratic = 15 fascism = 10 communism = 10 }
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_form value = constant:malta_pr_form.local } }
+		add_ideas = malta_pr_form_local
+		set_politics = { ruling_party = democratic elections_allowed = no long_name = malta_pr_party_local name = malta_pr_party_local_short }
+		set_popularities = { neutrality = 25 democratic = 60 fascism = 5 communism = 10 }
+	}
+	else = {
+		add_ideas = malta_pr_form_papal
+		set_politics = { ruling_party = neutrality elections_allowed = no long_name = malta_pr_party_papal name = malta_pr_party_papal_short }
+		set_popularities = { neutrality = 70 democratic = 20 fascism = 5 communism = 5 }
+	}
+}
+
+# COUNTRY (the principality). Adds the starting pressure of the kind.
+malta_pr_add_pressure_idea = {
+	meta_effect = {
+		text = {
+			add_ideas = malta_pr_pressure_[KEY]
+		}
+		KEY = "[This.GetMaltaPrKey]"
+	}
+}
+
+# COUNTRY (the principality). Political power, stocks, stability and research.
+malta_pr_grant_package = {
+	add_political_power = constant:malta_pr_package.political_power
+	add_command_power = constant:malta_pr_package.command_power
+	add_manpower = constant:malta_pr_package.manpower
+	set_temp_variable = { malta_pr_grant_infantry = constant:malta_pr_package.infantry_equipment }
+	add_equipment_to_stockpile = { type = infantry_equipment amount = malta_pr_grant_infantry producer = MLT }
+	set_temp_variable = { malta_pr_grant_support = constant:malta_pr_package.support_equipment }
+	add_equipment_to_stockpile = { type = support_equipment amount = malta_pr_grant_support producer = MLT }
+	set_temp_variable = { malta_pr_grant_convoys = constant:malta_pr_package.convoys }
+	add_equipment_to_stockpile = { type = convoy_1 amount = malta_pr_grant_convoys producer = MLT }
+	set_temp_variable = { malta_pr_grant_fuel = constant:malta_pr_package.fuel }
+	add_fuel = malta_pr_grant_fuel
+	set_stability = constant:malta_pr_package.stability
+	set_war_support = constant:malta_pr_package.war_support
+	set_research_slots = constant:malta_pr_package.research_slots
+}
+
+# COUNTRY (the principality). Input: persistent malta_pr_id and temp malta_pr_kind.
+# Spawns the opening divisions in the capital: the role of the kind, then one
+# guard for each further state, at most the extra-state cap.
+malta_pr_spawn_forces = {
+	save_event_target_as = malta_spawn_owner
+	set_variable = { global.malta_spawn_xp = constant:malta_pr_package.experience_factor }
+	set_variable = { global.malta_spawn_equipment = constant:malta_pr_package.equipment_factor }
+	set_variable = { global.malta_spawn_manpower = constant:malta_pr_package.manpower_factor }
+	if = {
+		limit = { check_variable = { var = malta_pr_id value = constant:malta_pr_kind.jerusalem } }
+		set_temp_variable = { malta_pr_spawn_at_capital_template = constant:malta_template.guard }
+		set_temp_variable = { malta_pr_spawn_at_capital_count = constant:malta_pr_force.jerusalem_guard }
+		malta_pr_spawn_at_capital = yes
+		set_temp_variable = { malta_pr_spawn_at_capital_template = constant:malta_template.knight }
+		set_temp_variable = { malta_pr_spawn_at_capital_count = constant:malta_pr_force.jerusalem_knight }
+		malta_pr_spawn_at_capital = yes
+		set_temp_variable = { malta_pr_spawn_at_capital_template = constant:malta_template.ranged }
+		set_temp_variable = { malta_pr_spawn_at_capital_count = constant:malta_pr_force.jerusalem_ranged }
+		malta_pr_spawn_at_capital = yes
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_id value = constant:malta_pr_kind.antioch } }
+		set_temp_variable = { malta_pr_spawn_at_capital_template = constant:malta_template.fortress }
+		set_temp_variable = { malta_pr_spawn_at_capital_count = constant:malta_pr_force.antioch_fortress }
+		malta_pr_spawn_at_capital = yes
+		set_temp_variable = { malta_pr_spawn_at_capital_template = constant:malta_template.siege }
+		set_temp_variable = { malta_pr_spawn_at_capital_count = constant:malta_pr_force.antioch_siege }
+		malta_pr_spawn_at_capital = yes
+		set_temp_variable = { malta_pr_spawn_at_capital_template = constant:malta_template.knight }
+		set_temp_variable = { malta_pr_spawn_at_capital_count = constant:malta_pr_force.antioch_knight }
+		malta_pr_spawn_at_capital = yes
+		set_temp_variable = { malta_pr_spawn_at_capital_template = constant:malta_template.guard }
+		set_temp_variable = { malta_pr_spawn_at_capital_count = constant:malta_pr_force.antioch_guard }
+		malta_pr_spawn_at_capital = yes
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_id value = constant:malta_pr_kind.cyprus } }
+		set_temp_variable = { malta_pr_spawn_at_capital_template = constant:malta_template.fortress }
+		set_temp_variable = { malta_pr_spawn_at_capital_count = constant:malta_pr_force.cyprus_fortress }
+		malta_pr_spawn_at_capital = yes
+		set_temp_variable = { malta_pr_spawn_at_capital_template = constant:malta_template.ranged }
+		set_temp_variable = { malta_pr_spawn_at_capital_count = constant:malta_pr_force.cyprus_ranged }
+		malta_pr_spawn_at_capital = yes
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_id value = constant:malta_pr_kind.tripoli } }
+		set_temp_variable = { malta_pr_spawn_at_capital_template = constant:malta_template.guard }
+		set_temp_variable = { malta_pr_spawn_at_capital_count = constant:malta_pr_force.tripoli_guard }
+		malta_pr_spawn_at_capital = yes
+		set_temp_variable = { malta_pr_spawn_at_capital_template = constant:malta_template.ranged }
+		set_temp_variable = { malta_pr_spawn_at_capital_count = constant:malta_pr_force.tripoli_ranged }
+		malta_pr_spawn_at_capital = yes
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_id value = constant:malta_pr_kind.aegean } }
+		set_temp_variable = { malta_pr_spawn_at_capital_template = constant:malta_template.guard }
+		set_temp_variable = { malta_pr_spawn_at_capital_count = constant:malta_pr_force.aegean_guard }
+		malta_pr_spawn_at_capital = yes
+		set_temp_variable = { malta_pr_spawn_at_capital_template = constant:malta_template.fortress }
+		set_temp_variable = { malta_pr_spawn_at_capital_count = constant:malta_pr_force.aegean_fortress }
+		malta_pr_spawn_at_capital = yes
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_id value = constant:malta_pr_kind.anatolia } }
+		set_temp_variable = { malta_pr_spawn_at_capital_template = constant:malta_template.knight }
+		set_temp_variable = { malta_pr_spawn_at_capital_count = constant:malta_pr_force.anatolia_knight }
+		malta_pr_spawn_at_capital = yes
+		set_temp_variable = { malta_pr_spawn_at_capital_template = constant:malta_template.siege }
+		set_temp_variable = { malta_pr_spawn_at_capital_count = constant:malta_pr_force.anatolia_siege }
+		malta_pr_spawn_at_capital = yes
+		set_temp_variable = { malta_pr_spawn_at_capital_template = constant:malta_template.fortress }
+		set_temp_variable = { malta_pr_spawn_at_capital_count = constant:malta_pr_force.anatolia_fortress }
+		malta_pr_spawn_at_capital = yes
+	}
+	else = {
+		set_temp_variable = { malta_pr_spawn_at_capital_template = constant:malta_template.mounted }
+		set_temp_variable = { malta_pr_spawn_at_capital_count = constant:malta_pr_force.africa_mounted }
+		malta_pr_spawn_at_capital = yes
+		set_temp_variable = { malta_pr_spawn_at_capital_template = constant:malta_template.guard }
+		set_temp_variable = { malta_pr_spawn_at_capital_count = constant:malta_pr_force.africa_guard }
+		malta_pr_spawn_at_capital = yes
+	}
+	set_variable = { global.malta_spawn_template = constant:malta_template.guard }
+	set_temp_variable = { malta_spawn_count = constant:malta_pr_package.per_extra_state }
+	set_temp_variable = { malta_pr_extra_left = constant:malta_pr_package.extra_state_cap }
+	every_owned_state = {
+		limit = {
+			NOT = { malta_state_is_pr_capital = yes }
+			check_variable = { var = malta_pr_extra_left value = 0 compare = greater_than }
+		}
+		subtract_from_temp_variable = { malta_pr_extra_left = 1 }
+		malta_spawn_loop = yes
+	}
+}
+
+# COUNTRY (the principality). Input: temps malta_pr_spawn_at_capital_template and
+# malta_pr_spawn_at_capital_count. Spawns that many divisions of the template id in the
+# capital state (event target malta_pr_capital_state).
+malta_pr_spawn_at_capital = {
+	set_variable = { global.malta_spawn_template = malta_pr_spawn_at_capital_template }
+	set_temp_variable = { malta_spawn_count = malta_pr_spawn_at_capital_count }
+	event_target:malta_pr_capital_state = { malta_spawn_loop = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Loyalty and status
+# ---------------------------------------------------------------------------
+
+# COUNTRY (the principality). Input: temp malta_pr_delta (may be negative).
+# Changes the loyalty and keeps it between the minimum and the maximum.
+malta_pr_change_loyalty = {
+	add_to_variable = { malta_pr_loyalty = malta_pr_delta }
+	clamp_variable = {
+		var = malta_pr_loyalty
+		min = constant:malta_pr_loyalty.min
+		max = constant:malta_pr_loyalty.max
+	}
+}
+
+# COUNTRY (the principality). Publishes the status band (5 Loyal, 4 Cooperative,
+# 3 Guarded, 2 Defiant, 1 Rebellious) for the text selectors.
+malta_pr_publish_band = {
+	set_temp_variable = { malta_pr_new_band = 1 }
+	if = {
+		limit = { check_variable = { var = malta_pr_loyalty value = constant:malta_pr_loyalty.loyal compare = greater_than_or_equals } }
+		set_temp_variable = { malta_pr_new_band = 5 }
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_loyalty value = constant:malta_pr_loyalty.cooperative compare = greater_than_or_equals } }
+		set_temp_variable = { malta_pr_new_band = 4 }
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_loyalty value = constant:malta_pr_loyalty.guarded compare = greater_than_or_equals } }
+		set_temp_variable = { malta_pr_new_band = 3 }
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_loyalty value = constant:malta_pr_loyalty.defiant compare = greater_than_or_equals } }
+		set_temp_variable = { malta_pr_new_band = 2 }
+	}
+	set_variable = { malta_pr_band = malta_pr_new_band }
+}
+
+# ---------------------------------------------------------------------------
+# Pulse
+# ---------------------------------------------------------------------------
+
+# COUNTRY (MLT). Called by the weekly pulse of the actor. Runs the weekly step of
+# every principality and, every review_weeks weeks, the review. Principalities
+# that ended are cleaned up after the loop, not inside it.
+malta_principality_pulse = {
+	if = {
+		limit = { check_variable = { var = malta_pr_active_count value = 0 compare = greater_than } }
+		add_to_variable = { malta_pr_week = 1 }
+		clear_array = global.malta_pr_ended
+		for_each_scope_loop = {
+			array = global.malta_principalities
+			malta_pr_weekly_step = yes
+		}
+		if = {
+			limit = { check_variable = { var = malta_pr_week value = constant:malta_pr_limit.review_weeks compare = greater_than_or_equals } }
+			set_variable = { malta_pr_week = 0 }
+			for_each_scope_loop = {
+				array = global.malta_principalities
+				if = {
+					limit = { NOT = { is_in_array = { array = global.malta_pr_ended value = THIS } } }
+					malta_pr_monthly_review = yes
+				}
+			}
+		}
+		for_each_scope_loop = {
+			array = global.malta_pr_ended
+			malta_pr_cleanup = yes
+		}
+		malta_pr_refresh_summary = yes
+	}
+}
+
+# COUNTRY (MLT). Counts the loyal principalities into malta_pr_loyal_count and
+# the troubled ones into malta_pr_troubled_count.
+malta_pr_refresh_summary = {
+	set_temp_variable = { malta_pr_loyal_tally = 0 }
+	set_temp_variable = { malta_pr_troubled_tally = 0 }
+	for_each_scope_loop = {
+		array = global.malta_principalities
+		if = {
+			limit = { check_variable = { var = malta_pr_band value = 4 compare = greater_than_or_equals } }
+			add_to_temp_variable = { malta_pr_loyal_tally = 1 }
+		}
+		if = {
+			limit = { check_variable = { var = malta_pr_band value = 2 compare = less_than_or_equals } }
+			add_to_temp_variable = { malta_pr_troubled_tally = 1 }
+		}
+	}
+	set_variable = { malta_pr_loyal_count = malta_pr_loyal_tally }
+	set_variable = { malta_pr_troubled_count = malta_pr_troubled_tally }
+	set_variable = { global.malta_pub_pr_active = malta_pr_active_count }
+	set_variable = { global.malta_pub_pr_loyal = malta_pr_loyal_count }
+	set_variable = { global.malta_pub_pr_troubled = malta_pr_troubled_count }
+}
+
+# COUNTRY (a principality). Marks it for cleanup after the loop with temp
+# malta_pr_cleanup_why (1 integrated, 2 dissolved, 3 collapsed, 4 independent,
+# 5 released).
+malta_pr_mark_ended = {
+	if = {
+		limit = { NOT = { is_in_array = { array = global.malta_pr_ended value = THIS } } }
+		set_variable = { malta_pr_end_why = malta_pr_cleanup_why }
+		add_to_array = { global.malta_pr_ended = THIS }
+	}
+}
+
+# COUNTRY (a principality). The weekly step: age, validity, the integration
+# countdown and the succession deadline.
+malta_pr_weekly_step = {
+	add_to_variable = { malta_pr_age = 1 }
+	if = {
+		limit = { NOT = { any_owned_state = { always = yes } } }
+		set_temp_variable = { malta_pr_cleanup_why = 3 }
+		malta_pr_mark_ended = yes
+	}
+	else_if = {
+		limit = { NOT = { is_subject_of = MLT } }
+		set_temp_variable = { malta_pr_cleanup_why = 5 }
+		malta_pr_mark_ended = yes
+	}
+	else = {
+		if = {
+			limit = { has_country_flag = malta_pr_integrating }
+			subtract_from_variable = { malta_pr_integration_left = 1 }
+			if = {
+				limit = { check_variable = { var = malta_pr_integration_left value = 0 compare = less_than_or_equals } }
+				malta_pr_complete_integration = yes
+			}
+		}
+		if = {
+			limit = {
+				has_country_flag = malta_pr_succession_crisis
+				check_variable = { var = global.num_days value = malta_pr_succession_by compare = greater_than_or_equals }
+			}
+			malta_pr_lapse_succession = yes
+		}
+	}
+}
+
+# COUNTRY (a principality). The review: loyalty drift, the capital, the duty,
+# the status events, a rebellious principality and a new succession crisis.
+malta_pr_monthly_review = {
+	set_temp_variable = { malta_pr_delta = 0 }
+	if = {
+		limit = { NOT = { any_owned_state = { NOT = { is_controlled_by = PREV } } } }
+		add_to_temp_variable = { malta_pr_delta = constant:malta_pr_change.monthly_protected }
+	}
+	else = {
+		add_to_temp_variable = { malta_pr_delta = constant:malta_pr_change.monthly_occupied }
+	}
+	if = {
+		limit = { check_variable = { var = malta_pr_tribute value = constant:malta_pr_limit.tribute_light compare = equals } }
+		add_to_temp_variable = { malta_pr_delta = constant:malta_pr_change.monthly_light_tribute }
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_tribute value = constant:malta_pr_limit.tribute_heavy compare = equals } }
+		add_to_temp_variable = { malta_pr_delta = constant:malta_pr_change.monthly_heavy_tribute }
+	}
+	if = {
+		limit = {
+			check_variable = { var = malta_pr_form_id value = constant:malta_pr_form.order compare = equals }
+			MLT = { malta_cohesion_is_working_or_better = yes }
+		}
+		add_to_temp_variable = { malta_pr_delta = constant:malta_pr_change.monthly_order_patron }
+	}
+	if = {
+		limit = { has_country_flag = malta_pr_federated }
+		add_to_temp_variable = { malta_pr_delta = constant:malta_pr_change.monthly_federation }
+	}
+	malta_pr_change_loyalty = yes
+	malta_pr_check_capital = yes
+
+	# The duty comes due every duty_reviews reviews.
+	add_to_variable = { malta_pr_duty_clock = 1 }
+	if = {
+		limit = { check_variable = { var = malta_pr_duty_clock value = constant:malta_pr_limit.duty_reviews compare = greater_than_or_equals } }
+		set_variable = { malta_pr_duty_clock = 0 }
+		malta_pr_settle_duty = yes
+	}
+
+	# A rebellious principality breaks away after enough reviews.
+	if = {
+		limit = { check_variable = { var = malta_pr_loyalty value = constant:malta_pr_loyalty.defiant compare = less_than } }
+		add_to_variable = { malta_pr_rebel_count = 1 }
+		if = {
+			limit = {
+				check_variable = { var = malta_pr_rebel_count value = constant:malta_pr_loyalty.rebellious_reviews compare = greater_than_or_equals }
+				NOT = { has_country_flag = malta_pr_enforced }
+				NOT = { has_country_flag = malta_pr_integrating }
+			}
+			malta_pr_break_away = yes
+		}
+	}
+	else = {
+		set_variable = { malta_pr_rebel_count = 0 }
+	}
+
+	# A new succession crisis.
+	if = {
+		limit = {
+			NOT = { has_country_flag = malta_pr_succession_crisis }
+			NOT = { has_country_flag = malta_pr_integrating }
+			NOT = { has_country_flag = malta_pr_independent }
+			check_variable = { var = malta_pr_age value = constant:malta_pr_succession.first_crisis_weeks compare = greater_than_or_equals }
+			check_variable = { var = global.num_days value = malta_pr_next_succession compare = greater_than_or_equals }
+		}
+		malta_pr_open_succession = yes
+	}
+
+	# Announce a fall into a worse status once.
+	malta_pr_publish_band = yes
+	if = {
+		limit = {
+			check_variable = { var = malta_pr_band value = 2 compare = less_than_or_equals }
+			NOT = { has_country_flag = malta_pr_defiance_announced }
+		}
+		set_country_flag = malta_pr_defiance_announced
+		MLT = { country_event = { id = chaosx.nr38.42 } }
+	}
+	if = {
+		limit = { check_variable = { var = malta_pr_band value = 3 compare = greater_than_or_equals } }
+		clr_country_flag = malta_pr_defiance_announced
+	}
+}
+
+# COUNTRY (a principality). A lost capital moves to another held state. A
+# principality that holds no state at all ends in the weekly step.
+malta_pr_check_capital = {
+	if = {
+		limit = {
+			any_owned_state = { always = yes }
+			NOT = { capital_scope = { is_controlled_by = PREV } }
+			any_owned_state = { is_controlled_by = PREV }
+		}
+		random_owned_state = {
+			limit = { is_controlled_by = PREV }
+			save_event_target_as = malta_pr_new_capital
+		}
+		set_capital = {
+			state = event_target:malta_pr_new_capital
+			remember_old_capital = no
+		}
+		set_temp_variable = { malta_pr_delta = constant:malta_pr_change.monthly_occupied }
+		malta_pr_change_loyalty = yes
+	}
+}
+
+# COUNTRY (a principality). Pays the duty of the charter to the actor when the
+# principality is at least Guarded, otherwise it refuses.
+malta_pr_settle_duty = {
+	if = {
+		limit = { check_variable = { var = malta_pr_loyalty value = constant:malta_pr_loyalty.guarded compare = greater_than_or_equals } }
+		malta_pr_pay_duty = yes
+	}
+	else = {
+		set_temp_variable = { malta_pr_delta = constant:malta_pr_change.refused_duty }
+		malta_pr_change_loyalty = yes
+	}
+}
+
+# COUNTRY (a principality). The duty in persistent malta_pr_duty_id, scaled by the
+# tribute level (light halves the standard amount, heavy adds half again).
+malta_pr_pay_duty = {
+	set_temp_variable = { malta_pr_amount = 0 }
+	if = {
+		limit = { check_variable = { var = malta_pr_duty_id value = constant:malta_pr_duty.manpower compare = equals } }
+		set_temp_variable = { malta_pr_amount = constant:malta_pr_duty_amount.manpower }
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_duty_id value = constant:malta_pr_duty.equipment compare = equals } }
+		set_temp_variable = { malta_pr_amount = constant:malta_pr_duty_amount.equipment }
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_duty_id value = constant:malta_pr_duty.convoys compare = equals } }
+		set_temp_variable = { malta_pr_amount = constant:malta_pr_duty_amount.convoys }
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_pr_duty_id value = constant:malta_pr_duty.fuel compare = equals } }
+		set_temp_variable = { malta_pr_amount = constant:malta_pr_duty_amount.fuel }
+	}
+	else = {
+		set_temp_variable = { malta_pr_amount = constant:malta_pr_duty_amount.political_power }
+	}
+	multiply_temp_variable = { malta_pr_amount = malta_pr_tribute }
+	divide_temp_variable = { malta_pr_amount = constant:malta_pr_limit.tribute_standard }
+	round_temp_variable = malta_pr_amount
+	MLT = { malta_pr_receive_duty = yes }
+}
+
+# COUNTRY (MLT). Inputs: temp malta_pr_amount and FROM-less duty type read from the
+# sender through PREV. Adds the amount of the duty to the actor.
+malta_pr_receive_duty = {
+	if = {
+		limit = { PREV = { check_variable = { var = malta_pr_duty_id value = constant:malta_pr_duty.manpower compare = equals } } }
+		add_manpower = malta_pr_amount
+	}
+	else_if = {
+		limit = { PREV = { check_variable = { var = malta_pr_duty_id value = constant:malta_pr_duty.equipment compare = equals } } }
+		add_equipment_to_stockpile = { type = infantry_equipment amount = malta_pr_amount producer = MLT }
+	}
+	else_if = {
+		limit = { PREV = { check_variable = { var = malta_pr_duty_id value = constant:malta_pr_duty.convoys compare = equals } } }
+		add_equipment_to_stockpile = { type = convoy_1 amount = malta_pr_amount producer = MLT }
+	}
+	else_if = {
+		limit = { PREV = { check_variable = { var = malta_pr_duty_id value = constant:malta_pr_duty.fuel compare = equals } } }
+		add_fuel = malta_pr_amount
+	}
+	else = {
+		add_political_power = malta_pr_amount
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Requests from the actor. Each runs in MLT scope with FROM the principality.
+# ---------------------------------------------------------------------------
+
+# Request Levy: manpower and rifles now, at a cost in loyalty.
+malta_pr_request_levy = {
+	malta_pay_pr_levy = yes
+	set_temp_variable = { malta_pr_levy_manpower = constant:malta_pr_duty_amount.levy_manpower }
+	add_manpower = malta_pr_levy_manpower
+	set_temp_variable = { malta_pr_levy_equipment = constant:malta_pr_duty_amount.levy_equipment }
+	FROM = {
+		multiply_temp_variable = { malta_pr_levy_manpower = constant:malta_math.negative_one }
+		add_manpower = malta_pr_levy_manpower
+		send_equipment = {
+			target = ROOT
+			type = infantry_equipment
+			amount = malta_pr_levy_equipment
+		}
+		set_temp_variable = { malta_pr_delta = constant:malta_pr_change.levy }
+		malta_pr_change_loyalty = yes
+		set_temp_variable = { malta_timer_days = constant:malta_pr_duty_amount.request_cooldown_days }
+		set_country_flag = { flag = malta_pr_levy_cooldown days = malta_timer_days }
+		malta_pr_publish_band = yes
+	}
+}
+
+# Send Relief: equipment and fuel to a principality in need.
+malta_pr_send_relief = {
+	malta_pay_pr_relief = yes
+	set_temp_variable = { malta_pr_relief_equipment = global.malta_cost_pr_relief_equipment }
+	set_temp_variable = { malta_pr_relief_fuel = global.malta_cost_pr_relief_fuel }
+	FROM = {
+		add_equipment_to_stockpile = { type = infantry_equipment amount = malta_pr_relief_equipment producer = MLT }
+		add_fuel = malta_pr_relief_fuel
+		set_temp_variable = { malta_timer_days = constant:malta_pr_duty_amount.relief_days }
+		add_timed_idea = { idea = malta_pr_relief_received days = malta_timer_days }
+		set_temp_variable = { malta_pr_delta = constant:malta_pr_change.relief }
+		malta_pr_change_loyalty = yes
+		set_temp_variable = { malta_timer_days = constant:malta_pr_duty_amount.relief_cooldown_days }
+		set_country_flag = { flag = malta_pr_relief_cooldown days = malta_timer_days }
+		malta_pr_publish_band = yes
+	}
+}
+
+# Enforce Charter: a show of force brings a defiant principality back for a time.
+malta_pr_enforce_charter = {
+	malta_pay_pr_enforce = yes
+	set_temp_variable = { malta_change = constant:malta_pr_public.enforce_legitimacy }
+	malta_change_legitimacy = yes
+	FROM = {
+		set_temp_variable = { malta_pr_delta = constant:malta_pr_change.enforce }
+		malta_pr_change_loyalty = yes
+		set_variable = { malta_pr_rebel_count = 0 }
+		set_temp_variable = { malta_timer_days = constant:malta_pr_duty_amount.enforce_grace_days }
+		set_country_flag = { flag = malta_pr_enforced days = malta_timer_days }
+		set_temp_variable = { malta_timer_days = constant:malta_pr_duty_amount.enforce_cooldown_days }
+		set_country_flag = { flag = malta_pr_enforce_cooldown days = malta_timer_days }
+		malta_pr_publish_band = yes
+	}
+}
+
+# Revise Charter: lighter tribute.
+malta_pr_lighten_tribute = {
+	malta_pay_pr_revise = yes
+	FROM = {
+		subtract_from_variable = { malta_pr_tribute = 1 }
+		set_temp_variable = { malta_pr_delta = constant:malta_pr_change.revise_lighter }
+		malta_pr_change_loyalty = yes
+		set_temp_variable = { malta_timer_days = constant:malta_pr_duty_amount.revise_cooldown_days }
+		set_country_flag = { flag = malta_pr_revise_cooldown days = malta_timer_days }
+		malta_pr_publish_band = yes
+	}
+}
+
+# Revise Charter: heavier tribute.
+malta_pr_burden_tribute = {
+	malta_pay_pr_revise = yes
+	FROM = {
+		add_to_variable = { malta_pr_tribute = 1 }
+		set_temp_variable = { malta_pr_delta = constant:malta_pr_change.revise_heavier }
+		malta_pr_change_loyalty = yes
+		set_temp_variable = { malta_timer_days = constant:malta_pr_duty_amount.revise_cooldown_days }
+		set_country_flag = { flag = malta_pr_revise_cooldown days = malta_timer_days }
+		malta_pr_publish_band = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Succession
+# ---------------------------------------------------------------------------
+
+# COUNTRY (a principality). Opens a succession crisis and tells the actor.
+malta_pr_open_succession = {
+	set_country_flag = malta_pr_succession_crisis
+	set_variable = { malta_pr_succession_by = global.num_days }
+	set_temp_variable = { malta_timer_days = constant:malta_pr_succession.deadline_days }
+	add_to_variable = { malta_pr_succession_by = malta_timer_days }
+	MLT = { country_event = { id = chaosx.nr38.41 } }
+}
+
+# COUNTRY (a principality). Sets the day of the next crisis from the pacing.
+malta_pr_schedule_succession = {
+	set_variable = { malta_pr_next_succession = global.num_days }
+	add_to_variable = { malta_pr_next_succession = mtth:malta_pr_succession_interval }
+	clr_country_flag = malta_pr_succession_crisis
+}
+
+# COUNTRY (a principality). Nobody arbitrated: the local elite takes the
+# succession and the principality loses confidence in the actor.
+malta_pr_lapse_succession = {
+	malta_pr_schedule_succession = yes
+	set_temp_variable = { malta_pr_delta = constant:malta_pr_change.succession_lapse }
+	malta_pr_change_loyalty = yes
+	malta_pr_publish_band = yes
+	MLT = { country_event = { id = chaosx.nr38.46 } }
+}
+
+# Arbitrate Succession: the heir keeps the charter as it stands.
+malta_pr_arbitrate_heir = {
+	malta_pay_pr_arbitrate = yes
+	FROM = {
+		set_temp_variable = { malta_pr_delta = constant:malta_pr_change.arbitrate_heir }
+		malta_pr_change_loyalty = yes
+		malta_pr_schedule_succession = yes
+		malta_pr_publish_band = yes
+	}
+}
+
+# Arbitrate Succession: a candidate of the order that holds the dominant seat.
+malta_pr_arbitrate_order = {
+	malta_pay_pr_arbitrate = yes
+	set_temp_variable = { malta_change = constant:malta_pr_public.arbitrate_order_cohesion }
+	malta_change_cohesion = yes
+	FROM = {
+		set_temp_variable = { malta_pr_form = constant:malta_pr_form.order }
+		malta_pr_apply_form = yes
+		set_temp_variable = { malta_pr_delta = constant:malta_pr_change.arbitrate_order }
+		malta_pr_change_loyalty = yes
+		malta_pr_schedule_succession = yes
+		malta_pr_publish_band = yes
+	}
+}
+
+# Arbitrate Succession: a candidate of the local elite.
+malta_pr_arbitrate_local = {
+	malta_pay_pr_arbitrate = yes
+	set_temp_variable = { malta_change = constant:malta_pr_public.arbitrate_local_legitimacy }
+	malta_change_legitimacy = yes
+	FROM = {
+		set_temp_variable = { malta_pr_form = constant:malta_pr_form.local }
+		malta_pr_apply_form = yes
+		set_temp_variable = { malta_pr_delta = constant:malta_pr_change.arbitrate_local }
+		malta_pr_change_loyalty = yes
+		malta_pr_schedule_succession = yes
+		malta_pr_publish_band = yes
+	}
+}
+
+# Arbitrate Succession: an appointee of the Holy See.
+malta_pr_arbitrate_papal = {
+	malta_pay_pr_arbitrate = yes
+	set_temp_variable = { malta_change = constant:malta_pr_public.arbitrate_papal_legitimacy }
+	malta_change_legitimacy = yes
+	FROM = {
+		set_temp_variable = { malta_pr_form = constant:malta_pr_form.papal }
+		malta_pr_apply_form = yes
+		set_temp_variable = { malta_pr_delta = constant:malta_pr_change.arbitrate_papal }
+		malta_pr_change_loyalty = yes
+		malta_pr_schedule_succession = yes
+		malta_pr_publish_band = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Integration, break-away, dissolution
+# ---------------------------------------------------------------------------
+
+# Begin Integration: the staged absorption of a loyal principality. FROM is the
+# principality.
+malta_pr_begin_integration = {
+	malta_pay_pr_integrate = yes
+	FROM = {
+		set_country_flag = malta_pr_integrating
+		set_variable = { malta_pr_integration_left = constant:malta_pr_integration.weeks }
+		MLT = {
+			if = {
+				limit = { has_country_flag = malta_high_court }
+				set_temp_variable = { malta_pr_cut = constant:malta_pr_integration.high_court_reduction }
+			}
+			else = {
+				set_temp_variable = { malta_pr_cut = 0 }
+			}
+		}
+		subtract_from_variable = { malta_pr_integration_left = malta_pr_cut }
+		set_temp_variable = { malta_pr_delta = constant:malta_pr_change.integration_begin }
+		malta_pr_change_loyalty = yes
+		malta_pr_publish_band = yes
+	}
+}
+
+# COUNTRY (a principality). The countdown has run out: the states become cores of
+# the actor and the country is marked. The cleanup after the pulse loop annexes
+# it with its units.
+malta_pr_complete_integration = {
+	set_temp_variable = { malta_pr_cleanup_why = 1 }
+	MLT = {
+		set_temp_variable = { malta_change = constant:malta_pr_public.integrate_legitimacy }
+		malta_change_legitimacy = yes
+		set_temp_variable = { malta_change = constant:malta_pr_public.integrate_cohesion }
+		malta_change_cohesion = yes
+	}
+	every_owned_state = {
+		add_core_of = MLT
+	}
+	MLT = { country_event = { id = chaosx.nr38.44 } }
+	malta_pr_mark_ended = yes
+}
+
+# COUNTRY (a principality). Breaks away from the charter: the subject relation
+# ends and the country goes its own way, with the idea of the charter removed.
+malta_pr_break_away = {
+	set_temp_variable = { malta_pr_cleanup_why = 4 }
+	MLT = {
+		end_puppet = PREV
+		set_temp_variable = { malta_change = constant:malta_pr_public.breakaway_legitimacy }
+		malta_change_legitimacy = yes
+		set_temp_variable = { malta_change = constant:malta_pr_public.breakaway_cohesion }
+		malta_change_cohesion = yes
+		country_event = { id = chaosx.nr38.43 }
+	}
+	set_country_flag = malta_pr_independent
+	malta_pr_mark_ended = yes
+}
+
+# Dissolve Failed Principality: the actor takes the held states back and ends the
+# charter. FROM is the principality.
+malta_pr_dissolve = {
+	malta_pay_pr_dissolve = yes
+	set_temp_variable = { malta_change = constant:malta_pr_public.dissolve_legitimacy }
+	malta_change_legitimacy = yes
+	FROM = {
+		set_temp_variable = { malta_pr_cleanup_why = 2 }
+		every_owned_state = {
+			limit = { is_controlled_by = PREV }
+			transfer_state_to = MLT
+		}
+		malta_pr_mark_ended = yes
+	}
+}
+
+# COUNTRY (a principality). Runs after the loop of the pulse. The reason was stored
+# by malta_pr_mark_ended in malta_pr_end_why: 1 integrated, 2 dissolved, 3 collapsed,
+# 4 independent, 5 released. Integration and dissolution annex the country last.
+malta_pr_cleanup = {
+	set_temp_variable = { malta_pr_kind = malta_pr_id }
+	MLT = {
+		remove_from_array = { global.malta_principalities = PREV }
+		malta_pr_clear_kind_flag = yes
+		subtract_from_variable = { malta_pr_active_count = 1 }
+		clamp_variable = { var = malta_pr_active_count min = 0 }
+		if = {
+			limit = { check_variable = { var = malta_pr_kind value = constant:malta_pr_kind.first_minor compare = greater_than_or_equals } }
+			subtract_from_variable = { malta_pr_minor_count = 1 }
+			clamp_variable = { var = malta_pr_minor_count min = 0 }
+		}
+		malta_refresh_standing = yes
+	}
+	if = { limit = { has_idea = malta_pr_chartered_realm } remove_ideas = malta_pr_chartered_realm }
+	if = { limit = { has_idea = malta_pr_form_crown } remove_ideas = malta_pr_form_crown }
+	if = { limit = { has_idea = malta_pr_form_order } remove_ideas = malta_pr_form_order }
+	if = { limit = { has_idea = malta_pr_form_local } remove_ideas = malta_pr_form_local }
+	if = { limit = { has_idea = malta_pr_form_papal } remove_ideas = malta_pr_form_papal }
+	if = { limit = { has_idea = malta_pr_federation_member } remove_ideas = malta_pr_federation_member }
+	clr_country_flag = malta_principality
+	clr_country_flag = malta_pr_succession_crisis
+	clr_country_flag = malta_pr_integrating
+	clr_country_flag = malta_pr_federated
+	if = {
+		limit = { check_variable = { var = malta_pr_end_why value = 3 compare = equals } }
+		MLT = { country_event = { id = chaosx.nr38.45 } }
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = malta_pr_end_why value = 1 compare = equals }
+				check_variable = { var = malta_pr_end_why value = 2 compare = equals }
+			}
+		}
+		MLT = {
+			annex_country = {
+				target = PREV
+				transfer_troops = yes
+			}
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Federation
+# ---------------------------------------------------------------------------
+
+# COUNTRY (MLT). Joins every principality of the array into the federation.
+malta_pr_federate = {
+	malta_pay_pr_federate = yes
+	set_country_flag = malta_pr_federation
+	set_temp_variable = { malta_change = constant:malta_pr_public.federation_cohesion }
+	malta_change_cohesion = yes
+	set_temp_variable = { malta_change = constant:malta_pr_public.federation_legitimacy }
+	malta_change_legitimacy = yes
+	for_each_scope_loop = {
+		array = global.malta_principalities
+		set_country_flag = malta_pr_federated
+		if = {
+			limit = { NOT = { has_idea = malta_pr_federation_member } }
+			add_ideas = malta_pr_federation_member
+		}
+		set_temp_variable = { malta_pr_delta = constant:malta_pr_change.federation_join }
+		malta_pr_change_loyalty = yes
+		malta_pr_publish_band = yes
+	}
+	country_event = { id = chaosx.nr38.47 }
+}
+
+# ---------------------------------------------------------------------------
+# Helpers of the principality focus tree
+# ---------------------------------------------------------------------------
+
+# COUNTRY (the principality). Input: temps malta_pr_focus_spawn_template and
+# malta_pr_focus_spawn_count. Spawns that many divisions of the template id in the capital.
+# The caller sets temp malta_focus_equipment, the equipment fill.
+malta_pr_focus_spawn = {
+	save_event_target_as = malta_spawn_owner
+	set_variable = { global.malta_spawn_template = malta_pr_focus_spawn_template }
+	set_variable = { global.malta_spawn_xp = constant:malta_pr_package.experience_factor }
+	set_variable = { global.malta_spawn_equipment = malta_focus_equipment }
+	set_variable = { global.malta_spawn_manpower = constant:malta_pr_package.manpower_factor }
+	set_temp_variable = { malta_spawn_count = malta_pr_focus_spawn_count }
+	capital_scope = { malta_spawn_loop = yes }
+}
+
+# COUNTRY (the principality). Input: temps malta_pr_focus_build_type (building token),
+# malta_pr_focus_build_level and malta_pr_focus_build_slots. Adds the levels of the building
+# and the shared building slots to the capital state.
+malta_pr_focus_build = {
+	meta_effect = {
+		text = {
+			capital_scope = {
+				add_extra_state_shared_building_slots = [SLOTS]
+				add_building_construction = { type = [TYPE] level = [LEVEL] instant_build = yes }
+			}
+		}
+		TYPE = "[?malta_pr_focus_build_type.GetTokenKey]"
+		LEVEL = "[?malta_pr_focus_build_level|.0]"
+		SLOTS = "[?malta_pr_focus_build_slots|.0]"
+	}
+}
+
+# COUNTRY (the principality). Input: temp malta_pr_focus_infra_level. Adds that many levels of
+# infrastructure to the capital state.
+malta_pr_focus_infra = {
+	meta_effect = {
+		text = {
+			capital_scope = {
+				add_building_construction = { type = infrastructure level = [LEVEL] instant_build = yes }
+			}
+		}
+		LEVEL = "[?malta_pr_focus_infra_level|.0]"
+	}
+}
+
+# COUNTRY (the principality). The same as malta_pr_focus_build for a building that needs a
+# coast. Input: temps malta_pr_focus_build_coastal_type, malta_pr_focus_build_coastal_level
+# and malta_pr_focus_build_coastal_slots.
+malta_pr_focus_build_coastal = {
+	meta_effect = {
+		text = {
+			capital_scope = {
+				if = {
+					limit = { is_coastal = yes }
+					add_extra_state_shared_building_slots = [SLOTS]
+					add_building_construction = { type = [TYPE] level = [LEVEL] instant_build = yes }
+				}
+			}
+		}
+		TYPE = "[?malta_pr_focus_build_coastal_type.GetTokenKey]"
+		LEVEL = "[?malta_pr_focus_build_coastal_level|.0]"
+		SLOTS = "[?malta_pr_focus_build_coastal_slots|.0]"
+	}
+}
+
+# COUNTRY (the principality). Input: temp malta_pr_form. Moves the government to
+# the form and reports it to the actor.
+malta_pr_focus_form = {
+	malta_pr_apply_form = yes
+	malta_pr_schedule_succession = yes
+}
+
+# COUNTRY (the principality). Input: temp malta_pr_duty_type. Changes what the
+# charter owes.
+malta_pr_focus_duty = {
+	set_variable = { malta_pr_duty_id = malta_pr_duty_type }
+}
+
+# COUNTRY (the principality). Pushes the next succession crisis back by the
+# days in temp malta_pr_delay.
+malta_pr_focus_delay_succession = {
+	add_to_variable = { malta_pr_next_succession = malta_pr_delay }
+}

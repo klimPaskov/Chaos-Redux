@@ -1,0 +1,836 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 038 CRUSADER PRINCIPALITY DECISIONS
+# ============================================================================
+# The decisions of the principality category (Evolution II). Seven charters
+# create a principality from the held states of a region. The management rows
+# are aimed at one principality of global.malta_principalities (FROM is the
+# principality): request a levy, send relief, enforce the charter, lighten or
+# burden the tribute, arbitrate a succession four ways, begin integration and
+# dissolve a failed principality. One row forms the federation of all of them.
+# Every row has a payment check that reads the published cost, an effect
+# tooltip and a score for the AI.
+# ============================================================================
+
+malta_principality_category = {
+	malta_charter_jerusalem = {
+		icon = GFX_decision_generic_monarchy
+		priority = 118
+		visible = {
+			malta_is_active_actor = yes
+			NOT = { malta_eleventh_is_active = yes }
+			has_country_flag = malta_charter_open_jerusalem
+			NOT = { has_country_flag = malta_pr_active_jerusalem }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_standing_tt
+				hidden_trigger = { malta_standing_is_recognized_or_better = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_region_jerusalem_tt
+				hidden_trigger = { malta_pr_ready_jerusalem = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_room_tt
+				hidden_trigger = { malta_pr_has_room = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_charter_major_tt
+				hidden_trigger = { malta_can_pay_charter_major = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_charter_major = yes }
+		custom_cost_text = malta_cost_charter_major
+		complete_effect = {
+			custom_effect_tooltip = malta_charter_jerusalem_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_kind = constant:malta_pr_kind.jerusalem }
+				malta_charter_principality = yes
+			}
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_pr_charter }
+				add = malta_ai_weight
+				malta_standing_is_recognized_or_better = yes
+			}
+		}
+	}
+	malta_charter_antioch = {
+		icon = GFX_decision_generic_fortification
+		priority = 117
+		visible = {
+			malta_is_active_actor = yes
+			NOT = { malta_eleventh_is_active = yes }
+			has_country_flag = malta_charter_open_antioch
+			NOT = { has_country_flag = malta_pr_active_antioch }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_standing_tt
+				hidden_trigger = { malta_standing_is_recognized_or_better = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_region_antioch_tt
+				hidden_trigger = { malta_pr_ready_antioch = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_room_tt
+				hidden_trigger = { malta_pr_has_room = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_charter_major_tt
+				hidden_trigger = { malta_can_pay_charter_major = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_charter_major = yes }
+		custom_cost_text = malta_cost_charter_major
+		complete_effect = {
+			custom_effect_tooltip = malta_charter_antioch_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_kind = constant:malta_pr_kind.antioch }
+				malta_charter_principality = yes
+			}
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_pr_charter }
+				add = malta_ai_weight
+				malta_standing_is_recognized_or_better = yes
+			}
+		}
+	}
+	malta_charter_cyprus = {
+		icon = GFX_decision_generic_naval
+		priority = 116
+		visible = {
+			malta_is_active_actor = yes
+			NOT = { malta_eleventh_is_active = yes }
+			has_country_flag = malta_charter_open_cyprus
+			NOT = { has_country_flag = malta_pr_active_cyprus }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_standing_tt
+				hidden_trigger = { malta_standing_is_recognized_or_better = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_region_cyprus_tt
+				hidden_trigger = { malta_pr_ready_cyprus = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_room_tt
+				hidden_trigger = { malta_pr_has_room = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_charter_major_tt
+				hidden_trigger = { malta_can_pay_charter_major = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_charter_major = yes }
+		custom_cost_text = malta_cost_charter_major
+		complete_effect = {
+			custom_effect_tooltip = malta_charter_cyprus_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_kind = constant:malta_pr_kind.cyprus }
+				malta_charter_principality = yes
+			}
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_pr_charter }
+				add = malta_ai_weight
+				malta_standing_is_recognized_or_better = yes
+			}
+		}
+	}
+	malta_charter_tripoli = {
+		icon = GFX_decision_generic_coastal_fortification
+		priority = 115
+		visible = {
+			malta_is_active_actor = yes
+			NOT = { malta_eleventh_is_active = yes }
+			has_country_flag = malta_charter_open_marches
+			NOT = { has_country_flag = malta_pr_active_tripoli }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_standing_tt
+				hidden_trigger = { malta_standing_is_recognized_or_better = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_region_tripoli_tt
+				hidden_trigger = { malta_pr_ready_tripoli = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_room_march_tt
+				hidden_trigger = { malta_pr_has_room_for_march = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_charter_minor_tt
+				hidden_trigger = { malta_can_pay_charter_minor = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_charter_minor = yes }
+		custom_cost_text = malta_cost_charter_minor
+		complete_effect = {
+			custom_effect_tooltip = malta_charter_tripoli_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_kind = constant:malta_pr_kind.tripoli }
+				malta_charter_principality = yes
+			}
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_pr_charter }
+				add = malta_ai_weight
+				check_variable = { var = malta_expedition_count value = constant:malta_pr_ai.stretched_states compare = greater_than_or_equals }
+			}
+		}
+	}
+	malta_charter_aegean = {
+		icon = GFX_decision_generic_naval
+		priority = 114
+		visible = {
+			malta_is_active_actor = yes
+			NOT = { malta_eleventh_is_active = yes }
+			has_country_flag = malta_charter_open_marches
+			NOT = { has_country_flag = malta_pr_active_aegean }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_standing_tt
+				hidden_trigger = { malta_standing_is_recognized_or_better = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_region_aegean_tt
+				hidden_trigger = { malta_pr_ready_aegean = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_room_march_tt
+				hidden_trigger = { malta_pr_has_room_for_march = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_charter_minor_tt
+				hidden_trigger = { malta_can_pay_charter_minor = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_charter_minor = yes }
+		custom_cost_text = malta_cost_charter_minor
+		complete_effect = {
+			custom_effect_tooltip = malta_charter_aegean_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_kind = constant:malta_pr_kind.aegean }
+				malta_charter_principality = yes
+			}
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_pr_charter }
+				add = malta_ai_weight
+				check_variable = { var = malta_expedition_count value = constant:malta_pr_ai.stretched_states compare = greater_than_or_equals }
+			}
+		}
+	}
+	malta_charter_anatolia = {
+		icon = GFX_decision_generic_mountain_fortification
+		priority = 113
+		visible = {
+			malta_is_active_actor = yes
+			NOT = { malta_eleventh_is_active = yes }
+			has_country_flag = malta_charter_open_marches
+			NOT = { has_country_flag = malta_pr_active_anatolia }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_standing_tt
+				hidden_trigger = { malta_standing_is_recognized_or_better = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_region_anatolia_tt
+				hidden_trigger = { malta_pr_ready_anatolia = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_room_march_tt
+				hidden_trigger = { malta_pr_has_room_for_march = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_charter_minor_tt
+				hidden_trigger = { malta_can_pay_charter_minor = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_charter_minor = yes }
+		custom_cost_text = malta_cost_charter_minor
+		complete_effect = {
+			custom_effect_tooltip = malta_charter_anatolia_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_kind = constant:malta_pr_kind.anatolia }
+				malta_charter_principality = yes
+			}
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_pr_charter }
+				add = malta_ai_weight
+				check_variable = { var = malta_expedition_count value = constant:malta_pr_ai.stretched_states compare = greater_than_or_equals }
+			}
+		}
+	}
+	malta_charter_africa = {
+		icon = GFX_decision_generic_coastal_fortification
+		priority = 112
+		visible = {
+			malta_is_active_actor = yes
+			NOT = { malta_eleventh_is_active = yes }
+			has_country_flag = malta_charter_open_marches
+			NOT = { has_country_flag = malta_pr_active_africa }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_standing_tt
+				hidden_trigger = { malta_standing_is_recognized_or_better = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_region_africa_tt
+				hidden_trigger = { malta_pr_ready_africa = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_room_march_tt
+				hidden_trigger = { malta_pr_has_room_for_march = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_charter_minor_tt
+				hidden_trigger = { malta_can_pay_charter_minor = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_charter_minor = yes }
+		custom_cost_text = malta_cost_charter_minor
+		complete_effect = {
+			custom_effect_tooltip = malta_charter_africa_tt
+			hidden_effect = {
+				set_temp_variable = { malta_pr_kind = constant:malta_pr_kind.africa }
+				malta_charter_principality = yes
+			}
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_pr_charter }
+				add = malta_ai_weight
+				check_variable = { var = malta_expedition_count value = constant:malta_pr_ai.stretched_states compare = greater_than_or_equals }
+			}
+		}
+	}
+	# ------------------------------------------------------------------------
+	# Management of one principality
+	# ------------------------------------------------------------------------
+	malta_pr_request_levy = {
+		icon = GFX_decision_generic_confiscation
+		priority = 100
+		target_array = global.malta_principalities
+		target_root_trigger = {
+			malta_is_active_actor = yes
+			malta_standing_is_functional_or_better = yes
+		}
+		target_trigger = {
+			FROM = {
+				malta_pr_is_listed = yes
+			}
+		}
+		visible = {
+			NOT = { malta_eleventh_is_active = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_levy_cooldown_tt
+				hidden_trigger = { FROM = { NOT = { has_country_flag = malta_pr_levy_cooldown } } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_guarded_tt
+				hidden_trigger = { FROM = { malta_pr_is_guarded_or_better = yes } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_pr_levy_tt
+				hidden_trigger = { malta_can_pay_pr_levy = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_pr_levy = yes }
+		custom_cost_text = malta_cost_pr_levy
+		complete_effect = {
+			custom_effect_tooltip = malta_pr_request_levy_tt
+			hidden_effect = { malta_pr_request_levy = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = constant:malta_pr_ai.levy_score }
+				add = malta_ai_weight
+				FROM = { check_variable = { var = malta_pr_loyalty value = constant:malta_pr_ai.levy_loyalty_floor compare = greater_than_or_equals } }
+			}
+		}
+	}
+	malta_pr_send_relief = {
+		icon = GFX_decision_generic_protection
+		priority = 99
+		target_array = global.malta_principalities
+		target_root_trigger = {
+			malta_is_active_actor = yes
+			malta_standing_is_functional_or_better = yes
+		}
+		target_trigger = {
+			FROM = {
+				malta_pr_is_listed = yes
+			}
+		}
+		visible = {
+			NOT = { malta_eleventh_is_active = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_relief_cooldown_tt
+				hidden_trigger = { FROM = { NOT = { has_country_flag = malta_pr_relief_cooldown } } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_relief_need_tt
+				hidden_trigger = { FROM = { malta_pr_needs_relief = yes } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_pr_relief_tt
+				hidden_trigger = { malta_can_pay_pr_relief = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_pr_relief = yes }
+		custom_cost_text = malta_cost_pr_relief
+		complete_effect = {
+			custom_effect_tooltip = malta_pr_send_relief_tt
+			hidden_effect = { malta_pr_send_relief = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = constant:malta_pr_ai.relief_score }
+				add = malta_ai_weight
+				FROM = { malta_pr_needs_relief = yes }
+			}
+		}
+	}
+	malta_pr_enforce_charter = {
+		icon = GFX_decision_generic_police_action
+		priority = 98
+		target_array = global.malta_principalities
+		target_root_trigger = {
+			malta_is_active_actor = yes
+			malta_standing_is_functional_or_better = yes
+		}
+		target_trigger = {
+			FROM = {
+				malta_pr_is_listed = yes
+			}
+		}
+		visible = {
+			NOT = { malta_eleventh_is_active = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_enforce_cooldown_tt
+				hidden_trigger = { FROM = { NOT = { has_country_flag = malta_pr_enforce_cooldown } NOT = { has_country_flag = malta_pr_enforced } } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_below_guarded_tt
+				hidden_trigger = { FROM = { NOT = { malta_pr_is_guarded_or_better = yes } } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_pr_enforce_tt
+				hidden_trigger = { malta_can_pay_pr_enforce = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_pr_enforce = yes }
+		custom_cost_text = malta_cost_pr_enforce
+		complete_effect = {
+			custom_effect_tooltip = malta_pr_enforce_charter_tt
+			hidden_effect = { malta_pr_enforce_charter = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = constant:malta_pr_ai.enforce_score }
+				add = malta_ai_weight
+				FROM = { check_variable = { var = malta_pr_loyalty value = constant:malta_pr_ai.enforce_loyalty_ceiling compare = less_than_or_equals } }
+			}
+		}
+	}
+	malta_pr_lighten_tribute = {
+		icon = GFX_decision_generic_welfare
+		priority = 97
+		target_array = global.malta_principalities
+		target_root_trigger = {
+			malta_is_active_actor = yes
+			malta_standing_is_functional_or_better = yes
+		}
+		target_trigger = {
+			FROM = {
+				malta_pr_is_listed = yes
+			}
+		}
+		visible = {
+			NOT = { malta_eleventh_is_active = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_revise_cooldown_tt
+				hidden_trigger = { FROM = { NOT = { has_country_flag = malta_pr_revise_cooldown } } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_tribute_above_light_tt
+				hidden_trigger = { FROM = { check_variable = { var = malta_pr_tribute value = constant:malta_pr_limit.tribute_light compare = greater_than } } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_pr_revise_tt
+				hidden_trigger = { malta_can_pay_pr_revise = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_pr_revise = yes }
+		custom_cost_text = malta_cost_pr_revise
+		complete_effect = {
+			custom_effect_tooltip = malta_pr_lighten_tribute_tt
+			hidden_effect = { malta_pr_lighten_tribute = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = constant:malta_pr_ai.lighten_score }
+				add = malta_ai_weight
+				FROM = { NOT = { malta_pr_is_guarded_or_better = yes } }
+			}
+		}
+	}
+	malta_pr_burden_tribute = {
+		icon = GFX_decision_generic_fundraising
+		priority = 96
+		target_array = global.malta_principalities
+		target_root_trigger = {
+			malta_is_active_actor = yes
+			malta_standing_is_functional_or_better = yes
+		}
+		target_trigger = {
+			FROM = {
+				malta_pr_is_listed = yes
+			}
+		}
+		visible = {
+			NOT = { malta_eleventh_is_active = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_cooperative_tt
+				hidden_trigger = { FROM = { malta_pr_is_cooperative_or_better = yes } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_burden_cooldown_tt
+				hidden_trigger = { FROM = { NOT = { has_country_flag = malta_pr_revise_cooldown } } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_tribute_below_heavy_tt
+				hidden_trigger = { FROM = { check_variable = { var = malta_pr_tribute value = constant:malta_pr_limit.tribute_heavy compare = less_than } } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_pr_revise_tt
+				hidden_trigger = { malta_can_pay_pr_revise = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_pr_revise = yes }
+		custom_cost_text = malta_cost_pr_revise
+		complete_effect = {
+			custom_effect_tooltip = malta_pr_burden_tribute_tt
+			hidden_effect = { malta_pr_burden_tribute = yes }
+		}
+		ai_will_do = {
+			factor = 0
+		}
+	}
+	malta_pr_arbitrate_heir = {
+		icon = GFX_decision_generic_monarchy
+		priority = 95
+		target_array = global.malta_principalities
+		target_root_trigger = {
+			malta_is_active_actor = yes
+			malta_standing_is_functional_or_better = yes
+		}
+		target_trigger = {
+			FROM = {
+				malta_pr_is_listed = yes
+			}
+		}
+		visible = {
+			NOT = { malta_eleventh_is_active = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_crisis_tt
+				hidden_trigger = { FROM = { malta_pr_has_succession_crisis = yes } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_pr_arbitrate_tt
+				hidden_trigger = { malta_can_pay_pr_arbitrate = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_pr_arbitrate = yes }
+		custom_cost_text = malta_cost_pr_arbitrate
+		complete_effect = {
+			custom_effect_tooltip = malta_pr_arbitrate_heir_tt
+			hidden_effect = { malta_pr_arbitrate_heir = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = constant:malta_pr_ai.arbitrate_score }
+				add = malta_ai_weight
+				FROM = { malta_pr_has_succession_crisis = yes }
+			}
+		}
+	}
+	malta_pr_arbitrate_order = {
+		icon = GFX_decision_generic_pickelhaube
+		priority = 94
+		target_array = global.malta_principalities
+		target_root_trigger = {
+			malta_is_active_actor = yes
+			malta_standing_is_functional_or_better = yes
+		}
+		target_trigger = {
+			FROM = {
+				malta_pr_is_listed = yes
+			}
+		}
+		visible = {
+			NOT = { malta_eleventh_is_active = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_crisis_tt
+				hidden_trigger = { FROM = { malta_pr_has_succession_crisis = yes } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_pr_arbitrate_tt
+				hidden_trigger = { malta_can_pay_pr_arbitrate = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_pr_arbitrate = yes }
+		custom_cost_text = malta_cost_pr_arbitrate
+		complete_effect = {
+			custom_effect_tooltip = malta_pr_arbitrate_order_tt
+			hidden_effect = { malta_pr_arbitrate_order = yes }
+		}
+		ai_will_do = {
+			factor = 0
+		}
+	}
+	malta_pr_arbitrate_local = {
+		icon = GFX_decision_generic_political_rally
+		priority = 93
+		target_array = global.malta_principalities
+		target_root_trigger = {
+			malta_is_active_actor = yes
+			malta_standing_is_functional_or_better = yes
+		}
+		target_trigger = {
+			FROM = {
+				malta_pr_is_listed = yes
+			}
+		}
+		visible = {
+			NOT = { malta_eleventh_is_active = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_crisis_tt
+				hidden_trigger = { FROM = { malta_pr_has_succession_crisis = yes } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_pr_arbitrate_tt
+				hidden_trigger = { malta_can_pay_pr_arbitrate = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_pr_arbitrate = yes }
+		custom_cost_text = malta_cost_pr_arbitrate
+		complete_effect = {
+			custom_effect_tooltip = malta_pr_arbitrate_local_tt
+			hidden_effect = { malta_pr_arbitrate_local = yes }
+		}
+		ai_will_do = {
+			factor = 0
+		}
+	}
+	malta_pr_arbitrate_papal = {
+		icon = GFX_decision_generic_speech
+		priority = 92
+		target_array = global.malta_principalities
+		target_root_trigger = {
+			malta_is_active_actor = yes
+			malta_standing_is_functional_or_better = yes
+		}
+		target_trigger = {
+			FROM = {
+				malta_pr_is_listed = yes
+			}
+		}
+		visible = {
+			NOT = { malta_eleventh_is_active = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_crisis_tt
+				hidden_trigger = { FROM = { malta_pr_has_succession_crisis = yes } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_pope_tt
+				hidden_trigger = { has_country_flag = malta_papal_supremacy }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_pr_arbitrate_tt
+				hidden_trigger = { malta_can_pay_pr_arbitrate = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_pr_arbitrate = yes }
+		custom_cost_text = malta_cost_pr_arbitrate
+		complete_effect = {
+			custom_effect_tooltip = malta_pr_arbitrate_papal_tt
+			hidden_effect = { malta_pr_arbitrate_papal = yes }
+		}
+		ai_will_do = {
+			factor = 0
+		}
+	}
+	malta_pr_begin_integration = {
+		icon = GFX_decision_generic_colonial_administration
+		priority = 91
+		target_array = global.malta_principalities
+		target_root_trigger = {
+			malta_is_active_actor = yes
+			malta_standing_is_functional_or_better = yes
+		}
+		target_trigger = {
+			FROM = {
+				malta_pr_is_listed = yes
+			}
+		}
+		visible = {
+			NOT = { malta_eleventh_is_active = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_integration_ready_tt
+				hidden_trigger = { FROM = { malta_pr_can_integrate = yes } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_recognized_tt
+				hidden_trigger = { malta_standing_is_recognized_or_better = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_pr_integrate_tt
+				hidden_trigger = { malta_can_pay_pr_integrate = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_pr_integrate = yes }
+		custom_cost_text = malta_cost_pr_integrate
+		complete_effect = {
+			custom_effect_tooltip = malta_pr_begin_integration_tt
+			hidden_effect = { malta_pr_begin_integration = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = constant:malta_pr_ai.integration_score }
+				add = malta_ai_weight
+				FROM = { check_variable = { var = malta_pr_loyalty value = constant:malta_pr_ai.integration_loyalty_floor compare = greater_than_or_equals } }
+			}
+		}
+	}
+	malta_pr_dissolve = {
+		icon = GFX_decision_generic_break_treaty
+		priority = 90
+		target_array = global.malta_principalities
+		target_root_trigger = {
+			malta_is_active_actor = yes
+			malta_standing_is_functional_or_better = yes
+		}
+		target_trigger = {
+			FROM = {
+				malta_pr_is_listed = yes
+			}
+		}
+		visible = {
+			NOT = { malta_eleventh_is_active = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_failed_tt
+				hidden_trigger = { FROM = { malta_pr_has_failed = yes } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_pr_dissolve_tt
+				hidden_trigger = { malta_can_pay_pr_dissolve = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_pr_dissolve = yes }
+		custom_cost_text = malta_cost_pr_dissolve
+		complete_effect = {
+			custom_effect_tooltip = malta_pr_dissolve_tt
+			hidden_effect = { malta_pr_dissolve = yes }
+		}
+		ai_will_do = {
+			factor = 0
+		}
+	}
+	# ------------------------------------------------------------------------
+	# The federation of the principalities
+	# ------------------------------------------------------------------------
+
+	malta_pr_federate_members = {
+		icon = GFX_decision_generic_political_discourse
+		priority = 89
+		visible = {
+			malta_is_active_actor = yes
+			NOT = { malta_eleventh_is_active = yes }
+			NOT = { has_country_flag = malta_pr_federation }
+			has_country_flag = malta_high_court
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_federation_members_tt
+				hidden_trigger = {
+					check_variable = { var = malta_pr_active_count value = constant:malta_pr_federation.minimum_members compare = greater_than_or_equals }
+					check_variable = { var = malta_pr_loyal_count value = malta_pr_active_count compare = equals }
+				}
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_pr_federation_cohesion_tt
+				hidden_trigger = { malta_cohesion_is_working_or_better = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_pr_federate_tt
+				hidden_trigger = { malta_can_pay_pr_federate = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_pr_federate = yes }
+		custom_cost_text = malta_cost_pr_federate
+		complete_effect = {
+			custom_effect_tooltip = malta_pr_federate_members_tt
+			hidden_effect = { malta_pr_federate = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = constant:malta_pr_ai.federate_score }
+				add = malta_ai_weight
+				malta_pr_can_federate = yes
+			}
+		}
+	}
+}
