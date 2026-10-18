@@ -2563,11 +2563,8 @@ riches_found_end_quarantine = {
 		clr_state_flag = riches_found_mine_quarantined
 		if = {
 			limit = { check_variable = { var = riches_found_operating_state value = constant:riches_found_operating_state.quarantined compare = equals } }
-			if = {
-				limit = { has_variable = riches_found_pre_quarantine_state }
-				set_variable = { riches_found_operating_state = riches_found_pre_quarantine_state }
-			}
-			else = { set_variable = { riches_found_operating_state = constant:riches_found_operating_state.open_regulated } }
+			# Quarantine always stores the prior state, and every clear removes the flag with it.
+			set_variable = { riches_found_operating_state = riches_found_pre_quarantine_state }
 		}
 		clear_variable = riches_found_pre_quarantine_state
 		if = {
