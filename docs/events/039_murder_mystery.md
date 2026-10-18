@@ -406,6 +406,7 @@ Names and descriptions use the `_NAME` and `_DESC` keys, and the requirement tex
 Scenario launches disqualify the four investigation achievements; the route and terminal achievements stay open because the scenario setup never grants their conditions.
 The Last Safe Cabinet marks the sitting ruler at activation with the character flag `murder_mystery_achievement_cabinet_leader`, resolved through the existing anchor trait that is removed at once.
 A derivative counts as viable when its registry row is active, its starting forces package exists, it has not capitulated, and it owns at least `murder_mystery_inheritance.minimum_heir_states` states.
+The Veiled Compact is founded by the diplomacy branch focus The Subject Compact (`murder_mystery_subject_compact`), which is available once Evolution IV is committed and calls `murder_mystery_focus_veiled_compact` beside its Cohesion reward. That effect opens the faction, sets `murder_mystery_veiled_compact_created` on the central state, and is the flag Necessary Hypocrisy reads.
 
 ## Intelligence cluster
 
