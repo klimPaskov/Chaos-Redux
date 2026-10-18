@@ -320,36 +320,6 @@ has_soviet_collapse_opening_release_emergency = {
 	}
 }
 
-has_soviet_collapse_component_release_pressure = {
-	OR = {
-		check_variable = {
-			var = soviet_collapse_republic_confidence
-			value = constant:soviet_collapse_republic_focus.ai_pressure_high
-			compare = greater_than
-		}
-		check_variable = {
-			var = soviet_collapse_depot_vulnerability
-			value = constant:soviet_collapse_republic_focus.ai_pressure_high
-			compare = greater_than
-		}
-		check_variable = {
-			var = soviet_collapse_foreign_appetite
-			value = constant:soviet_collapse_republic_focus.ai_pressure_high
-			compare = greater_than
-		}
-		check_variable = {
-			var = soviet_collapse_league_cohesion
-			value = constant:soviet_collapse_republic_focus.ai_pressure_high
-			compare = greater_than
-		}
-		check_variable = {
-			var = soviet_collapse_old_movement_pressure
-			value = constant:soviet_collapse_republic_focus.ai_old_movement_pressure_high
-			compare = greater_than
-		}
-	}
-}
-
 has_soviet_collapse_release_level_component_pressure = {
 	OR = {
 		check_variable = {
@@ -3089,46 +3059,6 @@ is_soviet_collapse_pressure_successor_progressive_candidate = {
 		}
 	}
 
-is_soviet_collapse_cascade_priority_progressive_release_candidate = {
-	is_soviet_collapse_progressive_release_candidate = yes
-	OR = {
-		AND = {
-			is_soviet_collapse_western_progressive_release_candidate = yes
-			SOV = { has_soviet_collapse_two_western_republics_free = yes }
-		}
-		AND = {
-			is_soviet_collapse_baltic_progressive_release_candidate = yes
-			SOV = { has_soviet_collapse_baltic_league_quorum = yes }
-		}
-		AND = {
-			is_soviet_collapse_caucasus_progressive_release_candidate = yes
-			SOV = { has_soviet_collapse_caucasus_league_quorum = yes }
-		}
-		AND = {
-			is_soviet_collapse_central_asian_progressive_release_candidate = yes
-			SOV = {
-				OR = {
-					has_soviet_collapse_two_smaller_central_asian_republics_free = yes
-					has_soviet_collapse_central_asian_league_quorum = yes
-				}
-			}
-		}
-		AND = {
-			is_soviet_collapse_kazakhstan_progressive_release_candidate = yes
-			SOV = {
-				OR = {
-					has_soviet_collapse_two_smaller_central_asian_republics_free = yes
-					has_soviet_collapse_central_asian_league_quorum = yes
-				}
-			}
-		}
-		AND = {
-			is_soviet_collapse_internal_progressive_release_candidate = yes
-			SOV = { has_soviet_collapse_internal_release_cascade_pressure = yes }
-		}
-	}
-}
-
 is_soviet_collapse_breakaway_country = {
 	NOT = { has_country_flag = independence_wave_active_origin }
 	OR = {
@@ -3275,11 +3205,6 @@ can_show_soviet_collapse_foreign_patron_target_decisions = {
 		ROOT = { is_ai = yes }
 		has_soviet_collapse_selected_foreign_patron_target_from_root = yes
 	}
-}
-
-can_show_soviet_collapse_selected_foreign_patron_target_decisions = {
-	is_soviet_collapse_foreign_patron_candidate = yes
-	has_soviet_collapse_selected_foreign_patron_target_from_root = yes
 }
 
 has_soviet_collapse_selected_foreign_patron_target_from_root = {
@@ -8710,12 +8635,6 @@ is_soviet_collapse_kmb_superior_concession_target_from_root = {
 	}
 }
 
-has_soviet_collapse_kmb_valid_concession_target = {
-	any_neighbor_country = {
-		is_soviet_collapse_kmb_valid_concession_target_from_root = yes
-	}
-}
-
 has_soviet_collapse_kmb_superior_concession_target = {
 	any_neighbor_country = {
 		is_soviet_collapse_kmb_superior_concession_target_from_root = yes
@@ -9176,9 +9095,6 @@ can_pay_soviet_collapse_republic_settlement_compromise_cost = {
 	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_operational_priority_settlement_compromise_political_power_cost } NOT = { has_political_power < soviet_collapse_sale_price_check }
 }
 
-has_soviet_collapse_uwr_contamination_aftermath = {
-	has_state_flag = soviet_collapse_uwr_contamination_aftermath
-}
 # COUNTRY scope. Terminal proof for the Event 005 breakaway setup finalizer.
 # The setup effect clears its completion flag before work and restores it only
 # after the origin, equipment, component, category, breakaway-registry, and

@@ -3116,26 +3116,6 @@ soviet_collapse_apply_objective_source_pressure_delta = {
 	soviet_collapse_recalculate_total_threat = yes
 }
 
-soviet_collapse_apply_successful_objective_pressure = {
-	soviet_collapse_register_monthly_threat_success = yes
-	set_temp_variable = { soviet_collapse_objective_authority_delta = constant:soviet_collapse_objective_pressure.generic_success_authority }
-	set_temp_variable = { soviet_collapse_objective_obedience_delta = constant:soviet_collapse_objective_pressure.generic_success_obedience }
-	set_temp_variable = { soviet_collapse_objective_republic_delta = constant:soviet_collapse_objective_pressure.generic_success_confidence }
-	set_temp_variable = { soviet_collapse_objective_depot_delta = constant:soviet_collapse_objective_pressure.generic_success_depot }
-	soviet_collapse_apply_objective_source_pressure_delta = yes
-}
-
-soviet_collapse_apply_failed_objective_pressure = {
-	soviet_collapse_register_monthly_threat_failure = yes
-	set_temp_variable = { soviet_collapse_objective_authority_delta = constant:soviet_collapse_objective_pressure.generic_failure_authority }
-	set_temp_variable = { soviet_collapse_objective_obedience_delta = constant:soviet_collapse_objective_pressure.generic_failure_obedience }
-	set_temp_variable = { soviet_collapse_objective_republic_delta = constant:soviet_collapse_objective_pressure.generic_failure_confidence }
-	set_temp_variable = { soviet_collapse_objective_depot_delta = constant:soviet_collapse_objective_pressure.generic_failure_depot }
-	set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_objective_pressure.generic_failure_foreign }
-	soviet_collapse_apply_foreign_pressure_delta = yes
-	soviet_collapse_apply_objective_source_pressure_delta = yes
-}
-
 soviet_collapse_apply_successful_authority_objective_pressure = {
 	soviet_collapse_register_monthly_threat_success = yes
 	set_temp_variable = { soviet_collapse_objective_authority_delta = constant:soviet_collapse_objective_pressure.authority_success_authority }
@@ -3544,22 +3524,6 @@ soviet_collapse_ensure_emergency_republican_templates = {
 	if = { limit = { has_template = "Emergency Republican Guard" } set_country_flag = soviet_collapse_emergency_republican_guard_template_created }
 	if = { limit = { has_template = "Emergency Republican Field Brigade" } set_country_flag = soviet_collapse_emergency_republican_field_brigade_template_created }
 	if = { limit = { has_template = "Emergency Republican Line Division" } set_country_flag = soviet_collapse_emergency_republican_line_division_template_created }
-}
-
-soviet_collapse_spawn_breakaway_guard_units = {
-	soviet_collapse_spawn_breakaway_guard_units_safe = yes
-}
-
-soviet_collapse_spawn_breakaway_field_units = {
-	soviet_collapse_spawn_breakaway_field_units_safe = yes
-}
-
-soviet_collapse_spawn_breakaway_field_brigade_units = {
-	soviet_collapse_spawn_breakaway_field_brigade_units_safe = yes
-}
-
-soviet_collapse_spawn_breakaway_line_division_units = {
-	soviet_collapse_spawn_breakaway_line_division_units_safe = yes
 }
 
 soviet_collapse_spawn_one_breakaway_guard_unit_safe = {
@@ -11270,18 +11234,6 @@ soviet_collapse_apply_custom_splinter_expansion_claims_payload = {
 	clamp_variable = { var = soviet_collapse_independence_resilience min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
 }
 
-soviet_collapse_apply_high_chaos_startup_war_package = {
-	if = {
-		limit = {
-			has_country_flag = soviet_collapse_high_chaos_successor
-			NOT = { has_country_flag = soviet_collapse_high_chaos_startup_war_package_applied }
-		}
-		set_country_flag = soviet_collapse_high_chaos_startup_war_package_applied
-		soviet_collapse_spawn_custom_splinter_assault_columns_payload = yes
-		soviet_collapse_apply_custom_splinter_expansion_claims_payload = yes
-	}
-}
-
 soviet_collapse_apply_legal_focus_route_payload = {
 	if = {
 		limit = { NOT = { has_country_flag = soviet_collapse_legal_focus_route_payload_granted } }
@@ -14719,21 +14671,6 @@ soviet_collapse_apply_focus_high_chaos_identity = {
 	}
 }
 
-soviet_collapse_setup_southern_republic_if_valid = {
-	if = {
-		limit = {
-			exists = yes
-			NOT = { has_country_flag = independence_wave_active_origin }
-		}
-		set_country_flag = soviet_collapse_event_created_republic
-		soviet_collapse_setup_breakaway_country = yes
-	}
-}
-
-soviet_collapse_randomize_single_person_leader_name = {
-	set_country_flag = soviet_collapse_single_person_leader_name_randomized
-}
-
 
 soviet_collapse_apply_event_created_republic_council_leader = {
 	if = {
@@ -16055,12 +15992,6 @@ soviet_collapse_apply_mfr_focus_factory_war_cabinet = {
 	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.support_equipment_small }
 }
 
-soviet_collapse_apply_mfr_focus_arms_output = {
-	add_to_variable = { mfr_arsenal_quotas = constant:soviet_collapse_factory_ancient.small_mandate_spend }
-	add_equipment_to_stockpile = { type = infantry_equipment_1 amount = constant:soviet_collapse_factory_ancient.infantry_equipment_small }
-	army_experience = constant:soviet_collapse_factory_ancient.army_xp_low_gain
-}
-
 soviet_collapse_apply_mfr_focus_arms_line_expansion = {
 	add_to_variable = { mfr_arsenal_quotas = constant:soviet_collapse_factory_ancient.small_mandate_spend }
 	random_owned_controlled_state = {
@@ -16111,11 +16042,6 @@ soviet_collapse_apply_mfr_focus_gates_sirens_rifles = {
 	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.support_equipment_small }
 	add_stability = constant:soviet_collapse_factory_ancient.stability_small
 	add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
-}
-
-soviet_collapse_apply_mfr_focus_foreign_shipments = {
-	add_equipment_to_stockpile = { type = infantry_equipment_1 amount = constant:soviet_collapse_factory_ancient.infantry_equipment_small }
-	soviet_collapse_apply_mfr_foreign_pressure_small = yes
 }
 
 soviet_collapse_apply_mfr_foreign_pressure_small = {
@@ -22384,14 +22310,6 @@ soviet_collapse_kmb_add_coal_surge = {
 	}
 }
 
-soviet_collapse_kmb_add_decision_coal_surge = {
-	569 = {
-		add_resource = { type = coal amount = constant:soviet_collapse_kmb_balance.decision_coal }
-		add_extra_state_shared_building_slots = 1
-		add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
-	}
-}
-
 soviet_collapse_kmb_add_metal_quota_surge = {
 	569 = {
 		add_resource = { type = steel amount = constant:soviet_collapse_kmb_balance.steel }
@@ -22490,10 +22408,6 @@ soviet_collapse_kmb_spawn_mass_coal_golem_columns = {
 			}
 		}
 	}
-}
-
-soviet_collapse_kmb_spawn_focus_coal_golem_column = {
-	soviet_collapse_kmb_spawn_focus_coal_golem_columns = yes
 }
 
 soviet_collapse_setup_uwr_successor = {
@@ -24719,42 +24633,6 @@ soviet_collapse_save_progressive_target_from_selection_pool = {
 	}
 	clear_temp_array = soviet_collapse_republic_selection_pool
 	set_temp_variable = { soviet_collapse_republic_selection_pool_count = 0 }
-}
-
-soviet_collapse_set_first_wave_western_selection_weights = {
-	soviet_collapse_clear_republic_selection_weights = yes
-	if = { limit = { UKR = { is_soviet_collapse_first_wave_release_candidate = yes } } set_temp_variable = { soviet_collapse_release_weight_ukr = constant:soviet_collapse_release_selection.candidate_weight } }
-	if = { limit = { BLR = { is_soviet_collapse_first_wave_release_candidate = yes } } set_temp_variable = { soviet_collapse_release_weight_blr = constant:soviet_collapse_release_selection.candidate_weight } }
-	if = { limit = { MOL = { is_soviet_collapse_first_wave_release_candidate = yes } } set_temp_variable = { soviet_collapse_release_weight_mol = constant:soviet_collapse_release_selection.candidate_weight } }
-	if = { limit = { LIT = { is_soviet_collapse_first_wave_release_candidate = yes } } set_temp_variable = { soviet_collapse_release_weight_lit = constant:soviet_collapse_release_selection.candidate_weight } }
-	if = { limit = { LAT = { is_soviet_collapse_first_wave_release_candidate = yes } } set_temp_variable = { soviet_collapse_release_weight_lat = constant:soviet_collapse_release_selection.candidate_weight } }
-	if = { limit = { EST = { is_soviet_collapse_first_wave_release_candidate = yes } } set_temp_variable = { soviet_collapse_release_weight_est = constant:soviet_collapse_release_selection.candidate_weight } }
-}
-
-soviet_collapse_set_first_wave_caucasus_selection_weights = {
-	soviet_collapse_clear_republic_selection_weights = yes
-	if = { limit = { GEO = { is_soviet_collapse_first_wave_release_candidate = yes } } set_temp_variable = { soviet_collapse_release_weight_geo = constant:soviet_collapse_release_selection.candidate_weight } }
-	if = { limit = { ARM = { is_soviet_collapse_first_wave_release_candidate = yes } } set_temp_variable = { soviet_collapse_release_weight_arm = constant:soviet_collapse_release_selection.candidate_weight } }
-	if = { limit = { AZR = { is_soviet_collapse_first_wave_release_candidate = yes } } set_temp_variable = { soviet_collapse_release_weight_azr = constant:soviet_collapse_release_selection.candidate_weight } }
-}
-
-soviet_collapse_set_first_wave_central_asian_selection_weights = {
-	soviet_collapse_clear_republic_selection_weights = yes
-	if = { limit = { UZB = { is_soviet_collapse_first_wave_release_candidate = yes } } set_temp_variable = { soviet_collapse_release_weight_uzb = constant:soviet_collapse_release_selection.candidate_weight } }
-	if = { limit = { KYR = { is_soviet_collapse_first_wave_release_candidate = yes } } set_temp_variable = { soviet_collapse_release_weight_kyr = constant:soviet_collapse_release_selection.candidate_weight } }
-	if = { limit = { TAJ = { is_soviet_collapse_first_wave_release_candidate = yes } } set_temp_variable = { soviet_collapse_release_weight_taj = constant:soviet_collapse_release_selection.candidate_weight } }
-	if = { limit = { TMS = { is_soviet_collapse_first_wave_release_candidate = yes } } set_temp_variable = { soviet_collapse_release_weight_tms = constant:soviet_collapse_release_selection.candidate_weight } }
-}
-
-soviet_collapse_set_first_wave_extra_selection_weights = {
-	soviet_collapse_set_first_wave_western_selection_weights = yes
-	if = { limit = { GEO = { is_soviet_collapse_first_wave_release_candidate = yes } } set_temp_variable = { soviet_collapse_release_weight_geo = constant:soviet_collapse_release_selection.candidate_weight } }
-	if = { limit = { ARM = { is_soviet_collapse_first_wave_release_candidate = yes } } set_temp_variable = { soviet_collapse_release_weight_arm = constant:soviet_collapse_release_selection.candidate_weight } }
-	if = { limit = { AZR = { is_soviet_collapse_first_wave_release_candidate = yes } } set_temp_variable = { soviet_collapse_release_weight_azr = constant:soviet_collapse_release_selection.candidate_weight } }
-	if = { limit = { UZB = { is_soviet_collapse_first_wave_release_candidate = yes } } set_temp_variable = { soviet_collapse_release_weight_uzb = constant:soviet_collapse_release_selection.candidate_weight } }
-	if = { limit = { KYR = { is_soviet_collapse_first_wave_release_candidate = yes } } set_temp_variable = { soviet_collapse_release_weight_kyr = constant:soviet_collapse_release_selection.candidate_weight } }
-	if = { limit = { TAJ = { is_soviet_collapse_first_wave_release_candidate = yes } } set_temp_variable = { soviet_collapse_release_weight_taj = constant:soviet_collapse_release_selection.candidate_weight } }
-	if = { limit = { TMS = { is_soviet_collapse_first_wave_release_candidate = yes } } set_temp_variable = { soviet_collapse_release_weight_tms = constant:soviet_collapse_release_selection.candidate_weight } }
 }
 
 soviet_collapse_add_random_first_wave_western_republic = {
