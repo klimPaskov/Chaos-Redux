@@ -51,6 +51,7 @@ camp_admin_integration_monthly_country_recipient = {
 		}
 		set_variable = { camp_admin_integration_month = camp_admin_month_key }
 		camp_admin_integration_seed_japan_labor_host = yes
+		camp_admin_integration_seed_japan_pingfang_host = yes
 		camp_admin_country_prepare_monthly = yes
 		camp_admin_monthly_country = yes
 		camp_admin_integration_record_completed_project = yes
@@ -93,6 +94,43 @@ camp_admin_integration_seed_japan_labor_host = {
 			clr_state_flag = camp_rework_historical_baseline_registration
 		}
 		set_country_flag = camp_admin_japan_liaotung_registered
+	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
+}
+
+# Pingfang research bureau in Kirin 328. The accepted Administration path opens
+# it once the original route is open, after the original bureau delay. Losing the
+# route before completion cancels the pending bureau. Registration is the original
+# camp_rework_japan_register_pingfang effect: anchor, bureau, experiment and
+# records markers, facility, Ishii program and the Pingfang route flags.
+camp_admin_integration_seed_japan_pingfang_host = {
+	national_policy_panel_begin_update = yes
+	if = {
+		limit = { original_tag = JAP NOT = { has_country_flag = camp_admin_japan_pingfang_registered } }
+		if = {
+			limit = { camp_admin_japan_pingfang_route_open = yes }
+			if = {
+				limit = { NOT = { has_country_flag = camp_admin_japan_pingfang_started } }
+				set_country_flag = camp_admin_japan_pingfang_started
+				set_temp_variable = { camp_admin_pingfang_bureau_days = constant:camp_admin_country.pingfang_bureau_days }
+				set_country_flag = {
+					flag = camp_admin_japan_pingfang_establishing
+					days = camp_admin_pingfang_bureau_days
+				}
+			}
+			else_if = {
+				limit = { NOT = { has_country_flag = camp_admin_japan_pingfang_establishing } }
+				camp_rework_japan_register_pingfang = yes
+				set_country_flag = camp_admin_japan_pingfang_registered
+				clr_country_flag = camp_admin_japan_pingfang_started
+			}
+		}
+		else_if = {
+			limit = { has_country_flag = camp_admin_japan_pingfang_started }
+			clr_country_flag = camp_admin_japan_pingfang_started
+			clr_country_flag = camp_admin_japan_pingfang_establishing
+		}
 	}
 	national_policy_panel_refresh_open = yes
 	national_policy_panel_end_update = yes
