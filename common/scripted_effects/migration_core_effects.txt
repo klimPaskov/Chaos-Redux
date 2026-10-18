@@ -62,33 +62,6 @@ migration_record_displaced_cohort = {
 }
 
 
-# Bind a destination only from inside that actual destination state scope.
-# The regular route target is saved for the current effect chain so callers
-# may return to origin safely; the global row remains the durable identity.
-migration_save_cohort_previous_host = {
-	set_temp_variable = { migration_previous_host_break = constant:humanitarian_runtime.zero }
-	if = {
-		limit = {
-			check_variable = { var = migration_cohort_id_request value = constant:humanitarian_runtime.zero compare = greater_than }
-			migration_cohort_arrays_are_aligned = yes
-		}
-		set_temp_variable = { migration_previous_host_index = global.migration_cohort_ids^num }
-		while_loop_effect = {
-			break = migration_previous_host_break
-			limit = {
-				check_variable = { var = migration_previous_host_index value = constant:humanitarian_runtime.zero compare = greater_than }
-				check_variable = { var = migration_previous_host_break value = constant:humanitarian_runtime.zero compare = equals }
-			}
-			subtract_from_temp_variable = { migration_previous_host_index = constant:humanitarian_runtime.array_index_increment }
-			if = {
-				limit = { check_variable = { var = global.migration_cohort_ids^migration_previous_host_index value = migration_cohort_id_request compare = equals } }
-				var:global.migration_cohort_hosts^migration_previous_host_index = { save_event_target_as = migration_cohort_previous_host }
-				set_temp_variable = { migration_previous_host_break = constant:humanitarian_runtime.one }
-			}
-		}
-	}
-}
-
 
 migration_bind_cohort_destination = {
 	set_temp_variable = { migration_cohort_destination_bind_result = constant:civilian_transfer_route_result.invalid }
@@ -510,23 +483,6 @@ migration_cleanup_cohort_records_for_state = {
 	}
 }
 
-
-# Explicit full invalidation is available only to an owner that proves the
-# state itself is invalid and separately proves that every exact row reference
-# is terminal. No ordinary food recovery/control callback may invoke it.
-migration_full_invalidate_state_registration = {
-	set_temp_variable = { migration_full_invalidation_result = constant:civilian_transfer_route_result.invalid }
-	if = {
-		limit = {
-			NOT = { humanitarian_state_is_valid = yes }
-			check_variable = { var = migration_full_invalidation_proven value = constant:humanitarian_runtime.one compare = equals }
-		}
-		set_state_flag = humanitarian_state_invalidation_pending
-		set_global_flag = migration_runtime_needs_repair
-		set_temp_variable = { migration_full_invalidation_result = constant:civilian_transfer_route_result.valid }
-	}
-	set_temp_variable = { migration_full_invalidation_proven = constant:humanitarian_runtime.zero }
-}
 
 
 migration_register_active_state = {
@@ -964,19 +920,6 @@ migration_update_cohort_host_after_transfer = {
 	}
 }
 
-
-migration_set_border_policy = {
-	set_temp_variable = { migration_border_policy_result = constant:humanitarian_runtime.zero }
-	if = {
-		limit = { migration_border_policy_is_valid = yes }
-		set_variable = { migration_border_policy = migration_border_policy_request }
-		set_country_flag = migration_border_policy_active
-		migration_mark_reception_capacity_dirty = yes
-		migration_register_active_country = yes
-		set_temp_variable = { migration_border_policy_result = constant:humanitarian_runtime.one }
-	}
-	set_temp_variable = { migration_border_policy_request = constant:humanitarian_runtime.zero }
-}
 
 
 migration_publish_reception_demand = {
@@ -1679,28 +1622,6 @@ migration_reconcile_country_cohort_achievement = {
 	}
 }
 
-
-# COUNTRY scope. Parent return/cleanup consumers call this only after their
-# own exact transaction succeeds. The registry processor consumes this marker
-# alongside a zero aligned cohort total; no cause is inferred from an absent
-# row or from an invalid cleanup.
-migration_mark_cohort_resolution_transaction = {
-	set_temp_variable = { migration_cohort_resolution_transaction_result = constant:civilian_transfer_route_result.invalid }
-	if = {
-		limit = {
-			humanitarian_country_is_valid = yes
-			check_variable = { var = migration_cohort_resolution_transaction_request_proven value = constant:humanitarian_runtime.zero compare = greater_than }
-		}
-		set_variable = { migration_cohort_resolution_transaction_proven = constant:humanitarian_runtime.one }
-		if = {
-			limit = { has_variable = migration_cohort_id_request }
-			set_variable = { migration_cohort_resolution_transaction_id = migration_cohort_id_request }
-		}
-		else = { clear_variable = migration_cohort_resolution_transaction_id }
-		set_temp_variable = { migration_cohort_resolution_transaction_result = constant:civilian_transfer_route_result.valid }
-	}
-	set_temp_variable = { migration_cohort_resolution_transaction_request_proven = constant:humanitarian_runtime.zero }
-}
 
 
 # ---------------------------------------------------------------------------
