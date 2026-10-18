@@ -398,15 +398,12 @@ black_friday_can_pay_cbrn_share_forensic_evidence = {
 	black_friday_cbrn_forensic_materials_are_affordable = yes
 }
 
-# Country scope. The sale's one-day source controls which native factory
-# variant is shown. The factory is a pre-click cost; after selection only the
-# material quote may be rechecked because the timer has reserved capacity.
-black_friday_cbrn_decon_sale_source_is_active = {
-	cbrn_protective_aid_sale_source_is_active = yes
-}
-
+# Country scope. The sale's one-day source (cbrn_protective_aid_sale_source_is_active)
+# controls which native factory variant is shown. The factory is a pre-click cost;
+# after selection only the material quote may be rechecked because the timer has
+# reserved capacity.
 black_friday_cbrn_decon_sale_materials_are_affordable = {
-	black_friday_cbrn_decon_sale_source_is_active = yes
+	cbrn_protective_aid_sale_source_is_active = yes
 	set_temp_variable = { black_friday_quote_ordinary_cost = constant:cbrn_diplomacy_cost.decon_masks }
 	set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.equipment }
 	# Caller-owned cost API outputs.
@@ -450,7 +447,7 @@ black_friday_can_pay_cbrn_sponsor_decontamination_sale = {
 }
 
 black_friday_cbrn_decon_ordinary_materials_are_affordable = {
-	NOT = { black_friday_cbrn_decon_sale_source_is_active = yes }
+	NOT = { cbrn_protective_aid_sale_source_is_active = yes }
 	set_temp_variable = { black_friday_cbrn_decon_masks_cost = constant:cbrn_diplomacy_cost.decon_masks }
 	set_temp_variable = { black_friday_cbrn_decon_equipment_cost = constant:cbrn_diplomacy_cost.decon_equipment }
 	set_temp_variable = { black_friday_cbrn_decon_trucks_cost = constant:cbrn_diplomacy_cost.decon_trucks }

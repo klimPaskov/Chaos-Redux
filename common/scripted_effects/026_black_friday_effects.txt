@@ -1385,6 +1385,43 @@ black_friday_fury_pay_cp_equipment_bundle = {
 	}
 }
 
+# Shared body of the Event 007 command power plus army experience bundles.
+# Inputs: black_friday_fury_bundle_cp (command power quoted as the ordinary cost,
+# negated by the caller when the decision grants it), black_friday_fury_bundle_cp_spend
+# (command power paid outside a sale), black_friday_fury_bundle_army_xp (army
+# experience) and black_friday_fury_bundle_primary_family_id (universal cost family).
+# Output: black_friday_fury_payment_success.
+black_friday_fury_pay_cp_army_xp_bundle = {
+	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
+	if = {
+		limit = { black_friday_is_active = yes }
+		# Caller-owned cost API outputs.
+		resize_temp_array = { array = black_friday_fury_component_ids size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_resource_kinds size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_family_masks size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_ordinary_costs size = constant:universal_cost_framework.one }
+		black_friday_fury_begin_component_list = yes
+		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.command_power }
+		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.command_power }
+		set_temp_variable = { black_friday_fury_next_family_mask = constant:universal_cost_family.command_power }
+		set_temp_variable = { black_friday_fury_next_ordinary_cost = black_friday_fury_bundle_cp }
+		black_friday_fury_append_component = yes
+		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.army_experience }
+		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.army_experience }
+		set_temp_variable = { black_friday_fury_next_family_mask = constant:universal_cost_family.army_experience }
+		set_temp_variable = { black_friday_fury_next_spend = black_friday_fury_bundle_army_xp }
+		black_friday_fury_append_spend_component = yes
+		set_temp_variable = { black_friday_fury_primary_component_id = constant:universal_cost_resource_kind.army_experience }
+		set_temp_variable = { black_friday_fury_primary_family_id = black_friday_fury_bundle_primary_family_id }
+		black_friday_fury_pay_prepared_bundle_active = yes
+	}
+	else = {
+		add_command_power = black_friday_fury_bundle_cp_spend
+		army_experience = black_friday_fury_bundle_army_xp
+		set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.one }
+	}
+}
+
 black_friday_fury_pay_reinforcement_cost = {
 	set_temp_variable = { black_friday_fury_bundle_cp = constant:fury_decision_cost.reinforcement_cp }
 	set_temp_variable = { black_friday_fury_bundle_cp_spend = constant:fury_decision_cost.reinforcement_cp_spend }
@@ -1660,35 +1697,12 @@ black_friday_fury_pay_terminal_reserves_cost = {
 }
 
 black_friday_fury_pay_terminal_fronts_cost = {
-	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
-	if = {
-		limit = { black_friday_is_active = yes }
-		# Caller-owned cost API outputs.
-		resize_temp_array = { array = black_friday_fury_component_ids size = constant:universal_cost_framework.one }
-		resize_temp_array = { array = black_friday_fury_component_resource_kinds size = constant:universal_cost_framework.one }
-		resize_temp_array = { array = black_friday_fury_component_family_masks size = constant:universal_cost_framework.one }
-		resize_temp_array = { array = black_friday_fury_component_ordinary_costs size = constant:universal_cost_framework.one }
-		black_friday_fury_begin_component_list = yes
-		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.command_power }
-		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.command_power }
-		set_temp_variable = { black_friday_fury_next_family_mask = constant:universal_cost_family.command_power }
-		set_temp_variable = { black_friday_fury_next_ordinary_cost = constant:fury_decision_cost.terminal_fronts_cp_spend }
-		multiply_temp_variable = { black_friday_fury_next_ordinary_cost = constant:universal_cost_framework.negative_one }
-		black_friday_fury_append_component = yes
-		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.army_experience }
-		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.army_experience }
-		set_temp_variable = { black_friday_fury_next_family_mask = constant:universal_cost_family.army_experience }
-		set_temp_variable = { black_friday_fury_next_spend = constant:fury_decision_cost.terminal_fronts_army_xp }
-		black_friday_fury_append_spend_component = yes
-		set_temp_variable = { black_friday_fury_primary_component_id = constant:universal_cost_resource_kind.army_experience }
-		set_temp_variable = { black_friday_fury_primary_family_id = constant:universal_cost_family.officer_corps }
-		black_friday_fury_pay_prepared_bundle_active = yes
-	}
-	else = {
-		add_command_power = constant:fury_decision_cost.terminal_fronts_cp_spend
-		army_experience = constant:fury_decision_cost.terminal_fronts_army_xp
-		set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.one }
-	}
+	set_temp_variable = { black_friday_fury_bundle_cp = constant:fury_decision_cost.terminal_fronts_cp_spend }
+	multiply_temp_variable = { black_friday_fury_bundle_cp = constant:universal_cost_framework.negative_one }
+	set_temp_variable = { black_friday_fury_bundle_cp_spend = constant:fury_decision_cost.terminal_fronts_cp_spend }
+	set_temp_variable = { black_friday_fury_bundle_army_xp = constant:fury_decision_cost.terminal_fronts_army_xp }
+	set_temp_variable = { black_friday_fury_bundle_primary_family_id = constant:universal_cost_family.officer_corps }
+	black_friday_fury_pay_cp_army_xp_bundle = yes
 }
 
 black_friday_fury_pay_anti_border_watch_cost = {
@@ -1743,34 +1757,11 @@ black_friday_fury_pay_anti_emergency_aid_cost = {
 }
 
 black_friday_fury_pay_anti_staff_talks_cost = {
-	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
-	if = {
-		limit = { black_friday_is_active = yes }
-		# Caller-owned cost API outputs.
-		resize_temp_array = { array = black_friday_fury_component_ids size = constant:universal_cost_framework.one }
-		resize_temp_array = { array = black_friday_fury_component_resource_kinds size = constant:universal_cost_framework.one }
-		resize_temp_array = { array = black_friday_fury_component_family_masks size = constant:universal_cost_framework.one }
-		resize_temp_array = { array = black_friday_fury_component_ordinary_costs size = constant:universal_cost_framework.one }
-		black_friday_fury_begin_component_list = yes
-		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.command_power }
-		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.command_power }
-		set_temp_variable = { black_friday_fury_next_family_mask = constant:universal_cost_family.command_power }
-		set_temp_variable = { black_friday_fury_next_ordinary_cost = constant:fury_decision_cost.anti_fury_staff_cp }
-		black_friday_fury_append_component = yes
-		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.army_experience }
-		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.army_experience }
-		set_temp_variable = { black_friday_fury_next_family_mask = constant:universal_cost_family.army_experience }
-		set_temp_variable = { black_friday_fury_next_spend = constant:fury_decision_cost.anti_fury_staff_army_xp }
-		black_friday_fury_append_spend_component = yes
-		set_temp_variable = { black_friday_fury_primary_component_id = constant:universal_cost_resource_kind.army_experience }
-		set_temp_variable = { black_friday_fury_primary_family_id = constant:universal_cost_family.officer_corps }
-		black_friday_fury_pay_prepared_bundle_active = yes
-	}
-	else = {
-		add_command_power = constant:fury_decision_cost.anti_fury_staff_cp_spend
-		army_experience = constant:fury_decision_cost.anti_fury_staff_army_xp
-		set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.one }
-	}
+	set_temp_variable = { black_friday_fury_bundle_cp = constant:fury_decision_cost.anti_fury_staff_cp }
+	set_temp_variable = { black_friday_fury_bundle_cp_spend = constant:fury_decision_cost.anti_fury_staff_cp_spend }
+	set_temp_variable = { black_friday_fury_bundle_army_xp = constant:fury_decision_cost.anti_fury_staff_army_xp }
+	set_temp_variable = { black_friday_fury_bundle_primary_family_id = constant:universal_cost_family.officer_corps }
+	black_friday_fury_pay_cp_army_xp_bundle = yes
 }
 
 black_friday_fury_pay_anti_supply_denial_cost = {
@@ -3113,7 +3104,7 @@ black_friday_pay_cbrn_decon_sponsorship = {
 	if = {
 		limit = {
 			check_variable = { var = black_friday_cbrn_decon_requested_sale_variant value = constant:universal_cost_framework.two compare = equals }
-			black_friday_cbrn_decon_sale_source_is_active = yes
+			cbrn_protective_aid_sale_source_is_active = yes
 			FROM = { cbrn_state_can_receive_international_decontamination_from_root = yes }
 			# Caller-owned cost API outputs.
 			set_temp_variable = { black_friday_cbrn_decon_masks_cost = constant:universal_cost_framework.zero }
@@ -3156,7 +3147,7 @@ black_friday_pay_cbrn_decon_sponsorship = {
 	else_if = {
 		limit = {
 			check_variable = { var = black_friday_cbrn_decon_requested_sale_variant value = constant:universal_cost_framework.one compare = equals }
-			NOT = { black_friday_cbrn_decon_sale_source_is_active = yes }
+			NOT = { cbrn_protective_aid_sale_source_is_active = yes }
 			FROM = { cbrn_state_can_receive_international_decontamination_from_root = yes }
 			# Caller-owned cost API outputs.
 			set_temp_variable = { black_friday_cbrn_decon_masks_cost = constant:universal_cost_framework.zero }
@@ -3515,11 +3506,11 @@ black_friday_apply_cbrn_decon_sponsorship = {
 			OR = {
 				AND = {
 					check_variable = { var = black_friday_cbrn_decon_requested_sale_variant value = constant:universal_cost_framework.two compare = equals }
-					black_friday_cbrn_decon_sale_source_is_active = yes
+					cbrn_protective_aid_sale_source_is_active = yes
 				}
 				AND = {
 					check_variable = { var = black_friday_cbrn_decon_requested_sale_variant value = constant:universal_cost_framework.one compare = equals }
-					NOT = { black_friday_cbrn_decon_sale_source_is_active = yes }
+					NOT = { cbrn_protective_aid_sale_source_is_active = yes }
 				}
 			}
 		}

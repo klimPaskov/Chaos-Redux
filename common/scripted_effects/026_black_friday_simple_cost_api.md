@@ -86,6 +86,17 @@ An awarded achievement remains awarded according to the existing committed-famil
 This API adds no history ledger, event targets, tuning values, icons, or periodic hooks.
 The Zombie refundable decision timers use this pair, while immediate purchases and other owners retain their existing APIs.
 
+## Event 007 Fury bundle helpers
+
+Two country-scope helpers in `026_black_friday_effects.txt` hold the shared payment body of the two-resource Event 007 decisions. Callers set their temporary inputs and call the helper; both return `black_friday_fury_payment_success`.
+
+| Helper | Inputs | Callers |
+| --- | --- | --- |
+| `black_friday_fury_pay_cp_equipment_bundle` | `black_friday_fury_bundle_cp`, `black_friday_fury_bundle_cp_spend`, `black_friday_fury_bundle_equipment`, `black_friday_fury_bundle_primary_family_id` | reinforcement, anti-border-watch, and anti-supply-denial payments |
+| `black_friday_fury_pay_cp_army_xp_bundle` | `black_friday_fury_bundle_cp`, `black_friday_fury_bundle_cp_spend`, `black_friday_fury_bundle_army_xp`, `black_friday_fury_bundle_primary_family_id` | terminal-fronts and anti-staff-talks payments |
+
+`black_friday_fury_bundle_cp` is the command power quoted as the ordinary cost. The terminal-fronts caller derives it by negating its signed spend constant. `black_friday_fury_bundle_cp_spend` is the signed amount added outside a sale.
+
 ## Conversion example
 
 Before, a decision paying 50 command power:
