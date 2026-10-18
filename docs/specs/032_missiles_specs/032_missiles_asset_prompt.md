@@ -1,7 +1,7 @@
 # Event 32 asset-production prompt
 
 Status: delivered.
-The package below exists as 82 runtime DDS files (plus five guidance and four posture icons counted in that total), audited in `docs/events/032_missiles/asset_audit.md`.
+The package below exists as 82 runtime DDS files (plus five guidance and four posture icons counted in that total), audited in `docs/plans/032_missiles_plans/asset_audit.md`.
 Keep this prompt as the brief for replacements or additions; the only open asset work is cleanup of the temporary workspace (part 7, Asset paths).
 
 ## Role

@@ -103,7 +103,7 @@ The category has three main values and one phase-dependent context, not nine sim
 Selection/navigation reuse `GFX_decision_032_missiles_select_missile_target`; tactical/strategic families use their precision/strategic decision sprites; counterforce uses its counterforce sprite.
 Missions use `GFX_mission_032_missiles_strike_preparation`, and reserve uses `GFX_032_missiles_operational_reserve_texticon`.
 These selector and mission consumers reuse their existing same-family assets in `interface/032_missiles.gfx`.
-Special cost rows use the shared chemical and biological 30×12 texticons in `interface/cbrn_payload_texticons.gfx` and the exact installed vanilla nuclear texticon; the [asset review](../asset_audit.md) records their source, alpha and native/4× review.
+Special cost rows use the shared chemical and biological 30×12 texticons in `interface/cbrn_payload_texticons.gfx` and the exact installed vanilla nuclear texticon; the [asset review](../../../plans/032_missiles_plans/asset_audit.md) records their source, alpha and native/4× review.
 
 ## Validation and remaining work
 

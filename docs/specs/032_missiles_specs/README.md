@@ -29,7 +29,7 @@ Event 32 is in the reworked-event default-enable allowlist, while its catalog st
 | Five evolution tracks and native MTTH pacing | `implemented` in source | `systems/evolution_pacing.md`, `032_native_evolution_implementation_2026-10-08.md` |
 | Decision category, missions, crisis actions | `implemented` in source | Part 5 here and `agent_decisions_2026-10-04.md` |
 | SCN-015 Missile Age at raw ID 15 | `implemented` in source | `systems/triggerable_scenario.md` |
-| Assets (82 runtime DDS files) and eight achievements | `implemented` in source | `docs/events/032_missiles/asset_audit.md` |
+| Assets (82 runtime DDS files) and eight achievements | `implemented` in source | `docs/plans/032_missiles_plans/asset_audit.md` |
 | Event Logs, Event Details, five evolution rows | `implemented` in source | Event Logs bindings in `docs/events/032_missiles.md` |
 | Reach against real target distance | pending | Part 3, Reach: the current band is never compared with distance |
 | Territory-scaled site cap | pending | Part 2, Site count cap: only the flat cap of four is enforced |

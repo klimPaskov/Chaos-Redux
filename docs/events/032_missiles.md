@@ -151,7 +151,7 @@ Each achievement has completed, grey, and not-eligible DDS assets and matching a
 
 The final package contains the report image, first-news image, static category picture, category icon, three program ideas, five site-state modifiers, three status texticons, five guidance icons, four posture icons, 27 decision icons, seven mission-family icons, and 24 achievement-state icons.
 
-Runtime files are installed in `gfx/event_pictures/032_missiles/`, `gfx/interface/decisions/032_missiles/`, `gfx/interface/ideas/032_missiles/`, `gfx/interface/state_modifiers/032_missiles/`, `gfx/texticons/032_missiles/`, and `gfx/achievements/`. Source provenance, consumer mapping, hashes, individual DDS round-trips, contact sheets, and visual findings are in `docs/events/032_missiles/asset_audit.md` and `docs/assets/032_missiles/manifest.md`.
+Runtime files are installed in `gfx/event_pictures/032_missiles/`, `gfx/interface/decisions/032_missiles/`, `gfx/interface/ideas/032_missiles/`, `gfx/interface/state_modifiers/032_missiles/`, `gfx/texticons/032_missiles/`, and `gfx/achievements/`. Source provenance, consumer mapping, hashes, individual DDS round-trips, contact sheets, and visual findings are in `docs/plans/032_missiles_plans/asset_audit.md` and `docs/assets/032_missiles/manifest.md`.
 
 Native raid icons are conditional on using a native raid adapter.
 The documented RaidInstance contract cannot authenticate the exact launch state or multi-site custody required by Event 32, so the accepted scripted route owns the current operation presentation.

@@ -1,7 +1,7 @@
 # Event 32 specification, part 7: Assets, text, and achievements
 
 Implementation status: the visual package (82 runtime DDS files) and the eight achievements are `implemented` in source.
-The runtime mapping and per-file visual audit are in `docs/events/032_missiles/asset_audit.md`.
+The runtime mapping and per-file visual audit are in `docs/plans/032_missiles_plans/asset_audit.md`.
 Pending: the temporary workspace `docs/assets/032_missiles/` still exists and must be folded into permanent documentation and removed (Asset paths below).
 
 ## Visual direction

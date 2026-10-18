@@ -4,7 +4,7 @@ This is the implementation-level visual audit for every Event 32 runtime DDS con
 
 ## Audit scope and method
 
-The durable payload-cost evidence archive is [here](assets/payload_cost_icons/README.md).
+The durable payload-cost evidence archive is [here](../../events/032_missiles/assets/payload_cost_icons/README.md).
 
 ### Chemical reservation cost consumers, 2026-10-07
 
@@ -12,7 +12,7 @@ The four preparation cost rows select support equipment for conventional orders 
 They use two shared 30×12 transparent texticons, `GFX_cbrn_chemical_payload_texticon` and `GFX_cbrn_biological_payload_texticon`, registered in `interface/cbrn_payload_texticons.gfx` with runtime files under `gfx/texticons/`.
 The nuclear resource reuses the installed `GFX_unit_nuclear_missile_icon_small_texticon` without a duplicate texture.
 The parent reviewed both generated cost glyphs at native and 4× sizes and their pixel-matching DDS decodes in [the current cost review sheet](../../assets/032_missiles/chemical_receipt_cost_icons/contact_sheet_current.png).
-The [payload-cost handoff](../../plans/032_missiles_plans/subagent_handoffs/032_payload_cost_icons_2026-10-07.md) retains exact source prompts, alpha checks, rejected candidates, ImageGen refusal history and the same-route revised biological pictogram brief.
+The [payload-cost handoff](subagent_handoffs/032_payload_cost_icons_2026-10-07.md) retains exact source prompts, alpha checks, rejected candidates, ImageGen refusal history and the same-route revised biological pictogram brief.
 The chemical DDS SHA-256 is `ab28cbd27cf08d8f7f1872cfdb953e17dfb57d10fd61b79af081cd5ba883f266`; the biological DDS SHA-256 is `afe5b7e8018bd8b604a825dfe2f27f447da2a64c98ab6749191430df16ac13c5`.
 No new excluded content family was created, and no background-removal or alternate-generation-backend fallback was used.
 The 82-file audit below is the earlier event-owned package review and was not rerun wholesale for this two-icon addition; native decision-row text fit remains unverified.
