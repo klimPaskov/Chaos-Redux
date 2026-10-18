@@ -24,7 +24,7 @@ The slot and audio constants are centralized in `common/script_constants/006_ind
 
 The common `natural_disaster_emit_super_event` queue is used as the existing project-wide FIFO adapter. When an entry owns the visible window, the shared dispatcher assigns `global.current_super_event_audio_id` and the settings-aware playback helper selects the appropriate volume wrapper. This source wiring does not prove live firing, human perceptual audition, save/load persistence, or in-game click behavior.
 
-The durable audio and rights record is `../../assets/006_independence_wave/super_events/audio/production_manifest.md`. The canonical catalogue is `music/chaosx_music_track_list.html`. The complete audio details, attribution obligations, runtime identifiers, and remaining validation limits are recorded in `audio_handoff.md` beside this file.
+The durable audio and rights record is `../../assets/006_independence_wave/super_events/audio/production_manifest.md`. The canonical catalogue is `music/chaosx_music_track_list.html`. The complete audio details, attribution obligations, runtime identifiers, and remaining validation limits are recorded in the [audio handoff](../../plans/006_independence_wave_plans/audio_handoff.md).
 
 ## Acceptance boundary
 
