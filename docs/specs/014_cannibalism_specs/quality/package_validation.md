@@ -16,7 +16,7 @@ This file lists definition-level, filesystem and secrecy evidence; all July zero
 - The ordinary two-Pack and receipt-backed one-Pack paths use the same complete-batch capacity check before population consumption.
 - Receipt epochs initialize without retroactive credit, prune inactive enemies through a bounded registry, reset on re-war, and clear on shutdown.
 - The transformed original ZZZ country disables normal queue recruitment for `Wendigo Pack` before its first post-merge focus and retains only the two paid scripted muster paths.
-- The staged achievement tracker is one permanently unavailable progress entry with zero gameplay effects, zero costs, zero cooldowns, and zero AI blocks. Its description lines call the 18 real achievement completion triggers and stay empty until each achievement reaches its public stage.
+- The staged achievement tracker has 18 permanently unavailable presentation entries, zero gameplay effects, zero costs, zero cooldowns, and zero AI blocks. Its 18 status selectors call the 18 real achievement completion triggers.
 - Two Event Details world-end rows retain distinct IDs, toggles, terminal flags, and super-event mappings.
 - `SCN-010` performs a mutation-free preflight for the exact selected type and intensity. It freezes actor and opening-state capacity, external Island/Siege/March state arrays, and reusable-slot arrays, requires exact manifest equality, and commits only after success. Failure changes only the launcher failure marker and clears temporary planning state.
 

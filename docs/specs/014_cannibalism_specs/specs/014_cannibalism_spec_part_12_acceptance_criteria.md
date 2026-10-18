@@ -151,7 +151,7 @@
 - Every GUI button has costs, requirements, effects, tooltips, AI equivalent, and cleanup.
 - Human-only GUI does not leave AI without a path.
 - Exactly eight maintained mission families and seven added paid action families exist.
-- The single achievement progress entry is read-only and uses the real achievement completion triggers.
+- The 18-entry achievement tracker is read-only and uses the real achievement completion triggers.
 
 ## AI
 

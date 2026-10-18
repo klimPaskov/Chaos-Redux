@@ -39,4 +39,4 @@ Incarnation reset begins with one idempotent cleanup effect for exactly 14 timed
 
 ## Read-only achievement tracker
 
-The separate tracker contains one permanently unavailable progress entry whose description lists each public achievement and its status from the real achievement completion triggers. It has no gameplay effects, costs, cooldowns, completion hooks, or AI blocks. It is excluded from the operational decision inventory.
+The separate tracker contains 18 permanently unavailable presentation entries. It reads the real achievement completion triggers and has no gameplay effects, costs, cooldowns, completion hooks, or AI blocks. It is excluded from the operational decision inventory.
