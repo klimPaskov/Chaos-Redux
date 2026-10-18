@@ -319,11 +319,11 @@ malta_campaign_category = {
 				add = malta_ai_weight
 			}
 			modifier = {
-				factor = 2
+				factor = constant:malta_ai_score.port_heartland_factor
 				FROM = { malta_state_is_heartland = yes }
 			}
 			modifier = {
-				factor = 0.5
+				factor = constant:malta_ai_score.port_other_factor
 				FROM = { NOT = { malta_state_is_heartland = yes } }
 			}
 		}
@@ -401,7 +401,31 @@ malta_campaign_category = {
 			custom_effect_tooltip = malta_issue_ultimatum_tt
 			hidden_effect = { malta_send_ultimatum = yes }
 		}
-		ai_will_do = { factor = 0 }
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_ultimatum }
+				add = malta_ai_weight
+			}
+			modifier = {
+				factor = constant:malta_ai_score.target_strong_factor
+				FROM = { check_variable = { var = num_divisions value = constant:malta_ai.target_strong_divisions compare = greater_than } }
+			}
+			modifier = {
+				factor = constant:malta_ai_score.major_target_factor
+				FROM = { is_major = yes }
+			}
+			modifier = {
+				factor = 0
+				FROM = { is_major = yes }
+				check_variable = { var = num_divisions value = constant:malta_ai.major_target_divisions compare = less_than }
+			}
+			modifier = {
+				factor = constant:malta_ai_score.crusade_major_war_factor
+				FROM = { is_major = yes }
+				has_war_with_major = yes
+			}
+		}
 	}
 
 	malta_launch_regional_crusade = {
@@ -444,26 +468,31 @@ malta_campaign_category = {
 				add = malta_ai_weight
 			}
 			modifier = {
-				factor = 0
+				factor = constant:malta_ai_score.major_target_factor
 				FROM = { is_major = yes }
 			}
 			modifier = {
-				factor = 0.5
+				factor = 0
+				FROM = { is_major = yes }
+				check_variable = { var = num_divisions value = constant:malta_ai.major_target_divisions compare = less_than }
+			}
+			modifier = {
+				factor = constant:malta_ai_score.target_strong_factor
 				FROM = { check_variable = { var = num_divisions value = constant:malta_ai.target_strong_divisions compare = greater_than } }
 			}
 			modifier = {
-				factor = 1.5
+				factor = constant:malta_ai_score.target_war_factor
 				FROM = {
 					has_war = yes
 					NOT = { has_war_with = ROOT }
 				}
 			}
 			modifier = {
-				factor = 1.5
+				factor = constant:malta_ai_score.target_bridge_factor
 				FROM = { any_owned_state = { malta_state_is_bridge_link = yes } }
 			}
 			modifier = {
-				factor = 1.5
+				factor = constant:malta_ai_score.target_levant_factor
 				FROM = { any_owned_state = { malta_state_is_levant_frontier = yes } }
 			}
 		}
@@ -510,6 +539,14 @@ malta_campaign_category = {
 			modifier = {
 				set_temp_variable = { malta_ai_weight = mtth:malta_ai_settle_direct }
 				add = malta_ai_weight
+			}
+			modifier = {
+				factor = constant:malta_ai_score.settle_resistance_factor
+				FROM = { resistance > constant:malta_ai.resistance_high }
+			}
+			modifier = {
+				factor = constant:malta_ai_score.settle_compliance_factor
+				FROM = { compliance < constant:malta_ai.compliance_low }
 			}
 		}
 	}
@@ -560,6 +597,14 @@ malta_campaign_category = {
 				set_temp_variable = { malta_ai_weight = mtth:malta_ai_settle_order_grant }
 				add = malta_ai_weight
 			}
+			modifier = {
+				factor = constant:malta_ai_score.settle_resistance_factor
+				FROM = { resistance > constant:malta_ai.resistance_high }
+			}
+			modifier = {
+				factor = constant:malta_ai_score.settle_compliance_factor
+				FROM = { compliance < constant:malta_ai.compliance_low }
+			}
 		}
 	}
 
@@ -608,6 +653,14 @@ malta_campaign_category = {
 			modifier = {
 				set_temp_variable = { malta_ai_weight = mtth:malta_ai_settle_return }
 				add = malta_ai_weight
+			}
+			modifier = {
+				factor = constant:malta_ai_score.settle_resistance_factor
+				FROM = { resistance > constant:malta_ai.resistance_high }
+			}
+			modifier = {
+				factor = constant:malta_ai_score.settle_compliance_factor
+				FROM = { compliance < constant:malta_ai.compliance_low }
 			}
 		}
 	}
@@ -1081,11 +1134,11 @@ malta_eleventh_category = {
 				add = malta_ai_weight
 			}
 			modifier = {
-				factor = 0.25
+				factor = constant:malta_ai_score.landing_major_factor
 				FROM = { is_major = yes }
 			}
 			modifier = {
-				factor = 1.5
+				factor = constant:malta_ai_score.landing_holy_land_factor
 				FROM = { any_owned_state = { malta_state_is_holy_land = yes } }
 			}
 		}
@@ -1103,6 +1156,7 @@ malta_eleventh_category = {
 			custom_trigger_tooltip = {
 				tooltip = malta_launch_ready_tt
 				hidden_trigger = {
+					has_country_flag = malta_transports_rebuilt
 					has_country_flag = malta_eleventh_force_ready
 					NOT = { malta_eleventh_is_closed_to_attack = yes }
 				}
@@ -1214,7 +1268,12 @@ malta_eleventh_category = {
 			}
 		}
 		days_mission_timeout = constant:malta_mission.rebuild_days
-		cancel_trigger = { NOT = { malta_is_actor = yes } }
+		cancel_trigger = {
+			OR = {
+				NOT = { malta_is_actor = yes }
+				NOT = { malta_eleventh_is_active = yes }
+			}
+		}
 		complete_effect = {
 			custom_effect_tooltip = malta_rebuild_force_success_tt
 			hidden_effect = { set_country_flag = malta_eleventh_force_ready }

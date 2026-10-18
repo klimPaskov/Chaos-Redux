@@ -506,7 +506,10 @@ malta_principality_category = {
 			modifier = {
 				set_temp_variable = { malta_ai_weight = constant:malta_pr_ai.lighten_score }
 				add = malta_ai_weight
-				FROM = { NOT = { malta_pr_is_guarded_or_better = yes } }
+				FROM = {
+					NOT = { malta_pr_is_guarded_or_better = yes }
+					check_variable = { var = malta_pr_loyalty value = constant:malta_pr_ai.enforce_loyalty_ceiling compare = greater_than }
+				}
 			}
 		}
 	}
@@ -552,6 +555,12 @@ malta_principality_category = {
 		}
 		ai_will_do = {
 			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = constant:malta_pr_ai.burden_score }
+				add = malta_ai_weight
+				has_war = yes
+				FROM = { check_variable = { var = malta_pr_loyalty value = constant:malta_pr_ai.burden_loyalty_floor compare = greater_than_or_equals } }
+			}
 		}
 	}
 	malta_pr_arbitrate_heir = {
@@ -629,6 +638,15 @@ malta_principality_category = {
 		}
 		ai_will_do = {
 			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = constant:malta_pr_ai.arbitrate_shift_score }
+				add = malta_ai_weight
+				FROM = {
+					malta_pr_has_succession_crisis = yes
+					NOT = { check_variable = { var = malta_pr_form_id value = constant:malta_pr_form.order compare = equals } }
+					check_variable = { var = malta_pr_loyalty value = constant:malta_pr_loyalty.loyal compare = greater_than_or_equals }
+				}
+			}
 		}
 	}
 	malta_pr_arbitrate_local = {
@@ -665,6 +683,15 @@ malta_principality_category = {
 		}
 		ai_will_do = {
 			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = constant:malta_pr_ai.arbitrate_local_score }
+				add = malta_ai_weight
+				FROM = {
+					malta_pr_has_succession_crisis = yes
+					NOT = { check_variable = { var = malta_pr_form_id value = constant:malta_pr_form.local compare = equals } }
+					NOT = { malta_pr_is_cooperative_or_better = yes }
+				}
+			}
 		}
 	}
 	malta_pr_arbitrate_papal = {
@@ -705,6 +732,16 @@ malta_principality_category = {
 		}
 		ai_will_do = {
 			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = constant:malta_pr_ai.arbitrate_shift_score }
+				add = malta_ai_weight
+				has_country_flag = malta_papal_supremacy
+				FROM = {
+					malta_pr_has_succession_crisis = yes
+					NOT = { check_variable = { var = malta_pr_form_id value = constant:malta_pr_form.papal compare = equals } }
+					check_variable = { var = malta_pr_loyalty value = constant:malta_pr_loyalty.loyal compare = greater_than_or_equals }
+				}
+			}
 		}
 	}
 	malta_pr_begin_integration = {
@@ -786,6 +823,16 @@ malta_principality_category = {
 		}
 		ai_will_do = {
 			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = constant:malta_pr_ai.dissolve_failed_score }
+				add = malta_ai_weight
+				FROM = { malta_pr_has_failed = yes }
+			}
+			modifier = {
+				set_temp_variable = { malta_ai_weight = constant:malta_pr_ai.dissolve_lost_score }
+				add = malta_ai_weight
+				FROM = { NOT = { any_owned_state = { is_controlled_by = PREV } } }
+			}
 		}
 	}
 	# ------------------------------------------------------------------------

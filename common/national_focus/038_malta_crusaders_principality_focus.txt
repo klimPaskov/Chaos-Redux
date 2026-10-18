@@ -514,7 +514,15 @@ focus_tree = {
 			}
 		}
 		ai_will_do = {
-			base = 50
+			base = constant:malta_pr_ai.route_crown
+			modifier = {
+				factor = constant:malta_pr_ai.route_crown_low_factor
+				NOT = { malta_pr_is_guarded_or_better = yes }
+			}
+			modifier = {
+				factor = constant:malta_pr_ai.route_favored_factor
+				check_variable = { var = malta_pr_loyalty value = constant:malta_pr_loyalty.cooperative compare = greater_than_or_equals }
+			}
 		}
 	}
 
@@ -544,7 +552,15 @@ focus_tree = {
 			}
 		}
 		ai_will_do = {
-			base = 40
+			base = constant:malta_pr_ai.route_federation
+			modifier = {
+				factor = constant:malta_pr_ai.route_favored_factor
+				NOT = { malta_pr_is_cooperative_or_better = yes }
+			}
+			modifier = {
+				factor = constant:malta_pr_ai.route_disfavored_factor
+				check_variable = { var = malta_pr_loyalty value = constant:malta_pr_loyalty.loyal compare = greater_than_or_equals }
+			}
 		}
 	}
 
@@ -571,7 +587,15 @@ focus_tree = {
 			}
 		}
 		ai_will_do = {
-			base = 5
+			base = constant:malta_pr_ai.route_independence
+			modifier = {
+				factor = constant:malta_pr_ai.route_independence_guarded_factor
+				NOT = { malta_pr_is_guarded_or_better = yes }
+			}
+			modifier = {
+				factor = constant:malta_pr_ai.route_independence_defiant_factor
+				check_variable = { var = malta_pr_loyalty value = constant:malta_pr_loyalty.defiant compare = less_than }
+			}
 		}
 	}
 

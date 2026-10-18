@@ -1,0 +1,76 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 038 MALTA CRUSADERS AI STRATEGIES
+# ============================================================================
+# Condition-gated strategies for the Malta crusader state and its chartered
+# principalities. Each block is a live switch on the route flags and counters
+# the campaign already keeps (abort_when_not_enabled), so nothing is permanent
+# and nothing iterates the world. The decision, focus and event weights live
+# with their objects and in common/mtth/038_malta_crusaders_mtth.txt; the focus
+# order lives in common/ai_strategy_plans/038_malta_crusaders_focus_plans.txt.
+#
+#   Block                          Active while
+#   malta_crusaders_decision_ai    the crusade runs (decisions get the political power)
+#   malta_crusaders_survival_ai    Command Standing is below Functional
+#   malta_crusaders_recovery_ai    the Eleventh Crusade is rebuilding
+#   malta_principality_loyal_ai    a chartered principality is Cooperative or better
+#   malta_principality_defiant_ai  a chartered principality is below Defiant loyalty
+#
+# File-scoped constants are used because ai_strategy values do not parse shared
+# script constants.
+# ============================================================================
+
+@MLT_AI_DECISION_PRIORITY = 25
+@MLT_AI_AVOID_WARS = -200
+@MQ_AI_BEFRIEND_PATRON = 150
+@MQ_AI_ANTAGONIZE_PATRON = 100
+
+malta_crusaders_decision_ai = {
+	enable = {
+		original_tag = MLT
+		has_country_flag = malta_origin
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = pp_spend_priority id = decision value = @MLT_AI_DECISION_PRIORITY }
+}
+
+# Survival before spectacle: an unsettled command takes no new wars of its own.
+malta_crusaders_survival_ai = {
+	enable = {
+		original_tag = MLT
+		has_country_flag = malta_origin
+		NOT = { malta_standing_is_functional_or_better = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @MLT_AI_AVOID_WARS }
+}
+
+# No immediate reinvasion: the recovery rebuilds before it attacks.
+malta_crusaders_recovery_ai = {
+	enable = {
+		original_tag = MLT
+		has_country_flag = malta_eleventh_active
+		NOT = { has_country_flag = malta_eleventh_launched }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @MLT_AI_AVOID_WARS }
+}
+
+malta_principality_loyal_ai = {
+	enable = {
+		has_country_flag = malta_principality
+		is_subject_of = MLT
+		malta_pr_is_cooperative_or_better = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = befriend id = MLT value = @MQ_AI_BEFRIEND_PATRON }
+}
+
+malta_principality_defiant_ai = {
+	enable = {
+		has_country_flag = malta_principality
+		is_subject_of = MLT
+		check_variable = { var = malta_pr_loyalty value = constant:malta_pr_loyalty.defiant compare = less_than }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = antagonize id = MLT value = @MQ_AI_ANTAGONIZE_PATRON }
+}

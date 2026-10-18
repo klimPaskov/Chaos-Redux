@@ -229,7 +229,7 @@ malta_demand_kind = {
 	headquarters = 4
 }
 
-# Demand cadence. The interval is an MTTH: stable councils ask about every 195 days, united councils every 270, a council in open rivalry about every 88, never under minimum_days. The first demand waits for the opening war to be learned.
+# Demand cadence. The interval is an MTTH: stable councils ask about every 195 days, united councils every 292, a council in open rivalry about every 98, never under minimum_days. Rotating offices lengthen only a stable council, so no interval passes 307 days with the jitter. The first demand waits for the opening war to be learned.
 malta_demand = {
 	schema = {
 		any_key = yes
@@ -687,17 +687,93 @@ malta_ai = {
 	}
 
 	banner_manpower_reserve = 15000
+	compliance_low = 50
 	crusade_divisions = 10
 	crusade_divisions_high = 15
 	defender_strong_divisions = 15
 	defender_weak_divisions = 10
 	fortress_failures = 2
+	grievance_pressing = 2
 	incident_political_power = 60
+	losing_ratio = 0.8
 	low_convoys = 40
+	major_target_divisions = 20
+	resistance_high = 25
 	seize_cohesion_floor = 60
+	seize_power_ceiling = 30
 	short_hold_days = 60
 	target_strong_divisions = 25
 	weak_launch_failures = 2
+}
+
+# AI scores of the Event 38 decisions and their factors. Scores are weights in a
+# race between the rows the actor can take, not click chances. Factors scale a
+# row by its target or by the war state. The MTTH entries in
+# 038_malta_crusaders_mtth.txt and the target factors in the decisions read them.
+malta_ai_score = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	accept_pressing = 40
+	accept_grievance = 20
+	accept_influence = 10
+	accept_after_compromise = 15
+	compromise_half = 45
+	compromise_calm = 15
+	refuse_empty = 30
+	refuse_minor = 10
+	joint_ready = 25
+	joint_war = 20
+	arbitrate_ready = 35
+	arbitrate_strained = 15
+	seize_poor = 10
+	escort_war = 45
+	escort_convoys = 35
+	escort_base = 10
+	rail_base = 35
+	rail_short = 20
+	port_war = 30
+	port_base = 10
+	port_heartland_factor = 2
+	port_other_factor = 0.5
+	air_collapse = 90
+	air_open_road = 55
+	banner_ranged = 30
+	banner_mounted = 25
+	banner_knights = 20
+	banner_siege = 20
+	banner_siege_corridor = 10
+	banner_engineers = 10
+	banner_peace_factor = 0.5
+	crusade_ready = 40
+	crusade_high = 15
+	crusade_war_factor = 0.5
+	crusade_major_war_factor = 0.5
+	ultimatum_ready = 25
+	target_strong_factor = 0.5
+	target_war_factor = 1.5
+	target_bridge_factor = 1.5
+	target_levant_factor = 1.5
+	major_target_factor = 0.25
+	settle_direct = 30
+	settle_grant_strained = 20
+	settle_grant_quiet = 10
+	settle_return = 5
+	settle_resistance_factor = 1.5
+	settle_compliance_factor = 1.5
+	evacuate = 95
+	fortify_malta = 85
+	volunteers = 70
+	rebuild = 75
+	select_landing = 60
+	launch_strong = 70
+	launch_weak = 25
+	fortress_closed = 90
+	fortress_failed = 35
+	landing_major_factor = 0.25
+	landing_holy_land_factor = 1.5
 }
 
 # Footprint scale of the action costs: 1 + per_state times the expedition states, at most cap. The Eleventh Crusade actions also add per_failure for every failed crusade.

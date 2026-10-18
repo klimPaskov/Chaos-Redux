@@ -612,13 +612,15 @@ malta_rebuild_transports = {
 	activate_mission = malta_rebuild_eleventh_force_mission
 }
 
-# Input: FROM is the target country. Saves the landing state and country.
+# Input: FROM is the target country. Saves the landing state and country. The
+# state comes from the same landing candidates the decision offers and scores
+# on, never from Rome, the mainland or the wasteland coast.
 malta_select_landing = {
 	set_country_flag = malta_eleventh_landing_chosen
 	set_variable = { malta_landing_target = FROM }
 	FROM = {
 		random_owned_state = {
-			limit = { malta_state_is_campaign_pool = yes }
+			limit = { malta_state_is_landing_candidate = yes }
 			save_global_event_target_as = malta_landing_state
 		}
 	}
@@ -702,6 +704,8 @@ malta_hold_foothold_failure = {
 	clr_country_flag = malta_eleventh_landing_chosen
 	clr_country_flag = malta_transports_rebuilt
 	clr_country_flag = malta_volunteers_called
+	clr_country_flag = malta_eleventh_force_ready
+	clr_country_flag = malta_eleventh_force_weak
 	add_to_variable = { malta_eleventh_failures = 1 }
 	set_variable = { malta_eleventh_phase = constant:malta_eleventh.phase_rebuild }
 	set_temp_variable = { malta_change = constant:malta_eleventh_change.second_failure_legitimacy }
