@@ -92,3 +92,16 @@ Unresolved (needs new design, not restorable):
 - Independence Wave recognition blockade activation, IW-046 Chuvashia admission, league patron capture threshold.
 - `No font with name UPPER_LEFT` appeared only after a campaign map loaded; hands-off launches stay at the main menu, so its absence is not verified.
 - Six `test_event32_*` suites fail independently of these changes.
+
+## Approved design completion (2026-10-18)
+
+The user approved designing the items left unresolved above. Disposition: implemented; each design is recorded as accepted in its event spec with basis "user approval 2026-10-18". Validation is source review, `hoi4_script_validate` with partial coverage, the Event 006 audits and the Event 032 regression tests, and a hands-off launch that reached the main menu with an empty `error.log` and no localisation collisions. No in-game play was performed.
+
+- Event 029 (`ce5e9355a`): Gold Controlled Access quarantines the mine for `riches_found_containment.measure_days` and restores its prior state afterwards; deposits exhaust at `riches_found_exhaustion` depth 75 on predatory profiles or 100 otherwise, or on a collapse with no sealed integrity left; `chaosx.nr29.50` reports exhaustion, and an exhausted mine can be permanently sealed.
+- Event 012 (`39959c276`): force against a partner credited by the open first proof (war, annexation, puppeting, Impose Emergency Administration, Enforce Congress Settlement) or a later failed Open Aid Corridor to a credited corridor partner breaches the matching proof and fails the mandate into the existing recovery contract.
+- Independence Wave recognition blockade (`f44b3d966`): set by a failed Demand Recognition by Force or Border Ultimatum without treaty-backed recognition; ended by treaty-backed recognition, recognized separation, or origin end; blockaded actors weight DM-11 and DM-16 at x2.
+- Independence Wave IW-046 Chuvashia (`3f432cc26`): admitted as a Level 1 regional-framework row on the vanilla CHU identity at state 256, separate from the IW-043 Middle Volga identity; allocator weight 175 from chaos band 1 in the shared Middle Volga reservation group.
+- Independence Wave league patron capture (`143c88491`): latched when the league's Patron Capture meter first reaches `patron_captured = 60`; cleared on reform, dissolution or restart, and reform returns the meter to `reform_patron_capture = 30`.
+- Event 032 regression tests (`ef9d22527`): all seven failures were stale assertions against intentional source changes; the suites pass, and the unused history row text was removed (`5ef64acad`).
+
+Remaining limits: the `No font with name UPPER_LEFT` check needs a loaded campaign map and stays unverified; the IW-046 package contacts (TUR, HUN) are a design choice without a source.
