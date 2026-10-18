@@ -128,8 +128,19 @@ Push: unpublished history was filtered in a separate bare clone (`C:/Users/klimp
 
 Commit IDs in this section are the published ones; earlier sections name pre-filter IDs, which resolve through `refs/backup/master-unfiltered-2026-10-18`.
 
-Remaining:
-- Event 38 Malta Crusaders: 54 paths of another session's work (focus trees, principality tags, governance and principality effects) are uncommitted since 2026-10-11, so the pushed Malta event loads a focus tree that HEAD does not define. A fresh clone of the pushed repository logs that only when Event 38 fires.
-- `chaosx.news.47` in HEAD names a removed picture; it is never fired, and another session's uncommitted edit deletes it.
-- Several tests read evidence under `docs/plans` that is now untracked, so they pass here but not in a fresh clone.
-- Fallout events 607, 614, 621, 740 and 747 keep their own later cleanup after a lost target instead of queuing it immediately like 579, 586 and 600; unifying them would change behaviour.
+Remaining items were closed in the second push (see below).
+
+## Remaining fixes and final push (2026-10-18)
+
+Disposition: implemented; the user approved the remaining fixes and the final push.
+
+- Event 38 Malta Crusaders package committed (`c0dde1edd`, `ba942d9eb`): both focus trees, crusader governments, principality carriers, decisions, effects, events 40 to 47 and localisation; one undefined focus sprite and misplaced flag sizes fixed. Its AI audit (`docs/plans/038_malta_crusaders_plans/ai_probability_audit_2026-10-18.md`) found two High issues, a relaunch without rebuild and major-owned targets the AI could never reach, plus Medium gaps; all are fixed in `9fb9b4ca0`, which also adds 12 of the 14 spec strategy plans. The Teutonic alliance and Holy World plans wait for their deferred routes. The catalog row follows the in-game Event Details text (`f5c7a6061`).
+- Event 33: the urgent-action AI usefulness gates that the committed useful-window test checks are committed with their probability handoff.
+- Fallout lost-target rows all reach delayed cleanup (`06b1662fa`); event 600 had never handed its row over.
+- `chaosx.news.47`, never fired and with a removed picture, is gone (`61c4db289`); the reserved liberation state flag has its requirement text (`9ff17daa9`).
+- Tests: all 119 tracked tests pass in the working tree and in a fresh HEAD clone; causes were stale expectations, `hidden_trigger` missing from fixture evaluators, CRLF checkouts of byte-compared sources, and test inputs that lived only in ignored folders.
+- HEAD-only audit of a `git archive HEAD` export: no undefined helper, constant, sprite, file, localisation key, duplicate key or modifier.
+- Launches: quickstart into the 1936 campaign and a main-menu relaunch, both with an empty `error.log`, an empty `text.log` and no crash.
+- Push: no new commit needed filtering (no history-only LFS, no AI trailers); `master` went fast-forward `d07f471e9` to `51ff05269` with 131 LFS objects (39 MB).
+
+Left as they are: the unwired Malta art (super-event and news pictures, mission icons, the Holy World emblem, equipment icons) stays untracked until its deferred routes ship, and other sessions' unrelated uncommitted work stays with its owners.
