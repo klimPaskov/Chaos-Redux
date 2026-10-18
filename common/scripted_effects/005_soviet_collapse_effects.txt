@@ -920,21 +920,8 @@ soviet_collapse_apply_timeout_burst_pressure_caps = {
 	set_temp_variable = { soviet_collapse_timeout_burst_threat_over_cap = 0 }
 }
 
-# Moscow's standing crisis orders. The crisis responses add one each; every completed Soviet
-# objective spends one, so objectives cannot be finished by waiting.
-soviet_collapse_grant_moscow_order = {
-	add_to_variable = { soviet_collapse_moscow_orders = constant:soviet_collapse_soviet_objective.order_grant }
-	clamp_variable = { var = soviet_collapse_moscow_orders min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_soviet_objective.order_cap }
-}
-
-soviet_collapse_spend_moscow_order = {
-	subtract_from_variable = { soviet_collapse_moscow_orders = constant:soviet_collapse_soviet_objective.order_cost }
-	clamp_variable = { var = soviet_collapse_moscow_orders min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_soviet_objective.order_cap }
-}
-
 soviet_collapse_register_monthly_threat_success = {
 	add_to_variable = { soviet_collapse_monthly_successful_objectives = constant:soviet_collapse_threat_guard.objective_result_increment }
-	soviet_collapse_spend_moscow_order = yes
 }
 
 soviet_collapse_register_monthly_threat_failure = {
