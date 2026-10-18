@@ -558,6 +558,11 @@ brilliant_scientist_krg_is_on_deliberate_singularity_route = {
 # offer is possible only past the capitulation-failsafe surrender threshold.
 brilliant_scientist_singularity_surrender_offer_target_is_valid = {
 	brilliant_scientist_is_kruger_sovereign_country = yes
+	has_country_flag = brilliant_scientist_kruger_state_active
+	NOT = { has_country_flag = brilliant_scientist_all_actions_locked_after_world_end }
+	is_subject = no
+	has_capitulated = no
+	ROOT = { exists = yes has_capitulated = no }
 	has_country_flag = brilliant_scientist_singularity_armed
 	has_war_with = ROOT
 	# A country that has studied Kruger's Singularity work can make the offer
@@ -572,6 +577,7 @@ brilliant_scientist_singularity_surrender_offer_target_is_valid = {
 	NOT = { has_country_flag = brilliant_scientist_survivable_surrender_active }
 	NOT = { has_country_flag = brilliant_scientist_temporal_escape_active }
 	NOT = { has_country_flag = brilliant_scientist_survivable_surrender_offer_pending }
+	NOT = { has_country_flag = brilliant_scientist_survivable_surrender_popup_open }
 	NOT = { has_country_flag = brilliant_scientist_singularity_fallout_request_submitted }
 	NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
 	NOT = { has_global_flag = world_end }
@@ -615,4 +621,42 @@ brilliant_scientist_krg_temporal_escape_can_continue = {
 			is_controlled_by = ROOT
 		}
 	}
+}
+
+# COUNTRY scope on the recipient, ROOT = recipient, FROM = original offerer.
+# Chain-local targets are immutable through popup closure. The country pointer
+# is never replaced while popup_open holds, including after live invalidation.
+brilliant_scientist_krg_surrender_reply_matches_offer = {
+	has_country_flag = brilliant_scientist_survivable_surrender_popup_open
+	has_event_target = brilliant_scientist_surrender_offer_actor
+	has_event_target = brilliant_scientist_surrender_offer_recipient
+	has_variable = brilliant_scientist_surrender_pending_offer_actor
+	event_target:brilliant_scientist_surrender_offer_recipient = { tag = ROOT }
+	event_target:brilliant_scientist_surrender_offer_actor = { tag = FROM }
+	var:brilliant_scientist_surrender_pending_offer_actor = { tag = FROM }
+}
+
+# COUNTRY scope on the recipient. Consent needs the exact pending receipt and
+# current armed, independent, nonterminal authority on both sides of the war.
+# The start predicate excludes pending offers and uses a different ROOT.
+brilliant_scientist_krg_surrender_reply_can_commit = {
+	brilliant_scientist_krg_surrender_reply_matches_offer = yes
+	has_country_flag = brilliant_scientist_survivable_surrender_offer_pending
+	exists = yes
+	brilliant_scientist_is_kruger_sovereign_country = yes
+	has_country_flag = brilliant_scientist_kruger_state_active
+	NOT = { has_country_flag = brilliant_scientist_all_actions_locked_after_world_end }
+	is_subject = no
+	has_capitulated = no
+	has_country_flag = brilliant_scientist_singularity_armed
+	FROM = {
+		exists = yes
+		has_capitulated = no
+		has_war_with = ROOT
+	}
+	NOT = { has_country_flag = brilliant_scientist_survivable_surrender_active }
+	NOT = { has_country_flag = brilliant_scientist_temporal_escape_active }
+	NOT = { has_country_flag = brilliant_scientist_singularity_fallout_request_submitted }
+	NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
+	NOT = { has_global_flag = world_end }
 }

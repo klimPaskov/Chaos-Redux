@@ -561,8 +561,9 @@ country_event = {
 # Survivable surrender offer. ROOT is the armed Kruger State and FROM is the
 # offering enemy. Acceptance blocks the capitulation failsafe and starts
 # supervised disarmament; refusal keeps the device armed. The pending offer flag
-# stays set until an option is chosen, so no second offer can arrive while this
-# one is open and the state can never accept two surrenders.
+# and immutable offerer pointer stay bound until this popup closes. A separate
+# popup lock blocks replacement after cancellation. Click-time guards protect
+# both replies, and the first option closes without accepting or refusing.
 country_event = {
 	id = chaosx.brilliant_scientist_krg.100
 	title = chaosx.brilliant_scientist_krg.100.t
@@ -571,15 +572,15 @@ country_event = {
 	is_triggered_only = yes
 
 	option = {
+		name = chaosx.brilliant_scientist_krg.100.c
+		ai_chance = { base = constant:brilliant_scientist_value.zero }
+		custom_effect_tooltip = brilliant_scientist_survivable_surrender_close_tt
+		hidden_effect = { brilliant_scientist_krg_close_survivable_surrender_offer = yes }
+	}
+
+	option = {
 		name = chaosx.brilliant_scientist_krg.100.a
-		trigger = {
-			has_country_flag = brilliant_scientist_singularity_armed
-			NOT = { has_country_flag = brilliant_scientist_survivable_surrender_active }
-			NOT = { has_country_flag = brilliant_scientist_temporal_escape_active }
-			NOT = { has_country_flag = brilliant_scientist_singularity_fallout_request_submitted }
-			NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
-			NOT = { has_global_flag = world_end }
-		}
+		trigger = { brilliant_scientist_krg_surrender_reply_can_commit = yes }
 		ai_chance = {
 			base = constant:brilliant_scientist_singularity_alternative.ai_accept_base
 			modifier = {
@@ -590,21 +591,22 @@ country_event = {
 		custom_effect_tooltip = brilliant_scientist_survivable_surrender_accept_tt
 		hidden_effect = {
 			brilliant_scientist_krg_accept_survivable_surrender = yes
-			FROM = { country_event = { id = chaosx.brilliant_scientist_krg.101 } }
 		}
 	}
 
 	option = {
 		name = chaosx.brilliant_scientist_krg.100.b
+		trigger = { brilliant_scientist_krg_surrender_reply_can_commit = yes }
 		ai_chance = {
 			base = constant:brilliant_scientist_singularity_alternative.ai_refuse_base
 		}
 		custom_effect_tooltip = brilliant_scientist_survivable_surrender_refuse_tt
 		hidden_effect = {
-			clr_country_flag = brilliant_scientist_survivable_surrender_offer_pending
-			FROM = { country_event = { id = chaosx.brilliant_scientist_krg.102 } }
+			brilliant_scientist_krg_refuse_survivable_surrender = yes
 		}
 	}
+
+	after = { brilliant_scientist_krg_close_survivable_surrender_offer = yes }
 }
 
 # The offering country learns that Kruger accepted supervised disarmament.

@@ -528,23 +528,27 @@ brilliant_scientist_krg_unregister_armed_singularity_holder = {
 # starts the controlled disarmament under inspection; the supervision mission
 # completes it and verifies the nonterminal state. No Fallout is requested.
 brilliant_scientist_krg_accept_survivable_surrender = {
-	clr_country_flag = brilliant_scientist_survivable_surrender_offer_pending
-	set_country_flag = brilliant_scientist_survivable_surrender_active
-	set_country_flag = brilliant_scientist_survivable_surrender_ever_accepted
-	clr_country_flag = brilliant_scientist_krg_singularity_detonation_protocol_active
-	brilliant_scientist_krg_begin_controlled_singularity_disarmament = yes
-	activate_mission = brilliant_scientist_krg_surrender_disarmament_mission
-	FROM = { set_country_flag = brilliant_scientist_survivable_surrender_guarantor }
 	if = {
-		limit = { NOT = { has_global_flag = brilliant_scientist_news_survivable_surrender_fired } }
-		set_global_flag = brilliant_scientist_news_survivable_surrender_fired
-		news_event = { id = chaosx.nr16.319 days = constant:brilliant_scientist_news_runtime.delay_days }
+		limit = { brilliant_scientist_krg_surrender_reply_can_commit = yes }
+		clr_country_flag = brilliant_scientist_survivable_surrender_offer_pending
+		set_country_flag = brilliant_scientist_survivable_surrender_active
+		set_country_flag = brilliant_scientist_survivable_surrender_ever_accepted
+		clr_country_flag = brilliant_scientist_krg_singularity_detonation_protocol_active
+		brilliant_scientist_krg_begin_controlled_singularity_disarmament = yes
+		activate_mission = brilliant_scientist_krg_surrender_disarmament_mission
+		FROM = { set_country_flag = brilliant_scientist_survivable_surrender_guarantor }
+		if = {
+			limit = { NOT = { has_global_flag = brilliant_scientist_news_survivable_surrender_fired } }
+			set_global_flag = brilliant_scientist_news_survivable_surrender_fired
+			news_event = { id = chaosx.nr16.319 days = constant:brilliant_scientist_news_runtime.delay_days }
+		}
+		set_temp_variable = { brilliant_scientist_singularity_history_payload = constant:brilliant_scientist_singularity_history.survivable_surrender }
+		set_temp_variable = { brilliant_scientist_singularity_history_partner = FROM }
+		set_temp_variable = { brilliant_scientist_singularity_history_has_partner = constant:brilliant_scientist_value.one }
+		brilliant_scientist_krg_record_singularity_alternative_history = yes
+		brilliant_scientist_refresh_world_threat_source = yes
+		FROM = { country_event = { id = chaosx.brilliant_scientist_krg.101 } }
 	}
-	set_temp_variable = { brilliant_scientist_singularity_history_payload = constant:brilliant_scientist_singularity_history.survivable_surrender }
-	set_temp_variable = { brilliant_scientist_singularity_history_partner = FROM }
-	set_temp_variable = { brilliant_scientist_singularity_history_has_partner = constant:brilliant_scientist_value.one }
-	brilliant_scientist_krg_record_singularity_alternative_history = yes
-	brilliant_scientist_refresh_world_threat_source = yes
 }
 
 # COUNTRY scope on the Kruger State. Caller-owned temporary inputs:
@@ -663,4 +667,27 @@ brilliant_scientist_krg_complete_temporal_escape = {
 		random_enemy_country = { save_event_target_as = brilliant_scientist_defeat_victor_input }
 	}
 	brilliant_scientist_evaluate_defeat_after_global_threat = yes
+}
+
+# COUNTRY scope on the recipient, ROOT = recipient, FROM = original offerer.
+# Default is no mutation. A valid refusal consumes only the matching live
+# receipt and sends the existing refusal report, without diplomatic penalties.
+brilliant_scientist_krg_refuse_survivable_surrender = {
+	if = {
+		limit = { brilliant_scientist_krg_surrender_reply_can_commit = yes }
+		clr_country_flag = brilliant_scientist_survivable_surrender_offer_pending
+		FROM = { country_event = { id = chaosx.brilliant_scientist_krg.102 } }
+	}
+}
+
+# COUNTRY scope on the recipient. Called by .100 after every response and by
+# its safe first option. Retire only this popup's matching receipt and pointer.
+# No surrender, disarmament, refusal report, or history reward is produced.
+brilliant_scientist_krg_close_survivable_surrender_offer = {
+	if = {
+		limit = { brilliant_scientist_krg_surrender_reply_matches_offer = yes }
+		clr_country_flag = brilliant_scientist_survivable_surrender_offer_pending
+		clr_country_flag = brilliant_scientist_survivable_surrender_popup_open
+		clear_variable = brilliant_scientist_surrender_pending_offer_actor
+	}
 }
