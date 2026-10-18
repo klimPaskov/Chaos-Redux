@@ -60,6 +60,11 @@ The general staff option runs the AI resolver (`doctrine_research_delegate_activ
 
 Every page shows the remaining choices. AI countries use the same validity triggers and resolve their whole batch in script.
 
+Human menus use the [bounded report-choice pages](../../systems/event_system/report_event_choice_pages.md).
+Every continuation, return page and hidden navigation dispatcher carries the original menu's full active-curriculum and live-country guard, including the selected domain, selected track and valid-action conditions on subdoctrine pages.
+Opening or returning to a domain, track or result page rebuilds that menu's display projection from current doctrine state.
+Navigation dispatchers route to those reports without executing a doctrine transaction, spending a choice or granting mastery.
+
 A confirmation runs one receipt transaction:
 
 - Adoption calls `set_grand_doctrine` for the selected native Grand Doctrine and spends the choice only when the doctrine is then active. It never replaces an active Grand Doctrine.
