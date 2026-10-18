@@ -1,0 +1,47 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 PACKAGE INCIDENT TRIGGERS
+# ============================================================================
+# A package incident fires only for the live Event 006 generation that
+# scheduled it.
+# ============================================================================
+
+can_fire_independence_wave_package_incident = {
+	is_independence_wave_active_country = yes
+	has_variable = independence_wave_package_incident_generation
+	check_variable = { var = independence_wave_package_incident_generation value = independence_wave_generation_id compare = equals }
+}
+
+# COUNTRY scope. Due dates reject old delayed calls that arrive before this
+# generation's appointment. Delivery is consumed in the report's immediate
+# block, so another call cannot open a second copy while the player answers.
+can_deliver_independence_wave_package_incident_a = {
+	can_fire_independence_wave_package_incident = yes
+	has_country_flag = independence_wave_package_incident_a_scheduled
+	NOT = { has_country_flag = independence_wave_package_incident_a_delivered }
+	NOT = { has_country_flag = independence_wave_package_incident_a_resolved }
+	has_variable = independence_wave_package_incident_a_due_date
+	check_variable = { var = global.date value = independence_wave_package_incident_a_due_date compare = greater_than_or_equals }
+}
+
+can_deliver_independence_wave_package_incident_b = {
+	can_fire_independence_wave_package_incident = yes
+	has_country_flag = independence_wave_package_incident_b_scheduled
+	NOT = { has_country_flag = independence_wave_package_incident_b_delivered }
+	NOT = { has_country_flag = independence_wave_package_incident_b_resolved }
+	has_variable = independence_wave_package_incident_b_due_date
+	check_variable = { var = global.date value = independence_wave_package_incident_b_due_date compare = greater_than_or_equals }
+}
+
+# COUNTRY scope. An answer mutates the current government only once, after
+# its own report has been delivered. Origin cleanup invalidates that answer.
+can_resolve_independence_wave_package_incident_a = {
+	can_fire_independence_wave_package_incident = yes
+	has_country_flag = independence_wave_package_incident_a_delivered
+	NOT = { has_country_flag = independence_wave_package_incident_a_resolved }
+}
+
+can_resolve_independence_wave_package_incident_b = {
+	can_fire_independence_wave_package_incident = yes
+	has_country_flag = independence_wave_package_incident_b_delivered
+	NOT = { has_country_flag = independence_wave_package_incident_b_resolved }
+}

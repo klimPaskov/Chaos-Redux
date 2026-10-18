@@ -1,0 +1,291 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 OYO, ACEH AND MON SIGNATURE TRIGGERS
+# Overview:
+# - Package-scoped access and phase checks for the three Level 3 modules.
+# - The modules reuse Event 006's existing signature gate, anchor, L2 project
+#   receipts, internal power balance and ready-formable eligibility checks.
+# - No trigger searches all countries or states.
+# ============================================================================
+
+is_independence_wave_signature_modules_exact_active_package = {
+	is_independence_wave_regional_framework_runtime_ready = yes
+	OR = {
+		AND = { original_tag = DSX check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_097 } }
+		AND = { original_tag = ATJ check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_150 } }
+		AND = { original_tag = IAX check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_161 } }
+	}
+}
+
+can_start_independence_wave_dsx_signature = {
+	can_open_independence_wave_signature_module = yes
+	has_country_flag = independence_wave_signature_module_open
+	has_country_flag = independence_wave_dsx_signature_active
+	is_independence_wave_dsx_package = yes
+	has_country_flag = independence_wave_dsx_oyo_mesi_seated
+	has_country_flag = independence_wave_dsx_ibadan_reconciled
+	has_country_flag = independence_wave_dsx_horse_guard_raised
+	has_country_flag = independence_wave_dsx_yoruba_towns_convened
+	has_variable = independence_wave_anchor_state
+	var:independence_wave_anchor_state = { is_owned_and_controlled_by = ROOT }
+}
+
+has_independence_wave_dsx_signature_settlement = {
+	OR = {
+		has_country_flag = independence_wave_dsx_signature_alaafin_charter
+		has_country_flag = independence_wave_dsx_signature_mesi_mandate
+		has_country_flag = independence_wave_dsx_signature_town_federation
+	}
+}
+
+has_independence_wave_dsx_signature_settlement_complete = {
+	OR = {
+		has_country_flag = independence_wave_dsx_signature_cavalry_commissioned
+		has_country_flag = independence_wave_dsx_signature_town_guard_registered
+		has_country_flag = independence_wave_dsx_signature_ibadan_terms_guaranteed
+	}
+}
+
+can_independence_wave_dsx_signature_build_market_roads = {
+	can_start_independence_wave_dsx_signature = yes
+	has_country_flag = independence_wave_dsx_signature_roads_authorized
+	NOT = { has_country_flag = independence_wave_dsx_signature_roads_complete }
+	has_variable = independence_wave_anchor_state
+	var:independence_wave_anchor_state = { is_owned_and_controlled_by = ROOT }
+}
+
+can_independence_wave_dsx_signature_finish_market_roads = {
+	can_independence_wave_dsx_signature_build_market_roads = yes
+	has_country_flag = independence_wave_dsx_signature_roads_project_started
+	check_variable = { var = independence_wave_dsx_signature_roads_project_generation value = independence_wave_generation_id compare = equals }
+	check_variable = { var = independence_wave_dsx_signature_roads_project_package_id value = constant:independence_wave_package_id.iw_097 compare = equals }
+}
+
+can_start_independence_wave_atj_signature = {
+	can_open_independence_wave_signature_module = yes
+	has_country_flag = independence_wave_signature_module_open
+	has_country_flag = independence_wave_atj_signature_active
+	is_independence_wave_atj_package = yes
+	has_country_flag = independence_wave_atj_notables_convened
+	has_country_flag = independence_wave_atj_madrasah_funded
+	has_country_flag = independence_wave_atj_pepper_ports_open
+	has_variable = independence_wave_anchor_state
+	var:independence_wave_anchor_state = { is_owned_and_controlled_by = ROOT }
+}
+
+has_independence_wave_atj_signature_settlement = {
+	OR = {
+		has_country_flag = independence_wave_atj_signature_district_guarantees
+		has_country_flag = independence_wave_atj_signature_ulama_school_board
+		has_country_flag = independence_wave_atj_signature_shared_council
+	}
+}
+
+has_independence_wave_atj_signature_settlement_complete = {
+	OR = {
+		has_country_flag = independence_wave_atj_signature_district_terms_complete
+		has_country_flag = independence_wave_atj_signature_school_board_complete
+		has_country_flag = independence_wave_atj_signature_shared_council_complete
+	}
+}
+
+can_independence_wave_atj_signature_organize_pusa = {
+	can_start_independence_wave_atj_signature = yes
+	has_country_flag = independence_wave_atj_signature_school_network_extended
+	date > 1939.5.4
+	NOT = { has_country_flag = independence_wave_atj_signature_pusa_organized }
+}
+
+can_independence_wave_atj_signature_finish_pusa_organization = {
+	can_independence_wave_atj_signature_organize_pusa = yes
+	has_country_flag = independence_wave_atj_signature_pusa_project_started
+	check_variable = { var = independence_wave_atj_signature_pusa_project_generation value = independence_wave_generation_id compare = equals }
+	check_variable = { var = independence_wave_atj_signature_pusa_project_package_id value = constant:independence_wave_package_id.iw_150 compare = equals }
+}
+
+can_independence_wave_atj_signature_open_port_credit = {
+	can_start_independence_wave_atj_signature = yes
+	has_country_flag = independence_wave_atj_signature_port_board_chartered
+	has_independence_wave_atj_signature_settlement_complete = yes
+	NOT = { has_country_flag = independence_wave_atj_signature_port_credit_active }
+	NOT = { has_country_flag = independence_wave_atj_signature_port_credit_retired }
+}
+
+can_independence_wave_atj_signature_finish_port_credit = {
+	can_independence_wave_atj_signature_open_port_credit = yes
+	has_country_flag = independence_wave_atj_signature_port_project_started
+	check_variable = { var = independence_wave_atj_signature_port_project_generation value = independence_wave_generation_id compare = equals }
+	check_variable = { var = independence_wave_atj_signature_port_project_package_id value = constant:independence_wave_package_id.iw_150 compare = equals }
+}
+
+can_independence_wave_atj_signature_retire_port_credit = {
+	can_start_independence_wave_atj_signature = yes
+	has_country_flag = independence_wave_atj_signature_port_credit_active
+	NOT = { has_country_flag = independence_wave_atj_signature_port_credit_retired }
+}
+
+can_independence_wave_atj_signature_finish_port_credit_retirement = {
+	can_independence_wave_atj_signature_retire_port_credit = yes
+	has_country_flag = independence_wave_atj_signature_retirement_project_started
+	check_variable = { var = independence_wave_atj_signature_retirement_project_generation value = independence_wave_generation_id compare = equals }
+	check_variable = { var = independence_wave_atj_signature_retirement_project_package_id value = constant:independence_wave_package_id.iw_150 compare = equals }
+}
+
+can_independence_wave_atj_signature_join_form36 = {
+	can_start_independence_wave_atj_signature = yes
+	has_country_flag = independence_wave_atj_signature_school_network_extended
+	has_country_flag = independence_wave_atj_signature_port_credit_retired
+	can_independence_wave_ready_formable_choose_form36 = yes
+}
+
+can_start_independence_wave_iax_signature = {
+	can_open_independence_wave_signature_module = yes
+	has_country_flag = independence_wave_signature_module_open
+	has_country_flag = independence_wave_iax_signature_active
+	is_independence_wave_iax_package = yes
+	has_country_flag = independence_wave_iax_council_seated
+	has_country_flag = independence_wave_iax_schools_open
+	has_country_flag = independence_wave_iax_moulmein_open
+	has_variable = independence_wave_anchor_state
+	var:independence_wave_anchor_state = { is_owned_and_controlled_by = ROOT }
+}
+
+has_independence_wave_iax_signature_settlement = {
+	OR = {
+		has_country_flag = independence_wave_iax_signature_local_council_route
+		has_country_flag = independence_wave_iax_signature_river_office_route
+	}
+}
+
+has_independence_wave_iax_signature_settlement_complete = {
+	OR = {
+		has_country_flag = independence_wave_iax_signature_local_charter_complete
+		has_country_flag = independence_wave_iax_signature_river_charter_complete
+	}
+}
+
+can_independence_wave_iax_signature_authorize_transport = {
+	can_start_independence_wave_iax_signature = yes
+	has_independence_wave_iax_signature_settlement_complete = yes
+	NOT = { has_country_flag = independence_wave_iax_signature_transport_authorized }
+}
+
+can_independence_wave_iax_signature_authorize_border_watch = {
+	can_start_independence_wave_iax_signature = yes
+	has_independence_wave_iax_signature_settlement_complete = yes
+	NOT = { has_country_flag = independence_wave_iax_signature_border_watch_authorized }
+}
+
+can_independence_wave_iax_signature_build_transport = {
+	can_start_independence_wave_iax_signature = yes
+	has_country_flag = independence_wave_iax_signature_transport_authorized
+	NOT = { has_country_flag = independence_wave_iax_signature_transport_complete }
+}
+
+can_independence_wave_iax_signature_finish_transport = {
+	can_independence_wave_iax_signature_build_transport = yes
+	has_country_flag = independence_wave_iax_signature_transport_project_started
+	check_variable = { var = independence_wave_iax_signature_transport_project_generation value = independence_wave_generation_id compare = equals }
+	check_variable = { var = independence_wave_iax_signature_transport_project_package_id value = constant:independence_wave_package_id.iw_161 compare = equals }
+}
+
+can_independence_wave_iax_signature_build_border_watch = {
+	can_start_independence_wave_iax_signature = yes
+	has_country_flag = independence_wave_iax_signature_border_watch_authorized
+	NOT = { has_country_flag = independence_wave_iax_signature_border_watch_complete }
+}
+
+can_independence_wave_iax_signature_finish_border_watch = {
+	can_independence_wave_iax_signature_build_border_watch = yes
+	has_country_flag = independence_wave_iax_signature_border_project_started
+	check_variable = { var = independence_wave_iax_signature_border_project_generation value = independence_wave_generation_id compare = equals }
+	check_variable = { var = independence_wave_iax_signature_border_project_package_id value = constant:independence_wave_package_id.iw_161 compare = equals }
+}
+
+can_independence_wave_iax_signature_prepare_delegates = {
+	can_start_independence_wave_iax_signature = yes
+	has_independence_wave_iax_signature_settlement_complete = yes
+	has_idea = independence_wave_iax_mon_school_trust
+	BRM = { exists = yes }
+	SIA = { exists = yes }
+	NOT = { has_war_with = BRM }
+	NOT = { has_war_with = SIA }
+	NOT = { has_country_flag = independence_wave_iax_signature_delegates_exchanged }
+}
+
+can_independence_wave_iax_signature_authorize_delegates = {
+	can_independence_wave_iax_signature_prepare_delegates = yes
+	NOT = { has_country_flag = independence_wave_iax_signature_delegate_program_authorized }
+}
+
+can_independence_wave_iax_signature_exchange_delegates = {
+	can_independence_wave_iax_signature_prepare_delegates = yes
+	has_country_flag = independence_wave_iax_signature_delegate_program_authorized
+}
+
+can_independence_wave_iax_signature_finish_delegate_program = {
+	can_independence_wave_iax_signature_exchange_delegates = yes
+	has_country_flag = independence_wave_iax_signature_delegates_project_started
+	check_variable = { var = independence_wave_iax_signature_delegates_project_generation value = independence_wave_generation_id compare = equals }
+	check_variable = { var = independence_wave_iax_signature_delegates_project_package_id value = constant:independence_wave_package_id.iw_161 compare = equals }
+}
+
+can_independence_wave_iax_signature_publish_autonomy = {
+	can_start_independence_wave_iax_signature = yes
+	has_country_flag = independence_wave_iax_signature_local_council_route
+	has_country_flag = independence_wave_iax_signature_local_charter_complete
+	has_country_flag = independence_wave_iax_signature_transport_complete
+	has_country_flag = independence_wave_iax_signature_border_watch_complete
+	NOT = { has_country_flag = independence_wave_iax_signature_autonomy_published }
+}
+
+can_independence_wave_iax_signature_join_form37 = {
+	can_start_independence_wave_iax_signature = yes
+	has_country_flag = independence_wave_iax_signature_local_council_route
+	has_country_flag = independence_wave_iax_signature_transport_complete
+	has_country_flag = independence_wave_iax_signature_border_watch_complete
+	has_country_flag = independence_wave_iax_signature_autonomy_published
+	can_independence_wave_ready_formable_choose_form37 = yes
+}
+
+# Achievement completion predicates are read-only. The parent-owned shared
+# achievement registry calls these after the owning transaction writers have
+# published real project, institution and integration receipts.
+independence_wave_achievement_oyo_compact_is_complete = {
+	is_independence_wave_achievement_sovereign_actor = yes
+	original_tag = DSX
+	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_097 }
+	has_country_flag = independence_wave_dsx_signature_roads_complete
+	has_independence_wave_dsx_signature_settlement_complete = yes
+	has_country_flag = independence_wave_dsx_ibadan_reconciled
+	has_country_flag = independence_wave_dsx_yoruba_towns_convened
+	has_idea = independence_wave_dsx_oyo_compact
+	has_country_flag = independence_wave_survival_capstone_complete
+}
+
+independence_wave_achievement_aceh_free_ports_is_complete = {
+	is_independence_wave_achievement_sovereign_actor = yes
+	original_tag = ATJ
+	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_150 }
+	has_country_flag = independence_wave_atj_signature_pusa_organized
+	has_idea = independence_wave_atj_pusa_school_network
+	has_country_flag = independence_wave_atj_signature_port_credit_retired
+	has_idea = independence_wave_atj_aceh_port_trust
+	has_independence_wave_ready_formable_form36_postformation_carrier = yes
+	has_country_flag = independence_wave_ready_formable_stage1_complete
+	has_country_flag = independence_wave_ready_formable_stage2_complete
+	has_idea = independence_wave_form36_charter_stage2
+}
+
+independence_wave_achievement_mon_federal_charter_is_complete = {
+	is_independence_wave_achievement_sovereign_actor = yes
+	original_tag = IAX
+	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_161 }
+	has_country_flag = independence_wave_iax_signature_local_council_route
+	has_country_flag = independence_wave_iax_signature_transport_complete
+	has_country_flag = independence_wave_iax_signature_border_watch_complete
+	has_country_flag = independence_wave_iax_signature_autonomy_published
+	has_independence_wave_ready_formable_form37_postformation_carrier = yes
+	has_country_flag = independence_wave_ready_formable_stage1_complete
+	has_country_flag = independence_wave_ready_formable_stage2_complete
+	has_idea = independence_wave_form37_charter_stage2
+}
