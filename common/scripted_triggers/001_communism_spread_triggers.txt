@@ -225,3 +225,75 @@ is_communist_rebel_name_pool_central_european_country = {
 		original_tag = SWI
 	}
 }
+
+# COUNTRY SCOPE, FROM is the selected state. Pure selected-state quote.
+# Callers predeclare the three cost outputs and communism_local_intervention_quote_valid.
+prepare_communism_local_intervention_quote = {
+	set_temp_variable = { communism_local_intervention_quote_valid = constant:universal_cost_framework.one }
+	set_temp_variable = { black_friday_communism_local_intervention_command_power_cost = FROM.communist_intervention_command_power_cost }
+	if = {
+		limit = { black_friday_is_active = yes }
+		set_temp_variable = { black_friday_quote_ordinary_cost = FROM.communist_intervention_command_power_cost }
+		set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.command_power }
+		set_temp_variable = { black_friday_quote_final_cost = black_friday_quote_ordinary_cost }
+		if = {
+			limit = { black_friday_quote_custom_cost = yes }
+			set_temp_variable = { black_friday_communism_local_intervention_command_power_cost = black_friday_quote_final_cost }
+		}
+		else = {
+			set_temp_variable = { communism_local_intervention_quote_valid = constant:universal_cost_framework.zero }
+		}
+	}
+	set_temp_variable = { black_friday_communism_local_intervention_manpower_cost = FROM.communist_intervention_manpower_cost }
+	if = {
+		limit = { black_friday_is_active = yes }
+		set_temp_variable = { black_friday_quote_ordinary_cost = FROM.communist_intervention_manpower_cost }
+		set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.manpower }
+		set_temp_variable = { black_friday_quote_final_cost = black_friday_quote_ordinary_cost }
+		if = {
+			limit = { black_friday_quote_custom_cost = yes }
+			set_temp_variable = { black_friday_communism_local_intervention_manpower_cost = black_friday_quote_final_cost }
+		}
+		else = {
+			set_temp_variable = { communism_local_intervention_quote_valid = constant:universal_cost_framework.zero }
+		}
+	}
+	set_temp_variable = { black_friday_communism_local_intervention_equipment_cost = FROM.communist_intervention_equipment_cost }
+	if = {
+		limit = { black_friday_is_active = yes }
+		set_temp_variable = { black_friday_quote_ordinary_cost = FROM.communist_intervention_equipment_cost }
+		set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.equipment }
+		set_temp_variable = { black_friday_quote_final_cost = black_friday_quote_ordinary_cost }
+		if = {
+			limit = { black_friday_quote_custom_cost = yes }
+			set_temp_variable = { black_friday_communism_local_intervention_equipment_cost = black_friday_quote_final_cost }
+		}
+		else = {
+			set_temp_variable = { communism_local_intervention_quote_valid = constant:universal_cost_framework.zero }
+		}
+	}
+	# The ritual surcharge is paid separately at its ordinary price.
+	if = {
+		limit = { FROM = { has_state_flag = communist_worker_ritual_state } }
+		add_to_temp_variable = { black_friday_communism_local_intervention_command_power_cost = constant:communism_spread_intervention.ritual_command_power }
+	}
+	always = yes
+}
+
+can_afford_communism_local_intervention = {
+	set_temp_variable = { black_friday_communism_local_intervention_command_power_cost = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_communism_local_intervention_manpower_cost = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_communism_local_intervention_equipment_cost = constant:universal_cost_framework.zero }
+	set_temp_variable = { communism_local_intervention_quote_valid = constant:universal_cost_framework.zero }
+	prepare_communism_local_intervention_quote = yes
+	check_variable = { communism_local_intervention_quote_valid = constant:universal_cost_framework.one }
+	set_temp_variable = { universal_cost_affordability_resource_kind = constant:universal_cost_resource_kind.command_power }
+	set_temp_variable = { universal_cost_affordability_amount = black_friday_communism_local_intervention_command_power_cost }
+	universal_cost_component_is_affordable = yes
+	set_temp_variable = { universal_cost_affordability_resource_kind = constant:universal_cost_resource_kind.manpower }
+	set_temp_variable = { universal_cost_affordability_amount = black_friday_communism_local_intervention_manpower_cost }
+	universal_cost_component_is_affordable = yes
+	set_temp_variable = { universal_cost_affordability_resource_kind = constant:universal_cost_resource_kind.infantry_equipment }
+	set_temp_variable = { universal_cost_affordability_amount = black_friday_communism_local_intervention_equipment_cost }
+	universal_cost_component_is_affordable = yes
+}

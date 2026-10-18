@@ -267,3 +267,18 @@ Map highlighting uses state-targeted decisions and highlighted controlled-state 
 - `communism_spread_drift.per_controlled_state = 0.01` is fixed to the spec. `max_from_states = 0.90` caps the total state contribution, which deviates from the uncapped per-state formula and has no recorded acceptance basis.
 - Emergency uprising risk may need live-session tuning for large majors. `per_controlled_state_uprising_chance` and `communism_support_uprising_scale` are the first values to adjust.
 - Rebel unit counts are score-based, but the exact thresholds will need live-session tuning. The first values to adjust are `level_1_units`, `level_2_units`, `level_3_units`, industry bonuses, threat/support bonuses, and army/factory strength thresholds.
+
+### Local intervention quote contract
+
+`prepare_communism_local_intervention_costs` runs in STATE scope, reads the control level and `communist_control_duration_months`, and writes the existing positive and negative command-power, manpower and infantry-equipment cost fields.
+The monthly additions are 2 command power, 400 manpower and 60 infantry equipment per month, capped at eight months, so month-eight bills are 31/5700/780 at Level 1, 46/10200/1380 at Level 2 and 61/15200/1980 at Level 3.
+The existing malformed Level 1 fallback, state refresh and state cleanup own the same cost fields.
+`prepare_communism_local_intervention_quote` is a pure COUNTRY-scoped trigger with FROM as the selected state.
+It reads those historical selected-state totals, uses the existing Black Friday quote producer when a sale is active, and returns the three `black_friday_communism_local_intervention_*_cost` temporary outputs plus `communism_local_intervention_quote_valid`.
+The outer caller initializes all four outputs, and a missing valid sale quote blocks the purchase.
+The existing ritual surcharge of 10 ordinary command power is included in the quote and affordability, while its existing separate debit and stability consequence remain owned by `complete_communism_local_intervention`.
+`can_afford_communism_local_intervention` applies the universal cost framework's inclusive native resource predicates to the whole quote.
+All three local decisions use it in `available`, their existing Black Friday custom-cost adapters use it for `custom_cost_trigger`, and `GetCommunismLocalInterventionCost` recomputes the same quote inside scripted localisation for the ready, blocked and hover keys.
+The ordinary payment and Black Friday transaction adapter continue to charge the selected-state bill once, with the existing result reports, outcome rolls, cancellation gates and transaction receipts.
+No event target, persistent registry, periodic hook, icon or asset is added by this quote contract.
+Future extensions should preserve the single state cost producer and adapt both quote and payment consumers together.

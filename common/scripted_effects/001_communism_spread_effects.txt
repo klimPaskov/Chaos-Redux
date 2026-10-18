@@ -221,8 +221,17 @@ prepare_communism_local_intervention_costs = {
 		set_variable = { communist_intervention_equipment_cost = constant:communism_spread_intervention.level_3_equipment }
 	}
 
-	# Local intervention cost is tied to the current control stage.
-	# Duration still affects state penalties, but not the resource payment shown in the decision UI.
+	set_temp_variable = { communist_intervention_duration_command_power = communist_intervention_cost_months }
+	multiply_temp_variable = { communist_intervention_duration_command_power = constant:communism_spread_intervention.duration_command_power }
+	add_to_variable = { communist_intervention_command_power_cost = communist_intervention_duration_command_power }
+
+	set_temp_variable = { communist_intervention_duration_manpower = communist_intervention_cost_months }
+	multiply_temp_variable = { communist_intervention_duration_manpower = constant:communism_spread_intervention.duration_manpower }
+	add_to_variable = { communist_intervention_manpower_cost = communist_intervention_duration_manpower }
+
+	set_temp_variable = { communist_intervention_duration_equipment = communist_intervention_cost_months }
+	multiply_temp_variable = { communist_intervention_duration_equipment = constant:communism_spread_intervention.duration_equipment }
+	add_to_variable = { communist_intervention_equipment_cost = communist_intervention_duration_equipment }
 
 	round_variable = communist_intervention_command_power_cost
 	round_variable = communist_intervention_manpower_cost
@@ -539,7 +548,7 @@ complete_communism_local_intervention = {
 			limit = { black_friday_owner_payment_succeeded = yes }
 			if = {
 				limit = { FROM = { has_state_flag = communist_worker_ritual_state } }
-				add_command_power = -10
+				add_command_power = constant:communism_spread_intervention.ritual_command_power_cost
 				add_stability = -0.005
 			}
 			if = {
