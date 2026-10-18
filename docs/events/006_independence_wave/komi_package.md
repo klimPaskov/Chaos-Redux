@@ -70,9 +70,7 @@ The symbol gate is also blocked. A 1937 Komi ASSR flag is institutional and post
 
 ## Validation evidence and limitations
 
-The package-local effects, triggers, ideas, decisions, category, AI source, localisation, and five shared focus calls are source-wired with balanced blocks and no unsupported comparison operators. Current focus inspection/render resolved the five guarded Komi helper calls without changing the shared layout; the existing workspace-wide focus diagnostics remain outside this package-local tranche.
-
-The map inspect/render evidence selected state 397 and its province geometry successfully, with only unrelated global building/port-position diagnostics in aggregate validation. The current decision receipt reports an incomplete typed mission pool, while the AI probability receipt reports `no_weighted_surfaces` and the named empty strategy evaluation returns `PROBABILITY_SURFACE_EMPTY`. No quantitative AI, selection, timing, dominance, starvation, or balance claim follows from this source.
+The validation runs, map and focus inspections and the decision receipt status for IW-050 are archived in [komi_validation_record.md](../../plans/006_independence_wave_plans/komi_validation_record.md). The source contract above is the current design.
 
 ## Future work
 
