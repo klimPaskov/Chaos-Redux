@@ -29,6 +29,14 @@ Cleanup credit lives inside the exact state contamination-delta owner, avoiding 
 Natural expiry closes the episode only if the other response conditions were met.
 Disabled civilian death accounting cannot open a qualifying episode.
 
+## Clean Hands, Dirty Work
+
+The achievement requires covert biological operations over a long period without disclosure, a cover-up, strategic civilian release or doomsday release.
+`cbrn_achievement_covert_discovered_history` is set when a covert route is probably or certainly attributed.
+`cbrn_achievement_covert_coverup_history` is set when a cover-up is discovered.
+`cbrn_convention_expose_covert_program` sets it when a covert convention program is exposed, and `cbrn_occupation_publish_coverup_discovery` sets it on the responsible country when an occupation cover-up is published.
+Both flags are permanent campaign history and are never cleared.
+
 ## Blocked accepted achievements
 
 No Wind Is Friendly requires an actual forecast failure and recovery of the affected army followed by a battle or campaign win without another chemical use.
