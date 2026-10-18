@@ -8533,10 +8533,110 @@ soviet_collapse_clamp_republic_country_components = {
 	soviet_collapse_apply_republic_progress_pacing_caps = yes
 }
 
+soviet_collapse_clear_republic_staged_ideas = {
+	hidden_effect = {
+		if = { limit = { has_idea = soviet_collapse_republic_institutions_4 } remove_ideas = soviet_collapse_republic_institutions_4 }
+		if = { limit = { has_idea = soviet_collapse_republic_institutions_3 } remove_ideas = soviet_collapse_republic_institutions_3 }
+		if = { limit = { has_idea = soviet_collapse_republic_institutions_2 } remove_ideas = soviet_collapse_republic_institutions_2 }
+		if = { limit = { has_idea = soviet_collapse_republic_institutions_1 } remove_ideas = soviet_collapse_republic_institutions_1 }
+		if = { limit = { has_idea = soviet_collapse_republic_league_coordination_4 } remove_ideas = soviet_collapse_republic_league_coordination_4 }
+		if = { limit = { has_idea = soviet_collapse_republic_league_coordination_3 } remove_ideas = soviet_collapse_republic_league_coordination_3 }
+		if = { limit = { has_idea = soviet_collapse_republic_league_coordination_2 } remove_ideas = soviet_collapse_republic_league_coordination_2 }
+		if = { limit = { has_idea = soviet_collapse_republic_league_coordination_1 } remove_ideas = soviet_collapse_republic_league_coordination_1 }
+		if = { limit = { has_idea = soviet_collapse_republic_foreign_support_4 } remove_ideas = soviet_collapse_republic_foreign_support_4 }
+		if = { limit = { has_idea = soviet_collapse_republic_foreign_support_3 } remove_ideas = soviet_collapse_republic_foreign_support_3 }
+		if = { limit = { has_idea = soviet_collapse_republic_foreign_support_2 } remove_ideas = soviet_collapse_republic_foreign_support_2 }
+		if = { limit = { has_idea = soviet_collapse_republic_foreign_support_1 } remove_ideas = soviet_collapse_republic_foreign_support_1 }
+		if = { limit = { has_idea = soviet_collapse_republic_local_authority_pressure_4 } remove_ideas = soviet_collapse_republic_local_authority_pressure_4 }
+		if = { limit = { has_idea = soviet_collapse_republic_local_authority_pressure_3 } remove_ideas = soviet_collapse_republic_local_authority_pressure_3 }
+		if = { limit = { has_idea = soviet_collapse_republic_local_authority_pressure_2 } remove_ideas = soviet_collapse_republic_local_authority_pressure_2 }
+		if = { limit = { has_idea = soviet_collapse_republic_local_authority_pressure_1 } remove_ideas = soviet_collapse_republic_local_authority_pressure_1 }
+	}
+}
+
 soviet_collapse_update_consolidated_republic_ideas = {
 	hidden_effect = {
 		soviet_collapse_clamp_republic_country_components = yes
 		soviet_collapse_update_sponsor_balance_pressure = yes
+	}
+	hidden_effect = { soviet_collapse_clear_republic_staged_ideas = yes }
+	if = {
+		limit = { NOT = { is_actual_nonhuman_country = yes } }
+		set_temp_variable = { soviet_collapse_foreign_support_strength = soviet_collapse_influence_total }
+		set_temp_variable = { soviet_collapse_foreign_sponsor_strength_bonus = soviet_collapse_active_foreign_sponsor_count }
+		multiply_temp_variable = { var = soviet_collapse_foreign_sponsor_strength_bonus value = constant:soviet_collapse_republic_idea.foreign_sponsor_stage_bonus }
+		add_to_temp_variable = { soviet_collapse_foreign_support_strength = soviet_collapse_foreign_sponsor_strength_bonus }
+		set_temp_variable = { soviet_collapse_foreign_material_support_strength = soviet_collapse_influence_arms_total }
+		add_to_temp_variable = { soviet_collapse_foreign_material_support_strength = soviet_collapse_influence_logistics_total }
+		hidden_effect = {
+			if = {
+				limit = { check_variable = { var = soviet_collapse_republic_institution_strength value = constant:soviet_collapse_republic_idea.stage_4 compare = greater_than_or_equals } }
+				add_ideas = soviet_collapse_republic_institutions_4
+			}
+			else_if = {
+				limit = { check_variable = { var = soviet_collapse_republic_institution_strength value = constant:soviet_collapse_republic_idea.stage_3 compare = greater_than_or_equals } }
+				add_ideas = soviet_collapse_republic_institutions_3
+			}
+			else_if = {
+				limit = { check_variable = { var = soviet_collapse_republic_institution_strength value = constant:soviet_collapse_republic_idea.stage_2 compare = greater_than_or_equals } }
+				add_ideas = soviet_collapse_republic_institutions_2
+			}
+			else_if = {
+				limit = { check_variable = { var = soviet_collapse_republic_institution_strength value = constant:soviet_collapse_republic_idea.stage_1 compare = greater_than_or_equals } }
+				add_ideas = soviet_collapse_republic_institutions_1
+			}
+			if = {
+				limit = { OR = { has_country_flag = soviet_collapse_aftermath_federal_charter_offered check_variable = { var = soviet_collapse_league_support_strength value = constant:soviet_collapse_republic_idea.stage_4 compare = greater_than_or_equals } } }
+				add_ideas = soviet_collapse_republic_league_coordination_4
+			}
+			else_if = {
+				limit = { check_variable = { var = soviet_collapse_league_support_strength value = constant:soviet_collapse_republic_idea.stage_3 compare = greater_than_or_equals } }
+				add_ideas = soviet_collapse_republic_league_coordination_3
+			}
+			else_if = {
+				limit = { check_variable = { var = soviet_collapse_league_support_strength value = constant:soviet_collapse_republic_idea.stage_2 compare = greater_than_or_equals } }
+				add_ideas = soviet_collapse_republic_league_coordination_2
+			}
+			else_if = {
+				limit = { check_variable = { var = soviet_collapse_league_support_strength value = constant:soviet_collapse_republic_idea.stage_1 compare = greater_than_or_equals } }
+				add_ideas = soviet_collapse_republic_league_coordination_1
+			}
+			if = {
+				limit = { has_country_flag = soviet_collapse_foreign_support_received }
+				if = {
+					limit = { check_variable = { var = soviet_collapse_foreign_support_strength value = constant:soviet_collapse_influence_war.stage_4_threshold compare = greater_than_or_equals } }
+					add_ideas = soviet_collapse_republic_foreign_support_4
+				}
+				else_if = {
+					limit = { check_variable = { var = soviet_collapse_foreign_support_strength value = constant:soviet_collapse_influence_war.stage_3_threshold compare = greater_than_or_equals } }
+					add_ideas = soviet_collapse_republic_foreign_support_3
+				}
+				else_if = {
+					limit = { check_variable = { var = soviet_collapse_foreign_support_strength value = constant:soviet_collapse_influence_war.stage_2_threshold compare = greater_than_or_equals } }
+					add_ideas = soviet_collapse_republic_foreign_support_2
+				}
+				else_if = {
+					limit = { check_variable = { var = soviet_collapse_foreign_support_strength value = constant:soviet_collapse_influence_war.stage_1_threshold compare = greater_than_or_equals } }
+					add_ideas = soviet_collapse_republic_foreign_support_1
+				}
+			}
+			if = {
+				limit = { check_variable = { var = soviet_collapse_local_authority_pressure value = constant:soviet_collapse_republic_idea.stage_4 compare = greater_than_or_equals } }
+				add_ideas = soviet_collapse_republic_local_authority_pressure_4
+			}
+			else_if = {
+				limit = { check_variable = { var = soviet_collapse_local_authority_pressure value = constant:soviet_collapse_republic_idea.stage_3 compare = greater_than_or_equals } }
+				add_ideas = soviet_collapse_republic_local_authority_pressure_3
+			}
+			else_if = {
+				limit = { check_variable = { var = soviet_collapse_local_authority_pressure value = constant:soviet_collapse_republic_idea.stage_2 compare = greater_than_or_equals } }
+				add_ideas = soviet_collapse_republic_local_authority_pressure_2
+			}
+			else_if = {
+				limit = { check_variable = { var = soviet_collapse_local_authority_pressure value = constant:soviet_collapse_republic_idea.stage_1 compare = greater_than_or_equals } }
+				add_ideas = soviet_collapse_republic_local_authority_pressure_1
+			}
+		}
 	}
 }
 
@@ -27371,7 +27471,12 @@ soviet_collapse_propagate_reconsolidation_outcome = {
 			else_if = {
 				limit = { ROOT = { has_country_flag = soviet_collapse_reconsolidation_federal_charter } }
 				set_country_flag = soviet_collapse_aftermath_federal_charter_offered
-				add_ideas = soviet_collapse_republic_league_coordination_4
+				if = {
+					limit = { NOT = { is_actual_nonhuman_country = yes } }
+					remove_ideas = { soviet_collapse_republic_league_coordination_1 soviet_collapse_republic_league_coordination_2 soviet_collapse_republic_league_coordination_3 }
+					add_ideas = soviet_collapse_republic_league_coordination_4
+				}
+				else = { soviet_collapse_clear_republic_staged_ideas = yes }
 			}
 			else = {
 				set_country_flag = soviet_collapse_aftermath_guarded_frontier
