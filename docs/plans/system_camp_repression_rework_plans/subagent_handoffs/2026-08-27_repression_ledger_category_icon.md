@@ -8,7 +8,7 @@ One purpose-built static Hearts of Iron IV decision-category icon for the shared
 
 Runtime sprite identifier: `GFX_decision_category_repression_ledger`.
 
-Final DDS path: `gfx/interface/camp_repression/decision_category_repression_ledger.dds`.
+Final DDS path: `gfx/interface/decisions/system_camp_repression_rework/decision_category_repression_ledger.dds`.
 
 Final native canvas: `52x40` pixels.
 
@@ -18,7 +18,7 @@ The art is an original, country-neutral locked state dossier/archive file with o
 
 - `docs/assets/system_camp_repression_rework_ui_repair/source_png/decision_category_repression_ledger_source.png` is the untouched native-alpha ImageGen source.
 - `docs/assets/system_camp_repression_rework_ui_repair/processed_png/decision_category_repression_ledger_52x40.png` is the exact-size transparent processed preview.
-- `gfx/interface/camp_repression/decision_category_repression_ledger.dds` is the final one-level legacy BGRA DDS.
+- `gfx/interface/decisions/system_camp_repression_rework/decision_category_repression_ledger.dds` is the final one-level legacy BGRA DDS.
 - `docs/assets/system_camp_repression_rework_ui_repair/contact_sheets/contact_sheet.png` is the visual evidence sheet.
 - `docs/assets/system_camp_repression_rework_ui_repair/contact_sheets/processed_52x40_enlarged_smooth.png` is the enlarged smooth processed preview.
 - `docs/assets/system_camp_repression_rework_ui_repair/contact_sheets/decoded_dds_roundtrip.png` and `decoded_dds_roundtrip_enlarged.png` are DDS decode evidence.
@@ -81,7 +81,7 @@ Neither rejected candidate was used in generation or processing.
 
 ## Parent wiring and acceptance boundary
 
-The parent should add a stable `spriteType` named `GFX_decision_category_repression_ledger` pointing to `gfx/interface/camp_repression/decision_category_repression_ledger.dds` in the parent-owned `.gfx` file.
+The parent should add a stable `spriteType` named `GFX_decision_category_repression_ledger` pointing to `gfx/interface/decisions/system_camp_repression_rework/decision_category_repression_ledger.dds` in the parent-owned `.gfx` file.
 
 The parent should review the native-size preview and contact sheet, then validate the linked consumer in the live game.
 

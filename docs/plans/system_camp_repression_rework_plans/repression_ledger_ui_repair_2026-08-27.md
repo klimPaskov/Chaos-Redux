@@ -44,7 +44,7 @@ All six Territory cards and all six Site cards resolve their detailed tooltip ke
 
 Runtime sprite: `GFX_decision_category_repression_ledger`.
 
-Runtime DDS: `gfx/interface/camp_repression/decision_category_repression_ledger.dds`.
+Runtime DDS: `gfx/interface/decisions/system_camp_repression_rework/decision_category_repression_ledger.dds`.
 
 The DDS is a one-level 52x40 legacy BGRA texture with preserved transparency and a pixel-identical decoded round trip.
 
