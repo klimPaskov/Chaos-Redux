@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Static audit of Chaos Redux English localisation against the script tree.
 
-This tool answers five source-only questions without running the game:
+This tool answers six source-only questions without running the game:
 
 1. Does every localisation file parse as `key: "value"` under an `l_english:`
    header, and does it keep its UTF-8 BOM?
@@ -12,8 +12,18 @@ This tool answers five source-only questions without running the game:
    defined here? Those render as raw key names in game.
 4. Which defined keys are never referenced by any script token or
    `[bracket]` command? Those are candidates for removal.
-5. Which flags checked in a displayed decision, mission, or focus requirement
-   have no localisation key? Their tooltips show the raw flag identifier.
+5. Which flags and variables checked in a displayed decision, mission, or focus
+   requirement have no localisation key? Their tooltips show the raw identifier.
+6. Which keys does the engine look up implicitly that neither this mod nor the
+   installed vanilla English localisation defines? That covers the id and
+   `_desc` of decisions, categories, ideas, focuses, technologies and
+   equipment, country tag and cosmetic tag names, achievement `_NAME` and
+   `_DESC`, dynamic and opinion modifiers, traits, sub-units, doctrines, event
+   titles, descriptions and option names, GUI text, and the keys that effects
+   and triggers name directly (`custom_effect_tooltip`, the `tooltip` of
+   `custom_trigger_tooltip`, `custom_cost_text`, scripted-localisation
+   targets). It also reports scripted-localisation getters that nothing
+   defines. See the "Implicit engine keys" section for the rules.
 
 The token test is deliberately conservative. A key counts as live when its
 exact name appears as a token anywhere in the non-localisation tree, so a key
@@ -23,11 +33,14 @@ that is only built dynamically still survives the sweep and is reported as
 Usage:
 	python .tools/audit_localisation_static.py                # report to stdout
 	python .tools/audit_localisation_static.py --json out.json
+	python .tools/audit_localisation_static.py --show-advisory   # also list empty-text gaps
+	python .tools/audit_localisation_static.py --calibrate       # vanilla coverage per rule
 """
 
 from __future__ import annotations
 
 import argparse
+import bisect
 import json
 import re
 import sys
@@ -89,6 +102,11 @@ class Findings:
 		self.dead_keys: List[Tuple[str, str]] = []
 		self.encoding_artifacts: List[Tuple[str, int, str]] = []
 		self.exposed_flags: List[Tuple[str, str]] = []
+		self.exposed_variables: List[Tuple[str, str]] = []
+		self.expanded_triggers: List[str] = []
+		self.implicit_missing: Dict[Tuple[str, str], Dict[str, Tuple[str, int, int]]] = {}
+		self.implicit_totals: Dict[Tuple[str, str], int] = {}
+		self.implicit_dynamic: List[Tuple[str, str, str, int, str]] = []
 		self.key_count = 0
 		self.file_count = 0
 
@@ -110,6 +128,14 @@ def read_text(path: Path) -> str:
 	if raw.startswith(BOM):
 		raw = raw[3:]
 	return raw.decode("utf-8", errors="replace")
+
+
+COMMENT_TAIL = re.compile(r"(?m)(?:^|(?<=\s))#.*$")
+
+
+def strip_comments(text: str) -> str:
+	"""Blank out `#` comments but keep every newline, so line numbers still match."""
+	return COMMENT_TAIL.sub("", text)
 
 
 def collect_script_tokens() -> Tuple[Set[str], Set[str], Dict[str, Set[str]]]:
@@ -504,7 +530,7 @@ def collect_quoted_keys() -> Tuple[Dict[str, Set[str]], Dict[str, Set[str]]]:
 			continue
 		for path in sorted(root.rglob("*.txt")):
 			try:
-				text = read_text(path)
+				text = strip_comments(read_text(path))
 			except OSError:
 				continue
 			rel = str(path.relative_to(REPO_ROOT))
@@ -523,6 +549,7 @@ def collect_quoted_keys() -> Tuple[Dict[str, Set[str]], Dict[str, Set[str]]]:
 def collect_referenced_keys(
 	tokens: Set[str],
 	definitions: Dict[str, List[Tuple[str, int]]],
+	known: Set[str],
 	quoted: Dict[str, Set[str]],
 	bare: Dict[str, Set[str]],
 	dynamic_prefixes: Set[str],
@@ -532,7 +559,8 @@ def collect_referenced_keys(
 
 	Evidence is a bare identifier bound to a localisation-consuming field, which
 	is the form the engine resolves as a key. A quoted value is a literal string
-	and is never reported.
+	and is never reported. `known` holds this mod's keys, its `replace` folder, and
+	the installed game's English keys, so a key vanilla defines is not reported.
 
 	Two shapes are reported separately because they fail differently in game:
 
@@ -573,7 +601,7 @@ def collect_referenced_keys(
 	}
 
 	for literal in sorted(bare):
-		if literal in definitions or literal in dynamic_prefixes:
+		if literal in known or literal in dynamic_prefixes:
 			continue
 		if literal in scripted_tokens or literal in reserved:
 			continue
@@ -591,7 +619,7 @@ def collect_referenced_keys(
 	# A quoted value that is never defined is still worth surfacing as context
 	# for review, but it is not a defect, so it is reported separately.
 	for literal in sorted(quoted):
-		if literal in definitions or literal in dynamic_prefixes:
+		if literal in known or literal in dynamic_prefixes:
 			continue
 		if literal in scripted_tokens:
 			continue
@@ -601,9 +629,12 @@ def collect_referenced_keys(
 
 # A flag trigger inside a displayed requirement block uses the flag name as its
 # tooltip localisation key, so an undefined key shows the raw flag identifier.
-# Displayed blocks are decision and mission `available` and focus `available`
-# and `bypass`, plus every scripted trigger they call, followed transitively.
-# Checks inside `hidden_trigger` or `custom_trigger_tooltip` are not displayed.
+# A variable comparison reads the variable name the same way. Displayed blocks
+# are decision and mission `available` and focus `available` and `bypass`, plus
+# every scripted trigger they call, followed transitively. Checks inside
+# `hidden_trigger` or `custom_trigger_tooltip` are not displayed, and a scripted
+# trigger whose own name is a localisation key replaces its expansion with that
+# text, so its body is not followed.
 VANILLA_LOCALISATION_DIR = Path(
 	"C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/localisation/english"
 )
@@ -611,11 +642,18 @@ REQUIREMENT_BLOCKS = {"available", "bypass"}
 UNDISPLAYED_BLOCKS = {"hidden_trigger", "custom_trigger_tooltip"}
 # Names followed by `[` are assembled at runtime by meta effects and are skipped.
 FLAG_CHECK = r"has_(?:country|state|global)_flag\s*=\s*(?:\{[^}]*?flag\s*=\s*([A-Za-z0-9_@.]+)(?![A-Za-z0-9_@.\[])[^}]*\}|([A-Za-z0-9_@.]+)(?![A-Za-z0-9_@.\[]))"
-REQUIREMENT_TOKEN = re.compile(r"([A-Za-z0-9_@:.^\-]+)\s*=\s*(\{|yes\b)|\}|" + FLAG_CHECK)
+VARIABLE_CHECK = (
+	r"|check_variable\s*=\s*\{\s*(?:var\s*=\s*)?([A-Za-z_][A-Za-z0-9_.@:^\-]*)\s*(?:[<>=]|!=|\n|value\b|compare\b)"
+	r"|has_variable\s*=\s*([A-Za-z_][A-Za-z0-9_.@:^\-]*)"
+)
+VARIABLE_KEYWORDS = {"var", "value", "compare", "tooltip"}
+REQUIREMENT_TOKEN = re.compile(
+	r"([A-Za-z0-9_@:.^\-]+)\s*=\s*(\{|yes\b)|\}|" + FLAG_CHECK + VARIABLE_CHECK
+)
 
 
 def scan_requirement_file(path: Path, visit) -> None:
-	"""Call visit(kind, value, stack, line) for block opens, `x = yes` calls, and flag checks."""
+	"""Call visit(kind, value, stack, line) for block opens, `x = yes` calls, flag checks, and variable checks."""
 	stack: List[str] = []
 	for number, raw in enumerate(read_text(path).splitlines(), 1):
 		for match in REQUIREMENT_TOKEN.finditer(raw.split("#", 1)[0]):
@@ -627,19 +665,17 @@ def scan_requirement_file(path: Path, visit) -> None:
 				visit("open", match.group(1), stack, number)
 			elif match.group(1):
 				visit("call", match.group(1), stack, number)
-			else:
+			elif match.group(3) or match.group(4):
 				visit("flag", match.group(3) or match.group(4), stack, number)
+			else:
+				name = match.group(5) or match.group(6)
+				if name not in VARIABLE_KEYWORDS:
+					visit("variable", name, stack, number)
 
 
-def audit_requirement_flags(definitions: Dict[str, List[Tuple[str, int]]], findings: Findings) -> None:
-	known = set(definitions)
-	if VANILLA_LOCALISATION_DIR.is_dir():
-		for path in VANILLA_LOCALISATION_DIR.rglob("*.yml"):
-			for line in read_text(path).splitlines():
-				match = re.match(r"\s*([^\s:#]+):\d*\s*\"", line)
-				if match:
-					known.add(match.group(1))
-	triggers: Dict[str, Tuple[List[Tuple[str, str]], Set[str]]] = {}
+def audit_requirement_flags(known: Set[str], findings: Findings) -> None:
+	"""Find flags and variables that displayed requirements would print as raw names."""
+	triggers: Dict[str, Tuple[List[Tuple[str, str, str]], Set[str]]] = {}
 	for path in sorted((REPO_ROOT / "common" / "scripted_triggers").rglob("*.txt")):
 		relative = path.relative_to(REPO_ROOT).as_posix()
 		current: List[Optional[str]] = [None]
@@ -651,12 +687,13 @@ def audit_requirement_flags(definitions: Dict[str, List[Tuple[str, int]]], findi
 			elif current[0] and stack and not UNDISPLAYED_BLOCKS.intersection(stack):
 				if kind == "call":
 					triggers[current[0]][1].add(value)
-				elif kind == "flag":
-					triggers[current[0]][0].append((value, f"{relative}:{number}"))
+				elif kind in ("flag", "variable"):
+					triggers[current[0]][0].append((kind, value, f"{relative}:{number}"))
 
 		scan_requirement_file(path, visit_trigger)
-	exposed: Dict[str, str] = {}
+	exposed: Dict[Tuple[str, str], str] = {}
 	called: Set[str] = set()
+	direct: Set[str] = set()
 	for folder in ("decisions", "national_focus"):
 		for path in sorted((REPO_ROOT / "common" / folder).rglob("*.txt")):
 			relative = path.relative_to(REPO_ROOT).as_posix()
@@ -664,28 +701,831 @@ def audit_requirement_flags(definitions: Dict[str, List[Tuple[str, int]]], findi
 			def visit_consumer(kind, value, stack, number, relative=relative):
 				if not REQUIREMENT_BLOCKS.intersection(stack) or UNDISPLAYED_BLOCKS.intersection(stack):
 					return
-				if kind == "flag":
-					exposed.setdefault(value, f"{relative}:{number}")
+				if kind in ("flag", "variable"):
+					exposed.setdefault((kind, value), f"{relative}:{number}")
 				elif kind == "call" and value in triggers:
-					called.add(value)
+					direct.add(value)
+					if value not in known:
+						called.add(value)
 
 			scan_requirement_file(path, visit_consumer)
+	# A scripted trigger called directly from a displayed block is shown as its own
+	# localisation key when one exists, and as the expansion of its body otherwise.
+	findings.expanded_triggers = sorted(name for name in direct if name not in known)
 	pending = list(called)
 	while pending:
 		name = pending.pop()
-		flags, calls = triggers[name]
-		for flag, site in flags:
-			exposed.setdefault(flag, site)
+		checks, calls = triggers[name]
+		for kind, value, site in checks:
+			exposed.setdefault((kind, value), site)
 		for callee in calls:
-			if callee in triggers and callee not in called:
+			if callee in triggers and callee not in called and callee not in known:
 				called.add(callee)
 				pending.append(callee)
+
+	def is_known(kind: str, name: str) -> bool:
+		if name in known:
+			return True
+		# A scope prefix is not part of the name the tooltip prints.
+		return kind == "variable" and name.split(".", 1)[-1] in known
+
 	findings.exposed_flags = sorted(
-		(flag, site) for flag, site in exposed.items() if flag not in known and "@" not in flag
+		(name, site) for (kind, name), site in exposed.items()
+		if kind == "flag" and not is_known(kind, name) and "@" not in name
+	)
+	findings.exposed_variables = sorted(
+		(name, site) for (kind, name), site in exposed.items()
+		if kind == "variable" and not is_known(kind, name)
+		and not any(mark in name for mark in "@^[") and not name.startswith("constant:")
 	)
 
 
-def emit_report(findings: Findings) -> None:
+# ---------------------------------------------------------------------------
+# Implicit engine keys
+# ---------------------------------------------------------------------------
+#
+# Most localisation the engine reads is never written as `name = KEY` in script.
+# A decision shows the key spelled like its own id, a focus reads `<id>` and
+# `<id>_desc`, a country tag reads `TAG`, `TAG_ADJ` and `TAG_DEF`, an achievement
+# reads `<id>_NAME` and `<id>_DESC`. This section lists every key of that kind
+# plus every key script names directly (`custom_effect_tooltip`, the `tooltip`
+# of a `custom_trigger_tooltip`, `custom_cost_text`, GUI `text` and tooltip
+# fields, scripted-localisation targets, event option names) and reports the
+# ones defined by neither this mod nor vanilla English localisation.
+#
+# Each expectation carries a level:
+#
+# - `required`: the engine shows the raw key when it is absent.
+# - `advisory`: vanilla routinely ships the definition without the key (idea,
+#   decision and technology descriptions, short names, advisor tokens), so an
+#   absent key renders as empty text and is listed separately.
+#
+# A key that script assembles at runtime (`$VAR$` macros, `[bracket]` commands,
+# `@ROOT` suffixes) is resolved conservatively. It is reported as dynamic, and it
+# is only called unmatched when its literal prefix matches no known key at all.
+#
+# `--calibrate` runs the same extractors against the installed vanilla game and
+# prints per-category coverage, which is the positive control for each rule:
+# a `required` category should be close to fully defined in vanilla.
+
+REQUIRED = "required"
+ADVISORY = "advisory"
+VANILLA_ROOT = Path("C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV")
+
+CW_TOKEN = re.compile(r'"(?:[^"\\\n]|\\.)*"|#[^\n]*|[{}]|<=|>=|!=|[=<>]|[^\s{}=<>"#]+|\n')
+COMPARATORS = {"=", "<", ">", "<=", ">=", "!="}
+KEY_SHAPE = re.compile(r"^[A-Za-z0-9_][A-Za-z0-9_.\-']*$")
+DYNAMIC_MARK = re.compile(r"[\[\]@$^%{}]")
+NUMBER = re.compile(r"^-?\d+(?:\.\d+)?$")
+NON_KEY_WORDS = {"yes", "no", "always", "none", "any", "all", "root", "this", "prev", "from"}
+LOC_KEY_LINE = re.compile(r"^\s*([^\s:#]+):\d*\s*\"")
+
+
+def parse_script(path: Path) -> list:
+	"""Parse a Clausewitz file into `(key, operator, value, line)` tuples.
+
+	A value is the raw token text (quotes kept) or a nested list for a block. A
+	bare token inside a block has `key` and `operator` set to None. The parser is
+	tolerant: it never raises on unbalanced braces, because audits read files
+	that other people are editing.
+	"""
+	tokens: List[Tuple[str, int]] = []
+	line = 1
+	for match in CW_TOKEN.finditer(read_text(path)):
+		token = match.group(0)
+		if token == "\n":
+			line += 1
+		elif token[0] != "#":
+			tokens.append((token, line))
+	position = 0
+	count = len(tokens)
+
+	def block() -> list:
+		nonlocal position
+		items: list = []
+		while position < count:
+			token, token_line = tokens[position]
+			position += 1
+			if token == "}":
+				return items
+			if token == "{":
+				items.append((None, None, block(), token_line))
+				continue
+			if position < count and tokens[position][0] in COMPARATORS:
+				operator = tokens[position][0]
+				position += 1
+				if position >= count:
+					break
+				value, _ = tokens[position]
+				position += 1
+				if value == "{":
+					items.append((token, operator, block(), token_line))
+				else:
+					items.append((token, operator, value, token_line))
+			else:
+				items.append((None, None, token, token_line))
+		return items
+
+	return block()
+
+
+def unquote(raw: str) -> Tuple[str, bool]:
+	if len(raw) >= 2 and raw[0] == '"' and raw[-1] == '"':
+		return raw[1:-1], True
+	return raw, False
+
+
+def first_value(block: list, key: str) -> Optional[str]:
+	for entry_key, _, value, _ in block:
+		if entry_key == key and isinstance(value, str):
+			return unquote(value)[0]
+	return None
+
+
+def child_blocks(block: list) -> Iterable[Tuple[str, list, int]]:
+	"""Yield `(key, block, line)` for every keyed child that is itself a block."""
+	for key, _, value, line in block:
+		if key is not None and isinstance(value, list):
+			yield key, value, line
+
+
+class KeySink:
+	"""Collects expected keys and the places that expect them."""
+
+	def __init__(self) -> None:
+		self.expected: List[Tuple[str, str, str, str, int, str, Tuple[str, ...], bool]] = []
+		self.dynamic: List[Tuple[str, str, str, int]] = []
+		self.cosmetic_used: Set[str] = set()
+
+	def add_key(
+		self, category: str, level: str, key: str, rel: str, line: int,
+		note: str = "", alternative: Tuple[str, ...] = (), any_of: bool = False,
+	) -> None:
+		"""Record a key; `alternative` keys replace it, all of them or (`any_of`) any one."""
+		self.expected.append((category, level, key, rel, line, note, alternative, any_of))
+
+	def add(
+		self, category: str, level: str, raw: str, rel: str, line: int,
+		quoted_is_key: bool = False, note: str = "",
+	) -> None:
+		"""Record a script value that names a key.
+
+		A bare identifier is a key. A quoted value is a literal string unless the
+		caller knows that field takes quoted keys, and a quoted value with spaces
+		is always literal text.
+		"""
+		text, quoted = unquote(raw)
+		text = text.strip()
+		if not text or (quoted and not quoted_is_key):
+			return
+		if text.lower() in NON_KEY_WORDS or NUMBER.match(text):
+			return
+		if " " in text:
+			return
+		if DYNAMIC_MARK.search(text):
+			self.dynamic.append((category, text, rel, line))
+			return
+		if not KEY_SHAPE.match(text):
+			return
+		self.expected.append((category, level, text, rel, line, note, (), False))
+
+	def add_id(
+		self, category: str, key: str, rel: str, line: int,
+		required: Tuple[str, ...] = ("",), advisory: Tuple[str, ...] = ("_desc",), note: str = "",
+	) -> None:
+		"""Record an id the engine expands with suffixes (`<id>`, `<id>_desc`)."""
+		for suffix in required:
+			self.add(category, REQUIRED, key + suffix, rel, line, note=note)
+		for suffix in advisory:
+			self.add(category, ADVISORY, key + suffix, rel, line, note=note)
+
+
+def definition_files(root: Path, relative: str, skip: Tuple[str, ...] = ()) -> Iterable[Tuple[Path, str]]:
+	base = root / relative
+	if base.is_file():
+		yield base, base.relative_to(root).as_posix()
+		return
+	if not base.is_dir():
+		return
+	for path in sorted(base.rglob("*.txt")):
+		parts = path.relative_to(base).parts
+		if any(part in skip for part in parts):
+			continue
+		yield path, path.relative_to(root).as_posix()
+
+
+def descend(nodes: list, path: Tuple[str, ...]) -> Iterable[list]:
+	"""Yield each block reached by following `path`; `*` matches every block child."""
+	if not path:
+		yield nodes
+		return
+	head, rest = path[0], path[1:]
+	for key, value, _ in child_blocks(nodes):
+		if head == "*" or key == head:
+			yield from descend(value, rest)
+
+
+# --- extractors -------------------------------------------------------------
+
+
+def is_always_no(block: list, field: str) -> bool:
+	"""True when `field = { always = no }` is declared, as hidden missions and categories do."""
+	for key, scope, _ in child_blocks(block):
+		if key == field:
+			return any(entry[0] == "always" and entry[2] == "no" for entry in scope)
+	return False
+
+
+def extract_decisions(root: Path, sink: KeySink) -> None:
+	"""Decision and mission ids, with their `_desc` and custom cost text.
+
+	A decision that is never visible (`visible = { always = no }`, as hidden
+	clock missions are) shows no text, so its keys are advisory. A `name =` or
+	`desc =` at decision level is not in the wiki or the installed documentation,
+	so the engine may ignore it. Both the id key and the override key are
+	required, which keeps the title correct either way.
+	"""
+	for path, rel in definition_files(root, "common/decisions", skip=("categories",)):
+		for category_key, category_block, _ in child_blocks(parse_script(path)):
+			for decision_id, decision, line in child_blocks(category_block):
+				if is_always_no(decision, "visible"):
+					sink.add_id("decision", decision_id, rel, line, required=(), advisory=("", "_desc"))
+				else:
+					sink.add_id("decision", decision_id, rel, line)
+					for field, suffix in (("name", ""), ("desc", "_desc")):
+						override = first_value(decision, field)
+						if override and override != decision_id + suffix:
+							sink.add("decision_override", REQUIRED, override, rel, line, quoted_is_key=True)
+				for key, _, value, entry_line in decision:
+					if key == "custom_cost_text" and isinstance(value, str):
+						sink.add("decision_cost_text", REQUIRED, value, rel, entry_line, quoted_is_key=True)
+
+
+def extract_decision_categories(root: Path, sink: KeySink) -> None:
+	for path, rel in definition_files(root, "common/decisions/categories"):
+		for category_id, category, line in child_blocks(parse_script(path)):
+			if is_always_no(category, "visible"):
+				sink.add_id("decision_category", category_id, rel, line, required=(), advisory=("", "_desc"))
+			else:
+				sink.add_id("decision_category", category_id, rel, line)
+
+
+ADVISOR_IDEA_CATEGORIES = {
+	"political_advisor", "army_chief", "navy_chief", "air_chief", "high_command", "theorist", "hidden_ideas",
+}
+
+
+def extract_ideas(root: Path, sink: KeySink) -> None:
+	"""National spirits, laws, and manufacturers.
+
+	Advisor slots show the character name, and an idea with `visible = { always = no }`
+	never appears in a list, so both are advisory.
+	"""
+	for path, rel in definition_files(root, "common/ideas"):
+		for container, categories, _ in child_blocks(parse_script(path)):
+			if container != "ideas":
+				continue
+			for category, ideas, _ in child_blocks(categories):
+				for idea_id, idea, line in child_blocks(ideas):
+					name = first_value(idea, "name") or idea_id
+					advisor = category in ADVISOR_IDEA_CATEGORIES or first_value(idea, "character") is not None
+					advisor = advisor or is_always_no(idea, "visible")
+					if advisor:
+						sink.add_id("idea_advisor", name, rel, line, required=(), advisory=("", "_desc"))
+					else:
+						sink.add_id("idea", name, rel, line)
+
+
+def extract_focuses(root: Path, sink: KeySink) -> None:
+	"""Focus titles and descriptions. Vanilla defines both for every focus.
+
+	A focus that sets `text = KEY` takes its title from `KEY` and its description
+	from `KEY_desc`, which vanilla uses to avoid hash collisions between ids.
+	"""
+	def add_focus(focus: list, rel: str, line: int) -> None:
+		focus_id = first_value(focus, "id")
+		if focus_id:
+			base = first_value(focus, "text") or focus_id
+			sink.add_id("focus", base, rel, line, required=("", "_desc"), advisory=())
+
+	for path, rel in definition_files(root, "common/national_focus"):
+		for key, block, line in child_blocks(parse_script(path)):
+			if key == "focus_tree":
+				for child_key, child, child_line in child_blocks(block):
+					if child_key in ("focus", "shared_focus", "joint_focus"):
+						add_focus(child, rel, child_line)
+			elif key in ("shared_focus", "joint_focus"):
+				add_focus(block, rel, line)
+
+
+def extract_container_ids(
+	root: Path, sink: KeySink, category: str, relative: str, container: Optional[str],
+	required: Tuple[str, ...] = ("",), advisory: Tuple[str, ...] = ("_desc",), skip: Tuple[str, ...] = (),
+) -> None:
+	"""Take the id of every block directly inside `container` (or at file level)."""
+	path_selector = (container,) if container else ()
+	for path, rel in definition_files(root, relative, skip=skip):
+		for scope in descend(parse_script(path), path_selector):
+			for block_id, _, line in child_blocks(scope):
+				if block_id == "limit":
+					continue
+				sink.add_id(category, block_id, rel, line, required=required, advisory=advisory)
+
+
+def extract_simple_ids(root: Path, sink: KeySink) -> None:
+	extract_container_ids(root, sink, "opinion_modifier", "common/opinion_modifiers", "opinion_modifiers", advisory=())
+	extract_container_ids(root, sink, "unit_leader_trait", "common/unit_leader", "leader_traits")
+	extract_container_ids(root, sink, "country_leader_trait", "common/country_leader", "leader_traits")
+	extract_container_ids(root, sink, "scientist_trait", "common/scientist_traits", None, skip=("_documentation.md",))
+	extract_container_ids(root, sink, "equipment", "common/units/equipment", "equipments", advisory=("_short", "_desc"))
+	extract_container_ids(root, sink, "equipment_module", "common/units/equipment/modules", "equipment_modules")
+	extract_container_ids(root, sink, "sub_unit", "common/units", "sub_units")
+	extract_container_ids(root, sink, "wargoal", "common/wargoals", "wargoal_types", advisory=("_desc",))
+	extract_container_ids(root, sink, "occupation_law", "common/occupation_laws", None)
+	extract_container_ids(root, sink, "special_project", "common/special_projects/projects", None, advisory=("_desc",))
+
+
+def extract_dynamic_modifiers(root: Path, sink: KeySink) -> None:
+	"""Dynamic modifier names. One that can never be enabled (`enable = { always = no }`) is advisory."""
+	for path, rel in definition_files(root, "common/dynamic_modifiers"):
+		for modifier_id, modifier, line in child_blocks(parse_script(path)):
+			if is_always_no(modifier, "enable"):
+				sink.add_id("dynamic_modifier", modifier_id, rel, line, required=(), advisory=("",))
+			else:
+				sink.add_id("dynamic_modifier", modifier_id, rel, line, advisory=())
+
+
+def extract_modifier_definitions(root: Path, sink: KeySink) -> None:
+	"""Custom `modifier_definition` ids. The wiki key is the id; vanilla also ships an upper-case `MODIFIER_` key."""
+	for path, rel in definition_files(root, "common/modifier_definitions"):
+		for modifier_id, _, line in child_blocks(parse_script(path)):
+			sink.add_key("modifier_definition", REQUIRED, modifier_id, rel, line)
+			sink.add_key("modifier_definition", ADVISORY, "MODIFIER_" + modifier_id.upper(), rel, line)
+
+
+def extract_technologies(root: Path, sink: KeySink) -> None:
+	"""Technology names. A tech that unlocks equipment or a sub-unit borrows that name."""
+	for path, rel in definition_files(root, "common/technologies"):
+		nodes = parse_script(path)
+		for container, techs, _ in child_blocks(nodes):
+			if container != "technologies":
+				continue
+			for tech_id, tech, line in child_blocks(techs):
+				borrows = any(key in ("enable_equipments", "enable_subunits") for key, _, _, _ in tech)
+				if borrows:
+					sink.add_id("technology_unlock", tech_id, rel, line, required=(), advisory=("", "_desc"))
+				else:
+					sink.add_id("technology", tech_id, rel, line)
+				for key, folder, folder_line in child_blocks(tech):
+					if key == "folder":
+						folder_name = first_value(folder, "name")
+						if folder_name:
+							sink.add_id("technology_folder", folder_name, rel, folder_line)
+	for path, rel in definition_files(root, "common/technology_tags"):
+		for container, block, _ in child_blocks(parse_script(path)):
+			if container == "technology_folders":
+				for folder_id, _, line in child_blocks(block):
+					sink.add_id("technology_folder", folder_id, rel, line)
+
+
+def extract_doctrines(root: Path, sink: KeySink) -> None:
+	"""Grand doctrines and sub-doctrines, plus the `<subdoctrine>_<reward>` keys."""
+	for path, rel in definition_files(root, "common/doctrines/grand_doctrines"):
+		for doctrine_id, doctrine, line in child_blocks(parse_script(path)):
+			sink.add(
+				"doctrine", REQUIRED, first_value(doctrine, "name") or doctrine_id, rel, line,
+				quoted_is_key=True,
+			)
+	for path, rel in definition_files(root, "common/doctrines/subdoctrines"):
+		for subdoctrine_id, subdoctrine, line in child_blocks(parse_script(path)):
+			sink.add(
+				"subdoctrine", REQUIRED, first_value(subdoctrine, "name") or subdoctrine_id, rel, line,
+				quoted_is_key=True,
+			)
+			for key, rewards, _ in child_blocks(subdoctrine):
+				if key != "rewards":
+					continue
+				for reward_id, _, reward_line in child_blocks(rewards):
+					sink.add_id(
+						"doctrine_reward", f"{subdoctrine_id}_{reward_id}", rel, reward_line,
+						required=("",), advisory=(),
+					)
+
+
+def extract_achievements(root: Path, sink: KeySink) -> None:
+	"""Achievements read `<id>_NAME` and `<id>_DESC`."""
+	paths = list(definition_files(root, "common/achievements")) + list(definition_files(root, "common/achievements.txt"))
+	for path, rel in paths:
+		for achievement_id, _, line in child_blocks(parse_script(path)):
+			sink.add_id("achievement", achievement_id, rel, line, required=("_NAME", "_DESC"), advisory=())
+
+
+def extract_characters(root: Path, sink: KeySink) -> None:
+	"""Character `name` keys, leader descriptions, and advisor tokens."""
+	for path, rel in definition_files(root, "common/characters"):
+		for container, characters, _ in child_blocks(parse_script(path)):
+			if container != "characters":
+				continue
+			for _, character, line in child_blocks(characters):
+				for key, value, entry_line in ((k, v, l) for k, _, v, l in character):
+					if key == "name" and isinstance(value, str):
+						sink.add("character_name", REQUIRED, value, rel, entry_line)
+				for key, role, _ in child_blocks(character):
+					if key == "country_leader":
+						for entry_key, _, value, entry_line in role:
+							if entry_key == "desc" and isinstance(value, str):
+								sink.add("leader_desc", REQUIRED, value, rel, entry_line, quoted_is_key=True)
+					elif key == "advisor":
+						token = first_value(role, "idea_token")
+						if token:
+							sink.add_id("advisor_token", token, rel, line, required=(), advisory=("", "_desc"))
+
+
+COUNTRY_IDEOLOGIES = ("fascism", "democratic", "communism", "neutrality")
+INERT_TAG_FILE = "unresearched_reservations"
+COSMETIC_USE = re.compile(r"set_cosmetic_tag\s*=\s*([A-Za-z0-9_]+)")
+
+
+def extract_country_names(root: Path, sink: KeySink) -> None:
+	"""`TAG`, `TAG_ADJ`, `TAG_DEF` for tags, and a name for each cosmetic tag.
+
+	The engine reads `TAG_<ideology>` first, so a tag whose four ideology keys are
+	all defined needs no plain key. A cosmetic tag is usually written for one
+	ideology only (vanilla ships `GER_greater_german_reich_fascism` alone), so one
+	ideology key is enough there, and a cosmetic tag that no script ever applies is
+	advisory. A missing cosmetic `_ADJ` or `_DEF` is advisory because vanilla ships
+	hundreds without it. Tags defined in a file named for unresearched reservations
+	are inert placeholders that package readiness keeps out of play, so their
+	names are advisory too.
+	"""
+	registered: Set[str] = set()
+	tag_line = re.compile(r'^\s*([A-Za-z0-9]{3})\s*=\s*"([^"]*)"')
+
+	for path, rel in definition_files(root, "common/country_tags"):
+		for number, text in enumerate(read_text(path).splitlines(), 1):
+			match = tag_line.match(text.split("#", 1)[0])
+			if not match:
+				continue
+			tag = match.group(1)
+			registered.add(tag)
+			level = ADVISORY if INERT_TAG_FILE in match.group(2) else REQUIRED
+			for suffix in ("", "_ADJ", "_DEF"):
+				alternative = tuple(f"{tag}_{ideology}{suffix}" for ideology in COUNTRY_IDEOLOGIES)
+				sink.add_key("country_tag", level, tag + suffix, rel, number, alternative=alternative)
+	for path, rel in definition_files(root, "common/countries"):
+		if path.name == "colors.txt":
+			continue
+		for name, block, line in child_blocks(parse_script(path)):
+			if name in ("color", "color_ui") or re.match(r"^[A-Z0-9]{3}$", name) or name in registered:
+				continue
+			if not any(key == "color" for key, _, _, _ in block):
+				continue
+			level = REQUIRED if name in sink.cosmetic_used else ADVISORY
+			for suffix, suffix_level in (("", level), ("_ADJ", ADVISORY), ("_DEF", ADVISORY)):
+				alternative = tuple(f"{name}_{ideology}{suffix}" for ideology in COUNTRY_IDEOLOGIES)
+				sink.add_key("cosmetic_tag", suffix_level, name + suffix, rel, line, alternative=alternative, any_of=True)
+
+
+def extract_events(root: Path, sink: KeySink) -> None:
+	"""Event titles, descriptions, and option names of every visible event."""
+	for path, rel in definition_files(root, "events"):
+		for key, event, line in child_blocks(parse_script(path)):
+			if not key.endswith("_event"):
+				continue
+			event_id = first_value(event, "id")
+			if not event_id or first_value(event, "hidden") == "yes":
+				continue
+			for field, default_suffix in (("title", ".t"), ("desc", ".d")):
+				entries = [entry for entry in event if entry[0] == field]
+				if not entries:
+					sink.add_key("event_" + field, REQUIRED, event_id + default_suffix, rel, line)
+				for _, _, value, entry_line in entries:
+					if isinstance(value, str):
+						sink.add("event_" + field, REQUIRED, value, rel, entry_line, quoted_is_key=True)
+					else:
+						for text_key, _, text_value, text_line in value:
+							if text_key == "text" and isinstance(text_value, str):
+								sink.add("event_" + field, REQUIRED, text_value, rel, text_line, quoted_is_key=True)
+			for option_key, option, option_line in child_blocks(event):
+				if option_key != "option":
+					continue
+				for entry_key, _, value, entry_line in option:
+					if entry_key == "name" and isinstance(value, str):
+						sink.add("event_option", REQUIRED, value, rel, entry_line, quoted_is_key=True)
+
+
+GUI_TEXT_FIELDS = {"text", "buttonText", "pdx_tooltip", "pdx_tooltip_delayed", "tooltip", "tooltipText"}
+GUI_KEY_SHAPE = re.compile(r"^[A-Za-z0-9]+[_.][A-Za-z0-9_.\-]*$")
+GUI_NUMERIC_SHAPE = re.compile(r"^[\d.,]+[A-Za-z%]?$")
+
+
+def extract_gui_text(root: Path, sink: KeySink) -> None:
+	"""Keys named by `text`, `buttonText`, and tooltip fields in `.gui` files.
+
+	An unlocalised GUI string renders as the string itself, so only values shaped
+	like a key (letters joined by an underscore or dot) count as references. A
+	string that the identically named vanilla `.gui` file also contains is
+	vanilla's own text, so it is not reported.
+	"""
+	base = root / "interface"
+	if not base.is_dir():
+		return
+
+	def walk(nodes: list, rel: str, inherited: Set[str]) -> None:
+		for key, _, value, line in nodes:
+			if isinstance(value, list):
+				walk(value, rel, inherited)
+			elif key in GUI_TEXT_FIELDS:
+				text, quoted = unquote(value)
+				if text in inherited:
+					continue
+				if quoted and not GUI_NUMERIC_SHAPE.match(text) and (GUI_KEY_SHAPE.match(text) or DYNAMIC_MARK.search(text)):
+					if text.startswith("[") or "$" in text:
+						sink.dynamic.append(("gui_text", text, rel, line))
+					else:
+						sink.add("gui_text", REQUIRED, value, rel, line, quoted_is_key=True)
+
+	for path in sorted(base.rglob("*.gui")):
+		twin = VANILLA_ROOT / "interface" / path.name
+		inherited: Set[str] = set()
+		if root != VANILLA_ROOT and twin.is_file():
+			inherited = set(re.findall(r'"([^"\n]*)"', read_text(twin)))
+		walk(parse_script(path), path.relative_to(root).as_posix(), inherited)
+
+
+def extract_game_rules(root: Path, sink: KeySink) -> None:
+	"""Game rule titles, groups, and option labels. These fields hold quoted keys."""
+	for path, rel in definition_files(root, "common/game_rules"):
+		for rule_id, rule, line in child_blocks(parse_script(path)):
+			for key, _, value, entry_line in rule:
+				if key in ("name", "group", "desc") and isinstance(value, str):
+					sink.add("game_rule", REQUIRED, value, rel, entry_line, quoted_is_key=True)
+			for option_key, option, _ in child_blocks(rule):
+				if option_key in ("default", "option"):
+					for key, _, value, entry_line in option:
+						if key in ("text", "desc") and isinstance(value, str):
+							sink.add("game_rule", REQUIRED, value, rel, entry_line, quoted_is_key=True)
+
+
+TOOLTIP_FIELD = re.compile(
+	r'(?<![A-Za-z0-9_])(custom_effect_tooltip|custom_modifier_tooltip|custom_cost_text|tooltip|localization_key|localisation_key)'
+	r'\s*=\s*("[^"\n]*"|[^\s{}=#"]+)'
+)
+# Scripted-localisation files whose targets are exported or logged as literal text.
+LITERAL_SCRIPTED_LOCALISATION = {
+	"chaosx_scripted_localisation_settings.txt",
+	"chaosx_scripted_localisation_debug.txt",
+}
+PLAIN_WORD = re.compile(r"^[A-Z][a-z]+$")
+# `chaosx.event_name.N` names event number N in the events log. The scripted
+# localisation reserves slots for events that do not exist yet, so a missing name
+# only matters when an event file declares `chaosx.nrN.`.
+EVENT_NAME_SLOT = re.compile(r"^chaosx\.event_name\.(\d+)$")
+EVENT_NUMBER = re.compile(r"chaosx\.nr(\d+)\.")
+TOOLTIP_CATEGORY = {
+	"custom_effect_tooltip": "custom_effect_tooltip",
+	"custom_modifier_tooltip": "custom_modifier_tooltip",
+	"custom_cost_text": "custom_cost_text",
+	"tooltip": "trigger_tooltip",
+	"localization_key": "tooltip_localization_key",
+	"localisation_key": "tooltip_localization_key",
+}
+
+
+def extract_tooltip_fields(root: Path, sink: KeySink) -> None:
+	"""Keys that effects and triggers name directly, anywhere under events, common, and history.
+
+	This is a text scan rather than a tree parse because scripted effects and
+	triggers hold most of these references and are large. The `(?<![A-Za-z0-9_])`
+	guard keeps `custom_trigger_tooltip = {` from matching its inner `tooltip`.
+	"""
+	event_numbers: Set[str] = set()
+	for relative in ("events", "common", "history"):
+		base = root / relative
+		if not base.is_dir():
+			continue
+		for path in sorted(base.rglob("*.txt")):
+			text = strip_comments(read_text(path))
+			rel = path.relative_to(root).as_posix()
+			if relative == "events":
+				event_numbers.update(EVENT_NUMBER.findall(text))
+			in_scripted_localisation = "scripted_localisation" in rel
+			last_offset = 0
+			line = 1
+			for match in TOOLTIP_FIELD.finditer(text):
+				line += text.count("\n", last_offset, match.start())
+				last_offset = match.start()
+				field = match.group(1)
+				category = TOOLTIP_CATEGORY[field]
+				level = REQUIRED
+				if field in ("localization_key", "localisation_key") and in_scripted_localisation:
+					category = "scripted_loc_target"
+					value = unquote(match.group(2))[0]
+					if value.startswith(("GFX_", "[")):
+						continue
+					# Scripted localisation prints an undefined target verbatim, which
+					# settings and debug exports use on purpose, as do plain words.
+					slot = EVENT_NAME_SLOT.match(value)
+					if slot and slot.group(1) not in event_numbers:
+						level = ADVISORY
+					elif path.name in LITERAL_SCRIPTED_LOCALISATION and not slot or PLAIN_WORD.match(value):
+						level = ADVISORY
+				sink.add(category, level, match.group(2), rel, line, quoted_is_key=True)
+			for match in COSMETIC_USE.finditer(text):
+				sink.cosmetic_used.add(match.group(1))
+
+
+GETTER_COMMAND = re.compile(r"\[([^\[\]]+)\]")
+SCRIPTED_LOC_NAME = re.compile(r"^\s*name\s*=\s*([A-Za-z0-9_]+)", re.M)
+
+
+def getter_universe() -> Set[str]:
+	"""Every `Get...` command that is defined or already used by vanilla.
+
+	Engine commands such as `GetName` are not declared anywhere on disk, so vanilla
+	usage in localisation and interface files stands in for the built-in list.
+	"""
+	names: Set[str] = set()
+	scripted_dirs = [REPO_ROOT / "common" / "scripted_localisation", VANILLA_ROOT / "common" / "scripted_localisation"]
+	for directory in scripted_dirs:
+		if directory.is_dir():
+			for path in directory.glob("*.txt"):
+				names.update(SCRIPTED_LOC_NAME.findall(read_text(path)))
+	documentation = VANILLA_ROOT / "documentation"
+	if documentation.is_dir():
+		for path in documentation.glob("*.md"):
+			names.update(re.findall(r"\bGet[A-Za-z0-9_]+", read_text(path)))
+	vanilla_sources = list(VANILLA_LOCALISATION_DIR.rglob("*.yml")) if VANILLA_LOCALISATION_DIR.is_dir() else []
+	vanilla_sources += list((VANILLA_ROOT / "interface").rglob("*.gui")) if (VANILLA_ROOT / "interface").is_dir() else []
+	for path in vanilla_sources:
+		for command in GETTER_COMMAND.findall(read_text(path)):
+			for part in command.split("|")[0].split("."):
+				if part.startswith("Get"):
+					names.add(part)
+	return names
+
+
+def check_getters(sink: KeySink, text: str, category: str, rel: str, line: int, universe: Set[str]) -> None:
+	for command in GETTER_COMMAND.findall(text):
+		if command.startswith(("?", "$")):
+			continue
+		for part in command.split("|")[0].split("."):
+			if part.startswith("Get") and part not in universe:
+				sink.add_key(category, REQUIRED, part, rel, line, note="scripted localisation getter")
+
+
+def extract_loc_getters(root: Path, sink: KeySink) -> None:
+	"""`[GetName]`-style commands in this mod's localisation that nothing defines."""
+	if root != REPO_ROOT:
+		return
+	universe = getter_universe()
+	for path in sorted(LOCALISATION_DIR.rglob("*.yml")):
+		rel = path.relative_to(REPO_ROOT).as_posix()
+		for number, text in enumerate(read_text(path).splitlines(), 1):
+			if "[" in text and not text.lstrip().startswith("#"):
+				check_getters(sink, text, "loc_getter", rel, number, universe)
+	for path in sorted((REPO_ROOT / "interface").rglob("*.gui")):
+		rel = path.relative_to(REPO_ROOT).as_posix()
+		for number, text in enumerate(read_text(path).splitlines(), 1):
+			if "[" in text:
+				check_getters(sink, text, "gui_getter", rel, number, universe)
+
+
+EXTRACTORS = (
+	extract_tooltip_fields,
+	extract_decisions,
+	extract_decision_categories,
+	extract_ideas,
+	extract_focuses,
+	extract_simple_ids,
+	extract_dynamic_modifiers,
+	extract_modifier_definitions,
+	extract_technologies,
+	extract_doctrines,
+	extract_achievements,
+	extract_characters,
+	extract_country_names,
+	extract_events,
+	extract_gui_text,
+	extract_game_rules,
+	extract_loc_getters,
+)
+
+
+# --- resolution -------------------------------------------------------------
+
+
+def load_known_localisation(definitions: Dict[str, List[Tuple[str, int]]]) -> Tuple[Set[str], Set[str]]:
+	"""Return `(mod_and_replace_keys, vanilla_keys)`; a key in either is defined."""
+	mod_keys: Set[str] = set(definitions)
+	replace_dir = LOCALISATION_DIR / "replace"
+	if replace_dir.is_dir():
+		for path in replace_dir.rglob("*.yml"):
+			for line in read_text(path).splitlines():
+				match = LOC_KEY_LINE.match(line)
+				if match:
+					mod_keys.add(match.group(1))
+	vanilla_keys: Set[str] = set()
+	if VANILLA_LOCALISATION_DIR.is_dir():
+		for path in VANILLA_LOCALISATION_DIR.rglob("*.yml"):
+			for line in read_text(path).splitlines():
+				match = LOC_KEY_LINE.match(line)
+				if match:
+					vanilla_keys.add(match.group(1))
+	return mod_keys, vanilla_keys
+
+
+def dynamic_pattern(text: str) -> Tuple[str, "re.Pattern[str]"]:
+	"""Turn a runtime-assembled key into its literal prefix and a full-match regex."""
+	marker = re.compile(r"\$[^$]*\$|\[[^\]]*\]|@[A-Za-z_]+|\^[^^]*\^|%[A-Za-z]+")
+	pieces = marker.split(text)
+	prefix = pieces[0]
+	body = ".+".join(re.escape(piece) for piece in pieces)
+	return prefix, re.compile(body)
+
+
+def resolve_dynamic(sink: KeySink, known: Set[str]) -> List[Tuple[str, str, str, int, str]]:
+	"""Match each dynamic key against known keys by prefix, then by full pattern.
+
+	Returns `(category, text, file, line, status)` where status is `matched`,
+	`no literal prefix`, or `no matching key`. Only the last is a likely defect.
+	"""
+	ordered = sorted(known)
+
+	cache: Dict[str, str] = {}
+	results: List[Tuple[str, str, str, int, str]] = []
+	for category, text, rel, line in sink.dynamic:
+		status = cache.get(text)
+		if status is None:
+			prefix, pattern = dynamic_pattern(text)
+			if not prefix:
+				status = "no literal prefix"
+			else:
+				start = bisect.bisect_left(ordered, prefix)
+				status = "no matching key"
+				for index in range(start, len(ordered)):
+					candidate = ordered[index]
+					if not candidate.startswith(prefix):
+						break
+					if pattern.fullmatch(candidate):
+						status = "matched"
+						break
+			cache[text] = status
+		results.append((category, text, rel, line, status))
+	return results
+
+
+def summarise_expected(
+	sink: KeySink, known: Set[str],
+) -> Tuple[Dict[Tuple[str, str], Dict[str, Tuple[str, int, int]]], Dict[Tuple[str, str], int]]:
+	"""Group expectations by `(category, level)` and keep the unique missing keys.
+
+	`missing[(category, level)][key] = (first file, first line, reference count)`.
+	`totals[(category, level)]` is the number of unique keys expected.
+	"""
+	missing: Dict[Tuple[str, str], Dict[str, Tuple[str, int, int]]] = defaultdict(dict)
+	seen: Dict[Tuple[str, str], Set[str]] = defaultdict(set)
+	for category, level, key, rel, line, _, alternative, any_of in sink.expected:
+		bucket = (category, level)
+		seen[bucket].add(key)
+		if key in known:
+			continue
+		if alternative and (any if any_of else all)(item in known for item in alternative):
+			continue
+		sites = missing[bucket]
+		if key in sites:
+			first_file, first_line, count = sites[key]
+			sites[key] = (first_file, first_line, count + 1)
+		else:
+			sites[key] = (rel, line, 1)
+	return missing, {bucket: len(keys) for bucket, keys in seen.items()}
+
+
+def calibrate_against_vanilla() -> int:
+	"""Run every extractor on the installed game and print per-category coverage."""
+	if not VANILLA_ROOT.is_dir():
+		print("vanilla game directory not found", file=sys.stderr)
+		return 1
+	_, vanilla_keys = load_known_localisation({})
+	sink = KeySink()
+	for extractor in EXTRACTORS:
+		print(f"  {extractor.__name__} ...", file=sys.stderr)
+		extractor(VANILLA_ROOT, sink)
+	missing, totals = summarise_expected(sink, vanilla_keys)
+	print("Vanilla coverage of each implicit rule (a required rule should be near 100%)")
+	print(f"{'category':26} {'level':9} {'expected':>9} {'missing':>8} {'coverage':>9}")
+	for bucket in sorted(totals):
+		total = totals[bucket]
+		gap = len(missing.get(bucket, {}))
+		print(f"{bucket[0]:26} {bucket[1]:9} {total:9d} {gap:8d} {100.0 * (total - gap) / total:8.1f}%")
+	for bucket in sorted(missing):
+		if bucket[1] == REQUIRED:
+			sample = ", ".join(sorted(missing[bucket])[:4])
+			print(f"  {bucket[0]} missing e.g. {sample}")
+	return 0
+
+
+def emit_report(findings: Findings, show_advisory: bool = False) -> None:
 	print("=" * 78)
 	print("Chaos Redux static localisation audit")
 	print("=" * 78)
@@ -702,6 +1542,18 @@ def emit_report(findings: Findings) -> None:
 	print(f"missing event t/d keys  : {len(findings.missing_event_content)}")
 	print(f"dead keys               : {len(findings.dead_keys)}")
 	print(f"unlocalised req. flags  : {len(findings.exposed_flags)}")
+	print(f"unlocalised req. vars   : {len(findings.exposed_variables)}")
+	required_missing = sum(
+		len(keys) for bucket, keys in findings.implicit_missing.items() if bucket[1] == REQUIRED
+	)
+	advisory_missing = sum(
+		len(keys) for bucket, keys in findings.implicit_missing.items() if bucket[1] == ADVISORY
+	)
+	unmatched_dynamic = [row for row in findings.implicit_dynamic if row[4] == "no matching key"]
+	print(f"implicit keys missing   : {required_missing}")
+	print(f"implicit advisory absent: {advisory_missing}")
+	print(f"dynamic keys, no match  : {len(unmatched_dynamic)}")
+	print(f"triggers shown expanded : {len(findings.expanded_triggers)}")
 
 	def section(title: str, rows: List[str], limit: int = 40) -> None:
 		print()
@@ -740,6 +1592,45 @@ def emit_report(findings: Findings) -> None:
 		[f"{flag}  ({site})" for flag, site in findings.exposed_flags],
 		limit=40,
 	)
+	section(
+		"unlocalised variables in displayed requirements",
+		[f"{name}  ({site})" for name, site in findings.exposed_variables],
+		limit=40,
+	)
+
+	print()
+	print("--- implicit engine keys by rule ---")
+	print(f"{'category':26} {'level':9} {'expected':>9} {'missing':>8}")
+	for bucket in sorted(findings.implicit_totals):
+		if bucket[1] == ADVISORY and not show_advisory and bucket not in findings.implicit_missing:
+			continue
+		gap = len(findings.implicit_missing.get(bucket, {}))
+		print(f"{bucket[0]:26} {bucket[1]:9} {findings.implicit_totals[bucket]:9d} {gap:8d}")
+	required_rows = [
+		f"{bucket[0]:22} {key}  ({site[0]}:{site[1]}, {site[2]} refs)"
+		for bucket, keys in sorted(findings.implicit_missing.items())
+		if bucket[1] == REQUIRED
+		for key, site in sorted(keys.items())
+	]
+	section("missing implicit engine keys", required_rows, limit=400)
+	if show_advisory:
+		advisory_rows = [
+			f"{bucket[0]:22} {key}  ({site[0]}:{site[1]})"
+			for bucket, keys in sorted(findings.implicit_missing.items())
+			if bucket[1] == ADVISORY
+			for key, site in sorted(keys.items())
+		]
+		section("absent advisory keys (empty text, not raw keys)", advisory_rows, limit=400)
+	section(
+		"dynamic keys with no matching defined key",
+		[f"{category:22} {text}  ({rel}:{line})" for category, text, rel, line, _ in unmatched_dynamic],
+		limit=60,
+	)
+	section(
+		"scripted triggers called directly in displayed requirements with no key (shown expanded)",
+		findings.expanded_triggers,
+		limit=20,
+	)
 
 
 def write_json(findings: Findings, destination: Path) -> None:
@@ -766,6 +1657,21 @@ def write_json(findings: Findings, destination: Path) -> None:
 		],
 		"dead_keys": [{"key": k, "file": f} for k, f in findings.dead_keys],
 		"exposed_flags": [{"flag": k, "site": s} for k, s in findings.exposed_flags],
+		"exposed_variables": [{"variable": k, "site": s} for k, s in findings.exposed_variables],
+		"expanded_triggers": findings.expanded_triggers,
+		"implicit_totals": {
+			f"{category}:{level}": total for (category, level), total in sorted(findings.implicit_totals.items())
+		},
+		"implicit_missing": [
+			{"category": category, "level": level, "key": key, "file": site[0], "line": site[1], "refs": site[2]}
+			for (category, level), keys in sorted(findings.implicit_missing.items())
+			for key, site in sorted(keys.items())
+		],
+		"implicit_dynamic": [
+			{"category": category, "key": text, "file": rel, "line": line, "status": status}
+			for category, text, rel, line, status in findings.implicit_dynamic
+			if status != "matched"
+		],
 	}
 	destination.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
 	print(f"\nwrote {destination}")
@@ -777,7 +1683,19 @@ AUDIT_FINDINGS = Findings()
 def main() -> int:
 	parser = argparse.ArgumentParser(description=__doc__)
 	parser.add_argument("--json", type=Path, help="also write the findings as JSON")
+	parser.add_argument(
+		"--show-advisory",
+		action="store_true",
+		help="also list advisory keys that vanilla routinely omits (descriptions, short names)",
+	)
+	parser.add_argument(
+		"--calibrate",
+		action="store_true",
+		help="run the implicit-key extractors on vanilla and print coverage per rule",
+	)
 	arguments = parser.parse_args()
+	if arguments.calibrate:
+		return calibrate_against_vanilla()
 
 	findings = AUDIT_FINDINGS
 	print("indexing script tokens ...", file=sys.stderr)
@@ -797,9 +1715,13 @@ def main() -> int:
 	quoted, bare = collect_quoted_keys()
 	print(f"  {len(quoted)} quoted literals, {len(bare)} bare bindings", file=sys.stderr)
 
+	mod_keys, vanilla_keys = load_known_localisation(definitions)
+	known = mod_keys | vanilla_keys
+	print(f"  {len(vanilla_keys)} vanilla keys, {len(mod_keys)} mod keys incl. replace", file=sys.stderr)
+
 	classify(definitions, tokens, bracket_refs)
 	collect_referenced_keys(
-		tokens, definitions, quoted, bare, dynamic_prefixes, scripted_tokens
+		tokens, definitions, known, quoted, bare, dynamic_prefixes, scripted_tokens
 	)
 
 	events = collect_event_roots()
@@ -809,9 +1731,16 @@ def main() -> int:
 		file=sys.stderr,
 	)
 	audit_event_loc_keys(events, definitions)
-	audit_requirement_flags(definitions, findings)
+	audit_requirement_flags(known, findings)
 
-	emit_report(findings)
+	sink = KeySink()
+	for extractor in EXTRACTORS:
+		print(f"  {extractor.__name__} ...", file=sys.stderr)
+		extractor(REPO_ROOT, sink)
+	findings.implicit_missing, findings.implicit_totals = summarise_expected(sink, known)
+	findings.implicit_dynamic = resolve_dynamic(sink, known)
+
+	emit_report(findings, arguments.show_advisory)
 	if arguments.json:
 		write_json(findings, arguments.json)
 	return 0
