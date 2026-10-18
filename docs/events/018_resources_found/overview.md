@@ -167,7 +167,7 @@ Event 018 reserves three super-event displays:
 
 All three use unique 44.1 kHz stereo WAV packages lasting 115, 110, and 109 seconds. IDs 54 and 55 have worldwide public-domain/CC0 recording grants. ID 56 is CC BY 3.0 with complete attribution and change notice. The reconciled text, quote, image, trigger, audio, rights, and rejection authority is `docs/super_events/018_resources_found/overview.md`. The detailed audio manifest and split research notes retain the underlying evidence.
 
-News events 84 to 89 cover the global field, border crisis, public attack, cave emergence, regional containment, and global defeat. Their images are true grayscale. Regional and global defeat news are mutually gated by the scale of the threat.
+News events 84 to 89 cover the global field, border crisis, public attack, cave emergence, regional containment, and global defeat. Their images are true grayscale. Regional and global defeat news are mutually gated by the scale of the threat. The global field report fires once, from the field record finalizer, when an active field is both a compound field and globally significant.
 
 ## Achievements
 
