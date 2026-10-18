@@ -309,7 +309,7 @@ The v2 fixed catalogue is reproduced exactly below so that cluster IDs, names, p
 | 8 | Intelligence | Espionage, leaks, investigations, covert information, and intelligence failures expose or manipulate states through hidden information. | 39, 52 | Medium, Low | Minor Fire-Once | 1 | New |
 | 9 | Scientific Research | Scientific and technological shocks accelerate, distort, gift, or destroy research progress and the institutions that produce it. | 16, 24, 27, 54, 60 | Severe, High, Medium, Medium, High | Minor Fire-Once | 2 | New |
 | 10 | Negative Economy | Economic crises damage production, trade, employment, and industrial capacity. Great Depression 2.0 is the cluster's Low baseline member, while harsher consequences depend on the crisis conditions it develops. | 35, 50 | Low, Medium | Minor Fire-Once | 1 | New |
-| 11 | Various Anomalies | Genuinely anomalous events that do not fit a more specific thematic cluster. | 47 | Low | Minor Fire-Once | 4 | New |
+| 11 | Various Anomalies | Genuinely anomalous events that do not fit a more specific thematic cluster. | 42, 47 | Low, Low | Minor Fire-Once | 4 | New |
 | 12 | Pacts | Countries create secret, unusual, or rapidly assembled pacts and alliance arrangements that can reshape later conflicts. | 11 | High | Minor Fire-Once | 3 | New |
 | 13 | Diseases | Disease outbreaks and biological crises spread through countries, armies, and populations, creating escalating health and military emergencies. | 2, 20, 41 | Severe, Severe, Low | Minor Repeatable | 1 | New |
 | 14 | Randomizations | Core parts of the game state are deliberately randomized, producing large systemic changes rather than a conventional political or economic incident. | 46 | Medium | Minor Repeatable | 1 | New |
@@ -376,7 +376,8 @@ It retains the supplied v2 matrix outside the explicitly revised Wars and Natura
 | 9 | Scientific Research | 5 | 60 | Research Failure | High |  |
 | 10 | Negative Economy | 1 | 35 | Great Depression 2.0 | Low |  |
 | 10 | Negative Economy | 2 | 50 | The Great Embargo | Medium |  |
-| 11 | Various Anomalies | 1 | 47 | BOOM | Low |  |
+| 11 | Various Anomalies | 1 | 42 | Equipment from Heavens | Low | Also Sudden Abundance and Military Preparation at Low severity. |
+| 11 | Various Anomalies | 2 | 47 | BOOM | Low |  |
 | 12 | Pacts | 1 | 11 | Secret Alliance | High |  |
 | 13 | Diseases | 1 | 2 | Zombie Outbreak | Severe |  |
 | 13 | Diseases | 2 | 20 | Black Plague | Severe |  |
@@ -386,7 +387,7 @@ It retains the supplied v2 matrix outside the explicitly revised Wars and Natura
 | 15 | Sudden Abundance | 2 | 29 | Riches Found | Medium | Also Positive Economy at Medium severity. |
 | 15 | Sudden Abundance | 3 | 32 | Missiles | Medium | Also Military Preparation at Medium severity. |
 | 15 | Sudden Abundance | 4 | 37 | Mysterious People | Medium |  |
-| 15 | Sudden Abundance | 5 | 42 | Equipment from Heavens | Low | Also Military Preparation at Low severity. |
+| 15 | Sudden Abundance | 5 | 42 | Equipment from Heavens | Low | Also Military Preparation and Various Anomalies at Low severity. |
 | 15 | Sudden Abundance | 6 | 56 | The Navy | Medium | Also Military Preparation at Medium severity. |
 | 15 | Sudden Abundance | 7 | 64 | Border Fortifications | Medium | Also Military Preparation at Medium severity. |
 | 16 | Domestic Unrest | 1 | 1 | Communist Insurgency | Medium |  |
@@ -398,7 +399,7 @@ It retains the supplied v2 matrix outside the explicitly revised Wars and Natura
 | 18 | Military Preparation | 1 | 22 | Concentration Camps | High |  |
 | 18 | Military Preparation | 2 | 27 | Doctrine Research | Medium | Also Scientific Research at Medium severity. |
 | 18 | Military Preparation | 3 | 32 | Missiles | Medium | Also Sudden Abundance at Medium severity. |
-| 18 | Military Preparation | 4 | 42 | Equipment from Heavens | Low | Also Sudden Abundance at Low severity. |
+| 18 | Military Preparation | 4 | 42 | Equipment from Heavens | Low | Also Sudden Abundance and Various Anomalies at Low severity. |
 | 18 | Military Preparation | 5 | 56 | The Navy | Medium | Also Sudden Abundance at Medium severity. |
 | 18 | Military Preparation | 6 | 64 | Border Fortifications | Medium | Also Sudden Abundance at Medium severity. |
 
@@ -425,6 +426,10 @@ If it becomes invalid, the reservation and batch receipt are cleaned up without 
 Random Stuff has no fixed membership row in the supplied v2 matrix.
 
 The runtime ID 19 entry retains the separate whole-pool activation contract documented above.
+
+### Various Anomalies: Equipment from Heavens
+
+Various Anomalies is registered in the live runtime at cluster ID 11, the ID the authoritative workbook assigns. It is a one-time cluster with unlock tier 3 (Chaos level 4). Its live rows are Equipment from Heavens (row 11001) and BOOM (row 11002), both optional Low members with primary-trigger eligibility. Equipment from Heavens keeps its independent Chaos level 1 eligibility, and its single row limits every transaction to one delivery. When no ordinary country can receive a delivery, the row records the canonical `equipment_from_heavens_recipient` reason. BOOM stays disabled by default until its rework, so its row records the disabled reason. The live constants still use the legacy IDs for Diseases (8) and Random Stuff (12), so the v2 migration described above has not changed those two identifiers in runtime.
 
 ### Domestic Unrest: Communist Insurgency, Independence Wave and Random Terror
 

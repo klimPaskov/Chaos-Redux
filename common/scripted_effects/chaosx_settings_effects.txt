@@ -4249,6 +4249,19 @@ fire_event_by_temp_id_no_cluster = {
 		}
 	}
 	if = {
+		limit = { check_variable = { event_id = constant:equipment_from_heavens_event.id } }
+		equipment_from_heavens_prepare_random_event_fire = yes
+		if = {
+			limit = {
+				OR = {
+					check_variable = { efh_prefire_ready < 1 }
+					NOT = { has_event_target = efh_prefire_recipient }
+				}
+			}
+			set_temp_variable = { event_single_fire_allowed = 0 }
+		}
+	}
+	if = {
 		limit = { check_variable = { event_id = constant:sov_nuclear_bombs_event.id } }
 		if = {
 			limit = { NOT = { SOV = { sov_nuclear_bombs_event_opening_actor_is_valid = yes } } }
@@ -4623,6 +4636,15 @@ fire_event_by_temp_id_no_cluster = {
 				}
 				event_target:riches_found_prefire_owner = {
 					country_event = { id = chaosx.nr29.1 }
+				}
+			}
+			else_if = {
+				limit = {
+					check_variable = { event_fire_record_id = constant:equipment_from_heavens_event.id }
+					has_event_target = efh_prefire_recipient
+				}
+				event_target:efh_prefire_recipient = {
+					country_event = { id = chaosx.nr42.1 }
 				}
 			}
 			else_if = {

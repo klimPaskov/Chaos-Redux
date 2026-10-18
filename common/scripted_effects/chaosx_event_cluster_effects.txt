@@ -136,6 +136,12 @@ initialize_event_cluster_system = {
 		add_to_array = { array = global.event_cluster_type_entries value = constant:event_cluster_type.repeatable }
 		add_to_array = { array = global.event_cluster_unlock_tier_entries value = constant:event_cluster_domestic_unrest.unlock_tier }
 	}
+	if = {
+		limit = { NOT = { is_in_array = { global.event_clusters = constant:event_cluster_id.various_anomalies } } }
+		add_to_array = { global.event_clusters = constant:event_cluster_id.various_anomalies }
+		add_to_array = { array = global.event_cluster_type_entries value = constant:event_cluster_type.one_time }
+		add_to_array = { array = global.event_cluster_unlock_tier_entries value = constant:event_cluster_various_anomalies.unlock_tier }
+	}
 	clr_country_flag = event_cluster_member_fire_context
 	clr_country_flag = event_cluster_initial_trigger_dispatch
 	clr_country_flag = event_cluster_initial_major_dispatched
@@ -317,6 +323,15 @@ initialize_event_cluster_definitions = {
 	add_to_array = { global.event_clusters = constant:event_cluster_id.domestic_unrest }
 	add_to_array = { array = global.event_cluster_type_entries value = constant:event_cluster_type.repeatable }
 	add_to_array = { array = global.event_cluster_unlock_tier_entries value = constant:event_cluster_domestic_unrest.unlock_tier }
+	add_to_array = { global.event_clusters = constant:event_cluster_id.various_anomalies }
+	add_to_array = {
+		array = global.event_cluster_type_entries
+		value = constant:event_cluster_type.one_time
+	}
+	add_to_array = {
+		array = global.event_cluster_unlock_tier_entries
+		value = constant:event_cluster_various_anomalies.unlock_tier
+	}
 }
 
 get_current_chaos_tier_value = {
@@ -1644,6 +1659,26 @@ load_event_cluster_members = {
 		set_temp_variable = { event_cluster_member_min_tier = constant:chaos_meter_tier_id.tier_0 }
 		set_temp_variable = { event_cluster_member_severity = constant:event_cluster_member_danger.severe }
 		set_temp_variable = { event_cluster_member_row_id = constant:event_cluster_member_row_id.domestic_unrest_concentration_camps }
+		set_temp_variable = { event_cluster_member_primary_trigger = constant:event_cluster_member_primary_trigger.yes }
+		event_cluster_append_member_definition = yes
+	}
+	else_if = {
+		limit = { check_variable = { event_cluster_id = constant:event_cluster_id.various_anomalies } }
+		# One row per member keeps every cluster transaction to at most one
+		# Equipment from Heavens delivery, whether it is the root or a member.
+		set_temp_variable = { event_cluster_member_event_id = constant:equipment_from_heavens_event.id }
+		set_temp_variable = { event_cluster_member_role = constant:event_cluster_member_role.optional }
+		set_temp_variable = { event_cluster_member_min_tier = constant:chaos_meter_tier_id.tier_0 }
+		set_temp_variable = { event_cluster_member_severity = constant:event_cluster_member_danger.low }
+		set_temp_variable = { event_cluster_member_row_id = constant:event_cluster_member_row_id.various_anomalies_equipment_from_heavens }
+		set_temp_variable = { event_cluster_member_primary_trigger = constant:event_cluster_member_primary_trigger.yes }
+		event_cluster_append_member_definition = yes
+
+		set_temp_variable = { event_cluster_member_event_id = constant:event_cluster_various_anomalies.boom_event_id }
+		set_temp_variable = { event_cluster_member_role = constant:event_cluster_member_role.optional }
+		set_temp_variable = { event_cluster_member_min_tier = constant:chaos_meter_tier_id.tier_0 }
+		set_temp_variable = { event_cluster_member_severity = constant:event_cluster_member_danger.low }
+		set_temp_variable = { event_cluster_member_row_id = constant:event_cluster_member_row_id.various_anomalies_boom }
 		set_temp_variable = { event_cluster_member_primary_trigger = constant:event_cluster_member_primary_trigger.yes }
 		event_cluster_append_member_definition = yes
 	}
