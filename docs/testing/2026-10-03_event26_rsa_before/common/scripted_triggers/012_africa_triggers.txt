@@ -1,0 +1,1431 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 AFRICA TRIGGERS
+# ============================================================================
+# Overview:
+# - Selects every existing country whose current capital is in Africa.
+# - Classifies 22 full, 29 compact, and one capital-only host package without changing tags.
+# - Exposes the Charter relationship, capacity, promotion, and integration gates.
+# - Performs no periodic world iteration; the shared dispatcher calls the host
+#   pool only while explicitly resolving Event 12.
+# ============================================================================
+
+# COUNTRY scope. The three islands without stable vanilla country tags use
+# their exact vanilla capital states. Package flags remain valid explicit
+# overrides for a later bespoke country identity, but are not required for the
+# playbook to be reachable.
+africa_is_sao_tome_signature_country = {
+	OR = {
+		has_country_flag = africa_host_signature_sao_tome
+		capital_scope = { state = 705 }
+	}
+}
+
+africa_is_reunion_signature_country = {
+	OR = {
+		has_country_flag = africa_host_signature_reunion
+		capital_scope = { state = 706 }
+	}
+}
+
+africa_is_seychelles_signature_country = {
+	OR = {
+		has_country_flag = africa_host_signature_seychelles
+		capital_scope = { state = 709 }
+	}
+}
+
+# COUNTRY scope. HZX, EUX, and ELX are Event 006 country shells, not current
+# map countries. Event 012 may admit one only after Event 006 has materialised
+# the exact tag and that tag owns and controls its own African core capital.
+# This deliberately uses live state ownership rather than a guessed state ID;
+# the installed map has no unique Basutoland, Swaziland, or Zanzibar state.
+africa_is_independence_wave_niche_host_tag = {
+	OR = {
+		original_tag = HZX
+		original_tag = EUX
+		original_tag = ELX
+	}
+}
+
+africa_is_valid_independence_wave_niche_host_binding = {
+	africa_is_independence_wave_niche_host_tag = yes
+	is_independence_wave_registry_event6_owned_tag = yes
+	OR = {
+		is_independence_wave_registry_event6_origin = yes
+		has_country_flag = independence_wave_scenario_origin
+		has_country_flag = independence_wave_origin_ended
+	}
+	capital_scope = {
+		is_on_continent = africa
+		is_owned_and_controlled_by = PREV
+		is_core_of = PREV
+	}
+}
+
+# COUNTRY scope. All accepted full and compact playbooks, including the three
+# state-signature island packages.
+africa_has_mapped_host_playbook = {
+	OR = {
+		original_tag = ETH
+		original_tag = EGY
+		original_tag = SUD
+		original_tag = MOR
+		original_tag = ALG
+		original_tag = TUN
+		original_tag = LBA
+		original_tag = LIB
+		original_tag = NGA
+		original_tag = GHA
+		original_tag = SEN
+		original_tag = SIE
+		original_tag = COG
+		original_tag = ANG
+		original_tag = RCG
+		original_tag = KEN
+		original_tag = UGA
+		original_tag = TZN
+		original_tag = SOM
+		original_tag = MAD
+		original_tag = SAF
+		original_tag = ZIM
+		original_tag = GNB
+		original_tag = CBV
+		original_tag = GAM
+		original_tag = IVO
+		original_tag = DAH
+		original_tag = TOG
+		original_tag = MLI
+		original_tag = MRT
+		original_tag = NGR
+		original_tag = VOL
+		original_tag = CHA
+		original_tag = CMR
+		original_tag = GAB
+		original_tag = EQG
+		original_tag = RWA
+		original_tag = BRD
+		original_tag = ZAM
+		original_tag = MLW
+		original_tag = MZB
+		original_tag = BOT
+		original_tag = HZX
+		original_tag = EUX
+		original_tag = ERI
+		original_tag = DJI
+		original_tag = ELX
+		original_tag = FBX
+		original_tag = FAX
+		africa_is_sao_tome_signature_country = yes
+		africa_is_seychelles_signature_country = yes
+		africa_is_reunion_signature_country = yes
+	}
+}
+
+# COUNTRY scope.
+africa_is_full_host_playbook_country = {
+	OR = {
+		original_tag = ETH
+		original_tag = EGY
+		original_tag = SUD
+		original_tag = MOR
+		original_tag = ALG
+		original_tag = TUN
+		original_tag = LBA
+		original_tag = LIB
+		original_tag = NGA
+		original_tag = GHA
+		original_tag = SEN
+		original_tag = SIE
+		original_tag = COG
+		original_tag = ANG
+		original_tag = RCG
+		original_tag = KEN
+		original_tag = UGA
+		original_tag = TZN
+		original_tag = SOM
+		original_tag = MAD
+		original_tag = SAF
+		original_tag = ZIM
+	}
+}
+
+# COUNTRY scope. Rwanda and Burundi share the one Ruanda-Urundi signature.
+africa_is_compact_host_playbook_country = {
+	OR = {
+		original_tag = GNB
+		original_tag = CBV
+		original_tag = GAM
+		original_tag = IVO
+		original_tag = DAH
+		original_tag = TOG
+		original_tag = MLI
+		original_tag = MRT
+		original_tag = NGR
+		original_tag = VOL
+		original_tag = CHA
+		original_tag = CMR
+		original_tag = GAB
+		original_tag = EQG
+		original_tag = RWA
+		original_tag = BRD
+		original_tag = ZAM
+		original_tag = MLW
+		original_tag = MZB
+		original_tag = BOT
+		original_tag = HZX
+		original_tag = EUX
+		original_tag = ERI
+		original_tag = DJI
+		original_tag = ELX
+		original_tag = FBX
+		original_tag = FAX
+		africa_is_sao_tome_signature_country = yes
+		africa_is_seychelles_signature_country = yes
+		africa_is_reunion_signature_country = yes
+	}
+}
+
+# COUNTRY scope on original SAF. This specialised Allied-rupture proof checks
+# whether the dedicated civil-war opening has enough regional governments for
+# its exile-patron handoff. It does not determine ordinary Event 12 eligibility.
+africa_has_prefire_opening_contact = {
+	OR = {
+		AND = {
+			OR = { original_tag = MOR original_tag = ALG original_tag = TUN original_tag = LBA original_tag = MRT }
+			any_country = {
+				count = constant:africa_opening_contact.minimum_frozen_contacts
+				africa_is_valid_relationship_target = yes
+				NOT = { tag = PREV }
+				OR = { original_tag = MOR original_tag = ALG original_tag = TUN original_tag = LBA original_tag = MRT original_tag = EGY }
+			}
+		}
+		AND = {
+			OR = {
+				original_tag = LIB original_tag = NGA original_tag = GHA original_tag = SEN original_tag = SIE
+				original_tag = GNB original_tag = CBV original_tag = GAM original_tag = IVO original_tag = DAH original_tag = TOG
+				africa_is_sao_tome_signature_country = yes
+			}
+			any_country = {
+				count = constant:africa_opening_contact.minimum_frozen_contacts
+				africa_is_valid_relationship_target = yes
+				NOT = { tag = PREV }
+				OR = {
+					original_tag = LIB original_tag = NGA original_tag = GHA original_tag = SEN original_tag = SIE
+					original_tag = GNB original_tag = CBV original_tag = GAM original_tag = IVO original_tag = DAH original_tag = TOG
+					original_tag = MLI original_tag = VOL
+					africa_is_sao_tome_signature_country = yes
+				}
+			}
+		}
+		AND = {
+			OR = { original_tag = MLI original_tag = NGR original_tag = VOL original_tag = CHA }
+			any_country = {
+				count = constant:africa_opening_contact.minimum_frozen_contacts
+				africa_is_valid_relationship_target = yes
+				NOT = { tag = PREV }
+				OR = { original_tag = SUD original_tag = SEN original_tag = MLI original_tag = MRT original_tag = NGR original_tag = VOL original_tag = CHA original_tag = NGA original_tag = CMR }
+			}
+		}
+		AND = {
+			OR = { original_tag = ETH original_tag = EGY original_tag = SUD original_tag = SOM original_tag = ERI original_tag = DJI }
+			any_country = {
+				count = constant:africa_opening_contact.minimum_frozen_contacts
+				africa_is_valid_relationship_target = yes
+				NOT = { tag = PREV }
+				OR = { original_tag = EGY original_tag = SUD original_tag = ETH original_tag = SOM original_tag = ERI original_tag = DJI original_tag = UGA original_tag = KEN }
+			}
+		}
+		AND = {
+			OR = { original_tag = COG original_tag = ANG original_tag = RCG original_tag = CMR original_tag = GAB original_tag = EQG }
+			any_country = {
+				count = constant:africa_opening_contact.minimum_frozen_contacts
+				africa_is_valid_relationship_target = yes
+				NOT = { tag = PREV }
+				OR = { original_tag = COG original_tag = RCG original_tag = ANG original_tag = CMR original_tag = GAB original_tag = EQG original_tag = ZAM }
+			}
+		}
+		AND = {
+			OR = { original_tag = UGA original_tag = RWA original_tag = BRD }
+			any_country = {
+				count = constant:africa_opening_contact.minimum_frozen_contacts
+				africa_is_valid_relationship_target = yes
+				NOT = { tag = PREV }
+				OR = { original_tag = UGA original_tag = RWA original_tag = BRD original_tag = COG original_tag = TZN original_tag = KEN }
+			}
+		}
+		AND = {
+			OR = { original_tag = KEN original_tag = TZN original_tag = MZB original_tag = ELX }
+			any_country = {
+				count = constant:africa_opening_contact.minimum_frozen_contacts
+				africa_is_valid_relationship_target = yes
+				NOT = { tag = PREV }
+				OR = { original_tag = KEN original_tag = UGA original_tag = TZN original_tag = SOM original_tag = MZB original_tag = ELX original_tag = FAX original_tag = MAD }
+			}
+		}
+		AND = {
+			OR = { original_tag = SAF original_tag = ZIM original_tag = ZAM original_tag = MLW original_tag = BOT original_tag = HZX original_tag = EUX }
+			any_country = {
+				count = constant:africa_opening_contact.minimum_frozen_contacts
+				africa_is_valid_relationship_target = yes
+				NOT = { tag = PREV }
+				OR = { original_tag = SAF original_tag = ZIM original_tag = ZAM original_tag = MLW original_tag = MZB original_tag = BOT original_tag = HZX original_tag = EUX original_tag = ANG }
+			}
+		}
+		AND = {
+			OR = {
+				original_tag = MAD original_tag = FBX original_tag = FAX
+				africa_is_seychelles_signature_country = yes
+				africa_is_reunion_signature_country = yes
+			}
+			any_country = {
+				count = constant:africa_opening_contact.minimum_frozen_contacts
+				africa_is_valid_relationship_target = yes
+				NOT = { tag = PREV }
+				OR = {
+					original_tag = MAD original_tag = FAX original_tag = FBX original_tag = ELX
+					africa_is_seychelles_signature_country = yes
+					africa_is_reunion_signature_country = yes
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope on a prospective contact. The selected candidate host is saved
+# as africa_prefire_host_candidate. Named playbooks use their controlled regional
+# pools. An unmapped African-capital host uses every valid African government.
+africa_matches_prefire_host_contact_pool = {
+	has_event_target = africa_prefire_host_candidate
+	OR = {
+		AND = {
+			event_target:africa_prefire_host_candidate = {
+				OR = { original_tag = MOR original_tag = ALG original_tag = TUN original_tag = LBA original_tag = MRT }
+			}
+			OR = { original_tag = MOR original_tag = ALG original_tag = TUN original_tag = LBA original_tag = MRT original_tag = EGY }
+		}
+		AND = {
+			event_target:africa_prefire_host_candidate = {
+				OR = {
+					original_tag = LIB original_tag = NGA original_tag = GHA original_tag = SEN original_tag = SIE
+					original_tag = GNB original_tag = CBV original_tag = GAM original_tag = IVO original_tag = DAH original_tag = TOG
+					africa_is_sao_tome_signature_country = yes
+				}
+			}
+			OR = {
+				original_tag = LIB original_tag = NGA original_tag = GHA original_tag = SEN original_tag = SIE
+				original_tag = GNB original_tag = CBV original_tag = GAM original_tag = IVO original_tag = DAH original_tag = TOG
+				original_tag = MLI original_tag = VOL
+				africa_is_sao_tome_signature_country = yes
+			}
+		}
+		AND = {
+			event_target:africa_prefire_host_candidate = { OR = { original_tag = MLI original_tag = NGR original_tag = VOL original_tag = CHA } }
+			OR = { original_tag = SUD original_tag = SEN original_tag = MLI original_tag = MRT original_tag = NGR original_tag = VOL original_tag = CHA original_tag = NGA original_tag = CMR }
+		}
+		AND = {
+			event_target:africa_prefire_host_candidate = { OR = { original_tag = ETH original_tag = EGY original_tag = SUD original_tag = SOM original_tag = ERI original_tag = DJI } }
+			OR = { original_tag = EGY original_tag = SUD original_tag = ETH original_tag = SOM original_tag = ERI original_tag = DJI original_tag = UGA original_tag = KEN }
+		}
+		AND = {
+			event_target:africa_prefire_host_candidate = { OR = { original_tag = COG original_tag = ANG original_tag = RCG original_tag = CMR original_tag = GAB original_tag = EQG } }
+			OR = { original_tag = COG original_tag = RCG original_tag = ANG original_tag = CMR original_tag = GAB original_tag = EQG original_tag = ZAM }
+		}
+		AND = {
+			event_target:africa_prefire_host_candidate = { OR = { original_tag = UGA original_tag = RWA original_tag = BRD } }
+			OR = { original_tag = UGA original_tag = RWA original_tag = BRD original_tag = COG original_tag = TZN original_tag = KEN }
+		}
+		AND = {
+			event_target:africa_prefire_host_candidate = { OR = { original_tag = KEN original_tag = TZN original_tag = MZB original_tag = ELX } }
+			OR = { original_tag = KEN original_tag = UGA original_tag = TZN original_tag = SOM original_tag = MZB original_tag = ELX original_tag = FAX original_tag = MAD }
+		}
+		AND = {
+			event_target:africa_prefire_host_candidate = { OR = { original_tag = SAF original_tag = ZIM original_tag = ZAM original_tag = MLW original_tag = BOT original_tag = HZX original_tag = EUX } }
+			OR = { original_tag = SAF original_tag = ZIM original_tag = ZAM original_tag = MLW original_tag = MZB original_tag = BOT original_tag = HZX original_tag = EUX original_tag = ANG }
+		}
+		AND = {
+			event_target:africa_prefire_host_candidate = {
+				OR = {
+					original_tag = MAD original_tag = FBX original_tag = FAX
+					africa_is_seychelles_signature_country = yes
+					africa_is_reunion_signature_country = yes
+				}
+			}
+			OR = {
+				original_tag = MAD original_tag = FAX original_tag = FBX original_tag = ELX
+				africa_is_seychelles_signature_country = yes
+				africa_is_reunion_signature_country = yes
+			}
+		}
+		# Unmapped or dynamically created hosts use a continent-wide contact pool.
+		AND = {
+			event_target:africa_prefire_host_candidate = {
+				NOT = { africa_has_mapped_host_playbook = yes }
+			}
+			capital_scope = { is_on_continent = africa }
+		}
+	}
+}
+
+# COUNTRY scope. Host eligibility is intentionally geographic and nothing more:
+# every existing country whose current capital is in Africa can receive Event 12.
+# Dossier mapping, focus-tree type, political status, capital control, contact
+# count, and country classification may shape later content but never remove a
+# valid African-capital country from the fire-once host pool.
+africa_is_eligible_host = {
+	exists = yes
+	capital_scope = {
+		is_on_continent = africa
+	}
+}
+
+# Any scope. Explicit availability query for the random-event resolver.
+africa_has_any_eligible_host = {
+	any_country = {
+		africa_is_eligible_host = yes
+	}
+}
+
+# COUNTRY scope. Selection, dispatch, the entry trigger, and initialization all
+# consume the same capital-in-Africa contract.
+africa_can_initialize_selected_host = {
+	africa_is_eligible_host = yes
+}
+
+# Any scope. The shared event system owns disabled/already-fired checks.
+africa_automatic_event_is_available = {
+	NOT = { has_global_flag = africa_event_active }
+	NOT = { has_global_flag = africa_event_resolved }
+	NOT = { has_global_flag = world_end }
+	africa_has_any_eligible_host = yes
+}
+
+# Any scope. Event Details keeps only the one-time lifecycle gates plus the
+# existence of at least one country whose current capital is in Africa.
+africa_manual_event_is_available = {
+	NOT = { has_global_flag = africa_event_active }
+	NOT = { has_global_flag = africa_event_resolved }
+	NOT = { has_global_flag = world_end }
+	any_country = {
+		africa_is_eligible_host = yes
+	}
+}
+
+# Any scope. The manual scenario uses the ordinary host selection contract when
+# Event 012 has not fired, while an existing committed host can replay the
+# scenario-specific opening without creating a second host or global target.
+africa_triggerable_scenario_can_launch = {
+	NOT = { has_global_flag = africa_triggerable_scenario_launch_active }
+	NOT = { has_global_flag = africa_triggerable_scenario_launched }
+	NOT = { has_global_flag = world_end }
+	OR = {
+		AND = {
+			has_global_flag = africa_event_active
+			NOT = { has_global_flag = africa_event_resolved }
+			africa_has_current_host = yes
+		}
+		africa_manual_event_is_available = yes
+	}
+}
+
+# COUNTRY scope.
+africa_is_current_host = {
+	has_country_flag = africa_unifier_host
+	has_country_flag = africa_host_commit_completed
+	has_variable = africa_host_generation
+	has_global_flag = africa_event_active
+	has_event_target = africa_host
+	event_target:africa_host = {
+		tag = ROOT
+	}
+}
+
+# Any scope.
+africa_has_current_host = {
+	has_event_target = africa_host
+	event_target:africa_host = {
+		exists = yes
+		has_country_flag = africa_unifier_host
+		has_country_flag = africa_host_commit_completed
+		has_variable = africa_host_generation
+	}
+}
+
+# COUNTRY scope on the committed host. This deliberately avoids the
+# africa_is_current_host ROOT comparison because the shared scenario window
+# can enter the host through event_target:africa_host from another country.
+africa_triggerable_scenario_host_scope_is_valid = {
+	has_country_flag = africa_unifier_host
+	has_country_flag = africa_host_commit_completed
+	has_variable = africa_host_generation
+	has_global_flag = africa_event_active
+	has_event_target = africa_host
+}
+
+# COUNTRY scope on a registered member or action target.
+africa_member_host_generation_is_current = {
+	has_variable = africa_member_host_generation
+	has_event_target = africa_host
+	event_target:africa_host = {
+		exists = yes
+		has_country_flag = africa_host_commit_completed
+		has_variable = africa_host_generation
+	}
+	check_variable = {
+		var = africa_member_host_generation
+		value = event_target:africa_host.africa_host_generation
+		compare = equals
+	}
+}
+
+# COUNTRY scope. A compact host can receive full treatment only after the
+# documented promotion inputs exist. Each input is set by a real congress,
+# local package, access project, or relationship incident.
+africa_compact_host_can_be_promoted = {
+	africa_is_current_host = yes
+	check_variable = { africa_host_depth = constant:africa_host_depth.compact }
+	capital_scope = { is_controlled_by = ROOT }
+	has_country_flag = africa_compact_viable_territory
+	has_country_flag = africa_compact_local_support
+	has_country_flag = africa_compact_functioning_institution
+	has_country_flag = africa_compact_distinct_role
+	has_country_flag = africa_compact_promotion_criteria_met
+	NOT = { has_country_flag = africa_overlap_dispute_active }
+	NOT = { has_country_flag = africa_project_access_damaged }
+	NOT = { has_country_flag = africa_compact_promotion_refused }
+	NOT = { has_country_flag = africa_host_package_promoted }
+}
+
+# COUNTRY scope. The evidence docket is a paid congress action, not an
+# opinion check. It binds the mapped opening weakness to a successful proof,
+# public obligation, provisional congress, compact identity, territorial
+# control, and a live stability floor before it can write two promotion
+# criteria.
+africa_compact_promotion_proof_is_available = {
+	africa_is_current_host = yes
+	check_variable = { africa_host_depth = constant:africa_host_depth.compact }
+	capital_scope = { is_controlled_by = ROOT }
+	has_country_flag = africa_host_problem_identified
+	has_country_flag = africa_host_dossier_public
+	africa_focus_first_proof_satisfied = yes
+	has_country_flag = africa_first_obligation_proved
+	has_country_flag = africa_provisional_congress_convened
+	has_country_flag = africa_compact_distinct_role
+	has_country_flag = africa_compact_host_viability_proven
+	check_variable = { africa_host_signature_progress = constant:africa_focus_signature_step.prove_compact_viability }
+	check_variable = { var = africa_current_phase value = constant:africa_action_phase.regional compare = greater_than_or_equals }
+	has_stability > constant:africa_compact_promotion.minimum_stability
+	has_war_support > constant:africa_compact_promotion.minimum_war_support
+	NOT = { has_country_flag = africa_overlap_dispute_active }
+	NOT = { has_country_flag = africa_project_access_damaged }
+	NOT = { has_country_flag = africa_compact_promotion_proof_recorded }
+	NOT = { has_country_flag = africa_compact_promotion_refused }
+	NOT = { has_country_flag = africa_host_package_promoted }
+}
+
+# COUNTRY scope. A country without a persistent relationship variable is an
+# Outside state. No opinion or relation score appears in this contract.
+africa_relationship_is_outside = {
+	OR = {
+		NOT = { has_variable = africa_relationship_state }
+		check_variable = { africa_relationship_state = constant:africa_relationship.outside }
+	}
+}
+
+africa_relationship_is_protected = {
+	check_variable = { africa_relationship_state = constant:africa_relationship.protected }
+}
+
+africa_relationship_is_associate = {
+	check_variable = { africa_relationship_state = constant:africa_relationship.associate }
+}
+
+africa_relationship_is_chartered = {
+	check_variable = { africa_relationship_state = constant:africa_relationship.chartered }
+}
+
+africa_relationship_is_autonomous_federal = {
+	check_variable = { africa_relationship_state = constant:africa_relationship.autonomous_federal }
+}
+
+africa_relationship_is_integrated_region = {
+	check_variable = { africa_relationship_state = constant:africa_relationship.integrated_region }
+}
+
+africa_relationship_is_resistant = {
+	check_variable = { africa_relationship_state = constant:africa_relationship.resistant }
+}
+
+africa_relationship_is_leaving = {
+	check_variable = { africa_relationship_state = constant:africa_relationship.leaving }
+}
+
+africa_relationship_is_rival_bloc = {
+	check_variable = { africa_relationship_state = constant:africa_relationship.rival_bloc }
+}
+
+africa_relationship_is_occupied_settlement = {
+	check_variable = { africa_relationship_state = constant:africa_relationship.occupied_settlement }
+}
+
+africa_relationship_is_cooperative = {
+	OR = {
+		africa_relationship_is_protected = yes
+		africa_relationship_is_associate = yes
+		africa_relationship_is_chartered = yes
+		africa_relationship_is_autonomous_federal = yes
+		africa_relationship_is_integrated_region = yes
+	}
+}
+
+# COUNTRY scope on a proposed African contact/member target.
+africa_is_valid_relationship_target = {
+	exists = yes
+	NOT = { has_capitulated = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { has_country_flag = africa_unifier_host }
+	any_core_state = { is_on_continent = africa }
+	OR = {
+		capital_scope = { is_on_continent = africa }
+		any_controlled_state = { is_on_continent = africa }
+	}
+}
+
+# COUNTRY scope. Foreign colonial holders, coalition members, continent-scale
+# partners, and bounded high-chaos actors can be explicit action targets without
+# becoming Charter relationship records.
+africa_is_valid_external_action_target = {
+	exists = yes
+	NOT = { has_country_flag = africa_unifier_host }
+	OR = {
+		has_country_flag = africa_registered_high_chaos_actor
+		has_country_flag = africa_scramble_participant
+		has_country_flag = africa_world_package_candidate
+		has_country_flag = africa_world_package_actor
+		AND = {
+			NOT = { is_actual_nonhuman_country = yes }
+			NOT = { is_special_chaos_country = yes }
+			OR = {
+				any_owned_state = { is_on_continent = africa }
+				has_country_flag = africa_scramble_coalition_member
+				has_country_flag = africa_world_order_partner
+				has_country_flag = africa_world_package_candidate
+				has_country_flag = africa_world_package_actor
+			}
+		}
+	}
+}
+
+africa_is_valid_action_target = {
+	OR = {
+		africa_is_valid_relationship_target = yes
+		africa_is_valid_external_action_target = yes
+	}
+}
+
+# COUNTRY scope on a contact candidate. The current host's overlay selects a
+# controlled regional pool; this prevents an opening in one end of Africa from
+# presenting arbitrary distant governments as its first practical contact.
+africa_matches_current_host_overlay = {
+	has_event_target = africa_host
+	OR = {
+		AND = {
+			event_target:africa_host = { check_variable = { africa_regional_overlay = constant:africa_overlay.maghreb_sahara } }
+			OR = { original_tag = MOR original_tag = ALG original_tag = TUN original_tag = LBA original_tag = MRT original_tag = EGY }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_regional_overlay = constant:africa_overlay.west_atlantic } }
+			OR = { original_tag = LIB original_tag = NGA original_tag = GHA original_tag = SEN original_tag = SIE original_tag = GNB original_tag = CBV original_tag = GAM original_tag = IVO original_tag = DAH original_tag = TOG original_tag = MLI original_tag = VOL original_tag = DOX original_tag = DSX }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_regional_overlay = constant:africa_overlay.sahel_lake_chad } }
+			OR = { original_tag = SUD original_tag = SEN original_tag = MLI original_tag = MRT original_tag = NGR original_tag = VOL original_tag = CHA original_tag = NGA original_tag = CMR original_tag = SOK original_tag = DUX }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_regional_overlay = constant:africa_overlay.nile_horn } }
+			OR = { original_tag = EGY original_tag = SUD original_tag = ETH original_tag = SOM original_tag = ERI original_tag = DJI original_tag = UGA original_tag = KEN original_tag = TIG original_tag = HAR }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_regional_overlay = constant:africa_overlay.congo_basin } }
+			OR = { original_tag = COG original_tag = RCG original_tag = ANG original_tag = CMR original_tag = GAB original_tag = EQG original_tag = ZAM original_tag = DYX original_tag = DZX }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_regional_overlay = constant:africa_overlay.great_lakes } }
+			OR = { original_tag = UGA original_tag = RWA original_tag = BRD original_tag = COG original_tag = TZN original_tag = KEN }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_regional_overlay = constant:africa_overlay.swahili_indian_ocean } }
+			OR = { original_tag = KEN original_tag = UGA original_tag = TZN original_tag = SOM original_tag = MZB original_tag = ELX original_tag = FAX original_tag = MAD original_tag = EMX }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_regional_overlay = constant:africa_overlay.southern_africa } }
+			OR = { original_tag = SAF original_tag = ZIM original_tag = ZAM original_tag = MLW original_tag = MZB original_tag = BOT original_tag = HZX original_tag = EUX original_tag = ANG original_tag = EQX }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_regional_overlay = constant:africa_overlay.madagascar_islands } }
+			OR = {
+				original_tag = MAD
+				original_tag = FAX
+				original_tag = FBX
+				original_tag = ELX
+				africa_is_seychelles_signature_country = yes
+				africa_is_reunion_signature_country = yes
+			}
+		}
+		# Capital-only compact hosts use every African-capital government instead
+		# of borrowing a named regional dossier.
+		AND = {
+			event_target:africa_host = { check_variable = { africa_regional_overlay = constant:africa_overlay.none } }
+			capital_scope = { is_on_continent = africa }
+		}
+	}
+}
+
+# COUNTRY scope. Reports whether the live host overlay still contains another
+# valid regional actor. This can shape later content but never vetoes the entry.
+africa_has_opening_contact = {
+	any_country = {
+		africa_is_valid_relationship_target = yes
+		africa_matches_current_host_overlay = yes
+		NOT = { tag = ROOT }
+	}
+}
+
+# COUNTRY scope. Focus-layout predicates remain numeric and mutually exclusive,
+# so all nine static overlay branches can safely reuse one coordinate template.
+africa_focus_uses_maghreb_sahara_overlay = {
+	africa_is_current_host = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.maghreb_sahara }
+}
+
+africa_focus_uses_west_atlantic_overlay = {
+	africa_is_current_host = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.west_atlantic }
+}
+
+africa_focus_uses_sahel_lake_chad_overlay = {
+	africa_is_current_host = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.sahel_lake_chad }
+}
+
+africa_focus_uses_nile_horn_overlay = {
+	africa_is_current_host = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.nile_horn }
+}
+
+africa_focus_uses_congo_basin_overlay = {
+	africa_is_current_host = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.congo_basin }
+}
+
+africa_focus_uses_great_lakes_overlay = {
+	africa_is_current_host = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.great_lakes }
+}
+
+africa_focus_uses_swahili_indian_ocean_overlay = {
+	africa_is_current_host = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.swahili_indian_ocean }
+}
+
+africa_focus_uses_southern_africa_overlay = {
+	africa_is_current_host = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.southern_africa }
+}
+
+africa_focus_uses_madagascar_islands_overlay = {
+	africa_is_current_host = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.madagascar_islands }
+}
+
+africa_focus_shows_full_host_signature = {
+	africa_is_current_host = yes
+	OR = {
+		check_variable = { africa_host_depth = constant:africa_host_depth.full }
+		check_variable = { africa_host_depth = constant:africa_host_depth.promoted }
+	}
+}
+
+africa_focus_shows_compact_host_signature = {
+	africa_is_current_host = yes
+	has_country_flag = africa_host_origin_was_compact
+}
+
+africa_focus_first_proof_satisfied = {
+	OR = {
+		has_country_flag = africa_first_proof_succeeded
+		has_country_flag = africa_first_proof_recovered
+	}
+}
+
+africa_focus_can_start_first_proof = {
+	africa_is_current_host = yes
+	has_country_flag = africa_first_contact_selected
+	has_country_flag = africa_first_corridor_secured
+	has_country_flag = africa_first_obligation_written
+	has_country_flag = africa_first_proof_pending
+	NOT = { has_country_flag = africa_first_proof_failed }
+}
+
+africa_focus_can_convene_provisional_congress = {
+	africa_is_current_host = yes
+	has_country_flag = africa_overlay_mandate_proven
+	has_country_flag = africa_first_obligation_published
+	has_country_flag = africa_regional_delegations_invited
+}
+
+africa_focus_has_origin_mandate = {
+	OR = {
+		has_country_flag = africa_host_origin_mandate_proven
+		has_country_flag = africa_compact_host_viability_proven
+	}
+}
+
+africa_focus_can_choose_constitutional_principle = {
+	africa_is_current_host = yes
+	africa_focus_first_proof_satisfied = yes
+	has_country_flag = africa_provisional_charter_written
+	has_country_flag = africa_overlay_mandate_proven
+	africa_focus_has_origin_mandate = yes
+}
+
+# COUNTRY scope on the host. Selected targets, dossiers, living-core projects,
+# and active actions are explicit capped stores rather than passive lists.
+africa_has_open_action_capacity = {
+	check_variable = { africa_active_action_count < africa_active_action_cap }
+}
+
+africa_has_selected_target_capacity = {
+	check_variable = { africa_selected_targets^num < africa_selected_target_cap }
+}
+
+africa_has_dossier_capacity = {
+	check_variable = { africa_active_dossiers^num < africa_dossier_cap }
+}
+
+africa_has_living_core_project_capacity = {
+	check_variable = { africa_living_core_projects^num < africa_living_core_project_cap }
+}
+
+# COUNTRY scope on the host. State and region actions require deliberate map
+# selections from the current country cursor; country and host actions do not.
+africa_has_selected_action_state_target = {
+	OR = {
+		AND = {
+			check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.state }
+			check_variable = { africa_selected_action_state_targets^num = constant:africa_value.one }
+		}
+		AND = {
+			check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.region }
+			check_variable = { africa_selected_action_state_targets^num > constant:africa_value.zero }
+			NOT = { check_variable = { africa_selected_action_state_targets^num > constant:africa_action_capacity.maximum_region_state_targets } }
+		}
+	}
+	all_of_scopes = {
+		array = africa_selected_action_state_targets
+		has_state_flag = africa_selected_action_state
+		has_state_flag = africa_selected_action_state_candidate
+		NOT = { has_state_flag = africa_action_project_active }
+	}
+}
+
+# STATE scope. HOI4 exposes no state-level river trigger, so navigable river
+# and Great Lakes projects use an explicit map registry. Every entry is a
+# vanilla African state whose named river or lake geography is part of the
+# Event 12 host proof matrix; this list is geography, not a generic inland
+# infrastructure substitute.
+africa_state_is_registered_river_or_lake_project_site = {
+	OR = {
+		state = 295 # Congo
+		state = 296 # Portuguese Guinea river estuaries
+		state = 515 # Central Africa / Niger basin
+		state = 546 # Tanganyika / Great Lakes
+		state = 548 # Uganda / Victoria Nile and Lake Victoria
+		state = 549 # Sudan / Nile
+		state = 551 # Khartoum / Nile confluence
+		state = 556 # Mali / Niger River
+		state = 558 # Nigeria / Niger-Benue system
+		state = 701 # Gambia River
+		state = 718 # Stanleyville / upper Congo
+		state = 768 # Rwanda / Lake Kivu
+		state = 769 # Burundi / Lake Tanganyika
+		state = 770 # Malawi / Lake Malawi and Shire
+		state = 772 # Middle Congo
+		state = 774 # Chad / Lake Chad basin
+		state = 781 # Niger / Niger River corridor
+		state = 782 # Tombouctou / Niger bend
+		state = 884 # Upper Nile
+		state = 885 # Bahr al Ghazal
+		state = 886 # Blue Nile
+		state = 888 # Lusambo / Kasai system
+		state = 889 # Elisabethville / upper Congo watershed
+		state = 890 # Costermansville / Lake Kivu
+		state = 898 # Gao / Niger River
+		state = 899 # Kayes-Koulikoro / Senegal and Niger basins
+		state = 900 # Benue
+		state = 901 # Borno / Lake Chad basin
+		state = 902 # Sokoto / Niger tributaries
+	}
+}
+
+# COUNTRY scope on the host while a quote is displayed. Physical state
+# projects must remain buildable on the exact selected country cursor. PREV is
+# the selected state inside CONTROLLER, matching the documented railway scope
+# syntax used by vanilla.
+africa_selected_action_physical_targets_are_ready = {
+	OR = {
+		NOT = { check_variable = { africa_quote_action_id = constant:africa_action.build_regional_rail_spine } }
+		all_of_scopes = {
+			array = africa_selected_action_state_targets
+			NOT = { is_capital = yes }
+			CONTROLLER = {
+				ROOT = {
+					check_variable = {
+						var = africa_quote_target_id
+						value = PREV.id
+						compare = equals
+					}
+				}
+				can_build_railway = {
+					level = constant:africa_action_building.rail_level
+					start_state = THIS.capital
+					target_state = PREV
+				}
+			}
+		}
+	}
+	OR = {
+		NOT = { check_variable = { africa_quote_action_id = constant:africa_action.expand_river_transport } }
+		all_of_scopes = {
+			array = africa_selected_action_state_targets
+			africa_state_is_registered_river_or_lake_project_site = yes
+		}
+	}
+	OR = {
+		NOT = { check_variable = { africa_quote_action_id = constant:africa_action.modernise_continental_port } }
+		all_of_scopes = {
+			array = africa_selected_action_state_targets
+			is_coastal = yes
+			naval_base > constant:africa_value.zero
+		}
+	}
+}
+
+africa_action_quote_state_target_is_ready = {
+	OR = {
+		AND = {
+			NOT = { check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.state } }
+			NOT = { check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.region } }
+		}
+		africa_has_selected_action_state_target = yes
+	}
+	africa_selected_action_physical_targets_are_ready = yes
+}
+
+# COUNTRY scope on a member. Integration needs an explicit accepted agreement,
+# representation, administration, access, settlement, confidence, and a route;
+# opinion by itself can never satisfy this gate.
+africa_member_can_begin_integration = {
+	OR = {
+		africa_relationship_is_chartered = yes
+		africa_relationship_is_autonomous_federal = yes
+		africa_relationship_is_occupied_settlement = yes
+	}
+	africa_member_host_generation_is_current = yes
+	NOT = { has_civil_war = yes }
+	NOT = { has_war_with = event_target:africa_host }
+	OR = {
+		is_subject = no
+		AND = {
+			is_subject = yes
+			OVERLORD = { tag = event_target:africa_host }
+		}
+	}
+	has_country_flag = africa_member_integration_consent
+	has_country_flag = africa_member_representation_settled
+	has_country_flag = africa_member_administrative_dossier_complete
+	has_country_flag = africa_member_transport_connection_complete
+	has_country_flag = africa_member_local_settlement_complete
+	check_variable = {
+		var = africa_member_confidence
+		value = constant:africa_measure.high
+		compare = greater_than_or_equals
+	}
+	event_target:africa_host = {
+		check_variable = {
+			var = africa_integration_burden
+			value = constant:africa_measure.high
+			compare = less_than
+		}
+		check_variable = { africa_constitution > constant:africa_constitution.uncommitted }
+	}
+}
+
+# COUNTRY scope on a member entering an autonomous-federal settlement from a
+# hostile, rival, or occupied state. Autonomy is negotiated, never inferred
+# from opinion or vanilla faction membership.
+africa_member_can_enter_autonomous_federal = {
+	OR = {
+		africa_relationship_is_chartered = yes
+		africa_relationship_is_integrated_region = yes
+		africa_relationship_is_rival_bloc = yes
+		africa_relationship_is_occupied_settlement = yes
+	}
+	africa_member_host_generation_is_current = yes
+	NOT = { has_civil_war = yes }
+	NOT = { has_war_with = event_target:africa_host }
+	OR = {
+		is_subject = no
+		AND = {
+			is_subject = yes
+			OVERLORD = { tag = event_target:africa_host }
+		}
+	}
+	has_country_flag = africa_member_integration_consent
+	has_country_flag = africa_member_representation_settled
+	has_country_flag = africa_member_administrative_dossier_complete
+	check_variable = {
+		var = africa_member_confidence
+		value = constant:africa_measure.medium
+		compare = greater_than_or_equals
+	}
+}
+
+# COUNTRY scope on a member. Only the two Event 12 autonomy tiers are released
+# by Charter withdrawal logic; unrelated vanilla or modded subject relations
+# are never overwritten.
+africa_is_charter_subject_of_current_host = {
+	is_subject = yes
+	OVERLORD = { tag = event_target:africa_host }
+	OR = {
+		has_autonomy_state = autonomy_africa_federal_member
+		has_autonomy_state = autonomy_africa_integrated_region
+	}
+}
+
+# COUNTRY scope on a government holding a temporary congress exemption. Every
+# registered state must remain both owned and controlled while the public
+# completion mission is active.
+africa_continental_peace_exemption_is_current = {
+	has_country_flag = africa_continental_peace_completion_mission_active
+	has_country_flag = africa_continental_peace_terms_accepted
+	africa_member_host_generation_is_current = yes
+	check_variable = { africa_continental_peace_exemption_states^num > constant:africa_value.zero }
+	NOT = { has_civil_war = yes }
+	NOT = { has_war_with = event_target:africa_host }
+	NOT = { africa_relationship_is_leaving = yes }
+	NOT = { africa_relationship_is_resistant = yes }
+	NOT = { africa_relationship_is_rival_bloc = yes }
+	all_of_scopes = {
+		array = africa_continental_peace_exemption_states
+		is_on_continent = africa
+		has_state_flag = africa_continental_peace_exemption_active
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+	}
+}
+
+africa_continental_peace_exemption_terms_are_breached = {
+	has_country_flag = africa_continental_peace_completion_mission_active
+	OR = {
+		has_civil_war = yes
+		has_war_with = event_target:africa_host
+		africa_relationship_is_leaving = yes
+		africa_relationship_is_resistant = yes
+		africa_relationship_is_rival_bloc = yes
+		any_of_scopes = {
+			array = africa_continental_peace_exemption_states
+			OR = {
+				NOT = { has_state_flag = africa_continental_peace_exemption_active }
+				NOT = { is_owned_by = ROOT }
+				NOT = { is_controlled_by = ROOT }
+			}
+		}
+	}
+}
+
+africa_continental_peace_exemption_completion_is_ready = {
+	africa_continental_peace_exemption_is_current = yes
+	africa_country_counts_as_continental_settlement = yes
+}
+
+# COUNTRY scope on a member. This is the final living-core recognition gate;
+# state ownership alone is deliberately insufficient.
+africa_member_can_complete_core_recognition = {
+	africa_member_can_begin_integration = yes
+	has_country_flag = africa_member_security_settlement_complete
+	# The explicit constitutional receipt is written by charter admission,
+	# autonomous-federal acceptance, and the shared action transitions. Do not
+	# infer living-core recognition from state ownership or opinion alone.
+	has_country_flag = africa_member_continental_constitution_accepted
+}
+
+# ---------------------------------------------------------------------------
+# Parameterized action runtime
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope on the host. The stored quote is the only player-facing cost
+# record and is regenerated whenever either the action or target changes.
+africa_has_current_action_quote = {
+	africa_is_current_host = yes
+	has_country_flag = africa_action_quote_ready
+	check_variable = { africa_selected_action_id > constant:africa_action.none }
+	check_variable = {
+		var = africa_quote_action_id
+		value = africa_selected_action_id
+		compare = equals
+	}
+}
+
+# COUNTRY scope on the host.
+africa_can_pay_action_quote = {
+	africa_has_current_action_quote = yes
+	africa_action_quote_state_target_is_ready = yes
+	NOT = { has_political_power < africa_quote_cost_pp }
+	NOT = { command_power < africa_quote_cost_cp }
+	NOT = { has_manpower < africa_quote_cost_manpower }
+	NOT = { has_fuel < africa_quote_cost_fuel }
+	NOT = { has_stability < africa_quote_cost_stability }
+	check_variable = { var = war_support value = africa_quote_cost_war_support compare = greater_than_or_equals }
+	check_variable = {
+		var = africa_civilian_capacity_available
+		value = africa_quote_cost_civilian
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = africa_intelligence_capacity_available
+		value = africa_quote_cost_intelligence
+		compare = greater_than_or_equals
+	}
+	NOT = { has_equipment = { infantry_equipment < africa_quote_cost_infantry } }
+	NOT = { has_equipment = { support_equipment < africa_quote_cost_support } }
+	NOT = { has_equipment = { motorized_equipment < africa_quote_cost_motorized } }
+	NOT = { has_equipment = { train_equipment < africa_quote_cost_trains } }
+	NOT = { has_equipment = { convoy_1 < africa_quote_cost_convoys } }
+}
+
+# COUNTRY scope on the host. Weather weapons add an Event 013 caller reserve
+# to the regular quoted Charter commitment, so launch availability must cover
+# both costs before the player confirms the action.
+africa_can_pay_selected_action_commitment = {
+	africa_can_pay_action_quote = yes
+	OR = {
+		AND = {
+			NOT = { check_variable = { africa_quote_action_id = constant:africa_action.petition_the_rain } }
+			NOT = { check_variable = { africa_quote_action_id = constant:africa_action.defy_the_drought } }
+		}
+		africa_natural_disaster_weapon_cost_is_available = yes
+	}
+}
+
+# COUNTRY scope on a target displayed by a targeted decision.
+africa_is_current_quoted_action_target = {
+	exists = yes
+	ROOT = {
+		africa_has_current_action_quote = yes
+		check_variable = {
+			var = africa_quote_target_id
+			value = PREV.id
+			compare = equals
+		}
+	}
+	NOT = { has_country_flag = africa_action_record_active }
+	NOT = { has_country_flag = africa_action_recent_target }
+}
+
+# COUNTRY scope on the host. Host/global actions use the dedicated self array;
+# every other mode uses the one-country cursor for a human and the same bounded
+# selected-target roster for AI.
+africa_selected_action_targets_host = {
+	OR = {
+		check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.host }
+		check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.global }
+	}
+}
+
+# COUNTRY scope on the host. Country, state, and region actions may deliberately
+# use the host as their selected country cursor. They execute through the
+# non-targeted host decision so the engine never has to render a country-targeted
+# decision against ROOT itself.
+africa_selected_action_targets_selected_host = {
+	OR = {
+		check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.country }
+		check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.state }
+		check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.region }
+	}
+	has_country_flag = africa_selected_country_target
+	check_variable = { africa_selected_country_id = THIS.id }
+}
+
+africa_selected_action_uses_host_execution = {
+	OR = {
+		africa_selected_action_targets_host = yes
+		africa_selected_action_targets_selected_host = yes
+	}
+}
+
+africa_selected_action_targets_external = {
+	OR = {
+		check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.country }
+		check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.state }
+		check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.region }
+	}
+}
+
+# COUNTRY scope on an action target. This validates durable facts only; opinion
+# is deliberately absent.
+africa_action_target_is_usable = {
+	exists = yes
+	OR = {
+		africa_is_valid_action_target = yes
+		africa_is_current_host = yes
+	}
+	NOT = { has_country_flag = africa_action_record_active }
+	NOT = { has_country_flag = africa_action_recent_target }
+	OR = {
+		capital_scope = { is_on_continent = africa }
+		any_controlled_state = { is_on_continent = africa }
+		africa_is_valid_external_action_target = yes
+	}
+}
+
+# COUNTRY scope on the Event 012 host. Only a priority sovereign with enough
+# recorded ecological pressure, or a documented covenant-nature package, may
+# turn the Rain/Drought actions into hostile Event 013 calls.
+africa_natural_disaster_weapon_actor_is_eligible = {
+	africa_is_current_host = yes
+	has_global_flag = africa_evolution_iii_logged
+	OR = {
+		AND = {
+			africa_priority_member_has_package = yes
+			has_variable = africa_ecological_wrath
+			check_variable = { africa_ecological_wrath > constant:africa_focus_route_threshold.minimum_covenant_pressure }
+		}
+		AND = {
+			has_event_target = africa_natural_disaster_action_actor
+			event_target:africa_natural_disaster_action_actor = {
+				africa_natural_disaster_member_actor_is_eligible = yes
+			}
+		}
+		AND = {
+			OR = {
+				has_country_flag = africa_covenant_route_committed
+				has_country_flag = africa_covenant_favour_and_wrath
+				has_country_flag = africa_covenant_write_warfare_doctrine
+				has_country_flag = africa_covenant_route_capstone
+			}
+		}
+	}
+}
+
+# COUNTRY scope on the Event 012 host before a hostile nature action is
+# reserved. Action quote costs are checked separately by africa_can_pay_action_quote.
+africa_natural_disaster_weapon_cost_is_available = {
+	OR = {
+		AND = {
+			NOT = { has_event_target = africa_natural_disaster_action_actor }
+			NOT = { has_political_power < constant:africa_natural_disaster.caller_pp_cost }
+			NOT = { command_power < constant:africa_natural_disaster.caller_cp_cost }
+			NOT = { has_country_flag = africa_natural_disaster_weapon_cooldown }
+			NOT = { has_country_flag = africa_natural_disaster_weapon_reserved }
+		}
+		AND = {
+			has_event_target = africa_natural_disaster_action_actor
+			event_target:africa_natural_disaster_action_actor = {
+				africa_natural_disaster_member_cost_is_available = yes
+			}
+		}
+	}
+}
+
+# COUNTRY scope on the selected target. ROOT is the Event 012 host when this
+# trigger is evaluated from the selected-target ledger.
+africa_natural_disaster_weapon_target_is_valid = {
+	exists = yes
+	NOT = { africa_is_current_host = yes }
+	OR = {
+		has_war_with = ROOT
+		AND = {
+			has_country_flag = africa_natural_disaster_member_target_validated
+			ROOT = { has_event_target = africa_natural_disaster_action_actor }
+		}
+	}
+}
+
+# COUNTRY scope on a non-host priority member. The member route is deliberately
+# narrower than the host route: the direct-tag package, its host receipt,
+# political settlement, and its distinct mechanic must all be complete before
+# the member may call a hostile nature action.
+africa_natural_disaster_member_actor_is_eligible = {
+	africa_priority_member_has_package = yes
+	has_event_target = africa_host
+	africa_member_host_generation_is_current = yes
+	has_global_flag = africa_evolution_iii_logged
+	has_country_flag = africa_priority_member_politics_settled
+	has_country_flag = africa_priority_member_mechanic_complete
+	has_variable = africa_priority_member_nature_power
+	check_variable = { africa_priority_member_nature_power > constant:africa_priority_member_nature_power.none }
+	has_war = yes
+	NOT = { has_country_flag = africa_natural_disaster_weapon_cooldown }
+	NOT = { has_country_flag = africa_natural_disaster_weapon_reserved }
+	NOT = { has_country_flag = africa_natural_disaster_member_nature_action_active }
+	NOT = { africa_is_current_host = yes }
+}
+
+# COUNTRY scope on a priority member before the caller-side Event 013 reserve.
+africa_natural_disaster_member_cost_is_available = {
+	NOT = { has_political_power < constant:africa_natural_disaster.caller_pp_cost }
+	NOT = { command_power < constant:africa_natural_disaster.caller_cp_cost }
+	NOT = { has_country_flag = africa_natural_disaster_weapon_cooldown }
+	NOT = { has_country_flag = africa_natural_disaster_weapon_reserved }
+}
+
+# COUNTRY scope on a priority member's selected enemy. The flag is written by
+# the explicit target roster and is cleared when the shared action starts or
+# cleans up; war eligibility is still rechecked by the Event 013 bridge.
+africa_natural_disaster_member_target_is_valid = {
+	exists = yes
+	NOT = { tag = ROOT }
+	NOT = { africa_is_current_host = yes }
+	africa_action_target_is_usable = yes
+	has_war_with = ROOT
+	NOT = { has_country_flag = africa_action_record_active }
+	NOT = { has_country_flag = africa_action_recent_target }
+}
+
+# COUNTRY scope on an active target.
+africa_active_action_generation_is_current = {
+	has_country_flag = africa_action_record_active
+	has_variable = africa_active_action_host_generation
+	has_event_target = africa_host
+	event_target:africa_host = {
+		check_variable = {
+			var = africa_host_generation
+			value = PREV.africa_active_action_host_generation
+			compare = equals
+		}
+	}
+}
+
+# COUNTRY scope on an offer-response target. The response event is dispatched
+# by the target's shared mission timeout, so the live action and committed host
+# generation are the immutable receipt; no delayed country-event backlog exists.
+africa_action_response_is_current = {
+	has_country_flag = africa_action_record_active
+	check_variable = { africa_active_action_status = constant:africa_action_status.active }
+	check_variable = { africa_active_action_kernel = constant:africa_action_kernel.offer_response }
+	africa_active_action_generation_is_current = yes
+}
+
+# COUNTRY scope on an active target. Objective completion is deliberately
+# narrow: war-end rows can resolve when the target is no longer at war, while
+# response rows resolve through their shared-mission timeout event and all other
+# rows use their contract timeout or existing action callbacks.
+africa_action_objective_is_complete = {
+	has_country_flag = africa_action_record_active
+	africa_active_action_generation_is_current = yes
+	OR = {
+		AND = {
+			check_variable = { africa_active_action_objective = constant:africa_action_objective.peace_or_timeout }
+			check_variable = { africa_active_action_started_at_war = constant:africa_value.one }
+			NOT = { has_war = yes }
+		}
+		AND = {
+			check_variable = { africa_active_action_objective = constant:africa_action_objective.war_preparation }
+			has_war_with = ROOT
+		}
+	}
+}
+
+# COUNTRY scope on an active target. Target invalidation is kept separate from
+# objective completion so cancellation still reaches the shared cleanup path.
+africa_action_contract_should_cancel = {
+	OR = {
+		has_capitulated = yes
+		NOT = { exists = yes }
+	}
+}
+
+# COUNTRY scope on the host. Phase ordering is explicit rather than inferred
+# from date, opinion, or the number of annexed states.
+africa_action_phase_has_reached_opening = {
+	check_variable = { var = africa_current_phase value = constant:africa_action_phase.opening compare = greater_than_or_equals }
+}
+
+africa_action_phase_has_reached_regional = {
+	check_variable = { var = africa_current_phase value = constant:africa_action_phase.regional compare = greater_than_or_equals }
+}
+
+africa_action_phase_has_reached_late = {
+	check_variable = { var = africa_current_phase value = constant:africa_action_phase.late compare = greater_than_or_equals }
+}
+
+africa_action_quote_phase_is_available = {
+	OR = {
+		AND = {
+			OR = {
+				has_country_flag = africa_first_proof_active
+				has_country_flag = africa_first_proof_failed
+			}
+			africa_first_proof_quoted_action_is_allowed = yes
+		}
+		AND = {
+			NOT = { has_country_flag = africa_first_proof_active }
+			NOT = { has_country_flag = africa_first_proof_failed }
+			OR = {
+				check_variable = { africa_quote_phase = constant:africa_action_phase.any }
+				AND = {
+					check_variable = { africa_quote_phase = constant:africa_action_phase.opening }
+					africa_action_phase_has_reached_opening = yes
+				}
+				AND = {
+					check_variable = { africa_quote_phase = constant:africa_action_phase.regional }
+					africa_action_phase_has_reached_regional = yes
+				}
+				AND = {
+					check_variable = { africa_quote_phase = constant:africa_action_phase.late }
+					africa_action_phase_has_reached_late = yes
+				}
+				AND = {
+					check_variable = { africa_quote_phase = constant:africa_action_phase.high_chaos }
+					has_global_flag = africa_evolution_iii_logged
+					check_variable = { var = africa_current_phase value = constant:africa_action_phase.high_chaos compare = greater_than_or_equals }
+				}
+				AND = {
+					check_variable = { africa_quote_phase = constant:africa_action_phase.post_unification }
+					has_global_flag = africa_is_one
+					check_variable = { var = africa_current_phase value = constant:africa_action_phase.post_unification compare = greater_than_or_equals }
+				}
+				AND = {
+					check_variable = { africa_quote_phase = constant:africa_action_phase.terminal_approach }
+					has_global_flag = africa_world_order_open
+					check_variable = { var = africa_current_phase value = constant:africa_action_phase.terminal_approach compare = greater_than_or_equals }
+				}
+				AND = {
+					check_variable = { africa_quote_phase = constant:africa_action_phase.terminal }
+					OR = {
+						AND = {
+							has_global_flag = africa_continental_wars_active
+							check_variable = { var = africa_current_phase value = constant:africa_action_phase.terminal compare = greater_than_or_equals }
+						}
+						AND = {
+							has_global_flag = world_end_africa_the_world
+							OR = {
+								check_variable = { africa_quote_action_id = constant:africa_action.administer_world_regions }
+								check_variable = { africa_quote_action_id = constant:africa_action.contain_terminal_high_chaos }
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	OR = {
+		check_variable = { africa_quote_required_constitution = constant:africa_constitution.uncommitted }
+		check_variable = {
+			var = africa_constitution
+			value = africa_quote_required_constitution
+			compare = equals
+		}
+	}
+}
