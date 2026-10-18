@@ -494,8 +494,12 @@ function runSuite() {
 }
 module.exports = { IntegrationVM, runSuite, worldCensus, stageScalars, stageArrays, decorate, invoke, sample, executeRetained, assertPrivateReset, withoutPrivateForeachState, fixture, activate, assertPublished, snapshotPublic, callCount };
 if (require.main === module) {
-	const report = runSuite(); fs.mkdirSync(evidenceDir, {recursive: true});
-	fs.writeFileSync(path.join(evidenceDir, 'integration_results.json'), JSON.stringify(report, null, 2) + '\n');
+	const report = runSuite();
+	// The tracked receipt records source hashes, so a plain run must not rewrite it; pass --evidence to refresh it.
+	if (process.argv.includes('--evidence')) {
+		fs.mkdirSync(evidenceDir, {recursive: true});
+		fs.writeFileSync(path.join(evidenceDir, 'integration_results.json'), JSON.stringify(report, null, 2) + '\n');
+	}
 	console.log(JSON.stringify({cases: report.cases, passed: report.passed, failures: report.failures, sourceHashes: report.sourceHashes, evidence: path.relative(root, path.join(evidenceDir, 'integration_results.json'))}, null, 2));
 	process.exitCode = report.failures.length ? 1 : 0;
 }
