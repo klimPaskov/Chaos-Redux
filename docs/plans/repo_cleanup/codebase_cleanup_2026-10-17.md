@@ -105,3 +105,31 @@ The user approved designing the items left unresolved above. Disposition: implem
 - Event 032 regression tests (`ef9d22527`): all seven failures were stale assertions against intentional source changes; the suites pass, and the unused history row text was removed (`5ef64acad`).
 
 Remaining limits: the `No font with name UPPER_LEFT` check needs a loaded campaign map and stays unverified; the IW-046 package contacts (TUR, HUN) are a design choice without a source.
+
+## Push readiness and push (2026-10-18)
+
+Disposition: implemented; the user authorized the push once launches were clean.
+
+LFS and tracking cleanup:
+- 90 unused WAVs removed (`11d5c7787`, 1.49 GB): super-event audio plays from the music OGGs, and the unused unit cues had no consumer.
+- 576 unreferenced gameplay textures removed (`ba4061baf`, `3485d83e7`, 41 MB); the asset wiring audit is identical before and after.
+- 566 evidence and receipt files untracked and ignored (`9b973a45c`, `90f6ee6ad`, 454 MB); local copies stay on disk.
+- Every removed binary is archived byte for byte, with its LFS OID, in `C:/Users/klimp/Documents/chaos_redux_lfs_archive/`.
+
+Fixes found on the way:
+- The recoloured Austria cosmetic tag uses the Austrian ideology flags (`e24825771`).
+- The `generic_bioweapon_aerosol` sound effect that 74 biological raid outcomes play is defined again (`874ec8ea6`).
+- HEAD-only consistency: committed files called helpers and textures that existed only as other sessions' uncommitted files. The four helper definitions, one Malta constant, thirteen sprite textures and two duplicate cluster keys were committed (`87f991d04`, `14cb9a1d1`, `0b206aea1`, `d07f471e9`), and a duplicate migration modifier was dropped.
+- Stale regression tests realigned with the current source: Events 12, 25 and 33, the CBRN payload reservation model and the national policy law scores.
+
+Launch: a hands-off `-quickstart -start_tag=GER` run reached the 1936 campaign and a second run reached the main menu, both with an empty `error.log`, an empty `text.log` and no crash.
+
+Push: unpublished history was filtered in a separate bare clone (`C:/Users/klimp/Documents/chaos_redux_push/`). 8,802 history-only LFS pointer blobs became small notices naming path, OID and size, and 1,541 commit messages lost their AI co-author lines. Final tree, commit count, parent topology and the published base were verified unchanged. `master` was pushed fast-forward from `a3ef485c5` to `d07f471e9`, uploading 3,004 LFS objects (466 MB) instead of about 3.9 GB. Local `master` was moved onto the pushed history with the five commits other sessions made meanwhile carried over unchanged; the unfiltered history is kept at `refs/backup/master-unfiltered-2026-10-18`.
+
+Commit IDs in this section are the published ones; earlier sections name pre-filter IDs, which resolve through `refs/backup/master-unfiltered-2026-10-18`.
+
+Remaining:
+- Event 38 Malta Crusaders: 54 paths of another session's work (focus trees, principality tags, governance and principality effects) are uncommitted since 2026-10-11, so the pushed Malta event loads a focus tree that HEAD does not define. A fresh clone of the pushed repository logs that only when Event 38 fires.
+- `chaosx.news.47` in HEAD names a removed picture; it is never fired, and another session's uncommitted edit deletes it.
+- Several tests read evidence under `docs/plans` that is now untracked, so they pass here but not in a fresh clone.
+- Fallout events 607, 614, 621, 740 and 747 keep their own later cleanup after a lost target instead of queuing it immediately like 579, 586 and 600; unifying them would change behaviour.
