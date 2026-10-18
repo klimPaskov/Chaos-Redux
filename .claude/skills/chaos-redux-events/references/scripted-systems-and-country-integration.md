@@ -45,7 +45,14 @@ When a source audit or fixture cannot model this call-frame lifetime, report it 
 For shared dispatchers, locate the matching authorization gate and recursively inspect its body and invoked helpers for actual dispatch and accounting, including package-specific nested branches.
 A flat block-shape assertion or literal marker match does not establish that execution coverage.
 
+For record-consumption transactions, keep validator status such as "already used" or "tombstoned" distinct from a fresh receipt proving that this invocation consumed the exact row.
+Clear the fresh receipt immediately before the consumption attempt, set it only on the exact row mutation, and gate irreversible effects and compensation on that receipt so rejection cannot undo a pre-existing tombstone.
+Actual-source fixtures must exercise already-used or tombstoned rows, transitions to used or tombstoned between validation and consumption, and stale receipts from earlier calls, asserting no irreversible effect or rollback of prior state on rejection and exactly one authorized effect on fresh consumption.
 
+Give every immutable birth/provenance tuple its own publication-generation receipt and publish the complete tuple together.
+Mutable array/cache row presence or absence is not first-publication authority; first publication requires a validated unpublished identity with all tuple receipts absent.
+Same-generation missing or stale row repair must preserve the old tuple rather than restamp it from mutable current fields.
+Partial receipt loss fails closed rather than reconstructing from mutable fields; renewal may publish a new tuple only for a genuine validated newer generation proven against the publication receipt.
 
 When queue processing stops before the end, preserve the unvisited suffix and every unacknowledged receipt rather than clearing the whole queue and rebuilding only visited rows.
 This includes the documented 1,000-iteration ceiling for `while_loop_effect` and `for_loop_effect`; do not infer the same ceiling for foreach loops.
@@ -166,6 +173,12 @@ Cleanup for a nonexistent or dead actor must not clear another living actor's gl
 Partition recorded-owner and physical-holder accounting by the state disposition so each amount is debited and credited once even when both pointers identify the same country.
 Review matching and stale nonces, distinct and identical owner/holder identities, repeated closure, and dead-actor cleanup along the exact source call chains.
 
+Match each entity's current generation to its own birth or installation snapshot, and validate the counterpart's generation separately against that counterpart's snapshot.
+Never compare member generation to carrier generation as proof of shared identity, or infer a missing member receipt from the carrier snapshot.
+
+Before every destructive response, idea, flag, or relation clear during bounded frozen-member cleanup, verify the actual member country, its matching frozen generation row, and the exact current binding.
+Undo only the exact owned relation directions before clearing their ownership and binding receipts; failed validation must preserve the receipts needed for precise recovery and leave unowned relations intact.
+
 When setup helpers require the recipient country as ROOT, invoke them from a hidden triggered-only country event received by that country; regular event targets carry through events fired by the originating effect chain.
 Apply this ROOT contract to country scopes entered by `for_each_scope_loop` or debug dispatch as well.
 Country-owned helpers need an explicit actor input contract or a generation-bound `country_event` relay rooted in the actual recipient.
@@ -280,7 +293,7 @@ Use scripted helpers for formation effects. Do not duplicate formation logic in 
 
 Hidden formables should still have implementation coverage. They need reveal events, hidden flags, visibility triggers, localisation, assets, AI rules, and cleanup.
 
-When exact state control is the formation proof, use the manifest-driven state-puzzle workflow under `.agents/skills/chaos-redux-decisions-missions/templates/formable_state_puzzle/`. Keep the generated state pieces, shared territory helper, formation decision, AI path, and every in-scope decision category synchronized. Complete the companion `category_attachment_audit.md` and list every category that exposes the formable, including shared or phase-specific categories.
+When exact state control is the formation proof, use the manifest-driven state-puzzle workflow under `.claude/skills/chaos-redux-decisions-missions/templates/formable_state_puzzle/`. Keep the generated state pieces, shared territory helper, formation decision, AI path, and every in-scope decision category synchronized. Complete the companion `category_attachment_audit.md` and list every category that exposes the formable, including shared or phase-specific categories.
 
 When an event declares the strict `all_formable_categories` attachment policy, every in-scope formable category must set `scripted_gui = <generated_state_puzzle_gui_id>` and point to the generated `context_type = decision_category` block for its manifest. A category picture, text-only description, or separate status GUI does not satisfy this rule. A missing or mismatched category row is an incomplete formable surface and must remain a blocker in the handoff.
 
