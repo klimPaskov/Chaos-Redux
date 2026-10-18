@@ -460,7 +460,7 @@ function appendFamilyTriggers(lines, manifest, indent, activationHelper = null) 
 		lines.push(`${valueIndent}${activationHelper} = yes`);
 		lines.push(`${indent}}`);
 	}
-	const visibleStates = manifest.states.filter((state) => state.visibility_helper && !state.required);
+	const visibleStates = manifest.states.filter((state) => state.visibility_helper);
 	for (const state of visibleStates) {
 		const names = stateNames(manifest, state);
 		lines.push(`${indent}${names.element}_visible = {`);
@@ -471,7 +471,7 @@ function appendFamilyTriggers(lines, manifest, indent, activationHelper = null) 
 
 function appendFamilyScriptedGui(lines, manifest, indent, { activationHelper = null } = {}) {
 	const propertyIndent = `${indent}\t`;
-	const visibleStates = manifest.states.filter((state) => state.visibility_helper && !state.required);
+	const visibleStates = manifest.states.filter((state) => state.visibility_helper);
 	lines.push(`${indent}properties = {`);
 	appendFamilyProperties(lines, manifest, propertyIndent);
 	lines.push(`${indent}}`);
