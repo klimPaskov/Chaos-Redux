@@ -37,50 +37,53 @@ migration_reception_front_intent_problem_qualifies = {
 # inputs, declared by the transaction walker or the pure cached reader.
 migration_reception_front_intent_identity_is_current = {
 	hidden_trigger = {
-		humanitarian_state_is_valid = yes
-		check_variable = { id = migration_reception_front_intent_identity_origin_id }
-		has_state_flag = humanitarian_corridor_contract_active
-		NOT = { has_state_flag = humanitarian_corridor_cleanup_pending }
-		NOT = { has_state_flag = humanitarian_corridor_route_invalid }
-		NOT = { has_state_flag = humanitarian_corridor_attack_received }
-		NOT = { has_variable = humanitarian_corridor_evacuation_proven }
-		check_variable = { humanitarian_corridor_origin_state_id = id }
-		check_variable = { humanitarian_corridor_front_state_id = migration_reception_front_intent_identity_front_id }
-		check_variable = { humanitarian_corridor_route_generation = migration_reception_front_intent_identity_generation }
-		check_variable = { humanitarian_corridor_requester_country_id = migration_reception_front_intent_identity_requester }
-		check_variable = { humanitarian_corridor_counterpart_country_id = migration_reception_front_intent_identity_receiver }
-		check_variable = { humanitarian_corridor_cohort_id = migration_reception_front_intent_identity_cohort }
-		check_variable = { humanitarian_corridor_operation = constant:humanitarian_corridor_operation.evacuation }
-		is_owned_and_controlled_by = var:migration_reception_front_intent_identity_requester
-		any_neighbor_state = { check_variable = { id = migration_reception_front_intent_identity_front_id } }
-		NOT = { has_state_flag = migration_cohort_selection_ambiguous }
-		NOT = { has_state_flag = migration_cohort_registry_misaligned }
-		has_variable = migration_state_live_cohort_count
-		check_variable = { migration_state_live_cohort_count = constant:humanitarian_runtime.one }
-		check_variable = { migration_current_cohort_id = migration_reception_front_intent_identity_cohort }
-		check_variable = { migration_state_live_cohort_amount = humanitarian_corridor_transfer_people }
-		check_variable = { humanitarian_corridor_transfer_people > constant:humanitarian_population.zero }
-		check_variable = { var = migration_flight_pressure value = humanitarian_corridor_transfer_people compare = greater_than_or_equals }
-		check_variable = { var = migration_state_flight_population value = humanitarian_corridor_transfer_people compare = greater_than_or_equals }
-		OR = {
-			AND = {
-				OR = {
-					check_variable = { migration_reception_front_intent_identity_phase = constant:migration_reception_front_intent.requested }
-					check_variable = { migration_reception_front_intent_identity_phase = constant:migration_reception_front_intent.prepared }
+		if = {
+			limit = { humanitarian_state_is_valid = yes }
+			check_variable = { id = migration_reception_front_intent_identity_origin_id }
+			has_state_flag = humanitarian_corridor_contract_active
+			NOT = { has_state_flag = humanitarian_corridor_cleanup_pending }
+			NOT = { has_state_flag = humanitarian_corridor_route_invalid }
+			NOT = { has_state_flag = humanitarian_corridor_attack_received }
+			NOT = { has_variable = humanitarian_corridor_evacuation_proven }
+			check_variable = { humanitarian_corridor_origin_state_id = id }
+			check_variable = { humanitarian_corridor_front_state_id = migration_reception_front_intent_identity_front_id }
+			check_variable = { humanitarian_corridor_route_generation = migration_reception_front_intent_identity_generation }
+			check_variable = { humanitarian_corridor_requester_country_id = migration_reception_front_intent_identity_requester }
+			check_variable = { humanitarian_corridor_counterpart_country_id = migration_reception_front_intent_identity_receiver }
+			check_variable = { humanitarian_corridor_cohort_id = migration_reception_front_intent_identity_cohort }
+			check_variable = { humanitarian_corridor_operation = constant:humanitarian_corridor_operation.evacuation }
+			is_owned_and_controlled_by = var:migration_reception_front_intent_identity_requester
+			any_neighbor_state = { check_variable = { id = migration_reception_front_intent_identity_front_id } }
+			NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+			NOT = { has_state_flag = migration_cohort_registry_misaligned }
+			has_variable = migration_state_live_cohort_count
+			check_variable = { migration_state_live_cohort_count = constant:humanitarian_runtime.one }
+			check_variable = { migration_current_cohort_id = migration_reception_front_intent_identity_cohort }
+			check_variable = { migration_state_live_cohort_amount = humanitarian_corridor_transfer_people }
+			check_variable = { humanitarian_corridor_transfer_people > constant:humanitarian_population.zero }
+			check_variable = { var = migration_flight_pressure value = humanitarian_corridor_transfer_people compare = greater_than_or_equals }
+			check_variable = { var = migration_state_flight_population value = humanitarian_corridor_transfer_people compare = greater_than_or_equals }
+			OR = {
+				AND = {
+					OR = {
+						check_variable = { migration_reception_front_intent_identity_phase = constant:migration_reception_front_intent.requested }
+						check_variable = { migration_reception_front_intent_identity_phase = constant:migration_reception_front_intent.prepared }
+					}
+					has_state_flag = humanitarian_corridor_offer_pending
+					check_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.offer_pending }
+					has_variable = humanitarian_corridor_offer_deadline
+					check_variable = { global.date < humanitarian_corridor_offer_deadline }
 				}
-				has_state_flag = humanitarian_corridor_offer_pending
-				check_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.offer_pending }
-				has_variable = humanitarian_corridor_offer_deadline
-				check_variable = { global.date < humanitarian_corridor_offer_deadline }
-			}
-			AND = {
-				check_variable = { migration_reception_front_intent_identity_phase = constant:migration_reception_front_intent.agreed }
-				has_state_flag = humanitarian_corridor_response_accepted
-				check_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.accepted }
-				has_variable = humanitarian_corridor_operation_deadline
-				check_variable = { global.date < humanitarian_corridor_operation_deadline }
+				AND = {
+					check_variable = { migration_reception_front_intent_identity_phase = constant:migration_reception_front_intent.agreed }
+					has_state_flag = humanitarian_corridor_response_accepted
+					check_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.accepted }
+					has_variable = humanitarian_corridor_operation_deadline
+					check_variable = { global.date < humanitarian_corridor_operation_deadline }
+				}
 			}
 		}
+		else = { always = no }
 	}
 }
 

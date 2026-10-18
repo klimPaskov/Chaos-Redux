@@ -5,30 +5,40 @@
 
 migration_transport_state_has_mainland_connection = {
 	hidden_trigger = {
-		OR = {
-			var:migration_transport_target = {
-				is_owned_by = PREV
-				is_in_home_area = yes
+		# An unset or zero pointer would run every var: block below in the payer
+		# country scope, so the geography is only read for a populated state.
+		if = {
+			limit = {
+				var:migration_transport_target = {
+					check_variable = { var = state_population_k value = constant:migration_transport_cost.zero compare = greater_than }
+				}
 			}
-			AND = {
-				var:migration_transport_target = { NOT = { is_owned_by = PREV } }
-				# Native railway pathing starts at the paying country's capital.
-				# An existing maximum-level route still qualifies if no further
-				# construction can be requested on it.
-				OR = {
-					has_railway_connection = {
-						start_state = THIS.capital
-						target_state = var:migration_transport_target
-						build_only_on_allied = no
-					}
-					can_build_railway = {
-						start_state = THIS.capital
-						target_state = var:migration_transport_target
-						build_only_on_allied = no
+			OR = {
+				var:migration_transport_target = {
+					is_owned_by = PREV
+					is_in_home_area = yes
+				}
+				AND = {
+					var:migration_transport_target = { NOT = { is_owned_by = PREV } }
+					# Native railway pathing starts at the paying country's capital.
+					# An existing maximum-level route still qualifies if no further
+					# construction can be requested on it.
+					OR = {
+						has_railway_connection = {
+							start_state = THIS.capital
+							target_state = var:migration_transport_target
+							build_only_on_allied = no
+						}
+						can_build_railway = {
+							start_state = THIS.capital
+							target_state = var:migration_transport_target
+							build_only_on_allied = no
+						}
 					}
 				}
 			}
 		}
+		else = { always = no }
 	}
 }
 

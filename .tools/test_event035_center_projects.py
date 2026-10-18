@@ -458,7 +458,28 @@ class Event35Runtime:
             self.call_stack.pop()
 
     def _conditions(self, nodes, scope):
-        return all(self._condition(node, scope) for node in nodes)
+        nodes = list(nodes)
+        index = 0
+        while index < len(nodes):
+            node = nodes[index]
+            index += 1
+            if node.key != "if":
+                if not self._condition(node, scope):
+                    return False
+                continue
+            # Native trigger if: the first matching limit decides the branch and
+            # an unmatched chain without else is true.
+            branches = [(first(node.value, "limit", []), [c for c in node.value if c.key != "limit"])]
+            while index < len(nodes) and nodes[index].key in ("else_if", "else"):
+                branch = nodes[index]
+                index += 1
+                branches.append((first(branch.value, "limit", None), [c for c in branch.value if c.key != "limit"]))
+            for limit, body in branches:
+                if limit is None or self._conditions(limit, scope):
+                    if not self._conditions(body, scope):
+                        return False
+                    break
+        return True
 
     def _condition(self, node, scope):
         key, op, value = node.key, node.op, node.value
@@ -510,6 +531,10 @@ class Event35Runtime:
             if compare not in compares:
                 raise SourceContractError(f"unsupported check_variable compare={compare}")
             return compares[compare](self._variable(args["var"]), self._value(args["value"]))
+        if key == "always":
+            return value == "yes"
+        if key == "has_event_target":
+            return value in self.targets
         if key == "has_variable":
             return self._path_exists(value)
         if key == "has_state_flag":

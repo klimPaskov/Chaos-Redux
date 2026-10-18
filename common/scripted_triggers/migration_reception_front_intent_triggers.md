@@ -22,4 +22,5 @@ The map-mode colour block and the scripted localisation run with the viewing pla
 Readers call only `migration_reception_front_intent_is_visible_to_player` and `migration_reception_front_intent_has_actual_map_context`.
 Those use the state's cached scalars, the six array lengths and one exact lookup of the cached origin state, including that origin's bounded neighbour check.
 They never walk the rows, resolve a cohort, observe food, recalculate capacity or write anything persistent.
+`migration_reception_front_intent_identity_is_current` evaluates its identity checks only inside an `if` whose limit is `humanitarian_state_is_valid`, so an unset cached-origin pointer in country scope returns false.
 A foreign or public viewer fails the first check, so private intent, headcounts and capacity never leak.

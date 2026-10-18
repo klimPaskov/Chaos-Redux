@@ -20,6 +20,8 @@ For a state owned by the payer, it uses native `is_in_home_area = yes`, which ch
 The exact owned-state check is `is_owned_by = PREV` inside `var:migration_transport_target`, where PREV remains the paying country.
 For a foreign-owned target, it tests a native existing railway connection or buildable railway path from `THIS.capital` to `var:migration_transport_target` in the paying country's scope.
 `build_only_on_allied = no` keeps diplomatic ownership from becoming a geographical fee condition, and the action retains its separate control, route-permission and safety gates.
+The predicate evaluates its geography only inside an `if` whose limit requires `var:migration_transport_target` to resolve to a populated state, and it returns false for an unset or zero target.
+`humanitarian_cost_display_resolve_target` applies the same populated-state check to its resolved output, so a native decision shown without a selected state resolves no target and the cost selectors fall through to the unavailable text.
 The existing-connection branch also handles a maximum-level railway for which further construction may be unavailable.
 The foreign state's owner-relative home area cannot waive the occupying payer's sea-transport fee.
 These are native land-path semantics, not proof of an operational supply route or permission to move people, and native pathing over special terrain or straits remains engine behavior rather than a local simulation claim.

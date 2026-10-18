@@ -99,14 +99,19 @@ migration_reception_policy_is_humanitarian_open = {
 # old selector, stale origin, or ambiguous row fails closed.
 migration_decision_exact_hosted_cohort_is_valid = {
 	hidden_trigger = {
-		humanitarian_state_is_valid = yes
-		migration_cohort_arrays_are_aligned = yes
-		NOT = { has_state_flag = migration_cohort_selection_ambiguous }
-		has_variable = migration_current_cohort_id
-		has_variable = migration_state_live_cohort_count
-		check_variable = { var = migration_state_live_cohort_count value = constant:humanitarian_runtime.one compare = equals }
-		has_variable = migration_state_live_cohort_amount
-		check_variable = { var = migration_state_live_cohort_amount value = constant:humanitarian_population.zero compare = greater_than }
+		if = {
+			limit = {
+				humanitarian_state_is_valid = yes
+			}
+			migration_cohort_arrays_are_aligned = yes
+			NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+			has_variable = migration_current_cohort_id
+			has_variable = migration_state_live_cohort_count
+			check_variable = { var = migration_state_live_cohort_count value = constant:humanitarian_runtime.one compare = equals }
+			has_variable = migration_state_live_cohort_amount
+			check_variable = { var = migration_state_live_cohort_amount value = constant:humanitarian_population.zero compare = greater_than }
+		}
+		else = { always = no }
 	}
 }
 

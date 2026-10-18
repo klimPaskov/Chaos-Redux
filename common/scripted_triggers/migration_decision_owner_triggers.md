@@ -10,6 +10,7 @@ A tiny positive pending row, a quiet food observation, and an initialized regist
 The predicate changes presentation and response eligibility only; it does not create a cohort, grant services or capacity, accept a route, move people, or record deaths.
 
 `migration_decision_exact_hosted_cohort_is_valid` is state-scoped and requires one aligned positive live row whose persisted host is the acting state as reflected by the core reconciler's state counters. It fails closed on stale, ambiguous, or missing selectors.
+Its checks run only inside an `if` whose limit is `humanitarian_state_is_valid`, so a caller that reaches it through an unset `var:` pointer in country scope gets false without evaluating state flags.
 
 `migration_decision_reception_host_is_valid` is country-scoped and requires a valid current capacity revision, a positive load, and remaining effective people capacity; actions that admit more people use it. `migration_decision_reception_load_is_valid` keeps the same revision proof while allowing an overloaded host, so every action that relieves the burden (Close the Border, Enforce the Closure, Distribute Arrivals, Permit Transit, Local Integration, Help Families Return, Force Repatriation) stays available when the host is over capacity. `migration_decision_reception_state_load_is_valid` is its state-scoped companion over the exact hosted cohort. Those host actions also refuse a state whose own people are being evacuated (`migration_evacuation_prepared`), so one state's people are never moved by two actions at once.
 

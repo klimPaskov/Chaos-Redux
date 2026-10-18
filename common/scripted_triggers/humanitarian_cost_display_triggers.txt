@@ -25,5 +25,10 @@ humanitarian_cost_display_resolve_target = {
 				set_temp_variable = { migration_transport_target = FROM }
 			}
 		}
+		# A native decision shown without a selected state resolves no target, and
+		# a zero output must not reach the geography and price triggers.
+		var:migration_transport_target = {
+			check_variable = { var = state_population_k value = constant:migration_transport_cost.zero compare = greater_than }
+		}
 	}
 }

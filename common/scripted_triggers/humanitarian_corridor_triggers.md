@@ -6,6 +6,8 @@ Persisted requester identity, not ambient ROOT, governs later war/faction/owner/
 
 `humanitarian_corridor_front_is_preparable` proves current food, positive population, native infrastructure/rail/bombing facts and all supported hazards, including trapped population, persecution, camps, contamination, fallout, outbreak, zombie and disaster channels.
 It does not prove paid services/capacity or authorize movement.
+`humanitarian_corridor_origin_is_valid` and `humanitarian_corridor_front_is_preparable` evaluate their state-only checks only inside an `if` whose limit proves a populated, valid STATE (and, for the origin predicate, the saved requester event target).
+A pointer that is unset or resolves to the caller's country scope therefore returns false without evaluating state-only triggers or the requester event target.
 `humanitarian_corridor_front_destination_is_safe` adds a current valid receiver capacity revision and the existing optional-load spare check: load absent, or load strictly below capacity.
 Relief at exactly full capacity is excluded; missing load retains the existing defined zero-load default.
 Before evacuation, a positive whole amount satisfying `load + amount <= capacity` already implies this spare check.

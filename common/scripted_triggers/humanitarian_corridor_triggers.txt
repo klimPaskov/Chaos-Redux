@@ -13,20 +13,25 @@
 # second request from overwriting an exact counterpart binding.
 humanitarian_corridor_origin_is_valid = {
 	hidden_trigger = {
-		humanitarian_state_is_valid = yes
-		has_event_target = humanitarian_corridor_requester
-		event_target:humanitarian_corridor_requester = { humanitarian_country_is_valid = yes }
-		is_owned_and_controlled_by = event_target:humanitarian_corridor_requester
-		migration_decision_exact_hosted_cohort_is_valid = yes
-		has_state_flag = migration_population_trapped
-		has_variable = migration_trapped_population
-		check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than }
-		has_variable = migration_current_cohort_id
-		NOT = { has_state_flag = migration_cohort_selection_ambiguous }
-		OWNER = { humanitarian_country_is_valid = yes }
-		CONTROLLER = { humanitarian_country_is_valid = yes }
-		NOT = { has_state_flag = humanitarian_corridor_contract_active }
-		NOT = { has_state_flag = humanitarian_corridor_cleanup_pending }
+		if = {
+			limit = {
+				humanitarian_state_is_valid = yes
+				has_event_target = humanitarian_corridor_requester
+			}
+			event_target:humanitarian_corridor_requester = { humanitarian_country_is_valid = yes }
+			is_owned_and_controlled_by = event_target:humanitarian_corridor_requester
+			migration_decision_exact_hosted_cohort_is_valid = yes
+			has_state_flag = migration_population_trapped
+			has_variable = migration_trapped_population
+			check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than }
+			has_variable = migration_current_cohort_id
+			NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+			OWNER = { humanitarian_country_is_valid = yes }
+			CONTROLLER = { humanitarian_country_is_valid = yes }
+			NOT = { has_state_flag = humanitarian_corridor_contract_active }
+			NOT = { has_state_flag = humanitarian_corridor_cleanup_pending }
+		}
+		else = { always = no }
 	}
 }
 
@@ -97,31 +102,36 @@ humanitarian_corridor_counterpart_is_valid = {
 # as affirmative evidence.
 humanitarian_corridor_front_is_preparable = {
 	hidden_trigger = {
-		humanitarian_state_is_valid = yes
-		NOT = { has_state_flag = migration_population_trapped }
-		state_population_k > constant:humanitarian_population.zero
-		famine_to_migration_food_safety_is_valid = yes
-		check_variable = { var = famine_to_migration_food_stage value = constant:migration_capacity.food_safe_stage compare = less_than_or_equals }
-		infrastructure > constant:migration_destination_selection_threshold.minimum_route_infrastructure
-		# Native projections are current-value checks; the state flags are
-		# only their sparse live mirrors and are never replaced by an unsafe flag.
-		check_variable = { var = damaged_building_level@rail_way value = constant:civilian_transfer_route_projection.damage_threshold compare = less_than_or_equals }
-		check_variable = { var = days_since_last_strategic_bombing value = constant:chaos_meter_deaths.strategic_bombing_days_recent compare = greater_than_or_equals }
-		NOT = { has_state_flag = civilian_transfer_route_damaged }
-		NOT = { has_state_flag = migration_bombing_active }
-		NOT = { has_state_flag = migration_persecution_active }
-		NOT = { genocide_state_has_active_camps = yes }
-		NOT = { is_valid_camp_active_site_state = yes }
-		NOT = { cbrn_state_has_chemical_contamination = yes }
-		NOT = { has_dynamic_modifier = { modifier = nuclear_fallout_state } }
-		NOT = { black_plague_state_is_infected_or_worse = yes }
-		NOT = { is_zombie_controlled_state = yes }
-		NOT = { has_state_flag = natural_disaster_warning_scheduled }
-		NOT = { has_state_flag = natural_disaster_warning_active }
-		NOT = { has_state_flag = natural_disaster_impact_scheduled }
-		NOT = { has_state_flag = natural_disaster_aftermath_active }
-		NOT = { has_state_flag = natural_disaster_recovery_unresolved_territory }
-		NOT = { natural_disaster_state_has_unresolved_chain = yes }
+		if = {
+			limit = {
+				humanitarian_state_is_valid = yes
+			}
+			NOT = { has_state_flag = migration_population_trapped }
+			state_population_k > constant:humanitarian_population.zero
+			famine_to_migration_food_safety_is_valid = yes
+			check_variable = { var = famine_to_migration_food_stage value = constant:migration_capacity.food_safe_stage compare = less_than_or_equals }
+			infrastructure > constant:migration_destination_selection_threshold.minimum_route_infrastructure
+			# Native projections are current-value checks; the state flags are
+			# only their sparse live mirrors and are never replaced by an unsafe flag.
+			check_variable = { var = damaged_building_level@rail_way value = constant:civilian_transfer_route_projection.damage_threshold compare = less_than_or_equals }
+			check_variable = { var = days_since_last_strategic_bombing value = constant:chaos_meter_deaths.strategic_bombing_days_recent compare = greater_than_or_equals }
+			NOT = { has_state_flag = civilian_transfer_route_damaged }
+			NOT = { has_state_flag = migration_bombing_active }
+			NOT = { has_state_flag = migration_persecution_active }
+			NOT = { genocide_state_has_active_camps = yes }
+			NOT = { is_valid_camp_active_site_state = yes }
+			NOT = { cbrn_state_has_chemical_contamination = yes }
+			NOT = { has_dynamic_modifier = { modifier = nuclear_fallout_state } }
+			NOT = { black_plague_state_is_infected_or_worse = yes }
+			NOT = { is_zombie_controlled_state = yes }
+			NOT = { has_state_flag = natural_disaster_warning_scheduled }
+			NOT = { has_state_flag = natural_disaster_warning_active }
+			NOT = { has_state_flag = natural_disaster_impact_scheduled }
+			NOT = { has_state_flag = natural_disaster_aftermath_active }
+			NOT = { has_state_flag = natural_disaster_recovery_unresolved_territory }
+			NOT = { natural_disaster_state_has_unresolved_chain = yes }
+		}
+		else = { always = no }
 	}
 }
 
