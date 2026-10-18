@@ -2,7 +2,7 @@
 
 - Logical role: SE01 Worldwide Opening, reserved presentation slot 121.
 - Proposed unique runtime basename: `super_event_091_the_great_revolution_worldwide_opening_source_placeholder.dds`.
-- Proposed runtime path: `gfx/event_pictures/091_the_great_revolution/super_event_091_the_great_revolution_worldwide_opening_source_placeholder.dds`.
+- Proposed runtime path: `gfx/super_events/091_the_great_revolution/super_event_091_the_great_revolution_worldwide_opening_source_placeholder.dds`.
 - Proposed unique sprite: `GFX_super_event_091_the_great_revolution_worldwide_opening_source_placeholder`.
 - Suggested registry: parent-owned `interface/chaosx_super_events.gfx`, consistent with the existing Event 091 scene handoff. No registry or consumer was edited here.
 - Source: `source/lenin_goldstein_after_speech_1920.jpg`, SHA-256 `CCE1B67B766D82C12EE4D484A0D14B97579DB6D2E2C703311141514900B274DE`.

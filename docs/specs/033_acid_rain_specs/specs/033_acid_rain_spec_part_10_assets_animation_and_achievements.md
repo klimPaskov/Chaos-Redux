@@ -22,7 +22,7 @@ Generated art is appropriate for event scenes, decision icons, state icons, map 
 
 | Asset | Size | Delivered file | Use |
 | --- | --- | --- | --- |
-| Formation super-event | 457 by 328 | `gfx/event_pictures/super_events/033_acid_rain.dds` | Mandatory formation super-event |
+| Formation super-event | 457 by 328 | `gfx/super_events/033_acid_rain/033_acid_rain.dds` | Mandatory formation super-event |
 | National arrival report | 210 by 176 | `gfx/event_pictures/033_acid_rain/033_acid_rain_arrival.dds` | First national exposure |
 | Shelter response report | 210 by 176 | `gfx/event_pictures/033_acid_rain/033_acid_rain_shelter.dds` | Preparation success |
 | Severe-cell report | 210 by 176 | `gfx/event_pictures/033_acid_rain/033_acid_rain_severe.dds` | Forecast or impact |

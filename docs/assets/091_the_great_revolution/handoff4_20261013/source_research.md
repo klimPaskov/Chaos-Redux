@@ -17,7 +17,7 @@ The Commons file page asserts public-domain status in Russia under its term rule
 The source remains unchanged. The processed preview is a centered aspect crop `(177, 0, 5137, 3560)` resized with Lanczos to exactly 457x328. No face, symbol, scene element, tonal treatment, color treatment, or composite was added.
 
 - Processed PNG: `processed_png/super_event_091_the_great_revolution_worldwide_opening_source_placeholder.png`, 457x328 RGB, SHA-256 `B740D315A581FD77494EE49C7022579C8F502DBF3FE463363D0A9EDCC0946436`.
-- Proposed runtime DDS: `gfx/event_pictures/091_the_great_revolution/super_event_091_the_great_revolution_worldwide_opening_source_placeholder.dds`, 599,712 bytes, SHA-256 `11BE8FAF77BEDD633C0447312B2893D3C4637057464223EF75C0D6A0EF49B0FC`.
+- Proposed runtime DDS: `gfx/super_events/091_the_great_revolution/super_event_091_the_great_revolution_worldwide_opening_source_placeholder.dds`, 599,712 bytes, SHA-256 `11BE8FAF77BEDD633C0447312B2893D3C4637057464223EF75C0D6A0EF49B0FC`.
 - DDS uses the repository converter, 124-byte DDS header, 457x328, 32-bit BGRA masks, one level and opaque alpha (255 throughout). Decoded RGBA pixels match the processed PNG exactly.
 - Comparison contact sheet: `contact_sheets/lenin_se01_three_source_comparison.png`, 1371x372, SHA-256 `7A06E24FA35E9A1E0F2E3E59E3769025C8AD99087910B72E551C15E3793B7562`. It compares the two unchanged candidate originals from `shard4_se01_source_research_20261011/` with this crop.
 

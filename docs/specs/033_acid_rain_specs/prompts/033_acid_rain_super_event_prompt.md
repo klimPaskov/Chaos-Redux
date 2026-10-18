@@ -4,7 +4,7 @@ The formation super-event is implemented as super-event `117`; Part 9 owns its t
 
 ## Implemented package
 
-- Image: `gfx/event_pictures/super_events/033_acid_rain.dds`, 457 by 328, sprite `GFX_super_event_033_acid_rain`.
+- Image: `gfx/super_events/033_acid_rain/033_acid_rain.dds`, 457 by 328, sprite `GFX_super_event_033_acid_rain`.
 - Text: `chaosx_super_event.117.t`, `.q`, `.a` and `.d` in `localisation/english/033_acid_rain_l_english.yml`.
 - Audio: `sound/033_acid_rain/super_event_033_acid_rain_formation.wav` and `.ogg`, playback ID 117, with its rights and audition record in `music/chaosx_music_track_list.html`.
 
