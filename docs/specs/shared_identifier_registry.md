@@ -115,6 +115,9 @@ Chaos Always Wins uses the shared primary sort value 10 within its event, which 
 | 122 | The Red World terminal branch | Event 091 | Reserved for proposed design |
 | 123 | The Great Revolution earned defeat | Event 091 | Reserved for proposed design |
 | 124 | Chaos Always Wins | Event 103 | Reserved for proposed design |
+| 125 | Durable Union of Hosts | Event 112, SE01 | Reserved for proposed design |
+| 126 | Cossack Russia formation | Event 112, SE02 | Reserved for proposed design |
+| 127 | Golden Horde formation | Event 112, SE03 | Reserved for proposed design |
 
 The presentation namespace uses the value of `super_event_visible`, separately from triggerable and world-end scenario IDs.
 Slot 117 belongs to Acid Rain and slot 118 belongs to the Gods of Africa global-credibility presentation; both use constant-based selectors and must be included when checking occupancy.
@@ -127,6 +130,8 @@ The matching numbers are an explicit mapping between separate namespaces, not a 
 The 9 October import review checked current literal and constant selectors, source dispatch inputs, sound registrations, canonical workbook entries, and existing planning reservations before these allocations.
 Event 103 independently reserves presentation 124 and playback audio 124 for Chaos Always Wins after the 10 October current-source and planning-reservation check.
 Sound volume-wrapper names use playback audio ID 124, independently from the presentation mapping.
+Event 112 independently reserves presentations 125, 126 and 127 and playback audio 125, 126 and 127 for SE01, SE02 and SE03 respectively.
+The 10 October source check includes literal and constant selectors, sound wrappers, current reservations and 33 resolved dynamic-dispatch caller inputs.
 Keep each final recording and sound registration unique, and recheck occupancy before runtime wiring.
 
 ## Imported event identity proposals
@@ -135,19 +140,27 @@ Event roots use their own namespace, separately from scenario and presentation n
 The user explicitly selected uploaded IDs 104 and 105 on 10 October 2026, establishing Rule 104 and Random Idea 105 as the planning identities.
 Tasks 101 retains its matching catalog identity.
 The import records the older catalog labels without migrating runtime or workbook entries.
-The source reviews found no event definitions in the 101, 102, 103, 104, 105, 107 or 110 namespaces.
+The source reviews found no event definitions in the 101, 102, 103, 104, 105, 107, 108, 110, 112, 113 or 122 namespaces.
 
 | Planned event ID | Imported package | Current workbook label | Disposition |
 | --- | --- | --- | --- |
 | 101 | [Tasks](101_tasks_specs/README.md) | Tasks | Reserved imported proposal, current catalog Unavailable |
 | 102 | [Serial Killer](102_serial_killer_specs/102_serial_killer_spec_part_1_core.md) | Serial killer | Reserved imported proposal, current catalog Unavailable |
 | 103 | [Chaos Directorate](103_chaos_directorate_specs/00_package_guide.md) | Conscription | Imported replacement proposal explicitly stated in its source brief |
-| 104 | [Rule](104_rule_specs/104_rule_reading_guide.md) | Stability or War support | User-confirmed Rule identity, legacy catalog row 107 stays held |
+| 104 | [Rule](104_rule_specs/104_rule_reading_guide.md) | Stability or War support | User-confirmed Rule identity, former 107 hold explicitly released for Lootboxes |
 | 105 | [Random Idea](105_random_idea_specs/README.md) | Anti-player ideology | User-confirmed Random Idea identity, legacy catalog row 110 stays held |
+| 107 | [Lootboxes](107_lootboxes_specs/README.md) | Rule | User-confirmed identity, original Lootboxes catalog row 112 recorded for migration |
+| 108 | [Wrestling Tournament](108_wrestling_tournament_specs/00%20-%20Package%20Guide.md) | Fury | User-confirmed identity, original catalog row 113 stays held |
+| 112 | [Rise of Cossacks](112_rise_of_cossacks_specs/README.md) | Lootboxes | User-confirmed identity, original catalog row 122 stays held |
 
 The current import handoffs record the exact user decision.
-Catalog migration remains queued for its authorized implementation scope, while IDs 107 and 110 remain held legacy identities rather than free slots.
-Do not reuse the held catalog IDs, silently overwrite the displaced concepts, or infer runtime registration from the imported folder names.
+On 10 October 2026 the user selected uploaded IDs 107 Lootboxes, 108 Wrestling Tournament and 112 Rise of Cossacks, explicitly releasing the former Rule 107 hold.
+Rule retains planning ID 104.
+Legacy catalog IDs 110, 113 and 122 remain held against reuse.
+The displaced Fury catalog concept at 108 remains recorded with its later identity unresolved.
+Its name alone does not establish equivalence with Event 007 World in Fury.
+Catalog migration remains queued for authorized implementation work.
+Do not reuse the held catalog IDs, silently delete displaced concepts, or infer runtime registration from the imported folder names.
 The machine-readable entries preserve the exact catalog labels, proposed roots, evidence and holds.
 Achievement, helper, sprite, scenario and cluster names remain separate identifiers with their own ownership.
 
@@ -170,6 +183,10 @@ Its installed collision scan found this checkout and its matching QA copy only.
 Their owner packages must reuse and inspect them instead of treating those tags as free candidates.
 The REV scan also found the same identity in the installed Random Events Mod (Workshop 3199436992) and the Chaos Redux QA checkout.
 Those external definitions are a compatibility consideration, not a reason to allocate a second Event 091 tag or rename its incumbent identity during documentation import.
+DHC and KHC remain the Event 005 Don and Kuban carriers, reused by the proposed Event 112 admission contract.
+The installed tag/cosmetic scan found this checkout and its identical QA copy only.
+Living countries retain their content, and dormant admission must reconcile the current random-name history with grounded identity requirements.
+Event 112 leaves generic carrier allocation to its declared geography and admission audit, so those unspecified slots are not represented as reserved tags.
 The duplicate Event 012 package is historical provenance, and the two Event 097 design variants share the existing `chaosx.nr97.1` root.
 Their presence does not allocate another runtime namespace.
 

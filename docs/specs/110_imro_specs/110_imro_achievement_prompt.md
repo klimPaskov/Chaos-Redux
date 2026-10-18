@@ -1,0 +1,95 @@
+# Event 110 IMRO achievement implementation and asset prompt
+
+Implement every achievement below through the current custom achievement framework. Read the current project AGENTS, events and asset skills, [the package index](README.md), [the achievement specification](110_imro_spec_part_10_achievements.md), [the action and AI map](110_imro_spec_part_8_actions_missions_ai.md), [the integration handoff](110_imro_integration_handoff.md) and [the asset prompt](110_imro_asset_prompt.md). The complete register is repeated below so this production prompt carries every required challenge, actor, condition, disqualifier, difficulty, visibility, icon and tracking obligation.
+
+All challenge labels and descriptions of writing intent are working directions, not final localisation. Inspect the actual achievement registry, eligibility policy, state variants and player-attribution rules before allocating runtime identifiers. Implement predicates, progress and invalidation through the current owner. Create the final title and description from the exact challenge, wire localisation and all icon states, document every receipt and avoid trivial awards for simply firing the event.
+
+## Description directions
+
+| ID | What the final description must communicate |
+| --- | --- |
+| IMRO-A01 | The difficult opening, negotiated autonomy, completed review and further year of honoured terms |
+| IMRO-A02 | A weak low-Chaos start, military self-reliance before independence and a full year of survival |
+| IMRO-A03 | Mature civic government, sustained postwar Mandate and two honoured settlements |
+| IMRO-A04 | Anarchist institutions surviving a real invasion while fulfilling voluntary foreign aid |
+| IMRO-A05 | Independent socialist federal industry sustained with three other sovereign partners |
+| IMRO-A06 | Real patron assistance, fulfilled obligations, alternative supply and an independent break |
+| IMRO-A07 | The exact settled territorial puzzle, civic integration and continued consent |
+| IMRO-A08 | Central revolutionary victory followed by actual lasting civilian limits |
+| IMRO-A09 | Three constitutionally different sovereign partners, resolved disputes and a year of consent |
+| IMRO-A10 | A genuine two-patron conflict, replacement supply and partners preserved after refusal |
+| IMRO-A11 | A qualifying global wave, the fixed original cohort, the 80-percent survival target and three theatres of protection |
+| IMRO-A12 | A formerly dependent player resisting restoration, settling its war and helping another new state |
+| IMRO-A13 | A former master's complete recognition, verified peace and voluntary rebuilding with three former subjects |
+| IMRO-A14 | The nested subject structure, the intermediate country's separate choice and both levels' sustained sovereignty |
+| IMRO-A15 | A lasting global charter with three resolved regional struggles and no coerced command |
+| IMRO-A16 | Defeating the 800-Chaos institutional crisis and preserving independent cooperating members |
+| IMRO-A17 | Rejecting the doctrine, materially helping defeat a locked campaign and keeping a real rescued cohort alive |
+| IMRO-A18 | Active contribution against a multiregional terminal campaign and 180 days of living recovery |
+| IMRO-A19 | A legitimate terminal lock followed by exact verified human extinction, including the founder's own population |
+
+If production is staged, implement local-country tracking first, then regional/global records, then radical and terminal attribution. All nineteen remain required for a complete feature. A staged order is not permission to omit the difficult final predicates.
+
+Give each achievement and each icon state an explicit manifest row. The icon worker creates original challenge-specific 64 by 64 art after inspecting current style references. The parent wires the actual framework consumers and verifies locked, unlocked and unavailable or failed states. The exact state names follow the inspected framework.
+
+Test meaningful boundaries, including just-short durations, exact Mandate thresholds, false aid, changed human control, frozen denominators, partial peace, a surviving migrant, regime defeat and terminal controller attribution after the country has no living humans. Never award extinction early to work around a framework limitation. Preserve the pending blocker until its shared owner supports the required receipt and attribution.
+
+Deliver all runtime identities, exact source predicates, progress and disqualification receipts, localisation, three-state icons, validation evidence and a nineteen-row completion crosswalk. Report every unresolved or substituted condition. The canonical source register follows.
+
+## Complete achievement register
+
+Achievements reward difficult route commitments, credible peace, sustained independence, coalition integrity and the rare terminal outcomes. They use the project's custom achievement framework. No claim is made about Steam achievements or engine-supported achievement attribution after country elimination until the actual framework is inspected.
+
+Every label below is a working design label, not final localisation. The final title and description should communicate the challenge precisely, with restrained irony only where the outcome supports it. Each achievement requires a distinct original 64 by 64 icon and all three states required by the existing framework. Locked and failed states must remain legible, rather than being an unreadable darkened copy.
+
+### Local struggle and country building
+
+| ID | Working challenge and eligible player | Exact unlock conditions | Disqualifiers and tracking | Difficulty, visibility and icon direction |
+| --- | --- | --- | --- | --- |
+| IMRO-A01 | Honoured autonomy, affected controller | Resolve a dangerous or exceptional IMRO opening through autonomy, complete the first review and honour the compact for 365 further days while retaining the agreed civic institutions | Any controller breach, deliberate collective-repression choice or controller-attributed civilian death during compact enforcement disqualifies. Track starting band, signed terms, review and elapsed compliant time | Hard, visible after relevant opening. A sealed compact beside an unbroken local assembly symbol |
+| IMRO-A02 | Independence with scarce means, IMRO Macedonia | Begin from a fragile or established opening below Chaos 200, accept no foreign military delivery before independence, win or negotiate genuine independence and survive 365 days | No console/manual test origin, borrowed duplicate army, inherited independent-country opening or undisclosed delivered military aid. Ordinary diaspora political advocacy is allowed | Hard, visible. A small mountain standard and a repaired rifle with restrained composition |
+| IMRO-A03 | Constitutional endurance, civic Macedonia | Complete mature civic institutions, maintain Mandate at least 75 for 180 days after a major defensive war, and resolve at least two territorial or partner disputes by honoured agreement | A coercive integration, broken civic guarantee or radical government during the qualifying run resets or disqualifies as appropriate | Hard, visible on civic commitment. An assembly building, ballot and repaired border marker |
+| IMRO-A04 | Confederation under invasion, anarchist Macedonia | Complete federated logistics and elected command, defeat a real invasion, preserve recallable delegates throughout, and complete two useful voluntary foreign aid obligations | Permanent-command constitutional exit, imposed annexation or an expired unrenewed emergency mandate during the defence disqualifies | Very hard, visible on anarchist commitment. Interlocking local assembly seals around a defensive shield |
+| IMRO-A05 | Independent federal industry, socialist federal Macedonia | Complete the independent federal fork and complementary production with at least three other sovereign consenting states, keep all partners independent for 365 days and fulfil each agreed industrial obligation | Binding external subject status, coerced consent, cloned factories or absorption without explicit separate consent disqualifies | Hard, visible. Several different workshop forms joined by a common plan |
+| IMRO-A06 | Patron without ownership, any nonradical Macedonia | Receive and fulfil a major patron contract, build a viable alternative supply relationship, renegotiate away all coercive obligations and survive 180 days independently after the break | A fictional repayment receipt, still-active exclusive command or subject relationship, or destruction of the original contracting actor before obligations are resolved disqualifies | Hard, hidden until a major patron contract exists. A cut external tether beside retained tools and supplies |
+| IMRO-A07 | Reunification with consent, eligible Macedonia | Complete the exact Macedonian territorial puzzle through verified settlements and civic integration, with Mandate at least 70 and every territorial guarantee honoured for 180 days | Occupied-only pieces, missing mixed-state qualification, collective-repression integration or a bypassed consent condition disqualifies | Very hard, visible when the full territorial route is revealed. Exact state-piece composition after map binding |
+| IMRO-A08 | Reform after command, central revolutionary Macedonia | Complete the developmental or permanent-command route, survive a major war, implement the late reform path and sustain the resulting civilian limits for 365 days | Cosmetic ideology change without institutional reform, continuing unbounded emergency powers or radical takeover disqualifies | Hard, hidden until central command matures. Military insignia set below a constitutional seal |
+
+### Regional and worldwide liberation
+
+| ID | Working challenge and eligible player | Exact unlock conditions | Disqualifiers and tracking | Difficulty, visibility and icon direction |
+| --- | --- | --- | --- | --- |
+| IMRO-A09 | Partners with different futures, network coordinator | Maintain a compact with at least three other independent partners from at least three distinct constitutional route families, resolve two real internal disputes and complete 365 days of continued consent | Same-identity duplicate partners, coerced government replacement, undisclosed annexation or nominal unfulfilled membership disqualifies | Hard, visible after regional compact. Distinct local symbols sharing a round table |
+| IMRO-A10 | A network escapes its patrons, Macedonia or valid successor coordinator | Resolve a documented two-patron conflict, preserve at least three other sovereign partners, complete replacement supply and endure 180 days after both incompatible demands are refused or renegotiated | A patron had no real contract or contribution, accepted covert exclusive control, or the network lost its sovereignty disqualifies | Very hard, hidden until the conflict. Two broken external claim markers around intact local links |
+| IMRO-A11 | Defend the founding wave, IMRO coordinator | Complete Freedom or Death with at least six former subjects across three macroregions, keep at least 80 percent of that frozen cohort independent for 365 days and fulfil protection obligations in three distinct theatres | Resetting the cohort denominator, excluding human subjects, restoring subject status through cleanup or fabricating peace disqualifies | Very hard, visible after a qualifying global launch. Several rising national standards with a coherent shared frame |
+| IMRO-A12 | Sovereignty under pressure, former subject including a human player | Be included in the compulsory cohort, face a master that chose restoration, remain independent through the actual settlement and survive 180 days afterward while completing one useful aid obligation to another former subject | Already independent before the snapshot, duplicate declaration, re-subjecting before the qualifying period ends or manual test origin disqualifies | Hard, visible to eligible former subjects. A broken subject chain beside a defended homeland |
+| IMRO-A13 | Recognise and rebuild, former master | Accept every direct snapshot subject, verify all eligible restoration exits, honour independence for 365 days and conclude useful voluntary trade or recovery agreements with at least three of those countries | Partial acceptance, unrelated-war destruction masquerading as settlement, coerced new dependency or re-subjugation disqualifies | Hard, visible only for masters with at least three snapshot children. An old imperial seal beside three equal treaty seals |
+| IMRO-A14 | Freedom reaches the next level, intermediate former master B in A-B-C hierarchy | B and C both become independent in the same global cohort, B accepts all its own snapshot children, B and at least one such child defend independence from their respective threats and remain sovereign for 365 days | Retargeting C's war to A, automatic acceptance without the required choice, hidden continuing subject relation or skipped nested child disqualifies | Very hard, hidden until a real nested cohort exists. Two separate broken links with equal small standards |
+| IMRO-A15 | A Front without a new empire, charter coordinator | Keep a qualifying worldwide Front active for 365 days after the first regional victory, resolve three major regional struggles while honouring the charter and never use coerced central command | Attacking a member to compel command, forced absorption, radical rule or evading the roster with fake withdrawal disqualifies | Very hard, visible on charter commitment. A common charter surrounded by distinct sovereign emblems |
+
+### Radical contest, survival and extinction
+
+| ID | Working challenge and eligible player | Exact unlock conditions | Disqualifiers and tracking | Difficulty, visibility and icon direction |
+| --- | --- | --- | --- | --- |
+| IMRO-A16 | Preserve the original promise, legitimate IMRO Macedonia | At Chaos at least 800 after a qualifying global liberation, defeat the radical contest through stated institutional objectives and keep at least three other Front members independent and cooperating for 365 days | Accepting the doctrine, a hidden forced coup override, coerced member control or a new successful radical takeover during the run disqualifies | Very hard, hidden until the contest. Original liberation emblem repaired rather than transformed |
+| IMRO-A17 | Liberators against their founder, rejecting former Front member | Reject the doctrine, remain independent, make a material recorded contribution to defeating an actually locked IMRO terminal campaign and preserve a measured rescued civilian cohort until recovery | Neutral observation without contribution, campaign never locked, zero actual survivors, double-counted migrants or later adoption of the doctrine disqualifies | Very hard, visible after rejection. A reversed revolutionary standard shielding surviving civic figures |
+| IMRO-A18 | Humanity survives, any human sovereign opponent | Help verifiably defeat a locked campaign after it caused actual shared-system losses in at least two macroregions, retain a positive reconciled human population and complete 180 days of recovery | Defeat only cosmetic, stale campaign jobs still active, fabricated population restoration or merely waiting for another event to erase IMRO without participation disqualifies | Very hard, visible when the campaign becomes global. A surviving light in a damaged institutional frame |
+| IMRO-A19 | The founder's last victim, original human controller of the radical IMRO lineage | Complete a legitimate >1000 lock, carry the campaign through actual territorial and population consequences, and obtain the fresh zero-human terminal receipt including IMRO's own humans | Any positive or unresolved survivor carrier, conquest-only flag, excluded own population, arbitrary epsilon, console/manual origin or ledger mismatch disqualifies | Extreme, hidden. The fictional radical emblem extinguished with no human figure remaining |
+
+### Tracking contracts
+
+Use the project's existing achievement identities and append-only registry process. The design IDs above are symbolic until reservation. Do not assign a shared numerical achievement ID based on a gap in an old catalog. Every achievement row needs a source route, eligible actor, start receipt, progress predicate, disqualifier, completion predicate, reset policy and final attribution rule.
+
+Frozen cohorts stay frozen. An 80-percent independence target uses the original valid launch cohort, not the current smaller roster. A lost country cannot be removed from the denominator to improve progress. A government change does not duplicate an earned result. A human switching countries after the qualifying start must follow the framework's defined player-attribution policy and cannot claim two copies of one achievement.
+
+Military contributions need actual participation evidence such as a qualifying defence, delivered useful support or an agreed operation that helped defeat the regime. A one-rifle shipment or symbolic declaration is insufficient. Rescue achievements use measured surviving people through the migration ledger, with no double credit for origin departure and destination arrival.
+
+The extinction achievement is attributed to the recorded original human controller of the qualifying radical lineage through the global custom-achievement owner. It is granted only after the zero-human receipt, even though the country has no living population at that moment. The framework must prove that posthumous or terminal attribution is supported. If it is not, implement that owner capability rather than awarding the achievement before extinction or leaving a living operator solely to click a button.
+
+Manual developer scenarios and artificial test-state entry use a visible test-origin flag that excludes normal challenge achievements. Ordinary event-menu play follows the project's actual achievement policy rather than inventing a new blanket restriction. Do not assume a debug or manual origin merely because a human selected a legal in-game choice.
+
+### Icon production and validation
+
+Create one manifest row per achievement and state. The three-state convention must be inspected from current project consumers before export. Each icon keeps a readable silhouette at 64 by 64, uses original art and is tied to the exact challenge rather than a generic trophy. The territorial icon waits for verified geometry. The terminal icons remain fictional and avoid historical misattribution.
+
+Validation covers exact-boundary conditions, reset versus permanent disqualification, saved-game continuation, duplicate completion attempts, actor elimination, switched human control, forged or missing source receipts, frozen denominators and the terminal attribution path. A completed icon set without correct tracking is incomplete, and correct predicates without all visible states are also incomplete.

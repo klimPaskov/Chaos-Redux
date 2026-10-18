@@ -126,6 +126,15 @@ It does not assert acceptance or current implementation status.
 | 103 Chaos Directorate | [`103_chaos_directorate_specs/00_package_guide.md`](103_chaos_directorate_specs/00_package_guide.md) |
 | 104 Rule | [`104_rule_specs/104_rule_reading_guide.md`](104_rule_specs/104_rule_reading_guide.md) |
 | 105 Random Idea | [`105_random_idea_specs/README.md`](105_random_idea_specs/README.md) |
+| 106 Resistance | [`106_resistance_specs/README.md`](106_resistance_specs/README.md) |
+| 107 Lootboxes | [`107_lootboxes_specs/README.md`](107_lootboxes_specs/README.md) |
+| 108 Wrestling Tournament | [`108_wrestling_tournament_specs/00 - Package Guide.md`](108_wrestling_tournament_specs/00%20-%20Package%20Guide.md) |
+| 109 Fuel Crisis | [`109_fuel_crisis_specs/README.md`](109_fuel_crisis_specs/README.md) |
+| 110 IMRO | [`110_imro_specs/README.md`](110_imro_specs/README.md) |
+| 111 This Is Sparta | [`111_this_is_sparta_specs/111_this_is_sparta_index.md`](111_this_is_sparta_specs/111_this_is_sparta_index.md) |
+| 112 Rise of Cossacks | [`112_rise_of_cossacks_specs/README.md`](112_rise_of_cossacks_specs/README.md) |
+| 113 The Partition | [`113_the_partition_specs/113_the_partition_package_guide.md`](113_the_partition_specs/113_the_partition_package_guide.md) |
+| 114 Demilitarization | [`114_demilitarization_specs/README.md`](114_demilitarization_specs/README.md) |
 
 Shared and cross-event specification packages are indexed below.
 
