@@ -35,6 +35,7 @@ These summaries describe their recorded source and validation evidence, which do
 | 029 Riches Found | [`029_riches_found/overview.md`](029_riches_found/overview.md) | Persistent state mines, controller transfer, contracts, crises, and three evolutions |
 | 031 Random Terror | [`031_random_terror/overview.md`](031_random_terror/overview.md) | Routes, actors, assets, and validation records |
 | 032 Missiles | [`032_missiles/overview.md`](032_missiles/overview.md) | [Expanded API, custody, scenario, and validation record](032_missiles.md) |
+| 042 Equipment from Heavens | [`042_equipment_from_heavens/overview.md`](042_equipment_from_heavens/overview.md) | [Special-equipment registry](042_equipment_from_heavens/systems/special_equipment_registry.md) and [asset provenance](042_equipment_from_heavens/systems/assets.md) |
 | 033 Acid Rain | [`033_acid_rain/overview.md`](033_acid_rain/overview.md) | Weather and contamination contracts |
 | 035 Great Depression 2.0 | [`035_great_depression.md`](035_great_depression.md) | Standalone implementation contract |
 | 030 Time Traveler | [`030_time_traveler.md`](030_time_traveler.md) | Major event, three public values, consultations, intelligence war, Evolutions I and II |
