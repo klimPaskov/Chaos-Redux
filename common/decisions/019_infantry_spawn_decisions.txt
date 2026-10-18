@@ -520,88 +520,191 @@ infantry_spawn_formation_management_category = {
 	}
 
 	# -----------------------------------------------------------------------
-	# Evolution II and III - formation request
 	# -----------------------------------------------------------------------
-	# One Request Formation decision places the chosen request type. Evolution II
-	# offers two types at peace and two at war; Evolution III replaces them with
-	# Numbers and Discipline at peace, Firepower and Mobility at war, and Anything
-	# in both. The AI draws its type with the infantry_spawn_request_*_weight
-	# MTTH entries every pulse and when the request interval ends.
+	# Evolution II - formation requests
+	# -----------------------------------------------------------------------
 
-	infantry_spawn_cycle_request_mode_decision = {
-		icon = GFX_decision_infantry_spawn_lot_cycle
-		visible = {
-			infantry_spawn_has_evolution_ii = yes
-			NOT = { has_country_flag = infantry_spawn_request_cooldown }
-		}
-		available = { infantry_spawn_scenario_transaction_is_idle = yes }
-		complete_effect = {
-			custom_effect_tooltip = infantry_spawn_cycle_request_mode_tt
-			hidden_effect = { infantry_spawn_cycle_request_mode = yes }
-		}
-		ai_will_do = { base = constant:infantry_spawn_factor.disabled }
-	}
-
-	infantry_spawn_request_chosen_formation = {
-		icon = {
-			key = GFX_decision_infantry_spawn_request_mobile
-			trigger = {
-				OR = {
-					check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.mobile_reserve }
-					check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.mobility }
-				}
-			}
-		}
-		icon = {
-			key = GFX_decision_infantry_spawn_request_territorial
-			trigger = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.territorial_defense } }
-		}
-		icon = {
-			key = GFX_decision_infantry_spawn_request_firepower
-			trigger = {
-				OR = {
-					check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.specialist }
-					check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.firepower }
-				}
-			}
-		}
-		icon = {
-			key = GFX_decision_infantry_spawn_request_numbers
-			trigger = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.numbers } }
-		}
-		icon = {
-			key = GFX_decision_infantry_spawn_request_discipline
-			trigger = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.discipline } }
-		}
-		icon = {
-			key = GFX_decision_infantry_spawn_request_anything
-			trigger = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.anything } }
-		}
+	infantry_spawn_request_field_reinforcement = {
 		icon = GFX_decision_infantry_spawn_request_field
-		visible = {
-			infantry_spawn_request_choice_is_offered = yes
-			NOT = { has_country_flag = infantry_spawn_request_cooldown }
-		}
-		available = {
-			infantry_spawn_can_begin_paid_request = yes
-			hidden_trigger = { infantry_spawn_can_pay_chosen_request = yes }
-		}
-		custom_cost_trigger = { hidden_trigger = { infantry_spawn_can_pay_chosen_request = yes } }
-		custom_cost_text = infantry_spawn_request_chosen_formation_cost
+		visible = { infantry_spawn_has_evolution_ii = yes NOT = { infantry_spawn_has_evolution_iii = yes } NOT = { has_country_flag = infantry_spawn_request_cooldown } infantry_spawn_event19_evolution_ii_peacetime_request_lane = yes }
+		available = { infantry_spawn_can_pay_field_request = yes }
+		custom_cost_trigger = { infantry_spawn_can_pay_field_request = yes }
+		custom_cost_text = infantry_spawn_request_field_reinforcement_cost
 		complete_effect = {
-			custom_effect_tooltip = infantry_spawn_request_chosen_formation_tt
-			hidden_effect = { infantry_spawn_request_chosen_formation_action = yes }
+			custom_effect_tooltip = infantry_spawn_request_field_reinforcement_tt
+			hidden_effect = { infantry_spawn_request_field_reinforcement_action = yes }
 		}
 		ai_will_do = {
-			factor = 0
+			base = constant:infantry_spawn_factor.quarter
+			modifier = { factor = constant:infantry_spawn_factor.triple has_war = yes }
 			modifier = {
-				set_temp_variable = { infantry_spawn_request_ai_weight_read = infantry_spawn_request_ai_weight }
-				add = infantry_spawn_request_ai_weight_read
+				factor = constant:infantry_spawn_factor.disabled
+				infantry_spawn_congestion_is_severe = yes
+				NOT = { any_controlled_state = { is_capital = yes any_neighbor_state = { CONTROLLER = { has_war_with = ROOT } } } }
+			}
+		}
+	}
+
+	infantry_spawn_request_mobile_reserve = {
+		icon = GFX_decision_infantry_spawn_request_mobile
+		visible = { infantry_spawn_has_evolution_ii = yes NOT = { infantry_spawn_has_evolution_iii = yes } NOT = { has_country_flag = infantry_spawn_request_cooldown } infantry_spawn_event19_evolution_ii_frontline_request_lane = yes }
+		available = { infantry_spawn_can_pay_mobile_reserve_request = yes }
+		custom_cost_trigger = { infantry_spawn_can_pay_mobile_reserve_request = yes }
+		custom_cost_text = infantry_spawn_request_mobile_reserve_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_request_mobile_reserve_tt
+			hidden_effect = { infantry_spawn_request_mobile_reserve_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.tenth
+			modifier = { factor = constant:infantry_spawn_factor.triple has_war = yes }
+			modifier = { factor = constant:infantry_spawn_factor.disabled fuel_ratio < constant:infantry_spawn_factor.quarter }
+			modifier = {
+				factor = constant:infantry_spawn_factor.disabled
+				infantry_spawn_congestion_is_severe = yes
+				NOT = { any_controlled_state = { is_capital = yes any_neighbor_state = { CONTROLLER = { has_war_with = ROOT } } } }
+			}
+		}
+	}
+
+	infantry_spawn_request_territorial_defenders = {
+		icon = GFX_decision_infantry_spawn_request_territorial
+		visible = { infantry_spawn_has_evolution_ii = yes NOT = { infantry_spawn_has_evolution_iii = yes } NOT = { has_country_flag = infantry_spawn_request_cooldown } infantry_spawn_event19_evolution_ii_peacetime_request_lane = yes }
+		available = { infantry_spawn_can_pay_territorial_request = yes }
+		custom_cost_trigger = { infantry_spawn_can_pay_territorial_request = yes }
+		custom_cost_text = infantry_spawn_request_territorial_defenders_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_request_territorial_defenders_tt
+			hidden_effect = { infantry_spawn_request_territorial_defenders_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.quarter
+			modifier = { factor = constant:infantry_spawn_factor.triple infantry_spawn_congestion_is_severe = yes }
+			modifier = { factor = constant:infantry_spawn_factor.strong fuel_ratio < constant:infantry_spawn_factor.quarter }
+			modifier = {
+				factor = constant:infantry_spawn_factor.disabled
+				infantry_spawn_congestion_is_severe = yes
+				NOT = { any_controlled_state = { is_capital = yes any_neighbor_state = { CONTROLLER = { has_war_with = ROOT } } } }
+			}
+		}
+	}
+
+	infantry_spawn_request_specialist_firepower = {
+		icon = GFX_decision_infantry_spawn_request_firepower
+		visible = { infantry_spawn_has_evolution_ii = yes NOT = { infantry_spawn_has_evolution_iii = yes } NOT = { has_country_flag = infantry_spawn_request_cooldown } infantry_spawn_event19_evolution_ii_frontline_request_lane = yes }
+		available = { infantry_spawn_can_pay_specialist_request = yes }
+		custom_cost_trigger = { infantry_spawn_can_pay_specialist_request = yes }
+		custom_cost_text = infantry_spawn_request_specialist_firepower_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_request_specialist_firepower_tt
+			hidden_effect = { infantry_spawn_request_specialist_firepower_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.tenth
+			modifier = { factor = constant:infantry_spawn_factor.triple is_major = yes }
+			modifier = { factor = constant:infantry_spawn_factor.strong has_war = yes }
+			modifier = {
+				factor = constant:infantry_spawn_factor.disabled
+				infantry_spawn_congestion_is_severe = yes
+				NOT = { any_controlled_state = { is_capital = yes any_neighbor_state = { CONTROLLER = { has_war_with = ROOT } } } }
 			}
 		}
 	}
 
 	# -----------------------------------------------------------------------
+	# Evolution III - unrestricted request philosophies
+	# -----------------------------------------------------------------------
+
+	infantry_spawn_request_numbers = {
+		icon = GFX_decision_infantry_spawn_request_numbers
+		visible = { infantry_spawn_has_evolution_iii = yes NOT = { has_country_flag = infantry_spawn_request_cooldown } infantry_spawn_event19_evolution_iii_peacetime_request_lane = yes }
+		available = { infantry_spawn_can_pay_numbers_request = yes }
+		custom_cost_trigger = { infantry_spawn_can_pay_numbers_request = yes }
+		custom_cost_text = infantry_spawn_request_numbers_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_request_numbers_tt
+			hidden_effect = { infantry_spawn_request_numbers_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.quarter
+			modifier = { factor = constant:infantry_spawn_factor.triple has_war = yes }
+			modifier = { factor = constant:infantry_spawn_factor.double check_variable = { infantry_spawn_ai_profile = constant:infantry_spawn_ai_profile.wartime_opportunist } }
+			modifier = { factor = constant:infantry_spawn_factor.quarter infantry_spawn_congestion_is_severe = yes }
+		}
+	}
+
+	infantry_spawn_request_discipline = {
+		icon = GFX_decision_infantry_spawn_request_discipline
+		visible = { infantry_spawn_has_evolution_iii = yes NOT = { has_country_flag = infantry_spawn_request_cooldown } infantry_spawn_event19_evolution_iii_peacetime_request_lane = yes }
+		available = { infantry_spawn_can_pay_discipline_request = yes }
+		custom_cost_trigger = { infantry_spawn_can_pay_discipline_request = yes }
+		custom_cost_text = infantry_spawn_request_discipline_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_request_discipline_tt
+			hidden_effect = { infantry_spawn_request_discipline_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.quarter
+			modifier = { factor = constant:infantry_spawn_factor.triple check_variable = { infantry_spawn_ai_profile = constant:infantry_spawn_ai_profile.professionalizer } }
+			modifier = { factor = constant:infantry_spawn_factor.double infantry_spawn_control_is_strong = yes }
+			modifier = { factor = constant:infantry_spawn_factor.half infantry_spawn_control_is_low = yes }
+		}
+	}
+
+	infantry_spawn_request_firepower = {
+		icon = GFX_decision_infantry_spawn_request_firepower
+		visible = { infantry_spawn_has_evolution_iii = yes NOT = { has_country_flag = infantry_spawn_request_cooldown } infantry_spawn_event19_evolution_iii_frontline_request_lane = yes }
+		available = { infantry_spawn_can_pay_firepower_request = yes }
+		custom_cost_trigger = { infantry_spawn_can_pay_firepower_request = yes }
+		custom_cost_text = infantry_spawn_request_firepower_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_request_firepower_tt
+			hidden_effect = { infantry_spawn_request_firepower_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.tenth
+			modifier = { factor = constant:infantry_spawn_factor.triple is_major = yes }
+			modifier = { factor = constant:infantry_spawn_factor.double has_war = yes }
+			modifier = { factor = constant:infantry_spawn_factor.quarter check_variable = { infantry_spawn_equipment_debt > constant:infantry_spawn_debt_threshold.severe } }
+		}
+	}
+
+	infantry_spawn_request_mobility = {
+		icon = GFX_decision_infantry_spawn_request_mobile
+		visible = { infantry_spawn_has_evolution_iii = yes NOT = { has_country_flag = infantry_spawn_request_cooldown } infantry_spawn_event19_evolution_iii_frontline_request_lane = yes }
+		available = { infantry_spawn_can_pay_mobility_request = yes }
+		custom_cost_trigger = { infantry_spawn_can_pay_mobility_request = yes }
+		custom_cost_text = infantry_spawn_request_mobility_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_request_mobility_tt
+			hidden_effect = { infantry_spawn_request_mobility_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.tenth
+			modifier = { factor = constant:infantry_spawn_factor.triple has_war = yes }
+			modifier = { factor = constant:infantry_spawn_factor.disabled fuel_ratio < constant:infantry_spawn_factor.quarter }
+			modifier = { factor = constant:infantry_spawn_factor.quarter infantry_spawn_congestion_is_severe = yes }
+		}
+	}
+
+	infantry_spawn_request_anything = {
+		icon = GFX_decision_infantry_spawn_request_anything
+		visible = { infantry_spawn_has_evolution_iii = yes NOT = { has_country_flag = infantry_spawn_request_cooldown } OR = { infantry_spawn_event19_evolution_iii_peacetime_request_lane = yes infantry_spawn_event19_evolution_iii_frontline_request_lane = yes } }
+		available = { infantry_spawn_can_pay_anything_request = yes }
+		custom_cost_trigger = { infantry_spawn_can_pay_anything_request = yes }
+		custom_cost_text = infantry_spawn_request_anything_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_request_anything_tt
+			hidden_effect = { infantry_spawn_request_anything_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.tenth
+			modifier = { factor = constant:infantry_spawn_factor.triple check_variable = { infantry_spawn_ai_profile = constant:infantry_spawn_ai_profile.gambler } }
+			modifier = { factor = constant:infantry_spawn_factor.double infantry_spawn_control_is_low = yes }
+			modifier = { factor = constant:infantry_spawn_factor.quarter infantry_spawn_congestion_is_severe = yes }
+		}
+	}
+
 	# Evolution IV - selected registry-family management
 	# -----------------------------------------------------------------------
 

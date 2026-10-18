@@ -6,10 +6,6 @@
 # date performs the bounded sample and moves the date forward. This avoids a
 # recurring world on_action while preserving mean-time pacing.
 #
-# The infantry_spawn_request_*_weight entries are the AI willingness of each
-# Request Formation type. The country pulse draws one affordable type with these
-# weights (infantry_spawn_choose_ai_request_mode) and the single Request
-# Formation decision reads the weight of the drawn type.
 # ============================================================================
 
 infantry_spawn_evolution_interval = {
@@ -48,100 +44,11 @@ infantry_spawn_evolution_interval = {
 	}
 }
 
-infantry_spawn_request_field_reinforcement_weight = {
-	base = constant:infantry_spawn_factor.quarter
-	modifier = { factor = constant:infantry_spawn_factor.triple has_war = yes }
-	modifier = {
-		factor = constant:infantry_spawn_factor.disabled
-		infantry_spawn_congestion_is_severe = yes
-		NOT = {
-			any_controlled_state = {
-				is_capital = yes
-				any_neighbor_state = { CONTROLLER = { has_war_with = ROOT } }
-			}
-		}
-	}
-}
 
-infantry_spawn_request_mobile_reserve_weight = {
-	base = constant:infantry_spawn_factor.tenth
-	modifier = { factor = constant:infantry_spawn_factor.triple has_war = yes }
-	modifier = { factor = constant:infantry_spawn_factor.disabled fuel_ratio < constant:infantry_spawn_factor.quarter }
-	modifier = {
-		factor = constant:infantry_spawn_factor.disabled
-		infantry_spawn_congestion_is_severe = yes
-		NOT = {
-			any_controlled_state = {
-				is_capital = yes
-				any_neighbor_state = { CONTROLLER = { has_war_with = ROOT } }
-			}
-		}
-	}
-}
 
-infantry_spawn_request_territorial_defenders_weight = {
-	base = constant:infantry_spawn_factor.quarter
-	modifier = { factor = constant:infantry_spawn_factor.triple infantry_spawn_congestion_is_severe = yes }
-	modifier = { factor = constant:infantry_spawn_factor.strong fuel_ratio < constant:infantry_spawn_factor.quarter }
-	modifier = {
-		factor = constant:infantry_spawn_factor.disabled
-		infantry_spawn_congestion_is_severe = yes
-		NOT = {
-			any_controlled_state = {
-				is_capital = yes
-				any_neighbor_state = { CONTROLLER = { has_war_with = ROOT } }
-			}
-		}
-	}
-}
 
-infantry_spawn_request_specialist_firepower_weight = {
-	base = constant:infantry_spawn_factor.tenth
-	modifier = { factor = constant:infantry_spawn_factor.triple is_major = yes }
-	modifier = { factor = constant:infantry_spawn_factor.strong has_war = yes }
-	modifier = {
-		factor = constant:infantry_spawn_factor.disabled
-		infantry_spawn_congestion_is_severe = yes
-		NOT = {
-			any_controlled_state = {
-				is_capital = yes
-				any_neighbor_state = { CONTROLLER = { has_war_with = ROOT } }
-			}
-		}
-	}
-}
 
-infantry_spawn_request_numbers_weight = {
-	base = constant:infantry_spawn_factor.quarter
-	modifier = { factor = constant:infantry_spawn_factor.triple has_war = yes }
-	modifier = { factor = constant:infantry_spawn_factor.double check_variable = { infantry_spawn_ai_profile = constant:infantry_spawn_ai_profile.wartime_opportunist } }
-	modifier = { factor = constant:infantry_spawn_factor.quarter infantry_spawn_congestion_is_severe = yes }
-}
 
-infantry_spawn_request_discipline_weight = {
-	base = constant:infantry_spawn_factor.quarter
-	modifier = { factor = constant:infantry_spawn_factor.triple check_variable = { infantry_spawn_ai_profile = constant:infantry_spawn_ai_profile.professionalizer } }
-	modifier = { factor = constant:infantry_spawn_factor.double infantry_spawn_control_is_strong = yes }
-	modifier = { factor = constant:infantry_spawn_factor.half infantry_spawn_control_is_low = yes }
-}
 
-infantry_spawn_request_firepower_weight = {
-	base = constant:infantry_spawn_factor.tenth
-	modifier = { factor = constant:infantry_spawn_factor.triple is_major = yes }
-	modifier = { factor = constant:infantry_spawn_factor.double has_war = yes }
-	modifier = { factor = constant:infantry_spawn_factor.quarter check_variable = { infantry_spawn_equipment_debt > constant:infantry_spawn_debt_threshold.severe } }
-}
 
-infantry_spawn_request_mobility_weight = {
-	base = constant:infantry_spawn_factor.tenth
-	modifier = { factor = constant:infantry_spawn_factor.triple has_war = yes }
-	modifier = { factor = constant:infantry_spawn_factor.disabled fuel_ratio < constant:infantry_spawn_factor.quarter }
-	modifier = { factor = constant:infantry_spawn_factor.quarter infantry_spawn_congestion_is_severe = yes }
-}
 
-infantry_spawn_request_anything_weight = {
-	base = constant:infantry_spawn_factor.tenth
-	modifier = { factor = constant:infantry_spawn_factor.triple check_variable = { infantry_spawn_ai_profile = constant:infantry_spawn_ai_profile.gambler } }
-	modifier = { factor = constant:infantry_spawn_factor.double infantry_spawn_control_is_low = yes }
-	modifier = { factor = constant:infantry_spawn_factor.quarter infantry_spawn_congestion_is_severe = yes }
-}
