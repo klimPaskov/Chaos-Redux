@@ -189,7 +189,7 @@ The counter-bloc is founded by an independent registry government through Found 
 
 ### Evolution log
 
-Rows, titles, bodies and the summary of all three stages are wired in the main Evolutions tab, the History details, Event Details and the selected view.
+Rows, titles, bodies and the summary of all three stages are wired in the main Evolutions tab, Event Details and the selected view.
 
 ## Evolution achievements
 
