@@ -10,7 +10,7 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / ".tools/3d_pipeline"))
 from meshy_client import MeshyClient
-from test_meshy_wrapper_lifecycle import MESHY_ENTRY
+from test_meshy_wrapper_lifecycle import MESHY_ENTRY, Probe
 
 
 class MotionTests(unittest.TestCase):
@@ -42,6 +42,16 @@ class MotionTests(unittest.TestCase):
 
     def test_runtime_motion_routes_and_no_paid_retry(self):
         runtime = MESHY_ENTRY.parent
+        if not (runtime / "tools/motion-compat.js").is_file():
+            # The locked runtime lives in ignored .tmp and is reconstructed and patched by the exact
+            # wrapper on first launch, so a fresh checkout provisions it here instead of relying on
+            # another test having run first.
+            probe = Probe.launch()
+            try:
+                self.assertIn("result", probe.request_schema())
+                self.assertEqual(0, probe.close_stdin_and_wait())
+            finally:
+                probe.emergency_cleanup()
         script = r'''
 import assert from "node:assert/strict";
 import { pathToFileURL } from "node:url";
