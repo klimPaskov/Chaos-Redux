@@ -50,8 +50,11 @@ camp_admin_integration_monthly_country_recipient = {
 			}
 		}
 		set_variable = { camp_admin_integration_month = camp_admin_month_key }
-		camp_admin_integration_seed_japan_labor_host = yes
-		camp_admin_integration_seed_japan_pingfang_host = yes
+		if = {
+			limit = { original_tag = JAP }
+			camp_admin_integration_seed_japan_labor_host = yes
+			camp_admin_integration_seed_japan_pingfang_host = yes
+		}
 		camp_admin_country_prepare_monthly = yes
 		camp_admin_monthly_country = yes
 		camp_admin_integration_record_completed_project = yes
@@ -64,13 +67,11 @@ camp_admin_integration_monthly_country_recipient = {
 	national_policy_panel_end_update = yes
 }
 
-# Accepted South Manchurian industrial host: only Liaotung716 under Japan or
+# Accepted South Manchurian industrial host (the monthly recipient calls it for Japan only and brackets the panel update): only Liaotung716 under Japan or
 # Japan's Manchukuo subject. No new building, population or general subject gate.
 camp_admin_integration_seed_japan_labor_host = {
-	national_policy_panel_begin_update = yes
 	if = {
 		limit = {
-			original_tag = JAP
 			camp_admin_jap_china_war = yes
 			NOT = { has_country_flag = camp_admin_japan_liaotung_registered }
 			NOT = { has_country_flag = camp_admin_reforming }
@@ -95,8 +96,6 @@ camp_admin_integration_seed_japan_labor_host = {
 		}
 		set_country_flag = camp_admin_japan_liaotung_registered
 	}
-	national_policy_panel_refresh_open = yes
-	national_policy_panel_end_update = yes
 }
 
 # Pingfang research bureau in Kirin 328. The accepted Administration path opens
@@ -105,9 +104,8 @@ camp_admin_integration_seed_japan_labor_host = {
 # camp_rework_japan_register_pingfang effect: anchor, bureau, experiment and
 # records markers, facility, Ishii program and the Pingfang route flags.
 camp_admin_integration_seed_japan_pingfang_host = {
-	national_policy_panel_begin_update = yes
 	if = {
-		limit = { original_tag = JAP NOT = { has_country_flag = camp_admin_japan_pingfang_registered } }
+		limit = { NOT = { has_country_flag = camp_admin_japan_pingfang_registered } }
 		if = {
 			limit = { camp_admin_japan_pingfang_route_open = yes }
 			if = {
@@ -132,8 +130,6 @@ camp_admin_integration_seed_japan_pingfang_host = {
 			clr_country_flag = camp_admin_japan_pingfang_establishing
 		}
 	}
-	national_policy_panel_refresh_open = yes
-	national_policy_panel_end_update = yes
 }
 
 # Terminal country cleanup runs before legacy arrays are cleared.

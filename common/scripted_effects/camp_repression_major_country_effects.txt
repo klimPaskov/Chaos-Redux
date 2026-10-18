@@ -1068,41 +1068,34 @@ camp_rework_germany_cancel_auschwitz_dismantlement = {
 camp_rework_japan_register_pingfang = {
 	camp_rework_japan_initialize_country_values = yes
 	set_temp_variable = { camp_japan_pingfang_registered_now = 0 }
+	# Callers hold camp_admin_japan_pingfang_route_open, which already proves
+	# the Kirin 328 control and responsibility conditions.
 	328 = {
+		if = { limit = { NOT = { has_variable = genocide_responsible_country } } set_variable = { genocide_responsible_country = ROOT } }
+		set_state_flag = genocide_site_has_responsible_country
+		set_state_flag = camp_rework_pingfang_anchor
+		set_state_flag = camp_rework_japan_records_site
+		set_state_flag = genocide_japanese_biowarfare_atrocity_site
+		set_state_flag = camp_rework_experiment_site
+		set_state_flag = genocide_atrocity_site_known_to_regime
 		if = {
-			limit = {
-				OR = {
-					is_controlled_by = ROOT
-					CONTROLLER = { is_subject_of = ROOT }
-				}
-				camp_rework_state_can_accept_responsibility_from_root = yes
+			limit = { NOT = { biowarfare_facility > 0 } }
+			add_building_construction = {
+				type = biowarfare_facility
+				level = @CAMP_MAJOR_COUNTRY_BUILDING_LEVEL
+				instant_build = yes
+				province = { id = @CAMP_JAPAN_PINGFANG_CONSTRUCTION_PROVINCE }
 			}
-			if = { limit = { NOT = { has_variable = genocide_responsible_country } } set_variable = { genocide_responsible_country = ROOT } }
-			set_state_flag = genocide_site_has_responsible_country
-			set_state_flag = camp_rework_pingfang_anchor
-			set_state_flag = camp_rework_japan_records_site
-			set_state_flag = genocide_japanese_biowarfare_atrocity_site
-			set_state_flag = camp_rework_experiment_site
-			set_state_flag = genocide_atrocity_site_known_to_regime
-			if = {
-				limit = { NOT = { biowarfare_facility > 0 } }
-				add_building_construction = {
-					type = biowarfare_facility
-					level = @CAMP_MAJOR_COUNTRY_BUILDING_LEVEL
-					instant_build = yes
-					province = { id = @CAMP_JAPAN_PINGFANG_CONSTRUCTION_PROVINCE }
-				}
-			}
-			if = {
-				limit = { NOT = { has_state_flag = camp_rework_pingfang_bureau_completed } }
-				set_state_flag = camp_rework_pingfang_bureau_completed
-				set_temp_variable = { camp_japan_pingfang_registered_now = 1 }
-			}
-			add_to_variable = { camp_state_evidence_depth = constant:camp_rework_japan.occupation_records_major }
-			set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.experiment }
-			camp_rework_register_active_site = yes
-			camp_rework_register_evidence_state = yes
 		}
+		if = {
+			limit = { NOT = { has_state_flag = camp_rework_pingfang_bureau_completed } }
+			set_state_flag = camp_rework_pingfang_bureau_completed
+			set_temp_variable = { camp_japan_pingfang_registered_now = 1 }
+		}
+		add_to_variable = { camp_state_evidence_depth = constant:camp_rework_japan.occupation_records_major }
+		set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.experiment }
+		camp_rework_register_active_site = yes
+		camp_rework_register_evidence_state = yes
 	}
 	if = {
 		limit = { check_variable = { camp_japan_pingfang_registered_now = 1 } }
