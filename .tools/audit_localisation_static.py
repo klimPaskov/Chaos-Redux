@@ -522,7 +522,8 @@ def collect_quoted_keys() -> Tuple[Dict[str, Set[str]], Dict[str, Set[str]]]:
 	tail = r"(?![\w])"
 	field = guard + r"(?:" + "|".join(LOC_FIELDS) + r")" + tail + r"\s*="
 	quoted_pattern = re.compile(field + r'\s*"([^"\n]{1,120})"')
-	bare_pattern = re.compile(field + r"\s*([A-Za-z_][A-Za-z0-9_.\-]*)")
+	# A value followed by `|` is a loc formatter call (`tech_effect|radio_detection`), not a key.
+	bare_pattern = re.compile(field + r"\s*([A-Za-z_][A-Za-z0-9_.\-]*)(?![A-Za-z0-9_.\-|])")
 
 	for relative in SCAN_DIRS:
 		root = REPO_ROOT / relative
