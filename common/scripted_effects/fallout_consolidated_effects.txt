@@ -3196,6 +3196,29 @@ air_winter_finalize_monthly_cycle = {
 			air_winter_finalize_country_air_operations = yes
 		}
 
+		# A winter period announces itself once when its global flag is first raised.
+		# A cycle that raises both flags announces the severe period only.
+		if = {
+			limit = {
+				NOT = { has_global_flag = fallout_air_contamination_permanent_99 }
+				NOT = { has_global_flag = air_winter_severe }
+				check_variable = {
+					var = global.air_winter_severe_state_share
+					value = constant:air_winter_global.severe_share_entry_percent
+					compare = greater_than_or_equals
+				}
+			}
+			news_event = { id = chaosx_contamination.6 }
+		}
+		else_if = {
+			limit = {
+				NOT = { has_global_flag = fallout_air_contamination_permanent_99 }
+				NOT = { has_global_flag = air_winter_active }
+				check_variable = { global.air_winter_active_state_count > constant:air_winter_runtime.zero }
+			}
+			news_event = { id = chaosx_contamination.5 }
+		}
+
 		if = {
 			limit = { check_variable = { global.air_winter_active_state_count > constant:air_winter_runtime.zero } }
 			set_global_flag = air_winter_active

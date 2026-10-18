@@ -100,10 +100,11 @@ The full lifecycle, tuning, cleanup behavior, and remaining treaty omissions are
 	- `fallout_evaluate_air_contamination_request` can submit the gradual-air-collapse request when Fallout is enabled and no other world end is active.
 - A committed Fallout transition fixes contamination at `99%` and preserves that value against later growth or recovery.
 
-One-time global threshold news events are fired from `events/chemical_warfare_events.txt` (`chaosx_contamination.1` to `.6`) for:
+The global news events are defined in `events/chemical_warfare_events.txt`.
+One-time threshold news fires for the 25%, 50%, 75%, and 100% milestones (`chaosx_contamination.1` to `.4`).
 
-- 25%, 50%, 75%, 100% milestones,
-- mild/severe winter period starts.
+The winter period announcements `chaosx_contamination.5` (Nuclear Winter Period Begins) and `.6` (Severe Nuclear Winter Begins) fire from `air_winter_finalize_monthly_cycle`, which raises them when the global `air_winter_active` flag (any state in a winter phase) or `air_winter_severe` flag (severe share of valid states at the entry percentage) is first raised.
+A cycle that raises both flags fires only `.6`, and neither fires while Fallout holds contamination at 99 percent.
 
 Treaty event IDs in the same file:
 
