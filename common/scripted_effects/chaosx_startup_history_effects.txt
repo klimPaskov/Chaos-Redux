@@ -1088,42 +1088,39 @@ chaosx_startup_grant_usa = {
 	}
 }
 
-# Startup facility placement. Input: startup_history_facility_province, the
-# province id of the facility site. The helper adds one instant starting
-# facility to the current state when it holds none of that type yet.
-chaosx_add_startup_cw_facility = {
-	if = {
-		limit = { cw_facility < 1 }
-		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
-		meta_effect = {
-			text = {
+# Startup facility placement. State scope. Inputs: startup_history_facility_province,
+# the province id of the facility site, and startup_history_facility_type, the
+# building type token (token:cw_facility or token:biowarfare_facility). The helper
+# adds one instant starting facility to the current state when it holds none of that
+# type yet.
+chaosx_add_startup_facility = {
+	set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
+	meta_effect = {
+		text = {
+			if = {
+				limit = { [FACILITY] < 1 }
 				add_building_construction = {
-					type = cw_facility
+					type = [FACILITY]
 					level = startup_history_facility_level
 					instant_build = yes
 					province = { id = [PROVINCE] }
 				}
 			}
-			PROVINCE = "[?startup_history_facility_province|.0]"
 		}
+		FACILITY = "[?startup_history_facility_type.GetTokenKey]"
+		PROVINCE = "[?startup_history_facility_province|.0]"
 	}
 }
 
+# One-line entry points for the chemical and biological sites; they take the same
+# startup_history_facility_province input.
+chaosx_add_startup_cw_facility = {
+	set_temp_variable = { startup_history_facility_type = token:cw_facility }
+	chaosx_add_startup_facility = yes
+}
+
 chaosx_add_startup_biowarfare_facility = {
-	if = {
-		limit = { biowarfare_facility < 1 }
-		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
-		meta_effect = {
-			text = {
-				add_building_construction = {
-					type = biowarfare_facility
-					level = startup_history_facility_level
-					instant_build = yes
-					province = { id = [PROVINCE] }
-				}
-			}
-			PROVINCE = "[?startup_history_facility_province|.0]"
-		}
-	}
+	set_temp_variable = { startup_history_facility_type = token:biowarfare_facility }
+	chaosx_add_startup_facility = yes
 }
 

@@ -74,6 +74,6 @@ The startup effect currently replaces copied vanilla overrides for:
 - the British Raj famine state pointer
 - Liberia's vanilla support-equipment technology required by its startup AI production strategy
 
-Facility sites are placed by the state-scope helpers `chaosx_add_startup_cw_facility` and `chaosx_add_startup_biowarfare_facility`. The caller sets the temporary `startup_history_facility_province` to the province id inside the state scope, and the helper adds one instant starting facility when the state holds none of that type.
+Facility sites are placed by the state-scope helpers `chaosx_add_startup_cw_facility` and `chaosx_add_startup_biowarfare_facility`, which are one-line entry points over the shared `chaosx_add_startup_facility` (input temporary `startup_history_facility_type`, a `cw_facility` or `biowarfare_facility` token). The caller sets the temporary `startup_history_facility_province` to the province id inside the state scope, and the helper adds one instant starting facility when the state holds none of that type.
 
 When adding a new startup grant, create or extend an individual `chaosx_startup_grant_<tag>` effect and call it from `chaosx_apply_startup_history_grants`. Countries whose entire grant is the baseline gas mask technology call the shared country-scope `chaosx_startup_grant_basic_gas_masks`, and Belgium, Czechoslovakia and the Netherlands call `chaosx_startup_grant_minor_chemical_defence`, directly from that list inside their own tag scope.
