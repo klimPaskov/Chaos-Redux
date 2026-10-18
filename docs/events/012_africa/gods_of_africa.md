@@ -489,13 +489,14 @@ Participant registration remains owned by the Event 012 activation effect. The p
 
 Gods-of-Africa event reports, category art, icons, and focus/idea art use the registered Event 012 sprite names and period-appropriate, non-anime artwork. The 2026-09-05 generated-art handoffs record eight report cards, one category picture, and 27 mechanic, decision, idea, and focus icons with source, processed, and final DDS evidence. Current working-tree interface, event, category, decision, idea, and focus consumers contain the corresponding Event 012 aliases. Parent review on 2026-09-25 found no material issue in both contact sheets or the 27 processed icons at native size; game-scale appearance, playback, user approval, and promotion remain open.
 
-`common/units/012_africa_elephant_forces.txt` binds `chaosx_elephant` to `sprite = elephantry`, whose vanilla entity depends on the DLC supplying Elephantry.
+`common/units/012_africa_elephant_forces.txt` binds `chaosx_elephant` to `sprite = elephantry`, but the inspected installation provides no matching elephant entity.
 The 2026-10-07 exact consumer search, including ignored source files under `gfx/` and `interface/`, found no `chaosx_elephant_entity` definition or custom `elephantry` entity/mesh binding.
 `gfx/models/units/chaosx_elephants/` contains six `.anim` files and diffuse, normal, and specular DDS files, but no `.mesh` or `.asset` file at this snapshot.
 Those installed components are production evidence, not a usable no-DLC runtime binding or model/action/material acceptance.
 The October 3 CXT missing-entity observation remains historical evidence in [the strange-force unit runtime notes](strange_forces.md); no fresh native rendering result is claimed.
 The parent and model owner retain the shared-elephant installation and runtime-acceptance work.
-The archival `docs/assets/012_africa/models_3d/elephant_shared_base/` package remains non-promoted under decision L9; its contents, size, retention, and any later promotion were not independently audited here.
+The 18 October 2026 user brief authorizes a complete custom elephant replacement under `docs/assets/012_africa/models_3d/elephant_shared_base/`, superseding the visual reuse disposition while preserving the historical records.
+Its delivery status and export/reimport evidence belong to [the elephant repair handoff](../../plans/unit_fix_2026-10/models_1018_elephant_handoff.md).
 
 The CXT fixture follows the same boundary: `common/scripted_effects/012_africa_gods_cxt_test_effects.txt` registers the existing elephant token and equipment through the shared idempotent extension bus, publishes only an inert readiness receipt after CXT initialization, and never starts Africa Is One or the Gods tribute loop.
 

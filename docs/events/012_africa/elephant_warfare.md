@@ -1,16 +1,27 @@
 # Event 012 armoured elephant warfare
 
-Event 012 defines the armoured elephant capability as a force consequence of the preserved host's protection-first charter. The host source path describes the custom `chaosx_elephant` technology bridge and a named Africa Charter Elephant Guard on owned, controlled territory. The formation keeps its custom armour, combat values, and equipment identity while reusing the installed vanilla `elephantry` visual and animation family.
+Event 012 defines the armoured elephant capability as a force consequence of the preserved host's protection-first charter.
+The host source path describes the custom `chaosx_elephant` technology bridge and a named Africa Charter Elephant Guard on owned, controlled territory.
+The formation requires an African war-elephant visual with a reinforced woven-wood howdah, harness, and one period rider.
+Its armour, combat values, and equipment identity are independent of that visual package.
 
 The custom equipment archetype is `chaosx_elephant_equipment` with buildable variant `chaosx_elephant_equipment_1`. It is gated by `africa_elephant_warfare_unlocked`, consumes steel, chromium, rubber, and fuel, and provides the armour, hardness, piercing, breakthrough, defence, and attack values used by the subunit. The equipment icon is the approved 131x52 DDS at `gfx/interface/technologies/012_africa/chaosx_elephant_equipment.dds`; `interface/012_africa_elephant.gfx` registers the equipment and technology tokens.
 
-The `chaosx_elephant` subunit is defined only through `chaosx_africa_elephant_warfare_tech`. It is a mobile front-line armoured formation with a combat width of four, a real `armor_value`, and a need for `chaosx_elephant_equipment_1`. Its unit definition uses `sprite = elephantry`, and host/member division templates leave `override_model` unset so mixed divisions resolve the elephant regiment through the normal vanilla sub-unit visual instead of forcing a custom entity.
+The `chaosx_elephant` subunit is defined only through `chaosx_africa_elephant_warfare_tech`.
+It is a mobile front-line armoured formation with a combat width of four, a real `armor_value`, and a need for `chaosx_elephant_equipment_1`.
+Host/member division templates leave `override_model` unset so mixed divisions resolve the dominant subunit's normal entity.
+The current `sprite = elephantry` binding has no matching elephant entity in the inspected installation and cannot supply the required model.
 
-The approximately 340 MB `docs/assets/012_africa/models_3d/elephant_shared_base/` package is classified as archival and non-promoted. Retention or deletion is an explicit owner decision outside this documentation-only pass, and the package is not a Meshy input or runtime promotion target; no custom elephant model, skeletal action set, or entity registration is part of the current Event 012 asset requirement.
+The authorized model package lives under `docs/assets/012_africa/models_3d/elephant_shared_base/`.
+The 18 October 2026 user brief requires separately generated body, howdah/harness, and rider components, a dedicated quadruped rig, and eight distinct actions: idle, move, retreat, attack, defend, support attack, training, and death.
+The approved reference, licensed source audio, and bespoke counters are reusable inputs; the retired mesh and unverifiable aliased actions remain historical evidence.
+Current delivery evidence and limitations are recorded in [the elephant repair handoff](../../plans/unit_fix_2026-10/models_1018_elephant_handoff.md).
 
 Action 102 member registration calls `africa_elephant_prepare_member_guard` before the existing package force initializer. The five structural templates—royal guard, river guard, mobile guard, highland guard, and coastal guard—each add one `chaosx_elephant` regiment while preserving their package-specific infantry, cavalry, support, names, readiness, and reserve logic. The helper is idempotent and gives each package one seed equipment stockpile; later reinforcement remains governed by the existing package force actions.
 
-No recurring world scan was added. The host and member helpers only execute from the Event 012 opening and Action 102 package activation surfaces, respectively. The equipment, unit, technology, and localisation identifiers are source-wired, while the vanilla elephantry entity supplies the active visual and animation surface; retained custom sound and counter records are evidence-only and are not part of model promotion.
+The host and member helpers only execute from the Event 012 opening and Action 102 package activation surfaces, respectively, without a recurring world scan.
+The equipment, unit, technology, and localisation identifiers are source-wired.
+Visual acceptance requires the custom entity, actual exported mesh and actions, material bindings, and synchronized licensed audio; an infantry animation named `elephantry_idle` is not an elephant entity.
 
 The latest read-only technology inspection for `chaosx_africa_elephant_warfare_tech` is recorded at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/c69757ace10e8256c258460bd93e8b519b6ee24c404a5916dd3ef9541b9c831c/282633c74c6e8702cc9d431e70c86857d832580ca8d6307acc8d3b73ae72ac67/technology-trace-299d02d9bf3f.json`. It returned `TECH_INSPECTED` with aggregate validation false, 1,295 issues, three unresolved items, and 1,379 blocking technology diagnostics, so it is source-linked evidence rather than clean technology acceptance; standalone Technology Tree Viewer availability remains unverified.
 
