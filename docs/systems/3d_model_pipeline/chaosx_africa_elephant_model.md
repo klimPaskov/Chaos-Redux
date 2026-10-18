@@ -6,7 +6,8 @@ The Event 012 armoured elephant formation reuses the installed vanilla elephantr
 
 - `common/units/012_africa_elephant_forces.txt` sets `sprite = elephantry` on `chaosx_elephant`.
 - Host and Action 102 member templates leave `override_model` unset, allowing mixed divisions to resolve each regiment's own visual instead of forcing an elephant entity over the full division.
-- The vanilla consumer is `infantry_rifle_entity` from `gfx/entities/units_infantry.asset`, backed by `generic_western_european_rifle_infantry_mesh` and its registered `elephantry_idle` and `elephantry_move` variants.
+- The installed game defines the `elephantry` sprite, its counters, and the `elephantry_idle` and `elephantry_move` rider animations, but no elephantry entity or mesh in the base game or any integrated DLC, so the sprite alone resolves to the missing-model cube.
+- `elephantry_entity` in `gfx/entities/chaosx_vanilla_entity_aliases.asset` mirrors the vanilla generic `cavalry_entity` (horse frame, `infantry_rider_entity`, `generic_cavalry_rifle_combined_entity`, `infantry_cavalry_horse_entity`), so `chaosx_elephant` and vanilla elephantry both render the vanilla mounted cavalry visual.
 - The former custom registrations in `gfx/entities/chaosx_elephants.gfx`, `gfx/entities/chaosx_elephants.asset`, and `gfx/models/units/chaosx_elephants/animation_chaosx_elephants.asset` are retired. The approximately 340 MB evidence package under `docs/assets/012_africa/models_3d/elephant_shared_base/` is archival/non-promoted; retention or deletion is an explicit owner decision outside this documentation-only pass, and any remaining custom binaries must not be synchronized.
 
 ## Historical evidence
