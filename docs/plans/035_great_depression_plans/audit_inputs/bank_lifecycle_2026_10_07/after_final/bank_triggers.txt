@@ -1,0 +1,68 @@
+# ============================================================================
+# EVENT 035 - COUNTRY-SCOPE BANK PROGRAM PROOF
+# ============================================================================
+# Source episode identity and paid active markers are mandatory. Mission time
+# alone never creates financial recovery. Completion checks a usable productive
+# base and administrative stability; the timeout affords one pulse of grace.
+# ============================================================================
+
+great_depression_bank_audit_receipt_is_current = {
+	has_country_flag = great_depression_bank_audit_active
+	has_variable = great_depression_bank_audit_episode_id
+	check_variable = { var = great_depression_bank_audit_episode_id value = great_depression_active_episode_id compare = equals }
+}
+
+great_depression_bank_recapitalization_receipt_is_current = {
+	has_country_flag = great_depression_bank_recapitalization_active
+	has_variable = great_depression_bank_recapitalization_episode_id
+	check_variable = { var = great_depression_bank_recapitalization_episode_id value = great_depression_active_episode_id compare = equals }
+}
+
+great_depression_bank_program_has_viability = {
+	num_of_factories > constant:great_depression_api.zero
+	NOT = { has_capitulated = yes }
+	NOT = { has_stability < constant:great_depression_thresholds.bank_audit_stability_floor }
+}
+
+great_depression_bank_audit_has_current_viability_proof = {
+	has_country_flag = great_depression_bank_audit_complete
+	has_variable = great_depression_bank_audit_episode_id
+	check_variable = { var = great_depression_bank_audit_episode_id value = great_depression_active_episode_id compare = equals }
+}
+
+great_depression_bank_audit_context_is_valid = {
+	great_depression_active_country_is_valid = yes
+	great_depression_bank_audit_receipt_is_current = yes
+	great_depression_doctrine_is_stabilize_finance_and_trade = yes
+}
+
+great_depression_bank_recapitalization_context_is_valid = {
+	great_depression_active_country_is_valid = yes
+	great_depression_bank_recapitalization_receipt_is_current = yes
+	great_depression_doctrine_is_stabilize_finance_and_trade = yes
+	great_depression_bank_audit_has_current_viability_proof = yes
+}
+
+great_depression_bank_audit_objective_is_met = {
+	great_depression_bank_audit_context_is_valid = yes
+	custom_trigger_tooltip = {
+		tooltip = great_depression_bank_audit_time_and_viability_tt
+		has_variable = great_depression_bank_audit_due_day
+		has_variable = great_depression_bank_audit_deadline_day
+		check_variable = { var = global.num_days value = great_depression_bank_audit_deadline_day compare = less_than }
+		check_variable = { var = global.num_days value = great_depression_bank_audit_due_day compare = greater_than_or_equals }
+		great_depression_bank_program_has_viability = yes
+	}
+}
+
+great_depression_bank_recapitalization_objective_is_met = {
+	great_depression_bank_recapitalization_context_is_valid = yes
+	custom_trigger_tooltip = {
+		tooltip = great_depression_bank_recapitalization_time_and_viability_tt
+		has_variable = great_depression_bank_recapitalization_due_day
+		has_variable = great_depression_bank_recapitalization_deadline_day
+		check_variable = { var = global.num_days value = great_depression_bank_recapitalization_deadline_day compare = less_than }
+		check_variable = { var = global.num_days value = great_depression_bank_recapitalization_due_day compare = greater_than_or_equals }
+		great_depression_bank_program_has_viability = yes
+	}
+}
