@@ -384,7 +384,7 @@ The MCP event graph is selected-event evidence rather than a claim that every un
 The earlier improvement-loop output is dispositioned in `docs/plans/021_random_civil_war_plans/improvement_loop_disposition_2026-09-06.md`.
 The dynamic consumer repairs and the active-war Evolution I trace reopen narrow implementation review within the existing spec; broad expansion remains outside this repair.
 Historical closure wording does not prove the complete current runtime.
-Current specialist outcomes and exact MCP blockers are reconciled in `acceptance_evidence.md` and the current dynamic-ledger repair record.
+Current specialist outcomes and exact MCP blockers are reconciled in the [acceptance summary](acceptance_evidence.md), the [full evidence ledger](../../plans/021_random_civil_war_plans/acceptance_evidence.md) and the current dynamic-ledger repair record.
 
 The orchestrator supplied the October 3 cycle1 startup log, which the implementation owner inspected; no Event 021 match was found.
 This does not establish gameplay, save-state, cleanup, settlement, or performance acceptance.
