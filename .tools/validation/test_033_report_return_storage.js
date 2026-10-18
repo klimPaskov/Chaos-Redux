@@ -16,7 +16,10 @@ const newAnchor = '\t\t\tsave_event_target_as = acid_rain_report_state\n' +
 	'\t\t\tset_temp_variable = { acid_rain_impact_end_day = global.date }\n' +
 	'\t\t\tacid_rain_prepare_severe_impact_report = yes';
 assert.equal(oldText.split(oldAnchor).length, 2, 'before anchor must be unique');
-assert.equal(text, oldText.replace(oldAnchor, newAnchor), 'only the three owned declarations may change');
+// The file has evolved since the pinned parent, so the owned surface is the call-site anchor: the three
+// output declarations sit directly before the single preparer call, and the pinned parent had none.
+assert.equal(text.split(newAnchor).length, 2, 'the three owned declarations precede the single preparer call');
+assert.equal(text.split('acid_rain_prepare_severe_impact_report = yes').length, 2, 'one preparer call site');
 const constants = new Map();
 for (const category of parse(fs.readFileSync('common/script_constants/033_acid_rain_constants.txt', 'utf8')))
 	for (const row of Array.isArray(category.value) ? category.value : [])

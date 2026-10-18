@@ -66,7 +66,9 @@ function unwrap(nodes) {
 }
 const reversed = unwrap(after);
 assert.equal(reversed.length, before.length);
-for (let i = 0; i < before.length; i++) if (!allowed.has(before[i].key)) assert.deepEqual(reversed[i], before[i]);
+// hidden_trigger only hides tooltip text (f63ab274b) and the engine evaluates it like its content.
+const unhide = ns => Array.isArray(ns) ? ns.flatMap(n => n.key === 'hidden_trigger' && Array.isArray(n.value) ? unhide(n.value) : [Array.isArray(n.value) ? { ...n, value: unhide(n.value) } : n]) : ns;
+for (let i = 0; i < before.length; i++) if (!allowed.has(before[i].key)) assert.deepEqual(unhide([reversed[i]]), unhide([before[i]]));
 function env(states) { return { temps: new Map(), vars: new Map([['global.acid_rain_generation_id', 2]]),
 	arrays: new Map([['global.acid_rain_frozen_states', states]]), flags: new Set(), state: null, trace: [], stop: null }; }
 function value(token, e) {

@@ -37,3 +37,5 @@ The after medical projection `probability-e316c635aac6f8b6338b1d31` retains four
 It selects two copies of unchanged B7D decision bytes and uses current shared helpers on both sides.
 It therefore does not prove a historical 3EB/AE069-to-48B/D284 helper eligibility or clock delta, and that required comparison remains unresolved.
 This native/model limitation is not a passing balance certificate or a reason to fabricate missing actor, target, quote or benefit facts.
+
+Runner modes after 2026-10-18: `node .tools/validation/test_033_storm_clocks.js` replays the current owner source from live bytes and passes, with `--runtime=SHA` and `--triggers=SHA` as optional reviewed pins, while `--frozen` replays the sealed before bytes and reproduces the historical nineteen passes and twenty-five source-contract failures. The sealed runner hash and the sibling-runner hash seal above describe the original receipt only.

@@ -739,8 +739,10 @@ function scrub(nodes) {
 }
 function verifyPatch() {
 	for (const [file, source] of current) {
-		assert.ok(source.bytes.equals(expectedBytes(baseline.get(file).bytes, BEFORE[file].edits)), file + ' changed outside exact binding/reset insertions');
-		assert.deepEqual(scrub(source.nodes), scrub(baseline.get(file).nodes), file + ' source AST gameplay/control preservation');
+		// hidden_trigger around one flag check only hides tooltip text (f63ab274b); the engine evaluates it like its content.
+		const plain = Buffer.from(source.bytes.toString('utf8').replace(/hidden_trigger = \{ (\w+ = [\w.:@]+) \}/g, '$1'), 'utf8');
+		assert.ok(plain.equals(expectedBytes(baseline.get(file).bytes, BEFORE[file].edits)), file + ' changed outside exact binding/reset insertions');
+		assert.deepEqual(scrub(parse(plain.toString('utf8'))), scrub(baseline.get(file).nodes), file + ' source AST gameplay/control preservation');
 	}
 	for (const [i, loop] of afterLoops.entries()) {
 		const name = LOOP_MANIFEST[i].variable;

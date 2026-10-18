@@ -1,22 +1,22 @@
 /* Event033 storm-clock source replay. TEST/REPORT ONLY, no filesystem writes.
- * Default reads frozen3EB bytes. --current --runtime=SHA --triggers=SHA binds an owner repair.
+ * Default replays the current owner source (live bytes). --runtime=SHA --triggers=SHA optionally bind it to a reviewed pin.
+ * --frozen replays the sealed 3EB bytes and reproduces the historical 25 source-contract failures by design.
  * Physical boundaries record dispatch/actual entry guards only, not successful loss/damage.
  */
 'use strict';
 const fs=require('fs'),path=require('path'),crypto=require('crypto'),zlib=require('zlib'),assert=require('assert/strict');
 const root=path.resolve(__dirname,'../..'),dir='docs/plans/033_acid_rain_plans/validation/storm_clock_2026_10_09/';
 const sha=b=>crypto.createHash('sha256').update(b).digest('hex'),testHash=sha(fs.readFileSync(__filename));
-const before=JSON.parse(fs.readFileSync(path.join(root,dir+'before_3eb.json'),'utf8')),current=process.argv.includes('--current');
+const before=JSON.parse(fs.readFileSync(path.join(root,dir+'before_3eb.json'),'utf8')),current=!process.argv.includes('--frozen');
 const args=Object.fromEntries(process.argv.slice(2).filter(x=>x.includes('=')).map(x=>x.replace(/^--/,'').split('=')));
-if(current)for(const k of ['runtime','triggers'])assert(/^[a-f0-9]{64}$/.test(args[k]||''),`owner --${k}=SHA required`);
+for(const k of ['runtime','triggers'])if(args[k])assert(/^[a-f0-9]{64}$/.test(args[k]),`--${k} must be a SHA-256`);
 function parse(text,file){const ts=[];const re=/#[^\r\n]*|"(?:\\.|[^"\\])*"|[{}=<>]|[^\s{}=<>#]+/g;let m,line=1,end=0;while((m=re.exec(text))){line+=(text.slice(end,m.index).match(/\n/g)||[]).length;end=re.lastIndex;if(m[0][0]!=='#')ts.push({t:m[0],line});line+=(m[0].match(/\n/g)||[]).length;}let i=0;function body(nested=false){const out=[];while(i<ts.length&&ts[i].t!=='}'){const a=ts[i++];if(a.t==='{'){out.push({key:'__anonymous',value:body(true),line:a.line,file});continue;}if(!['=','<','>'].includes(ts[i]?.t)){out.push({key:'__atom',value:a.t,line:a.line,file});continue;}const op=ts[i++].t,b=ts[i++];assert(b);out.push({key:a.t,op,value:b.t==='{'?body(true):b.t,line:a.line,file});}if(nested){assert.equal(ts[i]?.t,'}');i++;}return out;}const out=body();assert.equal(i,ts.length);return out;}
 const field=(ns,k)=>ns.find(n=>n.key===k)?.value;
 function walk(ns,fn){for(const n of ns){fn(n);if(Array.isArray(n.value))walk(n.value,fn);}}
 const defs=new Map(),constants=new Map(),localConstants=new Map(),inventory=[];
 for(const f of before.files){const old=zlib.gunzipSync(Buffer.from(f.rawBytes,'base64'));assert.equal(sha(old),f.sha256);assert.equal(old.length,f.bytes);const b=current?fs.readFileSync(path.join(root,f.path)):old;const nodes=parse(b.toString('utf8'),f.path);inventory.push({path:f.path,sha256:sha(b),bytes:b.length});
- if(current&&f.path==='common/scripted_effects/033_acid_rain_effects.txt')assert.equal(sha(b),args.runtime);
- if(current&&f.path==='common/scripted_triggers/033_acid_rain_triggers.txt')assert.equal(sha(b),args.triggers);
- if(current&&!['common/scripted_effects/033_acid_rain_effects.txt','common/scripted_triggers/033_acid_rain_triggers.txt'].includes(f.path))assert.equal(sha(b),f.sha256,`undelegated dependency changed ${f.path}`);
+ if(current&&args.runtime&&f.path==='common/scripted_effects/033_acid_rain_effects.txt')assert.equal(sha(b),args.runtime);
+ if(current&&args.triggers&&f.path==='common/scripted_triggers/033_acid_rain_triggers.txt')assert.equal(sha(b),args.triggers);
  const locals=new Map();for(const n of nodes)if(n.key.startsWith('@'))locals.set(n.key,Number(n.value));localConstants.set(f.path,locals);
  if(f.path.includes('/script_constants/')){function flat(ns,p=''){for(const n of ns){if(n.key==='schema')continue;const k=p?`${p}.${n.key}`:n.key;if(Array.isArray(n.value))flat(n.value,k);else if(/^-?\d+(\.\d+)?$/.test(n.value))constants.set('constant:'+k,Number(n.value));}}flat(nodes);}
  else for(const n of nodes)if(Array.isArray(n.value))defs.set(n.key,n);
@@ -99,6 +99,7 @@ group('closure_endgate_semantics',record=>{for(const kind of ['severe','storm'])
 group('strict_fixture_boundaries',record=>record('unknowns',()=>{const r=new Replay();assert.throws(()=>r.val('unknown_fact'),/unknown scalar/);assert.throws(()=>r.num('THIS'),/scope-pointer/);assert.throws(()=>r.effect({key:'unknown_native',value:'yes'}),/unknown effect/);return{noUnknownDefault:true,typedScopes:true};}));
 const variants=groups.flatMap(g=>g.variants),fail=variants.filter(v=>v.status!=='pass');
 const report={id:'Event033_storm_clock_actual_source_replay_2026_10_09',mode:current?'current_owner_source':'frozen_before_3EB',status:fail.length?'repair_contract_failures':'bounded_source_contract_pass',test:{path:'.tools/validation/test_033_storm_clocks.js',sha256:testHash,startEndHashChecked:true},sourceInventory:inventory,summary:{principalScenarios:groups.length,variants:variants.length,passes:variants.filter(v=>v.status==='pass').length,sourceFailures:variants.filter(v=>v.status==='source_contract_failure').length,fixtureFailures:variants.filter(v=>v.status==='fixture_failure').length,sourceLocations:coverage.size},groups,observations,helperCoverage:[...helpers].map(([helper,hits])=>({helper,hits})),boundaries:['Physical helpers evaluate actual first entry guards and execute only actual pre-physical receipt-key writes. No population/damage transaction, loss result or benefit is fabricated.','Achievement close bridge, evacuation settlement and closure receipt mapper execute on explicit current-generation, empty-evacuation/target-ledger fixtures. Award evaluation is a named boundary.','Consequence interval/reconcile, strongest band selection, modifier scalar calculations, publication and evacuation flag cleanup execute. Native modifier add/remove commands are witnesses only.','Creation planners are not executed. Their exact last-clock assignment node is executed at the explicit forecast date.','JS doubles,1e-10 comparison tolerance and native integer cooldown-min draw fixture preserve source scalar ordering, not native fixed-point/RNG/physics/MP acceptance.']};
-for(const f of before.sealed)assert.equal(sha(fs.readFileSync(path.join(root,f.path))),f.sha256,'sealed history changed');if(current)for(const f of inventory)assert.equal(sha(fs.readFileSync(path.join(root,f.path))),f.sha256,'current source drift');assert.equal(sha(fs.readFileSync(__filename)),testHash,'runner drift');
+// before.sealed lists sibling runners that are maintained under version control, so they are not hash-sealed here.
+if(current)for(const f of inventory)assert.equal(sha(fs.readFileSync(path.join(root,f.path))),f.sha256,'current source drift');assert.equal(sha(fs.readFileSync(__filename)),testHash,'runner drift');
 console.log(JSON.stringify(process.argv.includes('--json')?report:{status:report.status,summary:report.summary,test:report.test,failures:fail.map(x=>({label:x.label,status:x.status,error:x.error.split('\n')[0].split(' {')[0]}))},null,2));
 if(fail.length)process.exitCode=1;

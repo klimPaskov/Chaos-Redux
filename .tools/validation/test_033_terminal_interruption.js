@@ -32,6 +32,8 @@ function test(f) {
 	function value(t, scope) { if (constants.has(t)) return constants.get(t); if (Number.isFinite(Number(t))) return Number(t); return temps().get(t) ?? globals.get(t) ?? scope.vars.get(t) ?? 0; }
 	function trigger(n, scope) {
 		if (n.key === 'NOT') return !n.value.every(x => trigger(x, scope));
+		// hidden_trigger only hides tooltip text; the engine evaluates it like AND.
+		if (n.key === 'hidden_trigger') return n.value.every(x => trigger(x, scope));
 		if (n.key === 'OR') return n.value.some(x => trigger(x, scope));
 		if (n.key === 'has_global_flag') return flags.has(n.value);
 		if (n.key === 'has_state_flag') return scope.flags.has(n.value);

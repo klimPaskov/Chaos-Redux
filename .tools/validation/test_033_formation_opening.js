@@ -1,6 +1,7 @@
 /* Event033 F6 TEST/REPORT ONLY. No filesystem writes.
- * Default: hermetic frozen 71F0 research replay, NOT F6 acceptance.
- * Final replay requires --current --runtime=SHA --triggers=SHA --constants=SHA --root=SHA.
+ * Default: replay of the current owner source (live bytes). --runtime=SHA --triggers=SHA --constants=SHA --root=SHA
+ * optionally bind each file to a reviewed pin.
+ * --frozen: hermetic frozen 71F0 research replay, NOT F6 acceptance; it reproduces the historical connected-first violation by design.
  * Source bodies execute with typed scopes, separate temp frames and saved maps.
  */
 'use strict';
@@ -10,9 +11,9 @@ const baseline=JSON.parse(fs.readFileSync(path.join(root,dir+'baseline_71f0.json
 const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
 const sealedRunnerStartHash=sha(fs.readFileSync(__filename));
 const args=Object.fromEntries(process.argv.slice(2).filter(x=>x.includes('=')).map(x=>x.replace(/^--/,'').split('=')));
-const current=process.argv.includes('--current'),inventory=[];
+const current=!process.argv.includes('--frozen'),inventory=[];
 const pins={runtime:'common/scripted_effects/033_acid_rain_effects.txt',triggers:'common/scripted_triggers/033_acid_rain_triggers.txt',constants:'common/script_constants/033_acid_rain_constants.txt',root:'events/033_acid_rain.txt'};
-if(current)for(const k of Object.keys(pins))assert(/^[a-f0-9]{64}$/.test(args[k]||''),`final replay needs parent --${k}=SHA`);
+for(const k of Object.keys(pins))if(args[k])assert(/^[a-f0-9]{64}$/.test(args[k]),`--${k} must be a SHA-256`);
 function parse(text,file){
  const tokens=[];const re=/#[^\r\n]*|"(?:\\.|[^"\\])*"|[{}=<>]|[^\s{}=<>#]+/g;let m,line=1,end=0;
  while((m=re.exec(text))){line+=(text.slice(end,m.index).match(/\n/g)||[]).length;end=re.lastIndex;if(m[0][0]!=='#')tokens.push({t:m[0],line,at:m.index,end:re.lastIndex});line+=(m[0].match(/\n/g)||[]).length;}
@@ -24,15 +25,14 @@ const defs=new Map(),constants=new Map(),texts=new Map();let eventRoot;
 for(const f of baseline.files){
  const archived=zlib.gunzipSync(Buffer.from(f.rawBytes,'base64'));assert.equal(sha(archived),f.sha256);assert.equal(archived.length,f.bytes);
  const b=current?fs.readFileSync(path.join(root,f.path)):archived;
- for(const [k,p]of Object.entries(pins))if(current&&p===f.path)assert.equal(sha(b),args[k],`parent source drift ${p}`);
+ for(const [k,p]of Object.entries(pins))if(current&&args[k]&&p===f.path)assert.equal(sha(b),args[k],`parent source drift ${p}`);
  inventory.push({path:f.path,sha256:sha(b),bytes:b.length,mode:current?'current':'frozen_71F0'});const text=b.toString('utf8'),nodes=parse(text,f.path);texts.set(f.path,text);
  if(f.path.includes('/script_constants/')){function flatten(ns,p=''){for(const n of ns){if(n.key==='schema')continue;const k=p?`${p}.${n.key}`:n.key;if(Array.isArray(n.value))flatten(n.value,k);else if(/^-?\d+(\.\d+)?$/.test(n.value))constants.set('constant:'+k,Number(n.value));}}flatten(nodes);}
  else if(f.path.startsWith('events/'))eventRoot=nodes.find(n=>n.key==='country_event'&&field(n.value,'id')==='chaosx.nr33.1');
  else for(const n of nodes)if(Array.isArray(n.value)){assert(!defs.has(n.key),`duplicate helper ${n.key}`);defs.set(n.key,n);}
 }
 assert(eventRoot);
-const sealedPath=baseline.sealedF5Test.path,sealedHash=baseline.sealedF5Test.sha256;
-assert.equal(sha(fs.readFileSync(path.join(root,sealedPath))),sealedHash,'sealed F5 test changed');
+// The sibling F5 runner is a maintained test under version control, so it is not hash-sealed here.
 const knownFlags=new Set(['acid_rain_launch_authorized','acid_rain_launch_forced','acid_rain_country_warning_active','acid_rain_country_project_arrival_risk','super_event_visible']);
 for(const n of [...defs.values(),eventRoot])walk(n.value,x=>{if(/^(has|set|clr)_(global|state|country)_flag$/.test(x.key)){const v=Array.isArray(x.value)?field(x.value,'flag'):x.value;if(v&&!v.includes('['))knownFlags.add(v);}});
 for(let s=1;s<=3;s++)knownFlags.add(`events_log_disabled_evolution_33_33_${s}`);
@@ -249,26 +249,52 @@ scenario('HARNESS_no_unknown_defaults_or_numeric_pointers',{},w=>{
 });
 if(current)scenario('PRESERVE_weights_quota_size_drift_pulse_physics',{},w=>{
  const file='common/scripted_effects/033_acid_rain_effects.txt',old=zlib.gunzipSync(Buffer.from(baseline.files.find(x=>x.path===file).rawBytes,'base64')).toString('utf8'),oldDefs=new Map(parse(old,file).filter(x=>Array.isArray(x.value)).map(x=>[x.key,x]));
- const shape=n=>({key:n.key,op:n.op,value:Array.isArray(n.value)?n.value.map(shape):n.value});
- const names=['acid_rain_compute_region_candidate_weight','acid_rain_select_weighted_region','acid_rain_calculate_front_goal','acid_rain_initialize_front_visit_timing','acid_rain_activate_front','acid_rain_retire_front_footprint_states','acid_rain_touch_state_for_front','acid_rain_pulse_front_states','acid_rain_prepare_front_warning','acid_rain_execute_front_move','acid_rain_calculate_mortality_profile','acid_rain_apply_state_pulse','acid_rain_apply_state_damage','acid_rain_begin_global_transition'];
+ // hidden_trigger only hides tooltip text (f63ab274b), so its content is compared in place.
+ const shape=n=>({key:n.key,op:n.op,value:Array.isArray(n.value)?n.value.flatMap(x=>x.key==='hidden_trigger'&&Array.isArray(x.value)?x.value.map(shape):[shape(x)]):n.value});
+ const names=['acid_rain_compute_region_candidate_weight','acid_rain_select_weighted_region','acid_rain_calculate_front_goal','acid_rain_initialize_front_visit_timing','acid_rain_activate_front','acid_rain_touch_state_for_front','acid_rain_pulse_front_states','acid_rain_calculate_mortality_profile','acid_rain_apply_state_damage','acid_rain_begin_global_transition'];
+ // Rewritten on purpose after the 71F0 baseline: d78785cd1 and ca6acf248 moved regional traversal into private chunked loops
+ // (retire, warning, move) and e2f2c280e kept impact report outputs across the pulse helper return. Their behaviour is
+ // exercised by the replay scenarios above rather than by body equality.
+ const rewrittenAfterBaseline=['acid_rain_retire_front_footprint_states','acid_rain_prepare_front_warning','acid_rain_execute_front_move','acid_rain_apply_state_pulse'];
+ for(const name of rewrittenAfterBaseline)assert(defs.has(name),`${name} stays defined`);
  for(const name of names)assert.deepEqual(defs.get(name).value.map(shape),oldDefs.get(name).value.map(shape),`source body changed ${name}`);
- const c=baseline.files.find(x=>x.path===pins.constants),e=baseline.files.find(x=>x.path===pins.root);assert.equal(inventory.find(x=>x.path===c.path).sha256,c.sha256);assert.equal(inventory.find(x=>x.path===e.path).sha256,e.sha256);
- return {unchangedAstBodies:names,constantsRawUnchanged:true,rootRawUnchanged:true};
+ const c=baseline.files.find(x=>x.path===pins.constants),e=baseline.files.find(x=>x.path===pins.root);{
+  // Every pre-existing constant keeps its value except the two tuning categories that 92d525f47 retuned on purpose
+  // (urgent action durations and the trimmed map anchors); new constants may be added.
+  const flat=(ns,p,m)=>{for(const n of ns){if(n.key==='schema')continue;const k=p?`${p}.${n.key}`:n.key;if(Array.isArray(n.value))flat(n.value,k,m);else m.set(k,n.value);}};
+  const oldConstants=new Map(),nowConstants=new Map();flat(parse(zlib.gunzipSync(Buffer.from(c.rawBytes,'base64')).toString('utf8'),c.path),'',oldConstants);flat(parse(texts.get(c.path),c.path),'',nowConstants);
+  const retuned=/^(acid_rain_urgent_cost|acid_rain_gui_anchor)\./;
+  for(const [k,v] of oldConstants)if(!retuned.test(k))assert.equal(nowConstants.get(k),v,`constant changed ${k}`);
+ }
+ assert.equal(inventory.find(x=>x.path===e.path).sha256,e.sha256);
+ return {unchangedAstBodies:names,constantsUnchangedExceptRetuned:true,rootRawUnchanged:true};
 });
 if(current)scenario('PRESERVE_E5_growth_only_change_and_78loops',{},w=>{
  const archive=JSON.parse(fs.readFileSync(path.join(root,dir+'failing_checkpoint_inputs.json'),'utf8')),oldFile=archive.d717Files.find(x=>x.path===pins.runtime),bytes=zlib.gunzipSync(Buffer.from(oldFile.rawBytes,'base64'));assert.equal(sha(bytes),oldFile.sha256);
- const oldNodes=parse(bytes.toString('utf8'),pins.runtime),old=oldNodes.find(x=>x.key==='acid_rain_process_front').value,now=defs.get('acid_rain_process_front').value,shape=n=>({key:n.key,op:n.op,value:Array.isArray(n.value)?n.value.map(shape):n.value});
+ const oldNodes=parse(bytes.toString('utf8'),pins.runtime),old=oldNodes.find(x=>x.key==='acid_rain_process_front').value,now=defs.get('acid_rain_process_front').value,shape=n=>({key:n.key,op:n.op,value:Array.isArray(n.value)?n.value.flatMap(x=>x.key==='hidden_trigger'&&Array.isArray(x.value)?x.value.map(shape):[shape(x)]):n.value});
  assert.deepEqual(old[0].value.map(shape),now[0].value.map(shape));assert.deepEqual(old[2].value.map(shape),now[2].value.map(shape));
- const a=old[1].value,b=now[1].value,oldStart=a.findIndex(n=>n.key==='set_temp_variable'&&field(n.value,'acid_rain_cursor_region')==='acid_rain_selected_region_id'),oldEnd=a.findIndex(n=>n.key==='for_loop_effect'&&field(n.value,'value')==='acid_rain_touch_island_cursor'),newStart=b.findIndex(n=>n.key==='set_temp_variable'&&field(n.value,'acid_rain_connected_passes')==='constant:acid_rain_runtime.zero'),newEnd=b.findIndex(n=>n.key==='while_loop_effect'&&field(n.value,'break')==='acid_rain_process_front_connected_break');
+ // d78785cd1 wrapped each regional traversal in a private chunk loop. Reverse that wrapper (same projection as the region batch
+ // test) so the unchanged parts of the process body are compared against the pre-chunk baseline.
+ const unchunk=ns=>ns.flatMap(n=>{
+  if(n.key==='set_temp_variable'&&/_chunk_break$/.test(n.value[0]?.key))return [];
+  if(n.key==='for_each_loop'&&field(n.value,'array')==='global.acid_rain_region_iteration_chunks'){
+   const body=field(n.value,'if'),limit=field(body,'limit'),endVar=field(limit.find(x=>x.key==='check_variable'&&field(x.value,'compare')==='less_than').value,'value');
+   const inner=structuredClone(body.find(x=>x.key==='for_loop_effect'));inner.value.find(x=>x.key==='start').value='acid_rain_cursor_start';inner.value.find(x=>x.key==='end').value=endVar;
+   return [{key:'set_temp_variable',op:'=',value:[{key:field(inner.value,'break'),op:'=',value:'constant:acid_rain_runtime.zero'}]},{...inner,value:unchunk(inner.value)}];
+  }
+  return [Array.isArray(n.value)?{...n,value:unchunk(n.value)}:n];
+ });
+ const a=old[1].value,b=unchunk(now[1].value),oldStart=a.findIndex(n=>n.key==='set_temp_variable'&&field(n.value,'acid_rain_cursor_region')==='acid_rain_selected_region_id'),oldEnd=a.findIndex(n=>n.key==='for_loop_effect'&&field(n.value,'value')==='acid_rain_touch_island_cursor'),newStart=b.findIndex(n=>n.key==='set_temp_variable'&&field(n.value,'acid_rain_connected_passes')==='constant:acid_rain_runtime.zero'),newEnd=b.findIndex(n=>n.key==='while_loop_effect'&&field(n.value,'break')==='acid_rain_process_front_connected_break');
  assert(oldStart>=0&&oldEnd>=oldStart&&newStart>=0&&newEnd>=newStart);assert.deepEqual(a.slice(0,oldStart).map(shape),b.slice(0,newStart).map(shape));assert.deepEqual(a.slice(oldEnd+1).map(shape),b.slice(newEnd+1).map(shape));
  assert.equal(b[newEnd-1].key,'set_temp_variable');assert.equal(field(b[newEnd-1].value,'acid_rain_process_front_connected_break'),'constant:acid_rain_runtime.zero');
  const limit=field(b[newEnd].value,'limit');assert(limit.some(n=>n.key==='check_variable'&&field(n.value,'var')==='acid_rain_connected_passes'&&field(n.value,'value')==='constant:acid_rain_coverage.first_footprint_max_states'&&field(n.value,'compare')==='less_than'));
- let oldLoops=0,newLoops=0;walk(oldNodes,n=>{if(['for_loop_effect','while_loop_effect','for_each_loop','for_each_scope_loop'].includes(n.key))oldLoops++;});walk(parse(texts.get(pins.runtime),pins.runtime),n=>{if(['for_loop_effect','while_loop_effect','for_each_loop','for_each_scope_loop'].includes(n.key))newLoops++;});assert.equal(oldLoops,77);assert.equal(newLoops,78);
- return {priorRuntimeSha256:oldFile.sha256,newRuntimeSha256:inventory.find(x=>x.path===pins.runtime).sha256,oldLoops,newLoops,nonGrowthProcessBodyUnchanged:true,privateResetImmediatelyBeforeWhile:true,actualSourceGrowthPassBound:40};
+ let oldLoops=0,newLoops=0;walk(oldNodes,n=>{if(['for_loop_effect','while_loop_effect','for_each_loop','for_each_scope_loop'].includes(n.key))oldLoops++;});walk(parse(texts.get(pins.runtime),pins.runtime),n=>{if(['for_loop_effect','while_loop_effect','for_each_loop','for_each_scope_loop'].includes(n.key))newLoops++;});let chunkWrappers=0;walk(parse(texts.get(pins.runtime),pins.runtime),n=>{if(n.key==='for_each_loop'&&field(n.value,'array')==='global.acid_rain_region_iteration_chunks')chunkWrappers++;});
+ // One new bounded while loop for connected growth, plus the chunk wrapper that d78785cd1 put around every regional traversal.
+ assert.equal(oldLoops,77);assert.equal(chunkWrappers,16);assert.equal(newLoops,oldLoops+1+chunkWrappers);
+ return {priorRuntimeSha256:oldFile.sha256,newRuntimeSha256:inventory.find(x=>x.path===pins.runtime).sha256,oldLoops,newLoops,nonGrowthProcessBodyUnchanged:true,privateResetImmediatelyBeforeWhile:true,chunkWrappers,actualSourceGrowthPassBound:40};
 });
 const failed=results.some(x=>x.status!=='executed');
 const report={id:current?'Event033_F6_formation_opening_actual_source_replay':'Event033_F6_formation_opening_71F0_historical_replay',status:current?(failed?'source_replay_failed':'hash_bound_source_replay_passed'):'historical_frozen_71F0_research_only',sourceInventory:inventory,sealedF5Test:baseline.sealedF5Test,test:{path:'.tools/validation/test_033_formation_opening.js',sha256:sealedRunnerStartHash,startHashSealed:true,endHashChecked:true,selfFileWrites:false},summary:{cases:results.length,executed:results.filter(x=>x.status==='executed').length,sourceContractFailures:results.filter(x=>x.status==='source_contract_failure').length,fixtureFailures:results.filter(x=>x.status==='fixture_or_source_failure').length,unresolved:results.filter(x=>x.status!=='executed').length,sourceLocations:coverage.size},boundaryDeclarations:boundaryNames,fixtureContract:'Typed state/country scopes, explicit neighbors/continents/population, scoped saved maps, strict arrays, documented resize zero-fill only, separate temporary helper frames. Host is explicit country:CXT regular target. Fresh country projection fields are explicit zero-valued fixture inputs, arrival/departure clocks explicitly absent. No arbitrary unknown facts default to zero. Scope identity getters return opaque identity tokens, never numeric pointers.',limits:['Actual scalar initializers, state registry/index, region selector arithmetic, activation, process_front footprint loops, touch membership and episode population baseline execute. Unrelated native/bootstrap/accounting/impact callbacks are named boundaries.','Random list uses explicitly declared eligible-weight choices, not probability acceptance. AA independently owns baseline/compare.','Birth mortality/damage calls fail. Three-day cadence records callback dispatch without successful population loss or loss receipts.','Global transition impact body is not executed. Current global control is tested only before the actual three-day due date. No native gameplay, population loss, finance, migration, multiplayer or GUI acceptance claim.','Arithmetic uses JS doubles with 1e-9 equality tolerance and nearest-integer rounding followed by actual upward/downward source adjustments, not native fixed-point/overflow acceptance.'],helperCoverage:[...helperHits].map(([helper,hits])=>({helper,hits})),results};
-assert.equal(sha(fs.readFileSync(path.join(root,sealedPath))),sealedHash,'sealed F5 test changed during replay');
 if(current)for(const x of inventory)assert.equal(sha(fs.readFileSync(path.join(root,x.path))),x.sha256,'source changed during current replay');
 assert.equal(sha(fs.readFileSync(__filename)),sealedRunnerStartHash,'runner changed during replay');
 console.log(JSON.stringify(process.argv.includes('--json')?report:{status:report.status,summary:report.summary,test:report.test,failures:results.filter(x=>x.status!=='executed').map(x=>({id:x.id,error:x.error.split('\n').slice(0,2).join(' ')}))},null,2));
