@@ -17,6 +17,7 @@ Phase 2 of Event 38: the two focus trees, the five government identities with th
 
 ## Defects fixed
 
+- `mpf_council_of_admirals` referenced a sprite that does not exist (`GFX_goal_generic_build_nay`); it now uses `GFX_goal_generic_build_navy`. This was found after the first commit and fixed in a second commit.
 - The three flags `CRU_ORDER`, `CRU_CONFED` and `CRU_GOD` had their medium and small variants stored in `gfx/flags/` as `<TAG>_medium.tga` and `<TAG>_small.tga`, where the engine does not look. They are now `gfx/flags/medium/<TAG>.tga` and `gfx/flags/small/<TAG>.tga`.
 - `chaosx.nr38.40.d` used a colour code in a report event text (`SCRIPT_NEWS_TEXT_COLOUR_CODE`); the code was removed.
 - The runtime-built names (`malta_pr_leader_*`, `malta_pr_officer_*`, `malta_pr_pressure_*`, `malta_seat_*`, with `_senior`) are now listed in the synchronized token file so multiplayer clients allocate them identically.
@@ -34,7 +35,8 @@ These files have no registration or consumer. They were made for the deferred pa
 - `hoi4.script_validate` (file mode) on both focus trees, the principality and governance effects, cost effects, both decision files, the principality triggers and the events file: no findings except the colour-code warning above. Argument blocks are not checked by that tool, and effect and trigger files report unresolved scope roots, so this is syntax, command-kind and declared-scope coverage only.
 - `hoi4.focus_inspect` on both trees: both parse, 108 and 39 focuses, no node intersections; the principality tree has 3 connector crossings. The one blocking diagnostic is in a vanilla file.
 - Static audits on the working tree: asset wiring (0 unresolved references, 0 implicit lookups missing) and localisation (0 parse errors, 0 missing BOM, 0 undefined key bindings).
-- HEAD consistency: see the result recorded in the final report of the commit session. Method: export HEAD, overlay the commit set, then look for tokens defined only in uncommitted working-tree files and for undefined effect or trigger calls, focus and idea ids, constants, mtth entries, scripted-localisation getters and Event 38 event ids in the committed files.
+- HEAD consistency. Before committing, the commit set was overlaid on an export of the previous HEAD and the committed files were scanned for tokens defined only in other uncommitted working-tree files, and for undefined effect or trigger calls, focus, idea, character and event ids, constants, mtth entries and scripted-localisation getters: clean. After committing, the asset wiring and localisation audits were run on a fresh export of HEAD. They found one Event 38 defect: the focus `mpf_council_of_admirals` used the sprite name `GFX_goal_generic_build_nay` (the vanilla texture file is misspelled, the sprite is `GFX_goal_generic_build_navy`); it now uses the vanilla sprite. The working tree had masked this through an alias that another session added to `interface/chaos_focus_icons.gfx` and has not committed. The remaining HEAD findings do not concern Event 38 (a flag in `chaosx_liberation_release_triggers.txt`, owned by another session).
+- Hands-off minimized launch of the working tree (`-quickstart -start_tag=GER`): menu reached after 176 s, `error.log` and `text.log` both empty, no crash directory. The launch ran before the sprite-name fix above.
 
 ## Not verified, not done
 
