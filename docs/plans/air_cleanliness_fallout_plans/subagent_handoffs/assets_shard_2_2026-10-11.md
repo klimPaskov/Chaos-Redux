@@ -5,12 +5,12 @@ The current-source binding audit is implemented; candidate production and indepe
 
 The user assigned the 1-based odd positions in the successor crosswalk: 498 required rows across 50 identities (150 focus, 150 idea and 198 decision icons).
 The user explicitly authorized generation of the current specification assets, one independent visual sample per batch, automatic checks for the remainder, and preservation of all existing art.
-Seven gpt-6-luna icon producers and one independent gpt-6.1-sol reviewer use disjoint 10–12-row family batches.
+Fifteen gpt-6-luna producers and one independent gpt-6.1-sol reviewer fill the active 16-subagent limit in disjoint family batches.
 
 ## Current evidence
 
-Snapshot: 2026-10-11T16:28:36.296323+00:00.
-Candidate results cover 216 rows; 53 rows have newly generated art and 84 rows belong to independently sample-accepted batches.
+Snapshot: 2026-10-11T17:00:15.668474+00:00.
+Candidate results cover 458 rows; 146 rows have newly generated art and 156 rows belong to independently sample-accepted batches.
 These are candidate-production counts; no new runtime texture or sprite has been installed or committed.
 The historical 266 receipt-backed rows are candidates, not proof of acceptance or wiring.
 The [row crosswalk](assets_shard_2_2026-10-11_crosswalk.csv) records all required rows, current exact-consumer findings, production records and concrete blockers.
@@ -27,11 +27,11 @@ An exact intended consumer ID and visibility/state binding, or an accepted seman
 ## Checks and limits
 
 The independent reviewer fully inspects one asset per batch at source and native size; remaining rows receive dimensions, real alpha, canonical BGRA DDS decode/pixel-roundtrip, name, path and lineage checks.
-The Shield Bunker Registry candidate B failed for a clipped watchtower apex; the producer preserved clipped candidate B and selected intact pre-existing candidate A, which passed the focused independent recheck.
+The Shield Bunker Registry candidate B failed for a clipped watchtower apex; the producer retained B and selected intact pre-existing candidate A, which passed the focused independent recheck.
 Unavailable historical prompts remain documented as lineage limits; none are reconstructed or used to justify regeneration.
 Successful ImageGen results are retained through their tool-reported generated_images file paths; three accidentally repeated outputs from early persistence recovery remain unselected and outside runtime paths.
 The HOI4 reference MCP tools are absent in the connected tool inventory; direct local reference/source review was used, with no MCP render or live-game claim.
-No Hearts of Iron IV launch, gameplay edit, replacement art, invented provenance, or fallback binding was used.
+No Hearts of Iron IV launch, gameplay edit, replacement art, synthetic source, or fallback binding was used.
 
 ## Source revisions
 

@@ -9,14 +9,14 @@ The plain chlorine mask remains distinct from the three winged variants.
 
 | Finding | Current visible result |
 |---|---|
-| Phosgene | Bronze winged mask with green-cross shell marking |
-| Mustard | Bronze winged mask with yellow-cross shell marking |
-| Lewisite | Bronze winged mask with blue-cross shell marking |
-| Theater protective posture | Bronze mask over a shield |
-| Decontamination corridor | Bronze shower arch over a road |
-| Seal operational area | Bronze padlock over a map |
-| Mass antidote response | Bronze syringe crossed with medical cross |
-| Seal infection corridor | Bronze barrier with biohazard glyph |
+| Phosgene (`GFX_ability_phosgene_attack`) | Bronze winged mask with green-cross shell marking |
+| Mustard (`GFX_ability_mustard_attack`) | Bronze winged mask with yellow-cross shell marking |
+| Lewisite (`GFX_ability_lewisite_attack`) | Bronze winged mask with blue-cross shell marking |
+| Theater protective posture (`GFX_ability_cbrn_theater_protective_posture`) | Bronze mask over a shield |
+| Decontamination corridor (`GFX_ability_cbrn_decontamination_corridor`) | Bronze shower arch over a road |
+| Seal operational area (`GFX_ability_cbrn_seal_operational_area`) | Bronze padlock over a map |
+| Mass antidote response (`GFX_ability_cbrn_mass_antidote_response`) | Bronze syringe crossed with medical cross |
+| Seal infection corridor (`GFX_ability_cbrn_seal_infection_corridor`) | Bronze barrier with biohazard glyph |
 
 Every runtime icon remains 34×33 with transparent unused canvas.
 The installed `interface/abilitylist.gfx`, lines 77–80 and 125–129, and decoded `ability_chi_force_attack.dds` and `ability_deeper_dig_in.dds` establish the bronze-relief reference family.

@@ -5,10 +5,10 @@ Acceptance basis: the graphics-fix task explicitly requests every finding in thi
 
 | Finding | Result | Runtime file |
 |---|---|---|
-| Famine deselected, severity 1 | Native ImageGen wheat silhouette, solid light grey, centred at 20×18 | `gfx/interface/mapmode/custom/famine_state_map_mode_deselected.dds` |
-| Migration deselected, severity 1 | Native ImageGen walking civilians with bundles, both figures retained, solid light grey | `gfx/interface/mapmode/custom/migration_state_map_mode_deselected.dds` |
-| Famine selected, severity 2 | Same wheat silhouette in beige over an opaque charcoal interior; existing gold border retained | `gfx/interface/mapmode/custom/famine_state_map_mode_selected.dds` |
-| Migration selected, severity 2 | Same civilian silhouette in beige over an opaque charcoal interior; existing gold border retained | `gfx/interface/mapmode/custom/migration_state_map_mode_selected.dds` |
+| Famine deselected, severity 1 (`GFX_mapmode_buttons_deselected_small_famine_state_map_mode`) | Native ImageGen wheat silhouette, solid light grey, centred at 20×18 | `gfx/interface/mapmode/custom/famine_state_map_mode_deselected.dds` |
+| Migration deselected, severity 1 (`GFX_mapmode_buttons_deselected_small_migration_state_map_mode`) | Native ImageGen walking civilians with bundles, both figures retained, solid light grey | `gfx/interface/mapmode/custom/migration_state_map_mode_deselected.dds` |
+| Famine selected, severity 2 (`GFX_mapmode_buttons_selected_small_famine_state_map_mode`) | Same wheat silhouette in beige over an opaque charcoal interior; existing gold border retained | `gfx/interface/mapmode/custom/famine_state_map_mode_selected.dds` |
+| Migration selected, severity 2 (`GFX_mapmode_buttons_selected_small_migration_state_map_mode`) | Same civilian silhouette in beige over an opaque charcoal interior; existing gold border retained | `gfx/interface/mapmode/custom/migration_state_map_mode_selected.dds` |
 
 ## Production and review
 

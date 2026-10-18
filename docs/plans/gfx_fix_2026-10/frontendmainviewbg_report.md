@@ -1,6 +1,7 @@
 # Frontend background repair
 
 Disposition: implemented asset repair; MCP GUI visual gate remains blocked.
+The stable registered sprite is `GFX_frontend_bg`.
 Acceptance basis: the graphics-fix task requests the full-bleed 1920×1440 background.
 
 The original `gfx/chaosx_main_menu.dds` was 1448×1086 with black bands above and below the painting.

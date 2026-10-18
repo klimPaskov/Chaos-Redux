@@ -1,6 +1,7 @@
 # Shared ChaosX GFX cleanup report
 
-Status: the three parent-assigned division-template emblem findings are implemented and parent-approved. Final DDS outputs await parent commit.
+Status: the three parent-assigned division-template emblem findings are implemented and parent-approved.
+The three DDS outputs and their source/processing evidence were committed in `2fd2f9258d71a28e2cf8414755b00b83adffafce`.
 
 ## Scope and references
 

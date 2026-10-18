@@ -1,6 +1,7 @@
 # Shared Chaos Redux pictures GFX repair report
 
-Asset status: all 16 findings have source, processed preview, and DDS outputs. Integration status: parent `.gfx` texture-path update for Tibet is pending; the sprite name and active consumers are already recorded below.
+Asset and integration status: all 16 findings have approved source art, processed previews, and installed DDS outputs.
+The Tibet texture leaf was committed with its final five-picture tranche in `02c541a647bbe0c88d26bada79a323c29614ff1d`; the stable sprite name and active consumers remain recorded below.
 
 Scope is limited to the `shared_chaosx_pictures` findings in `C:/Users/klimp/Videos/chaos_redux_trailer/records/gfx_review/gfx_fix_plan.md` and `gfx_issues.json`.
 
@@ -90,7 +91,8 @@ All five final DDS files decode pixel-exactly to their processed PNGs. The three
 
 ### Parent-owned Tibet sprite path update
 
-The existing registry block in `interface/chaosx_pictures.gfx` currently points `GFX_report_event_tibet` to the Lhasa texture, which must remain available for its separate sprite. Parent-owned wiring should change only this texture path:
+The preserved pre-edit registry block pointed `GFX_report_event_tibet` to the Lhasa texture.
+The parent changed that one leaf to the Tibet texture shown below; the Lhasa texture remains available for its separate sprite.
 
 ```text
 spriteType = {
@@ -99,15 +101,21 @@ spriteType = {
 }
 ```
 
-The current texture path is `gfx/event_pictures/003_holy_realm/report_event_lhasa.dds`; the new unique path is `gfx/event_pictures/003_holy_realm/report_event_tibet.dds`. The new file is already installed, and `GFX_report_event_tibet` remains consumed by the seven `germany_mengele` event IDs in the table above. No `.gfx` file was changed in this asset task.
+The installed texture path is `gfx/event_pictures/003_holy_realm/report_event_tibet.dds`, and `GFX_report_event_tibet` remains consumed by the seven `germany_mengele` event IDs in the table above.
+The asset worker changed no `.gfx` file; the parent applied and committed the one-leaf repoint.
 
 ### Limited parent colour-audit evidence
 
-The parent reports that `.tools/report_colour_audit.py` found zero colored pixels in event-picture groups `004`, `048`, `074`, and `092`, and in the complete `events/_chaosx_news.txt` surface. Parent-supplied artifacts are `docs/assets/gfx_fix_shared_chaosx_pictures/colour_audit_004.json`, `colour_audit_048.json`, `colour_audit_074.json`, `colour_audit_092.json`, and `colour_audit_news.json`. This records only the parent-reported colour result and does not claim other image-quality checks.
+The retained `.tools/report_colour_audit.py` results contain no reached title/description localisation keys with colour codes for the selected event groups `004`, `048`, `074`, and `092`, or the selected news surface.
+The artifacts are `docs/assets/gfx_fix_shared_chaosx_pictures/colour_audit_004.json`, `colour_audit_048.json`, `colour_audit_074.json`, `colour_audit_092.json`, and `colour_audit_news.json`.
+This is a source-text audit, not an image-pixel or engine-render check.
 
 ## Full-group asset status and remaining user checks
 
-All 16 image findings now have source, processed preview, and runtime DDS outputs. The parent-owned Tibet `.gfx` path update is the only remaining wiring action. After that change, regenerate the group sheet from the live registry and confirm `germany_mengele.40`, `.41`, `.42`, `.43`, `.44`, `.47`, and `.95` show the new monastery image. Confirm the active news IDs and report IDs listed in the tables display their new crops without labels, clipping, or modern props. The foreign-liaison, railway-sovereignty, and Balkans news sprites are registry-only and have no active event consumer to check.
+All 16 image findings have source, processed preview, and runtime DDS outputs, and the parent committed the Tibet `.gfx` leaf and regenerated the linked current group sheet.
+The orchestrator should confirm `germany_mengele.40`, `.41`, `.42`, `.43`, `.44`, `.47`, and `.95` show the new monastery image.
+Confirm the active news IDs and report IDs listed in the tables display their new crops without labels, clipping, or modern props.
+The foreign-liaison, railway-sovereignty, and Balkans news sprites are registry-only and have no active event consumer to check.
 
 ## Parent Tibet integration
 

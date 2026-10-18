@@ -5,11 +5,11 @@ Acceptance basis: the assigned October graphics review requests every finding in
 
 | Finding | Result and evidence |
 |---|---|
-| Antarctica, severity 1 | Native ImageGen blue ribbon, bronze suspension and silver snowflake/ice-field medal replace the hard-edged pixel-art iceberg |
-| Agent-specific cylinder traits, severity 2 | Four distinct green, grey-blue, yellow and rust ribbons already installed by `8450deaf8`; current registry points to four separate files |
-| Inhumane scientist, severity 2 | Crisp skull-and-syringe medal already installed by `8450deaf8`, 24×33, no edge-reaching glow |
-| Swedish rulebook commander, severity 2 | Native ImageGen rulebook medal replaces the miniature officer portrait; the later Event 024 red/gold-ribbon version is independently accepted at native size |
-| Five CBRN commander traits, severity 2 | Bright ribbon/disc medals already installed by `8450deaf8`, verified individually in the current group |
+| Antarctica, severity 1 (`GFX_trait_in_antarctica`) | Native ImageGen blue ribbon, bronze suspension and silver snowflake/ice-field medal replace the hard-edged pixel-art iceberg |
+| Agent-specific cylinder traits, severity 2 (`GFX_trait_chemical_cylinder_active_chlorine`) | Four distinct green, grey-blue, yellow and rust ribbons already installed by `8450deaf8`; current registry points to four separate files |
+| Inhumane scientist, severity 2 (`GFX_scientist_trait_inhumane`) | Crisp skull-and-syringe medal already installed by `8450deaf8`, 24×33, no edge-reaching glow |
+| Swedish rulebook commander, severity 2 (`GFX_trait_video_game_in_sweden_rulebook_commander`) | Native ImageGen rulebook medal replaces the miniature officer portrait; the later Event 024 red/gold-ribbon version is independently accepted at native size |
+| Five CBRN commander traits, severity 2 (`GFX_trait_chemical_operations_commander`) | Bright ribbon/disc medals already installed by `8450deaf8`, verified individually in the current group |
 
 The two replacements preserve their 23×33 canvases, existing filenames and sprite registrations.
 Runtime paths are `gfx/interface/traits/trait_in_antarctica.dds` and `gfx/interface/traits/024_video_game_in_sweden/024_video_game_in_sweden_rulebook_commander.dds`.
@@ -24,7 +24,8 @@ The prompts specify native transparency, softly shaded metal, narrow fabric ribb
 `medals_processing.json` records source hashes and alpha-based crop coordinates; native alpha was preserved through proportional Lanczos fitting and centring.
 The visible final bounds are 15×30 and 16×30 with transparent corners, matching the narrow hanging-medal silhouette.
 `medals_before_after.png` shows the source defects and replacements at native size and 4× nearest-neighbour scale over a dark field.
-Both DDS files were converted with the standard skill converter and decode pixel-for-pixel to the processed PNGs; `medals_validation.json` records the runtime hashes and equality results.
+The initial Antarctic and blue/gold Swedish candidates were converted with the standard skill converter and decoded pixel-for-pixel to their processed PNGs; `medals_validation.json` records those production hashes and equality results.
+The later red/gold Swedish runtime and its separate source/processing evidence supersede the initial Swedish candidate, as documented in the integration section below.
 The regenerated whole-group sheet is `docs/assets/gfx_fix_shared_ability_traits/contact_sheets/shared_chaosx_traits_review_1.png`.
 
 The preserved CBRN source/processing/runtime evidence is `docs/plans/chaos_warfare_system_plans/subagent_handoffs/2026-10-06_gfx_traits.md` and its adjacent JSON inventory.

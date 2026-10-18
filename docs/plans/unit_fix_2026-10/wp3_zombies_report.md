@@ -30,11 +30,29 @@ Importer-default previews have unresolved magenta texture display, so solid prev
 The existing cough, retch and spit recording gaps remain blocked by absent licensed source material under the no-download rule.
 No requested infected idle-skin requirement was omitted or simplified; no provider credit was spent.
 
-### Parasitic zombies: separate task in progress
+### Parasitic zombies: separated geometry candidate, pose acceptance incomplete
 
-The inherited 48-bone source and its eight actions are preserved while the tubes are separated into their own closed skinned parts, including review of the previously uncovered small components and root hub.
-No replacement parasite mesh or action is installed by the infected commit.
-The separation, local seam/skin corrections and actual-byte export/reimport proof remain required before that task can be reported fixed.
+The accepted native source checkpoint `blender/checkpoints/wp3f_17b_export_bindings_verified.blend` (SHA-256 `6dc64077bf6c488b4f6c28a7254337b277f43ca15ada722ef759fdcf1bc274a8`) contains the original 48-bone hierarchy and eight source actions, the host, and 13 separately skinned parasite parts.
+The corresponding accepted geometry export is `export/wp3f_accepted/chaosx_parasitic_zombies.mesh` (SHA-256 `807abd7ff7076df0fa95a6ab3d7a67a8ac0f157f6f10a015ac8d99e7d2152297`), with its native checkpoint `blender/checkpoints/wp3f_18_accepted_pdx_export.blend` (SHA-256 `3b9a7875544576ca720f7b0bae3e7e3aa4f92245e37dc794af19121efea40b3b`).
+The decoded topology gate passes for 14 logical objects, 29 nonempty material streams and 32,036 triangles, with no remaining boundary, nonmanifold, winding or degenerate findings under the recorded checks.
+The inherited point-only fans, inward faces and mapped local seam defects were repaired; all 14 source meshes retain the exact original 48 group names and index mapping, and the retained actions and original runtime files are unchanged.
+
+Actual-byte import recovered all 14 meshes and one shared 48-bone rig.
+Five-phase idle and move reviews found no sampled physical edge growth over 0.3 units; idle grounding still ranges from -0.011261 to +0.021613 units, while move ranges from +0.002201 to +0.004003 units.
+The attack review remains unaccepted: grounding ranges from -0.026714 to +0.002762 units, Tube01 has two edges over 0.3 units at sample 53, Tube02 has 15 at sample 88 and 12 at sample 90, and the new Tube13 cap centre exceeds the edge-growth gate at samples 17 and 53.
+A proof-scene-only local weight trial reduced Tube13's maximum attack edge growth to 0.259793 units, but it was not saved to the production source, exported or checked across the other seven actions, so it is not an accepted repair.
+
+Runtime files, entity/GFX wiring and all eight `.anim` files were not changed or installed from this candidate.
+The active runtime GFX still exposes only four host streams and cannot be assumed to consume the separated parts.
+No new Meshy credit was spent for this WP3 repair.
+
+The current Blender lease remains `wp3_leftovers parasitic_zombies 2026-10-11T12:22:31`, owned by the responding PID 38428.
+The eight-role Blender Lab call and the subsequent read-only inspection both timed out at localhost:9877; the allowed retry budget for that unchanged route is exhausted, and the worker preserved the process and lease without another call or a second Blender session.
+The last returned proof scene was `wp3f_proof_attack.blend` with the unsaved trial; its current state after the timeout is unknown.
+The handoff `docs/assets/002_zombie_outbreak/models_3d/parasitic_zombies/runtime/wp3f_separation_handoff.md` preserves exact object inventories, repair deltas, sample findings and recovery steps.
+
+Remaining required work is to recover and inspect the existing bridge state when its transport is available, finish the two-centre cap trial across all eight actions, map the Tube01/02 stretch edges to immutable source vertices and weights, and then export/reimport and prove all eight roles against one final mesh hash.
+The current candidate remains incomplete and must not be installed or described as a finished package; full material display and live-game behavior are also unverified.
 
 Skills used for this takeover: `chaos-redux-3d-model-pipeline`, `chaos-redux-event-assets`, `chaos-redux-subagents`, `chaos-redux-units-divisions` and `chaos-redux-shared-git-commit`; no skill was created or changed.
 
@@ -414,6 +432,8 @@ The parent owns package-manifest/handoff integration and final acceptance report
 
 
 ## WP3 remainder (11 Oct 2026, second pass)
+
+Historical second-pass record: the current takeover section above supersedes its infected-idle count and parasitic-bundle status; the evidence below remains the result of that earlier pass.
 
 Disposition: `implemented` for the items below; skeletons and actions of the weight repairs are unchanged, so only the meshes were re-exported (geometry gate pass and reimport proofs for the worst roles).
 

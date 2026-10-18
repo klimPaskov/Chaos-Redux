@@ -5,8 +5,8 @@ Acceptance basis: the graphics-fix task requests the rocket category margin and 
 
 | Finding | Result | Runtime |
 |---|---|---|
-| Space Race category, severity 3 | Rocket and exhaust fit completely inside the original blue/brass roundel; the complete badge has a 3px vertical margin | `gfx/interface/decisions/044_space_race/decision_category_space_race.dds` |
-| Chaos Doom decision, severity 3 | Flat frontal beige skull with readable dark sockets replaces the shaded side-view skull | `gfx/interface/decisions/decision_chaos_doom.dds` |
+| Space Race category, severity 3 (`GFX_decision_category_space_race`) | Rocket and exhaust fit completely inside the original blue/brass roundel; the complete badge has a 3px vertical margin | `gfx/interface/decisions/044_space_race/decision_category_space_race.dds` |
+| Chaos Doom decision, severity 3 (`GFX_decision_chaos_doom`) | Flat frontal beige skull with readable dark sockets replaces the shaded side-view skull | `gfx/interface/decisions/decision_chaos_doom.dds` |
 
 The category canvas remains 52×40; its visible bounds are x=9–42, y=3–36.
 The action icon uses the task's explicit 34×34 decision contract instead of the previous 33×32 texture; its visible bounds are x=5–28, y=2–31.

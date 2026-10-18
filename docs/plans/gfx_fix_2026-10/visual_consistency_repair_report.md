@@ -1,6 +1,7 @@
 # Visual consistency repair report
 
-Status: all 16 of 16 findings are covered. Eight contained-icon DDS updates from this tranche await the parent's commit; the other eight findings are already committed or parent-accepted in existing asset packages.
+Status: all 16 of 16 findings are covered.
+The eight contained-icon DDS updates were committed in `5f0340afe709278f1b467f636da5d1b5312e0c9a`; the other eight findings are committed or parent-accepted in the cited asset packages.
 
 Scope is limited to the `visual_consistency_repair` rows in `C:/Users/klimp/Videos/chaos_redux_trailer/records/gfx_review/gfx_fix_plan.md` and `gfx_issues.json`.
 
@@ -66,7 +67,9 @@ The two remaining Independence Wave icon findings are closed by the parent-accep
 
 The Event006 assets were parent-reviewed using `docs/assets/gfx_fix_shared_ui/network_live_review.png`, `network_live_review_4x.png`, `borders_live_review.png`, and `borders_live_review_4x.png`; the source handoff is `docs/plans/006_independence_wave_plans/subagent_handoffs/graphics_icons_20261006.md`, and the install record is `docs/assets/006_independence_wave/takeover_20261006_icons/review/runtime_install_report.json`.
 
-These two runtime DDS files are modified by the separate Event006 asset package and remain uncommitted; preserve them for parent integration and exclude them from a visual-consistency-only commit. The two bolder bronze v3 study candidates and their prompts remain in this group's workspace and were not installed.
+These two runtime DDS files belong to the separate Event006 asset package committed in `1cb4d061fbfdffb4713fcd780b51c7efa8548fb9` and were excluded from this group's commits.
+The parent confirmed both current textures match the committed versions.
+The two bolder bronze v3 study candidates and their prompts remain in this group's workspace and were not installed.
 
 ## IW category pictures accepted and already installed
 

@@ -56,6 +56,8 @@ B12. Technology folders: fix overlaps, disconnected techs and bloat. Bring back 
 B13. Biowarfare folder: fix disconnected techs (started 12 Oct, Sol job `sol_bio_folder_links`).
 B14. **Q** Rule for all UI text: large numbers are never shown plainly; shorten with k (48.2k). (commit: f41b58e6c34ae9f47598033d03d0e0aa459b6a2d)
 
+B15. Restyle the Famine management panel, the Migration management panel and the Camp ledger to the Chaos Redux look of the Welcome window (`interface/chaosx_welcome.gui`): dark red frame and glow, its textures, title plate, fonts and colours. Restyle only: no mechanic or layout changes beyond what the restyle needs; they stay opened from their map-mode and state views, not from a decision category. Before/after `hoi4_gui_render` renders for review. Needed for the new trailer (user, 18 Oct 2026).
+
 ## C. Systems (Sol unless noted)
 
 C1. All load errors in error.log. Partial source fixes: `3c098421e86f16eece355d268c2ea75c19d765db`, `f64ef507a2717e7c15239243ce41c373f71d7ce1`, `e0f807c1d492165a29b252bc55929f94ec2bba54`, `6cf5d0120866354fbc023bcb2c119bc4f2357e1e`; zero current localisation collisions. Incomplete: five never-tracked flag ladders and unlocated font diagnostics; the earlier source-only pass did not launch under its no-launch instruction. Native follow-up repairs: `878705d6892836e7efa5e2422c5dc1de5dc7ee34`, `1947065ccbd0947708c6c68308e27e905354ee5e`. Five owned Linux menu/log launches were performed, but the final launch remains non-clean with Belgian contract, soft-attack, elephant-build and flag blockers. Campaign verification remains blocked. Current evidence: `docs/plans/live_verification_2026-10-13.md`. Evidence: `docs/plans/chaos_redux_load_camps_repair_2026-10-13.md`.
