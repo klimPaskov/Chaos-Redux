@@ -785,7 +785,11 @@ black_plague_triggerable_scenario_launch = {
 		black_plague_scenario_start_scheduler = yes
 		if = {
 			limit = { check_variable = { global.chaos_meter_value < global.black_plague_scenario_chaos_floor } }
-			set_variable = { global.chaos_meter_value = global.black_plague_scenario_chaos_floor }
+			# The floor is a visible jump: raise it through the shared Chaos path so the
+			# disable setting, tier flags, Black Friday hook and history entry all apply.
+			set_temp_variable = { chaos_change = global.black_plague_scenario_chaos_floor }
+			subtract_from_temp_variable = { chaos_change = global.chaos_meter_value }
+			add_chaos_meter_value = yes
 		}
 		black_plague_rebuild_runtime_counts = yes
 		black_plague_refresh_air_cleanliness_source = yes
