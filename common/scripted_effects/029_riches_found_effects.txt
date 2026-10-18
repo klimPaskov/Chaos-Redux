@@ -511,6 +511,7 @@ riches_found_run_queued_report = {
 		else_if = { limit = { check_variable = { var = riches_found_report_kind value = constant:riches_found_report.gold_contained compare = equals } } state_event = { id = chaosx.nr29.122 trigger_for = controller } }
 		else_if = { limit = { check_variable = { var = riches_found_report_kind value = constant:riches_found_report.demons_contained compare = equals } } state_event = { id = chaosx.nr29.123 trigger_for = controller } }
 		else_if = { limit = { check_variable = { var = riches_found_report_kind value = constant:riches_found_report.supernatural_incident compare = equals } } state_event = { id = chaosx.nr29.130 trigger_for = controller } }
+		else_if = { limit = { check_variable = { var = riches_found_report_kind value = constant:riches_found_report.deposit_exhausted compare = equals } } state_event = { id = chaosx.nr29.50 trigger_for = controller } }
 		# An unknown kind has no report event, so the slot is freed at once.
 		else = { riches_found_complete_report = yes }
 	}
@@ -2434,6 +2435,7 @@ riches_found_clear_closure_state = {
 	clr_state_flag = riches_found_mine_temporary_closure
 	clr_state_flag = riches_found_closure_crews_paid
 	clr_state_flag = riches_found_mine_quarantined
+	clear_variable = riches_found_pre_quarantine_state
 	clr_state_flag = riches_found_mine_partial_seal
 	clr_state_flag = riches_found_restoration_partial_seal
 	clr_state_flag = riches_found_mine_closed
@@ -2525,11 +2527,22 @@ riches_found_begin_partial_seal = {
 	}
 }
 
-# STATE scope. Places an active mine in a recoverable quarantine state while
-# preserving its public values and historical record.
+# STATE scope. Places an active mine under controlled access, the mine-level
+# quarantine, while preserving its public values and historical record. The
+# Gold Controlled Access decision calls this when its measure lands; the
+# measure's timed flag riches_found_gold_controlled_access sets how long the
+# quarantine lasts, and riches_found_service_quarantine ends it once that flag
+# has lapsed. The operating state in force before is stored so the end of the
+# quarantine returns the mine to it. Output stays at the quarantined operating
+# factor only while the access flag, order, legitimacy and pressure conditions
+# of riches_found_mine_provides_controller_output hold.
 riches_found_begin_quarantine = {
 	if = {
-		limit = { riches_found_mine_can_begin_temporary_closure = yes }
+		limit = {
+			riches_found_mine_can_begin_temporary_closure = yes
+			NOT = { has_state_flag = riches_found_mine_quarantined }
+		}
+		set_variable = { riches_found_pre_quarantine_state = riches_found_operating_state }
 		set_state_flag = riches_found_mine_quarantined
 		set_variable = { riches_found_operating_state = constant:riches_found_operating_state.quarantined }
 		set_variable = { riches_found_closure_start_date = global.date }
@@ -2541,12 +2554,39 @@ riches_found_begin_quarantine = {
 	}
 }
 
+# STATE scope. Lifts controlled access. The mine returns to the operating
+# state it held before the quarantine unless another measure has since changed
+# it. Pressure and every other value keep what the quarantine period did.
+riches_found_end_quarantine = {
+	if = {
+		limit = { has_state_flag = riches_found_mine_quarantined }
+		clr_state_flag = riches_found_mine_quarantined
+		if = {
+			limit = { check_variable = { var = riches_found_operating_state value = constant:riches_found_operating_state.quarantined compare = equals } }
+			if = {
+				limit = { has_variable = riches_found_pre_quarantine_state }
+				set_variable = { riches_found_operating_state = riches_found_pre_quarantine_state }
+			}
+			else = { set_variable = { riches_found_operating_state = constant:riches_found_operating_state.open_regulated } }
+		}
+		clear_variable = riches_found_pre_quarantine_state
+		if = {
+			limit = { NOT = { has_state_flag = riches_found_mine_temporary_closure } }
+			clear_variable = riches_found_closure_start_date
+		}
+		riches_found_clamp_mine_values = yes
+		riches_found_refresh_mine_presentation = yes
+		riches_found_refresh_mine_contribution = yes
+		riches_found_refresh_evolution_gates = yes
+	}
+}
+
 # STATE scope. Performs permanent closure, clears all live contracts/missions,
 # leaves one terminal presentation modifier, and rebuilds the current
 # controller aggregate once.
 riches_found_permanently_seal_mine = {
 	if = {
-		limit = { riches_found_mine_is_registered = yes NOT = { has_state_flag = riches_found_mine_terminal } }
+		limit = { riches_found_mine_can_be_permanently_sealed = yes }
 		if = { limit = { CONTROLLER = { exists = yes } } CONTROLLER = { save_event_target_as = riches_found_closure_controller } }
 			riches_found_clear_mine_cleanup = yes
 		if = {
@@ -2822,11 +2862,24 @@ riches_found_cancel_reopening = {
 	}
 }
 
-# STATE scope. Marks normal exhaustion as terminal while preserving the full
-# registry history and outcome flags.
+# STATE scope. Marks exhaustion as terminal while preserving the full registry
+# history and outcome flags. A mine ends this way when its workings reach the
+# deposit limit (riches_found_review_deposit_exhaustion) or when a catastrophic
+# collapse destroys workings that have no sound rock left, so a collapsed mine
+# is accepted here too. Input: temporary riches_found_exhaustion_report_text
+# (a riches_found_report_text id, default deposit_exhausted_depth) names the
+# cause shown in the one report sent to the controller. Collapse flags stay as
+# history, and an exhausted mine can no longer be repaired or reopened.
 riches_found_exhaust_mine = {
 	if = {
-		limit = { riches_found_mine_is_active = yes }
+		limit = {
+			riches_found_mine_is_registered = yes
+			NOT = { riches_found_mine_is_terminal = yes }
+		}
+		if = {
+			limit = { NOT = { check_variable = { riches_found_exhaustion_report_text > constant:riches_found_value.zero } } }
+			set_temp_variable = { riches_found_exhaustion_report_text = constant:riches_found_report_text.deposit_exhausted_depth }
+		}
 		if = { limit = { CONTROLLER = { exists = yes } } CONTROLLER = { save_event_target_as = riches_found_exhaustion_controller } }
 			riches_found_clear_mine_cleanup = yes
 			set_state_flag = riches_found_mine_exhausted
@@ -2836,10 +2889,35 @@ riches_found_exhaust_mine = {
 			clr_state_flag = riches_found_mine_active
 		set_variable = { riches_found_operating_state = constant:riches_found_operating_state.exhausted }
 		set_variable = { riches_found_exhaustion_date = global.date }
+		set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.deposit_exhausted }
+		set_temp_variable = { riches_found_report_input_text = riches_found_exhaustion_report_text }
+		riches_found_queue_report = yes
+		set_temp_variable = { riches_found_exhaustion_report_text = constant:riches_found_value.zero }
 		riches_found_refresh_mine_presentation = yes
 		riches_found_refresh_mine_contribution = yes
 		riches_found_refresh_state_achievement_timers = yes
 		if = { limit = { has_event_target = riches_found_exhaustion_controller } event_target:riches_found_exhaustion_controller = { riches_found_refresh_controller_aggregate = yes } }
+	}
+}
+
+# STATE scope. Exhausts an active mine whose workings have reached the limit
+# of the deposit (riches_found_mine_deposit_is_spent). The controller pulse
+# calls this for every registered mine and Drive Deeper calls it when its
+# project lands, so the deposit ends at the project the player chose to run
+# and never through a hidden timer. A predatory profile names the cause in the
+# report, any other profile reports the full depth.
+riches_found_review_deposit_exhaustion = {
+	if = {
+		limit = {
+			riches_found_mine_is_active = yes
+			riches_found_mine_deposit_is_spent = yes
+		}
+		set_temp_variable = { riches_found_exhaustion_report_text = constant:riches_found_report_text.deposit_exhausted_depth }
+		if = {
+			limit = { riches_found_policy_profile_predatory = yes }
+			set_temp_variable = { riches_found_exhaustion_report_text = constant:riches_found_report_text.deposit_exhausted_predatory }
+		}
+		riches_found_exhaust_mine = yes
 	}
 }
 

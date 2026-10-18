@@ -720,6 +720,16 @@ It can occur through a defined predatory-extraction endpoint, catastrophic failu
 
 It should not occur through an invisible random timer that removes the player's investment.
 
+Accepted design (user approval 2026-10-18): exhaustion has two endpoints, both through actions and failures the player can see.
+Cumulative Deep Excavation is the extraction counter: each Drive Deeper project adds `riches_found_action_delta.positive_15`, Seal the Deep Sections removes `negative_12`, and the ceiling is `riches_found_event.public_value_maximum`.
+A mine run under a predatory profile (Predatory Extraction or open claims) exhausts when its Deep Excavation reaches `riches_found_exhaustion.deep_excavation_predatory`, five full projects.
+Every other mine exhausts only at `riches_found_exhaustion.deep_excavation_ordinary`, the ceiling at which Drive Deeper stops being offered.
+The Drive Deeper tooltip states both depths and warns when the project it starts would end the deposit.
+`riches_found_review_deposit_exhaustion` runs when a Drive Deeper project lands and during the controller pulse, and `riches_found_exhaust_mine` closes the mine for good and sends the controller one report, `chaosx.nr29.50`.
+A catastrophic collapse that leaves the sealed workings with no integrity (`riches_found_exhaustion.catastrophic_integrity_floor`) destroys them beyond recovery through the same helper, and a collapsed mine is accepted by it.
+An exhausted mine cannot be repaired or reopened, and the ordinary Permanent Seal remains available for it.
+The AI never drives a non-predatory mine into exhaustion and takes the last predatory project at half weight.
+
 ### Recovery
 
 A damaged or closed mine can recover through:

@@ -48,6 +48,7 @@ riches_found_report = {
 	gold_contained = 122
 	demons_contained = 123
 	supernatural_incident = 130
+	deposit_exhausted = 50
 }
 
 # Report texts that do not come from an incident candidate. The report slot
@@ -70,6 +71,9 @@ riches_found_report_text = {
 	gilded_revoke_resisted = 2023
 	inspection_exposed = 2031
 	inspection_blocked = 2032
+	deposit_exhausted_predatory = 2041
+	deposit_exhausted_depth = 2042
+	deposit_destroyed = 2043
 }
 
 # Candidate-pool identifiers are stored on the mine so Event 029 report text,
@@ -1246,6 +1250,26 @@ riches_found_closure = {
 	reopen_legitimacy_add = 3
 	reopen_cooldown_days = 180
 	damaged_output_factor = 0.75
+}
+
+# Deposit exhaustion (spec part 2, Exhaustion). Exhaustion is reached only
+# through a visible, player-driven endpoint and never through a hidden timer.
+# Cumulative Deep Excavation (raised 15 per Drive Deeper project, lowered 12 by
+# Seal the Deep Sections, ceiling riches_found_event.public_value_maximum) is
+# the existing extraction counter. A mine run under a predatory profile ends
+# at five full projects; every other mine ends only at the ceiling, which is
+# the depth where Drive Deeper stops being offered. The two warning values sit
+# one Drive Deeper project (action_delta.positive_15) below each limit and tell
+# the tooltip and the AI that the next project would end the deposit. A
+# catastrophic collapse destroys the workings beyond recovery only when the
+# sealed workings have no integrity left (integrity ceases to be positive).
+riches_found_exhaustion = {
+	schema = { any_key = yes data = fixed_point }
+	deep_excavation_predatory = 75
+	deep_excavation_ordinary = 100
+	deep_excavation_predatory_warning = 60
+	deep_excavation_ordinary_warning = 85
+	catastrophic_integrity_floor = 0
 }
 
 # Evolution containment. Each active evolution keeps a per-mine progress value

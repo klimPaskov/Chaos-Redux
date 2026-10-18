@@ -1,0 +1,31 @@
+add_namespace = chaosx.nr29
+
+# ============================================================================
+# CHAOS REDUX - EVENT 029 DEPOSIT EXHAUSTION REPORT
+# ============================================================================
+# The one report the controller receives when a mine's deposit ends through
+# riches_found_exhaust_mine: workings driven to the limit of the deposit, a
+# predatory drive that stripped the seams, or a catastrophic collapse that
+# destroyed workings with no sound rock left. The cause text comes from the
+# report slot through GetRichesFoundIncidentReportText. The event is delivered
+# by riches_found_run_queued_report like the other mine reports.
+# ============================================================================
+
+state_event = {
+	id = chaosx.nr29.50
+	title = chaosx.nr29.50.t
+	desc = chaosx.nr29.incident.d
+	picture = GFX_report_event_riches_found_collapse
+	is_triggered_only = yes
+	trigger = {
+		riches_found_mine_is_registered = yes
+		has_state_flag = riches_found_report_pending
+		check_variable = { var = riches_found_report_kind value = constant:riches_found_report.deposit_exhausted compare = equals }
+		CONTROLLER = { exists = yes }
+	}
+	option = {
+		name = chaosx.nr29.50.a
+		custom_effect_tooltip = riches_found.report_acknowledged
+		riches_found_complete_report = yes
+	}
+}

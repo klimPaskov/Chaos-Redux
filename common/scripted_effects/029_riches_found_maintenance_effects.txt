@@ -35,6 +35,7 @@ riches_found_run_maintenance_pulse = {
 				riches_found_service_account_obligation = yes
 				riches_found_review_preentry_exposure = yes
 				riches_found_service_closed_mine = yes
+				riches_found_service_quarantine = yes
 				riches_found_apply_revenue_route_drift = yes
 				riches_found_review_evolution_containment = yes
 				if = {
@@ -64,6 +65,7 @@ riches_found_run_maintenance_pulse = {
 					add_to_variable = { riches_found_collapse_pressure = riches_found_pulse_collapse_delta }
 					if = { limit = { riches_found_mine_is_high_pressure = yes } set_state_flag = riches_found_collapse_warning }
 				}
+				riches_found_review_deposit_exhaustion = yes
 				riches_found_clamp_mine_values = yes
 				riches_found_review_mine_crisis_flags = yes
 				riches_found_review_hidden_abuse = yes
@@ -204,6 +206,21 @@ riches_found_review_mine_crisis_flags = {
 			limit = { check_variable = { var = global.date value = riches_found_raid_quiet_date compare = greater_than_or_equals } }
 			clr_state_flag = riches_found_raid_crisis
 		}
+	}
+}
+
+# STATE scope, called once per mine by the controller pulse. Controlled access
+# lasts as long as the Gold Controlled Access measure's timed flag
+# (riches_found_gold_controlled_access, constant:riches_found_containment.
+# measure_days). Once that flag has lapsed the quarantine is lifted and the
+# mine returns to the operating state it held before.
+riches_found_service_quarantine = {
+	if = {
+		limit = {
+			has_state_flag = riches_found_mine_quarantined
+			NOT = { has_state_flag = riches_found_gold_controlled_access }
+		}
+		riches_found_end_quarantine = yes
 	}
 }
 

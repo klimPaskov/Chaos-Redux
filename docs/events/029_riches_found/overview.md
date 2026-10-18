@@ -185,6 +185,22 @@ Repair is visible on any damaged mine and starts Restore the Shaft; its crews de
 The mission completes when `riches_found_restore_shaft_works_ready` holds, and its completion runs `riches_found_complete_shaft_restoration`, which clears damage, route damage and any severe collapse and returns a collapsed mine to regulated operation through the shared recovery helpers.
 A partial result reopens a collapsed mine's upper workings as a partial seal (marked `riches_found_restoration_partial_seal`) while its damage and any severe collapse remain for a later restoration; that later completed restoration lifts this seal unless a Gold Disease sealing, bound account terms or a Demons containment now holds the deep sections shut, and a collapsed mine left without repairs after its recovery date loses development each pulse interval.
 
+### Controlled access and exhaustion
+
+The Gold Controlled Access decision calls `riches_found_begin_quarantine` when its measure lands.
+The mine takes the quarantined operating state (shown as Controlled Access), stores the state it held in `riches_found_pre_quarantine_state`, and contributes at `riches_found_scaling.operating_quarantined` only while `riches_found_mine_provides_controller_output` holds.
+The quarantine lasts as long as the measure's timed flag `riches_found_gold_controlled_access` (`riches_found_containment.measure_days`).
+`riches_found_service_quarantine`, run for every mine by the controller pulse, calls `riches_found_end_quarantine` once the flag has lapsed, and the mine returns to its earlier operating state.
+The district measures (Gold Quarantine and the baseline Quarantine) remain district flags.
+
+A mine's deposit ends through `riches_found_exhaust_mine`.
+`riches_found_review_deposit_exhaustion` calls it when `riches_found_mine_deposit_is_spent` holds: Deep Excavation at `riches_found_exhaustion.deep_excavation_predatory` for a predatory profile and at `deep_excavation_ordinary` for any other.
+It runs when a Drive Deeper project lands and in the controller pulse.
+The Drive Deeper tooltip states both depths and warns while `riches_found_mine_deposit_nears_exhaustion` holds, and the AI never starts the last project on a non-predatory mine and takes it at `low_factor` on a predatory one.
+A catastrophic collapse over workings whose sealed integrity has reached `riches_found_exhaustion.catastrophic_integrity_floor` also calls `riches_found_exhaust_mine` with the destroyed-workings report text.
+The controller receives one report (`chaosx.nr29.50`, in `events/029_riches_found_deposit.txt`) that reuses the collapse report picture.
+An exhausted mine is terminal and cannot be repaired or reopened, and the ordinary Permanent Seal still applies to it (`riches_found_mine_can_be_permanently_sealed`).
+
 ## Evolutions and late outcomes
 
 Event 029 registers exactly three evolution rows:

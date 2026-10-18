@@ -1783,6 +1783,10 @@ decision_riches_found_drive_deeper = {
 	fire_only_once = no
 	complete_effect = {
 		custom_effect_tooltip = decision_riches_found_drive_deeper_tt
+		if = {
+			limit = { FROM = { riches_found_mine_deposit_nears_exhaustion = yes } }
+			custom_effect_tooltip = decision_riches_found_drive_deeper_exhaust_tt
+		}
 		FROM = { set_state_flag = riches_found_deep_project_active set_variable = { riches_found_deep_project_controller = ROOT } }
 		riches_found_refresh_controller_aggregate = yes
 		add_manpower = constant:riches_found_decision_cost.manpower_standard_negative
@@ -1809,6 +1813,8 @@ decision_riches_found_drive_deeper = {
 				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_20 }
 				add_to_variable = { riches_found_deep_excavation = constant:riches_found_action_delta.positive_15 }
 				add_to_variable = { riches_found_sealed_depth_integrity = constant:riches_found_exposure.deep_integrity_loss }
+				riches_found_clamp_mine_values = yes
+				riches_found_review_deposit_exhaustion = yes
 			}
 			riches_found_reconcile_controller = yes
 			riches_found_refresh_mine_state = yes
@@ -1835,6 +1841,8 @@ decision_riches_found_drive_deeper = {
 		modifier = { factor = constant:riches_found_decision_ai.civil_war_factor has_civil_war = yes }
 		modifier = { factor = constant:riches_found_decision_ai.low_order_development_factor FROM = { check_variable = { var = riches_found_local_order value = constant:riches_found_decision_threshold.order_low compare = less_than } } }
 		modifier = { factor = constant:riches_found_decision_ai.never_factor FROM = { riches_found_mine_has_running_project = yes } }
+		modifier = { factor = constant:riches_found_decision_ai.low_factor FROM = { riches_found_mine_deposit_nears_exhaustion = yes riches_found_policy_profile_predatory = yes } }
+		modifier = { factor = constant:riches_found_decision_ai.never_factor FROM = { riches_found_mine_deposit_nears_exhaustion = yes NOT = { riches_found_policy_profile_predatory = yes } } }
 	}
 }
 
@@ -5150,7 +5158,8 @@ decision_riches_found_permanent_seal = {
 		if = {
 			limit = {
 				FROM = {
-					riches_found_mine_still_valid_for_payer = yes
+					is_controlled_by = ROOT
+					riches_found_mine_can_be_permanently_sealed = yes
 				}
 			}
 
@@ -7182,6 +7191,7 @@ decision_riches_found_gold_controlled_access = {
 				set_state_flag = { flag = riches_found_gold_controlled_access days = riches_found_containment_days }
 				add_to_variable = { riches_found_gold_disease_pressure = constant:riches_found_action_delta.negative_8 }
 				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_6 }
+				riches_found_begin_quarantine = yes
 			}
 			riches_found_reconcile_controller = yes
 			riches_found_refresh_mine_state = yes

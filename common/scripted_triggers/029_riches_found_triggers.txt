@@ -162,6 +162,7 @@ riches_found_report_input_is_priority = {
 		check_variable = { riches_found_report_input_kind = constant:riches_found_report.curse_contained }
 		check_variable = { riches_found_report_input_kind = constant:riches_found_report.gold_contained }
 		check_variable = { riches_found_report_input_kind = constant:riches_found_report.demons_contained }
+		check_variable = { riches_found_report_input_kind = constant:riches_found_report.deposit_exhausted }
 	}
 }
 
@@ -178,6 +179,7 @@ riches_found_report_slot_is_priority = {
 		check_variable = { riches_found_report_kind = constant:riches_found_report.curse_contained }
 		check_variable = { riches_found_report_kind = constant:riches_found_report.gold_contained }
 		check_variable = { riches_found_report_kind = constant:riches_found_report.demons_contained }
+		check_variable = { riches_found_report_kind = constant:riches_found_report.deposit_exhausted }
 	}
 }
 
@@ -196,6 +198,40 @@ riches_found_mine_is_active = {
 riches_found_mine_is_terminal = {
 	riches_found_mine_is_registered = yes
 	has_state_flag = riches_found_mine_terminal
+}
+
+# STATE scope. The mine's workings have been driven to the limit of the
+# deposit: a predatory profile at constant:riches_found_exhaustion.
+# deep_excavation_predatory, any other profile at the Deep Excavation ceiling.
+riches_found_mine_deposit_is_spent = {
+	has_variable = riches_found_deep_excavation
+	OR = {
+		AND = {
+			riches_found_policy_profile_predatory = yes
+			check_variable = { var = riches_found_deep_excavation value = constant:riches_found_exhaustion.deep_excavation_predatory compare = greater_than_or_equals }
+		}
+		check_variable = { var = riches_found_deep_excavation value = constant:riches_found_exhaustion.deep_excavation_ordinary compare = greater_than_or_equals }
+	}
+}
+
+# STATE scope. One more Drive Deeper project would spend the deposit. The
+# warning values sit one project below the exhaustion limits.
+riches_found_mine_deposit_nears_exhaustion = {
+	has_variable = riches_found_deep_excavation
+	OR = {
+		AND = {
+			riches_found_policy_profile_predatory = yes
+			check_variable = { var = riches_found_deep_excavation value = constant:riches_found_exhaustion.deep_excavation_predatory_warning compare = greater_than_or_equals }
+		}
+		check_variable = { var = riches_found_deep_excavation value = constant:riches_found_exhaustion.deep_excavation_ordinary_warning compare = greater_than_or_equals }
+	}
+}
+
+# STATE scope. Any registered mine that is not yet permanently sealed can be
+# sealed, including one whose deposit is exhausted.
+riches_found_mine_can_be_permanently_sealed = {
+	riches_found_mine_is_registered = yes
+	NOT = { has_state_flag = riches_found_permanently_sealed }
 }
 
 # Compatibility gate for the state-targeted ordinary decision category. The

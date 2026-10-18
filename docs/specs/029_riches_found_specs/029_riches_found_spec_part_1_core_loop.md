@@ -242,6 +242,10 @@ Implemented.
 
 A mine is open and expanding, regulated, under concession, under military control, under predatory extraction, contested, temporarily closed, quarantined, partially sealed, permanently sealed, collapsed, or exhausted.
 
+Quarantine is the mine-level state called Controlled Access.
+Accepted design (user approval 2026-10-18): the Gold Controlled Access decision places the mine under quarantine when its measure lands (`riches_found_begin_quarantine`) and the quarantine lasts as long as the measure's timed flag, `riches_found_containment.measure_days`.
+Once the flag has lapsed the controller pulse lifts it (`riches_found_service_quarantine`, `riches_found_end_quarantine`) and the mine returns to the operating state it held before.
+The district measures (Gold Quarantine and the baseline Quarantine) stay district flags and do not change the mine's operating state.
 Open states give the normal contribution; contested, quarantined, and partially sealed states give reduced value; a temporarily closed mine keeps its development but produces almost nothing; sealed, collapsed, and exhausted mines leave only their historical identity and aftermath.
 
 ## Presentation
