@@ -26,6 +26,10 @@ Four recovery decisions repair the aftermath once no warning, exposure or foreca
 Every decision shows its real cost, duration and blocked state from the same quote that the start transaction charges.
 The national urgent actions finish inside a front's seven-day warning, so an order given when a warning arrives protects the country before the opening shock: Shelter Protocols take four days, Medical Surge and Reroute Transport five, and Water and Food six.
 The durations are `acid_rain_urgent_cost.*_days`; each stays below `acid_rain_runtime.warning_days`.
+AI urgent purchases recheck their remaining useful window both while scoring and immediately before payment.
+The check uses current frozen controlled states, current-generation source identities and actual pulse clocks, preserves the partial evacuation benefit, and rejects known expired sources or mortality protection that cannot lower a whole-person request.
+Water's aftermath benefit and transport's structural protection remain useful even when mortality cannot fall, and national protection follows the current controller in a contested state while evacuation still requires full control.
+Forecast-region membership remains uncertain, current mask supplies are not assumed to persist until completion, and this check changes neither human choices nor the quoted cost or reserve requirements.
 
 ## Response operations
 

@@ -3,7 +3,29 @@
 Disposition: implemented source checkpoints with explicitly incomplete overall acceptance.
 The user's Event 033 goal remains active and no event-completion claim is made.
 
-## Current regional traversal checkpoint, 2026-10-09
+## Current AI useful-window source checkpoint, 2026-10-09
+
+Urgent AI scoring and the start transaction's fresh pre-debit check now share the same pure usefulness predicates.
+Source pins are decisions `46fa2c3e6ce3e5ec25ad2db3f23ecd61b21dbf49778f7ac5db11d8e14bbf48bc`, triggers `b46e3f4fb9ea838f4382f88c4d42e308f94268df21fed8c1d271f8415e1bf2bf`, and regression `7728a04b88df9019cdd037ada8a1fd2662604ad187e8adc7d3c4176832c9747f`.
+The unchanged physical runtime remains FFA56 below.
+The dedicated GUI worker's fifteen visual-only anchor values change the live constant-file fingerprint to `7eedee426071c13b4a205747a27adb78b1f735e81db15e6ac3e4f09881c01708`; those independent GUI changes remain uncommitted and do not change gameplay or AI constants.
+
+The parent reviewed all added predicates, independently passed 63 actual-source cases across 666 executed locations, and reversed the additions to recover the exact B7D/D284 source bytes.
+The guard adds no durable write, random selection, physical loss call, custom daily scan, cost change, human restriction or permanent-project cutoff.
+Known expired or mismatched source clocks reject before AI debit, partial evacuation remains possible after one full day, and whole-person request comparison excludes rounded-zero mortality purchases.
+Current mask/filter coverage is not used to claim future zero benefit without an expiry guarantee.
+Water's recorded interval credit and transport's structural protection remain eligible at zero mortality.
+National protection follows the current controller in a contested state; evacuation retains full province control, with controller and full-control facts tested separately.
+The existing quote, stock and reserve APIs are declared fixture boundaries, and reaching debit entry is not fabricated payment success.
+The independent same-named probability/source comparison is pending at these stable pins and will be recorded in the existing useful-window handoff rather than inferred from the owner test.
+
+The independent GUI layout and count-based clipped meter have 373 parent-rerun source/texture/geometry checks, with native fixed-point and rasterization limits explicit.
+Its D37 promotion patch remains unapplied until the seven aligned state-strip assets pass review; the source and native-size Europe candidate is accepted for staged conversion, not runtime or full asset acceptance.
+Remaining regional source artwork is in production, with the original storm-painted assets retained unchanged until synchronized promotion.
+F7 legacy receipt/payload policy, reversible Humanitarian integration, full final-art/audio/achievement review and the explicitly requested remaining Part 12 outputs still leave Event 033 incomplete.
+No functionality fallback or simplification is introduced by this source tranche.
+
+## Historical regional traversal checkpoint, 2026-10-09
 
 The runtime is `ffa56f54433aebf036e6cf7f4147a3f85640a5ba0d2d7ff9bb1de9ebb1ee7fdf` and constants are `6838c2fcdfad25c6147045544c2253ca05b29cc5273dd4071ba9622e824b0a85`.
 Sixteen regional cursors use a serialized, generation-owned chunk-start array with independently reset foreach and numeric breaks.

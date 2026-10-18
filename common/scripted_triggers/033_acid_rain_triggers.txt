@@ -1645,6 +1645,696 @@ acid_rain_state_operation_still_valid = {
 # AI scoring helpers (Part 8)
 # ---------------------------------------------------------------------------
 
+# STATE. Pure prospective whole-person comparison, using current authored
+# vulnerability/exposure facts without a future spike/footprint oracle.
+# Future CBRN/temporary protection is deliberately not exclusion authority.
+acid_rain_ai_whole_request_may_improve = {
+	set_temp_variable = { acid_rain_ai_rate = constant:acid_rain_mortality.ordinary_sustained_rate }
+	set_temp_variable = { acid_rain_ai_pulse_fraction = constant:acid_rain_mortality.ordinary_sustained_cap }
+	if = {
+		limit = { check_variable = { acid_rain_ai_class = constant:acid_rain_mortality_class.ordinary } }
+		if = { limit = { check_variable = { acid_rain_ai_opening = constant:acid_rain_runtime.one } } set_temp_variable = { acid_rain_ai_rate = constant:acid_rain_mortality.ordinary_opening_rate } set_temp_variable = { acid_rain_ai_pulse_fraction = constant:acid_rain_mortality.ordinary_opening_cap } }
+	}
+	else_if = {
+		limit = { check_variable = { acid_rain_ai_class = constant:acid_rain_mortality_class.severe } }
+		set_temp_variable = { acid_rain_ai_rate = constant:acid_rain_mortality.severe_sustained_rate }
+		set_temp_variable = { acid_rain_ai_pulse_fraction = constant:acid_rain_mortality.severe_sustained_cap }
+		if = { limit = { check_variable = { acid_rain_ai_opening = constant:acid_rain_runtime.one } } set_temp_variable = { acid_rain_ai_rate = constant:acid_rain_mortality.severe_opening_rate } set_temp_variable = { acid_rain_ai_pulse_fraction = constant:acid_rain_mortality.severe_opening_cap } }
+	}
+	else_if = {
+		limit = { check_variable = { acid_rain_ai_class = constant:acid_rain_mortality_class.global } }
+		set_temp_variable = { acid_rain_ai_rate = constant:acid_rain_mortality.global_sustained_rate }
+		set_temp_variable = { acid_rain_ai_pulse_fraction = constant:acid_rain_mortality.global_sustained_cap }
+		if = { limit = { check_variable = { acid_rain_ai_opening = constant:acid_rain_runtime.one } } set_temp_variable = { acid_rain_ai_rate = constant:acid_rain_mortality.global_opening_rate } set_temp_variable = { acid_rain_ai_pulse_fraction = constant:acid_rain_mortality.global_opening_cap } }
+	}
+	else = {
+		set_temp_variable = { acid_rain_ai_rate = constant:acid_rain_mortality.superstorm_sustained_rate }
+		set_temp_variable = { acid_rain_ai_pulse_fraction = constant:acid_rain_mortality.superstorm_sustained_cap }
+		if = { limit = { check_variable = { acid_rain_ai_opening = constant:acid_rain_runtime.one } } set_temp_variable = { acid_rain_ai_rate = constant:acid_rain_mortality.superstorm_opening_rate } set_temp_variable = { acid_rain_ai_pulse_fraction = constant:acid_rain_mortality.superstorm_opening_cap } }
+	}
+	set_temp_variable = { acid_rain_ai_vulnerability = constant:acid_rain_mortality.base_vulnerability }
+	if = { limit = { natural_disaster_state_has_low_infrastructure = yes } add_to_temp_variable = { acid_rain_ai_vulnerability = constant:acid_rain_mortality.low_infrastructure_vulnerability } }
+	if = { limit = { rail_way < constant:acid_rain_runtime.two } add_to_temp_variable = { acid_rain_ai_vulnerability = constant:acid_rain_mortality.damaged_transport_vulnerability } }
+	if = { limit = { natural_disaster_state_has_war_logistics = yes } add_to_temp_variable = { acid_rain_ai_vulnerability = constant:acid_rain_mortality.supply_isolation_vulnerability } }
+	if = { limit = { natural_disaster_state_has_dense_population = yes } add_to_temp_variable = { acid_rain_ai_vulnerability = constant:acid_rain_mortality.dense_population_vulnerability } }
+	if = { limit = { NOT = { is_controlled_by = OWNER } } add_to_temp_variable = { acid_rain_ai_vulnerability = constant:acid_rain_mortality.occupation_vulnerability } }
+	if = { limit = { OR = { has_state_flag = acid_rain_severe_history has_state_flag = acid_rain_aftercare_unresolved } } add_to_temp_variable = { acid_rain_ai_vulnerability = constant:acid_rain_mortality.severe_history_vulnerability } }
+	clamp_temp_variable = { var = acid_rain_ai_vulnerability min = constant:acid_rain_mortality.base_vulnerability max = constant:acid_rain_mortality.maximum_vulnerability }
+	set_temp_variable = { acid_rain_ai_wartime = constant:acid_rain_mortality.one }
+	CONTROLLER = { if = { limit = { has_war = yes } set_temp_variable = { acid_rain_ai_wartime = constant:acid_rain_mortality.wartime_exposure } } }
+	if = { limit = { NOT = { is_controlled_by = OWNER } } set_temp_variable = { acid_rain_ai_wartime = constant:acid_rain_mortality.occupied_exposure } }
+	if = { limit = { natural_disaster_state_has_war_logistics = yes } set_temp_variable = { acid_rain_ai_wartime = constant:acid_rain_mortality.combat_exposure } }
+	clamp_temp_variable = { var = acid_rain_ai_wartime min = constant:acid_rain_mortality.one max = constant:acid_rain_mortality.combat_exposure_cap }
+	set_temp_variable = { acid_rain_ai_unprotected = state_population_k }
+	multiply_temp_variable = { acid_rain_ai_unprotected = acid_rain_ai_rate }
+	multiply_temp_variable = { acid_rain_ai_unprotected = acid_rain_ai_intensity }
+	multiply_temp_variable = { acid_rain_ai_unprotected = acid_rain_ai_vulnerability }
+	multiply_temp_variable = { acid_rain_ai_unprotected = acid_rain_ai_wartime }
+	divide_temp_variable = { acid_rain_ai_unprotected = constant:acid_rain_mortality.thousand_per_million }
+	set_temp_variable = { acid_rain_ai_pulse_room = state_population_k }
+	multiply_temp_variable = { acid_rain_ai_pulse_room = constant:acid_rain_mortality.people_per_k }
+	multiply_temp_variable = { acid_rain_ai_pulse_room = acid_rain_ai_pulse_fraction }
+	# The physical path clamps floating pulse/episode caps before nearest-person
+	# rounding, then applies the three floored whole-person availability bounds.
+	set_temp_variable = { acid_rain_ai_before_people = acid_rain_ai_unprotected }
+	multiply_temp_variable = { acid_rain_ai_before_people = acid_rain_ai_share }
+	clamp_temp_variable = { var = acid_rain_ai_before_people min = constant:acid_rain_runtime.zero max = acid_rain_ai_pulse_room }
+	clamp_temp_variable = { var = acid_rain_ai_before_people min = constant:acid_rain_runtime.zero max = acid_rain_ai_cap_room }
+	set_temp_variable = { acid_rain_ai_after_people = acid_rain_ai_unprotected }
+	multiply_temp_variable = { acid_rain_ai_after_people = acid_rain_ai_after_share }
+	clamp_temp_variable = { var = acid_rain_ai_after_people min = constant:acid_rain_runtime.zero max = acid_rain_ai_pulse_room }
+	clamp_temp_variable = { var = acid_rain_ai_after_people min = constant:acid_rain_runtime.zero max = acid_rain_ai_cap_room }
+	round_temp_variable = acid_rain_ai_before_people
+	round_temp_variable = acid_rain_ai_after_people
+	set_temp_variable = { acid_rain_ai_whole_room = acid_rain_ai_population_room }
+	set_temp_variable = { acid_rain_ai_unrounded_room = acid_rain_ai_whole_room }
+	round_temp_variable = acid_rain_ai_whole_room
+	if = { limit = { check_variable = { acid_rain_ai_whole_room > acid_rain_ai_unrounded_room } } subtract_from_temp_variable = { acid_rain_ai_whole_room = constant:acid_rain_runtime.one } }
+	clamp_temp_variable = { var = acid_rain_ai_before_people min = constant:acid_rain_runtime.zero max = acid_rain_ai_whole_room }
+	clamp_temp_variable = { var = acid_rain_ai_after_people min = constant:acid_rain_runtime.zero max = acid_rain_ai_whole_room }
+	set_temp_variable = { acid_rain_ai_whole_room = acid_rain_ai_pulse_room }
+	set_temp_variable = { acid_rain_ai_unrounded_room = acid_rain_ai_whole_room }
+	round_temp_variable = acid_rain_ai_whole_room
+	if = { limit = { check_variable = { acid_rain_ai_whole_room > acid_rain_ai_unrounded_room } } subtract_from_temp_variable = { acid_rain_ai_whole_room = constant:acid_rain_runtime.one } }
+	clamp_temp_variable = { var = acid_rain_ai_before_people min = constant:acid_rain_runtime.zero max = acid_rain_ai_whole_room }
+	clamp_temp_variable = { var = acid_rain_ai_after_people min = constant:acid_rain_runtime.zero max = acid_rain_ai_whole_room }
+	set_temp_variable = { acid_rain_ai_whole_room = acid_rain_ai_cap_room }
+	set_temp_variable = { acid_rain_ai_unrounded_room = acid_rain_ai_whole_room }
+	round_temp_variable = acid_rain_ai_whole_room
+	if = { limit = { check_variable = { acid_rain_ai_whole_room > acid_rain_ai_unrounded_room } } subtract_from_temp_variable = { acid_rain_ai_whole_room = constant:acid_rain_runtime.one } }
+	clamp_temp_variable = { var = acid_rain_ai_before_people min = constant:acid_rain_runtime.zero max = acid_rain_ai_whole_room }
+	clamp_temp_variable = { var = acid_rain_ai_after_people min = constant:acid_rain_runtime.zero max = acid_rain_ai_whole_room }
+	check_variable = { acid_rain_ai_after_people < acid_rain_ai_before_people }
+}
+
+
+# ---------------------------------------------------------------------------
+# AI-only useful windows. Pure scratch calculation, never quote/debit/ledger writes.
+# Inputs are established by the COUNTRY wrappers below. Temporary helper outputs
+# are caller-owned before invocation. Native callbacks tied on a date remain a
+# possible ordering, not guaranteed protection. Ordinary warning membership is
+# a possible published region candidate, never an exact future footprint/end.
+# ---------------------------------------------------------------------------
+
+# STATE. Inputs: candidate day, ready day and cadence offset. Output: candidate day.
+acid_rain_ai_advance_candidate = {
+	# A recorded due clock already behind now is stale planning input.
+	# Wait for the existing worker receipt instead of inventing catch-up cadence.
+	check_variable = { var = acid_rain_ai_candidate_day value = global.date compare = greater_than_or_equals }
+	set_temp_variable = { acid_rain_ai_skip_hours = acid_rain_ai_seek_day }
+	subtract_from_temp_variable = { acid_rain_ai_skip_hours = acid_rain_ai_candidate_day }
+	multiply_temp_variable = { acid_rain_ai_skip_hours = constant:chaosx_date_units.hours_per_date_unit }
+	round_temp_variable = acid_rain_ai_skip_hours
+	if = {
+		limit = { check_variable = { acid_rain_ai_skip_hours > constant:acid_rain_runtime.zero } }
+		set_temp_variable = { acid_rain_ai_remainder_hours = acid_rain_ai_skip_hours }
+		modulo_temp_variable = { var = acid_rain_ai_remainder_hours value = acid_rain_ai_cadence_hours }
+		subtract_from_temp_variable = { acid_rain_ai_skip_hours = acid_rain_ai_remainder_hours }
+		if = {
+			limit = { check_variable = { acid_rain_ai_remainder_hours > constant:acid_rain_runtime.zero } }
+			add_to_temp_variable = { acid_rain_ai_skip_hours = acid_rain_ai_cadence_hours }
+		}
+		divide_temp_variable = { acid_rain_ai_skip_hours = constant:chaosx_date_units.hours_per_date_unit }
+		add_to_temp_variable = { acid_rain_ai_candidate_day = acid_rain_ai_skip_hours }
+	}
+	always = yes
+}
+
+# STATE. Current source identity and exact current actor, not a ROOT rebind.
+acid_rain_ai_state_identity_is_current = {
+	acid_rain_state_is_frozen_valid = yes
+	has_variable = acid_rain_consequence_generation
+	check_variable = { var = acid_rain_consequence_generation value = global.acid_rain_generation_id compare = equals }
+	# National benefits follow CONTROLLER even when provinces are contested.
+	is_controlled_by = var:acid_rain_ai_actor
+	if = {
+		limit = { check_variable = { acid_rain_ai_is_evacuation = constant:acid_rain_runtime.one } }
+		is_fully_controlled_by = var:acid_rain_ai_actor
+	}
+}
+
+# STATE. Potential mortality margin only. Never calls the mutating cap reader or
+# population gateway. Future CBRN and temporary national protection are omitted
+# from zero-benefit exclusion because their survival through readiness is unknown.
+acid_rain_ai_mortality_may_improve = {
+	set_temp_variable = { acid_rain_ai_population_room = state_population_k }
+	multiply_temp_variable = { acid_rain_ai_population_room = constant:acid_rain_mortality.people_per_k }
+	subtract_from_temp_variable = { acid_rain_ai_population_room = constant:acid_rain_mortality.minimum_remaining_people }
+	check_variable = { var = acid_rain_ai_population_room value = constant:acid_rain_runtime.one compare = greater_than_or_equals }
+	set_temp_variable = { acid_rain_ai_cap_room = constant:acid_rain_runtime.zero }
+	if = {
+		limit = { check_variable = { acid_rain_ai_fresh_cap = constant:acid_rain_runtime.one } }
+		set_temp_variable = { acid_rain_ai_cap_room = state_population_k }
+		multiply_temp_variable = { acid_rain_ai_cap_room = constant:acid_rain_mortality.people_per_k }
+		multiply_temp_variable = { acid_rain_ai_cap_room = acid_rain_ai_cap_fraction }
+	}
+	else_if = {
+		limit = { check_variable = { acid_rain_ai_class = constant:acid_rain_mortality_class.ordinary } }
+		has_variable = acid_rain_ordinary_cap_population_people
+		has_variable = acid_rain_ordinary_episode_loss
+		set_temp_variable = { acid_rain_ai_cap_room = acid_rain_ordinary_cap_population_people }
+		multiply_temp_variable = { acid_rain_ai_cap_room = acid_rain_ai_cap_fraction }
+		subtract_from_temp_variable = { acid_rain_ai_cap_room = acid_rain_ordinary_episode_loss }
+	}
+	else_if = {
+		limit = { check_variable = { acid_rain_ai_class = constant:acid_rain_mortality_class.severe } }
+		has_variable = acid_rain_severe_cap_population_people
+		has_variable = acid_rain_severe_episode_loss
+		set_temp_variable = { acid_rain_ai_cap_room = acid_rain_severe_cap_population_people }
+		multiply_temp_variable = { acid_rain_ai_cap_room = acid_rain_ai_cap_fraction }
+		subtract_from_temp_variable = { acid_rain_ai_cap_room = acid_rain_severe_episode_loss }
+	}
+	else = {
+		has_variable = acid_rain_global_cap_population_people
+		has_variable = acid_rain_global_episode_loss
+		set_temp_variable = { acid_rain_ai_cap_room = acid_rain_global_cap_population_people }
+		multiply_temp_variable = { acid_rain_ai_cap_room = acid_rain_ai_cap_fraction }
+		subtract_from_temp_variable = { acid_rain_ai_cap_room = acid_rain_global_episode_loss }
+	}
+	check_variable = { var = acid_rain_ai_cap_room value = constant:acid_rain_runtime.one compare = greater_than_or_equals }
+	set_temp_variable = { acid_rain_ai_share = CONTROLLER.acid_rain_preparedness }
+	multiply_temp_variable = { acid_rain_ai_share = constant:acid_rain_mortality.protection_coefficient }
+	multiply_temp_variable = { acid_rain_ai_share = constant:acid_rain_aftermath.negative_one }
+	add_to_temp_variable = { acid_rain_ai_share = constant:acid_rain_mortality.one }
+	if = {
+		limit = { check_variable = { acid_rain_ai_opening = constant:acid_rain_runtime.one } }
+		set_temp_variable = { acid_rain_ai_component = CONTROLLER.acid_rain_shelter_tier }
+		multiply_temp_variable = { acid_rain_ai_component = constant:acid_rain_mortality.shelter_opening_tier_reduction }
+	}
+	else = {
+		set_temp_variable = { acid_rain_ai_component = CONTROLLER.acid_rain_medical_tier }
+		multiply_temp_variable = { acid_rain_ai_component = constant:acid_rain_mortality.medical_sustained_tier_reduction }
+	}
+	subtract_from_temp_variable = { acid_rain_ai_share = acid_rain_ai_component }
+	if = {
+		limit = {
+			check_variable = { acid_rain_ai_class = constant:acid_rain_mortality_class.ordinary }
+			check_variable = { acid_rain_ai_opening = constant:acid_rain_runtime.zero }
+			check_variable = { acid_rain_ai_known_ordinary_episode = constant:acid_rain_runtime.one }
+		}
+		set_temp_variable = { acid_rain_ai_exposure_days = acid_rain_window_days }
+		if = {
+			limit = { has_state_flag = acid_rain_consequence_interval_active has_variable = acid_rain_consequence_clock_day }
+			set_temp_variable = { acid_rain_ai_elapsed_days = acid_rain_ai_candidate_day }
+			subtract_from_temp_variable = { acid_rain_ai_elapsed_days = acid_rain_consequence_clock_day }
+			multiply_temp_variable = { acid_rain_ai_elapsed_days = constant:chaosx_date_units.hours_per_date_unit }
+			divide_temp_variable = { acid_rain_ai_elapsed_days = constant:chaosx_date_units.hours_per_day }
+			clamp_temp_variable = { var = acid_rain_ai_elapsed_days min = constant:acid_rain_runtime.zero }
+			add_to_temp_variable = { acid_rain_ai_exposure_days = acid_rain_ai_elapsed_days }
+		}
+		if = {
+			limit = { check_variable = { var = acid_rain_ai_exposure_days value = constant:acid_rain_aftermath.exposure_block_days compare = greater_than_or_equals } }
+			set_temp_variable = { acid_rain_ai_component = CONTROLLER.acid_rain_water_tier }
+			multiply_temp_variable = { acid_rain_ai_component = constant:acid_rain_mortality.water_sustained_tier_reduction }
+			subtract_from_temp_variable = { acid_rain_ai_share = acid_rain_ai_component }
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { acid_rain_ai_class = constant:acid_rain_mortality_class.severe }
+				check_variable = { acid_rain_ai_class = constant:acid_rain_mortality_class.superstorm }
+			}
+		}
+		set_temp_variable = { acid_rain_ai_component = CONTROLLER.acid_rain_transport_tier }
+		multiply_temp_variable = { acid_rain_ai_component = constant:acid_rain_mortality.transport_response_tier_reduction }
+		subtract_from_temp_variable = { acid_rain_ai_share = acid_rain_ai_component }
+		if = { limit = { has_state_flag = acid_rain_evacuated } subtract_from_temp_variable = { acid_rain_ai_share = constant:acid_rain_mortality.evacuation_protection } }
+	}
+	# Current CBRN can change before readiness. It cannot prove future zero gain.
+	clamp_temp_variable = { var = acid_rain_ai_share min = acid_rain_ai_floor max = constant:acid_rain_mortality.one }
+	set_temp_variable = { acid_rain_ai_after_share = acid_rain_ai_share }
+	set_temp_variable = { acid_rain_ai_added = constant:acid_rain_runtime.zero }
+	if = { limit = { check_variable = { acid_rain_ai_row = constant:acid_rain_action.urgent_shelter } } set_temp_variable = { acid_rain_ai_added = constant:acid_rain_response.shelter_protection } }
+	else_if = {
+		limit = { OR = { check_variable = { acid_rain_ai_row = constant:acid_rain_action.urgent_water_land } check_variable = { acid_rain_ai_row = constant:acid_rain_action.urgent_water_island } } }
+		set_temp_variable = { acid_rain_ai_added = constant:acid_rain_response.water_protection }
+	}
+	else_if = { limit = { check_variable = { acid_rain_ai_row = constant:acid_rain_action.urgent_medical } } set_temp_variable = { acid_rain_ai_added = constant:acid_rain_response.medical_protection } }
+	else = {
+		set_temp_variable = { acid_rain_ai_added = constant:acid_rain_mortality.evacuation_protection }
+		if = {
+			limit = { check_variable = { acid_rain_ai_candidate_day < acid_rain_ai_full_day } }
+			multiply_temp_variable = { acid_rain_ai_added = constant:acid_rain_mortality.evacuation_partial_share }
+		}
+	}
+	subtract_from_temp_variable = { acid_rain_ai_after_share = acid_rain_ai_added }
+	clamp_temp_variable = { var = acid_rain_ai_after_share min = acid_rain_ai_floor max = constant:acid_rain_mortality.one }
+	check_variable = { acid_rain_ai_after_share < acid_rain_ai_share }
+	acid_rain_ai_whole_request_may_improve = yes
+}
+
+# STATE. Requires a candidate inside its proven physical window.
+# Water's interval credit and Transport's band mitigation are genuine nonmortality
+# benefits and therefore do not borrow mortality floor/cap eligibility.
+acid_rain_ai_candidate_may_help = {
+	check_variable = { var = acid_rain_ai_candidate_day value = acid_rain_ai_ready_day compare = greater_than_or_equals }
+	if = { limit = { check_variable = { acid_rain_ai_is_evacuation = constant:acid_rain_runtime.zero } } check_variable = { acid_rain_ai_candidate_day < acid_rain_ai_benefit_end_day } }
+	if = {
+		limit = { check_variable = { acid_rain_ai_row = constant:acid_rain_action.urgent_transport } }
+		set_temp_variable = { acid_rain_ai_structural_share = CONTROLLER.acid_rain_transport_tier }
+		clamp_temp_variable = { var = acid_rain_ai_structural_share min = constant:acid_rain_runtime.zero max = constant:acid_rain_project.max_tier }
+		multiply_temp_variable = { acid_rain_ai_structural_share = constant:acid_rain_modifier.transport_tier_mitigation }
+		multiply_temp_variable = { acid_rain_ai_structural_share = constant:acid_rain_aftermath.negative_one }
+		add_to_temp_variable = { acid_rain_ai_structural_share = constant:acid_rain_modifier.full_share }
+		check_variable = { acid_rain_ai_structural_share > constant:acid_rain_modifier.minimum_mitigated_share }
+	}
+	else = {
+		OR = {
+			AND = {
+				OR = { check_variable = { acid_rain_ai_row = constant:acid_rain_action.urgent_water_land } check_variable = { acid_rain_ai_row = constant:acid_rain_action.urgent_water_island } }
+				check_variable = { CONTROLLER.acid_rain_water_tier < constant:acid_rain_aftermath.water_tier_max }
+			}
+			acid_rain_ai_mortality_may_improve = yes
+		}
+	}
+}
+
+# STATE. Actual ordinary membership. Active dwell bounds are not StateEndDates.
+# A retiring front's committed move date is an actual old-region exclusion.
+acid_rain_ai_ordinary_window_is_useful = {
+	has_state_flag = acid_rain_front_target
+	NOT = { has_state_flag = acid_rain_global_pulse_receipt }
+	has_variable = acid_rain_target_front_id
+	check_variable = { acid_rain_target_front_id > constant:acid_rain_runtime.zero }
+	check_variable = { var = acid_rain_target_front_id value = constant:acid_rain_event.max_fronts compare = less_than_or_equals }
+	check_variable = { var = acid_rain_target_generation value = global.acid_rain_generation_id compare = equals }
+	check_variable = { var = acid_rain_region_id value = global.acid_rain_front_region_entries^acid_rain_target_front_id compare = equals }
+	OR = {
+		check_variable = { global.acid_rain_front_state_entries^acid_rain_target_front_id = constant:acid_rain_front_state.active }
+		check_variable = { global.acid_rain_front_state_entries^acid_rain_target_front_id = constant:acid_rain_front_state.retiring }
+	}
+	has_variable = acid_rain_last_pulse_day
+	check_variable = { acid_rain_last_pulse_day > constant:acid_rain_runtime.zero }
+	check_variable = { var = acid_rain_last_pulse_day value = global.date compare = less_than_or_equals }
+	set_temp_variable = { acid_rain_ai_class = constant:acid_rain_mortality_class.ordinary }
+	set_temp_variable = { acid_rain_ai_intensity = global.acid_rain_front_intensity_entries^acid_rain_target_front_id }
+	set_temp_variable = { acid_rain_ai_floor = constant:acid_rain_mortality.ordinary_protection_floor }
+	set_temp_variable = { acid_rain_ai_cap_fraction = constant:acid_rain_mortality.ordinary_episode_cap }
+	set_temp_variable = { acid_rain_ai_fresh_cap = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_ai_known_ordinary_episode = constant:acid_rain_runtime.one }
+	set_temp_variable = { acid_rain_ai_candidate_day = acid_rain_last_pulse_day }
+	add_to_temp_variable = { acid_rain_ai_candidate_day = acid_rain_ai_cadence_offset }
+	set_temp_variable = { acid_rain_ai_first_day = acid_rain_ai_candidate_day }
+	set_temp_variable = { acid_rain_ai_seek_day = acid_rain_ai_ready_day }
+	acid_rain_ai_advance_candidate = yes
+	if = {
+		limit = { check_variable = { global.acid_rain_front_state_entries^acid_rain_target_front_id = constant:acid_rain_front_state.retiring } }
+		check_variable = { global.acid_rain_front_move_day_entries^acid_rain_target_front_id > constant:acid_rain_runtime.zero }
+		check_variable = { acid_rain_ai_candidate_day < global.acid_rain_front_move_day_entries^acid_rain_target_front_id }
+	}
+	set_temp_variable = { acid_rain_ai_opening = constant:acid_rain_runtime.zero }
+	if = { limit = { NOT = { has_state_flag = acid_rain_opening_pulse_recorded } check_variable = { acid_rain_ai_candidate_day = acid_rain_ai_first_day } } set_temp_variable = { acid_rain_ai_opening = constant:acid_rain_runtime.one } }
+	acid_rain_ai_candidate_may_help = yes
+}
+
+# STATE. A published, current region warning establishes possible selection only.
+# Its state marker was published through that region's current cursor. No future
+# state birth, footprint, dwell deadline or new episode is asserted here.
+acid_rain_ai_warning_window_is_useful = {
+	has_state_flag = acid_rain_warning_pending
+	has_variable = acid_rain_warning_visit_id
+	check_variable = { acid_rain_warning_visit_id > constant:acid_rain_runtime.zero }
+	check_variable = { var = acid_rain_warning_visit_id value = global.acid_rain_warning_count compare = less_than_or_equals }
+	check_variable = { var = acid_rain_warning_visit_id value = constant:acid_rain_event.max_warnings compare = less_than_or_equals }
+	check_variable = { var = global.acid_rain_warning_generation_entries^acid_rain_warning_visit_id value = global.acid_rain_generation_id compare = equals }
+	has_variable = acid_rain_warning_front_id
+	check_variable = { acid_rain_warning_front_id > constant:acid_rain_runtime.zero }
+	check_variable = { var = acid_rain_warning_front_id value = constant:acid_rain_event.max_fronts compare = less_than_or_equals }
+	check_variable = { var = acid_rain_warning_front_id value = global.acid_rain_warning_front_entries^acid_rain_warning_visit_id compare = equals }
+	check_variable = { var = acid_rain_region_id value = global.acid_rain_warning_region_entries^acid_rain_warning_visit_id compare = equals }
+	check_variable = { global.acid_rain_front_state_entries^acid_rain_warning_front_id = constant:acid_rain_front_state.retiring }
+	check_variable = { var = acid_rain_region_id value = global.acid_rain_front_next_region_entries^acid_rain_warning_front_id compare = equals }
+	has_variable = acid_rain_warning_expiry_day
+	check_variable = { var = acid_rain_warning_expiry_day value = global.acid_rain_warning_day_entries^acid_rain_warning_visit_id compare = equals }
+	check_variable = { var = acid_rain_warning_expiry_day value = global.acid_rain_front_move_day_entries^acid_rain_warning_front_id compare = equals }
+	check_variable = { acid_rain_warning_expiry_day > global.date }
+	set_temp_variable = { acid_rain_ai_class = constant:acid_rain_mortality_class.ordinary }
+	set_temp_variable = { acid_rain_ai_intensity = global.acid_rain_front_intensity_entries^acid_rain_warning_front_id }
+	set_temp_variable = { acid_rain_ai_floor = constant:acid_rain_mortality.ordinary_protection_floor }
+	set_temp_variable = { acid_rain_ai_cap_fraction = constant:acid_rain_mortality.ordinary_episode_cap }
+	set_temp_variable = { acid_rain_ai_known_ordinary_episode = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_ai_fresh_cap = constant:acid_rain_runtime.zero }
+	if = { limit = { NOT = { has_variable = acid_rain_ordinary_cap_population_people } } set_temp_variable = { acid_rain_ai_fresh_cap = constant:acid_rain_runtime.one } }
+	else_if = {
+		limit = { has_variable = acid_rain_ordinary_inactive_day }
+		set_temp_variable = { acid_rain_ai_gap_days = acid_rain_warning_expiry_day }
+		subtract_from_temp_variable = { acid_rain_ai_gap_days = acid_rain_ordinary_inactive_day }
+		multiply_temp_variable = { acid_rain_ai_gap_days = constant:chaosx_date_units.hours_per_date_unit }
+		divide_temp_variable = { acid_rain_ai_gap_days = constant:chaosx_date_units.hours_per_day }
+		if = { limit = { check_variable = { var = acid_rain_ai_gap_days value = constant:acid_rain_aftermath.ordinary_inactive_gap_days compare = greater_than_or_equals } } set_temp_variable = { acid_rain_ai_fresh_cap = constant:acid_rain_runtime.one } }
+	}
+	set_temp_variable = { acid_rain_ai_candidate_day = acid_rain_warning_expiry_day }
+	add_to_temp_variable = { acid_rain_ai_candidate_day = acid_rain_ai_cadence_offset }
+	set_temp_variable = { acid_rain_ai_seek_day = acid_rain_ai_ready_day }
+	acid_rain_ai_advance_candidate = yes
+	# Birth can occur at a later growth pass. Test both authored protection shapes.
+	OR = {
+		AND = { set_temp_variable = { acid_rain_ai_opening = constant:acid_rain_runtime.one } acid_rain_ai_candidate_may_help = yes }
+		AND = { set_temp_variable = { acid_rain_ai_opening = constant:acid_rain_runtime.zero } acid_rain_ai_candidate_may_help = yes }
+	}
+}
+
+# STATE. Source-specific fields above are initialized before this nested call.
+# Candidate is always initialized in the caller, including active/opening cases.
+acid_rain_ai_forecast_window_may_help = {
+	check_variable = { acid_rain_ai_source_start > constant:acid_rain_runtime.zero }
+	check_variable = { acid_rain_ai_source_end > acid_rain_ai_source_start }
+	check_variable = { acid_rain_ai_source_end > global.date }
+	OR = { check_variable = { acid_rain_ai_source_status = constant:acid_rain_runtime.zero } check_variable = { acid_rain_ai_source_status = constant:acid_rain_runtime.one } }
+	if = {
+		limit = { check_variable = { acid_rain_ai_is_evacuation = constant:acid_rain_runtime.one } }
+		check_variable = { acid_rain_ai_source_status = constant:acid_rain_runtime.zero }
+		check_variable = { acid_rain_ai_source_start > global.date }
+		NOT = { has_state_flag = acid_rain_action_lock }
+		NOT = { has_state_flag = acid_rain_evacuated }
+	}
+	set_temp_variable = { acid_rain_ai_known_ordinary_episode = constant:acid_rain_runtime.zero }
+	if = {
+		limit = { check_variable = { acid_rain_ai_source_status = constant:acid_rain_runtime.one } check_variable = { acid_rain_ai_recorded > constant:acid_rain_runtime.zero } }
+		check_variable = { var = acid_rain_ai_source_last value = acid_rain_ai_source_start compare = greater_than_or_equals }
+		check_variable = { var = acid_rain_ai_source_last value = global.date compare = less_than_or_equals }
+		check_variable = { acid_rain_ai_source_last < acid_rain_ai_source_end }
+		set_temp_variable = { acid_rain_ai_candidate_day = acid_rain_ai_source_last }
+		add_to_temp_variable = { acid_rain_ai_candidate_day = acid_rain_ai_cadence_offset }
+		set_temp_variable = { acid_rain_ai_opening = constant:acid_rain_runtime.zero }
+	}
+	else = {
+		# Earliest legal opening, not a synthetic stored clock or catch-up pulse.
+		set_temp_variable = { acid_rain_ai_candidate_day = acid_rain_ai_source_start }
+		clamp_temp_variable = { var = acid_rain_ai_candidate_day min = global.date }
+		set_temp_variable = { acid_rain_ai_opening = constant:acid_rain_runtime.one }
+	}
+	set_temp_variable = { acid_rain_ai_first_day = acid_rain_ai_candidate_day }
+	set_temp_variable = { acid_rain_ai_seek_day = acid_rain_ai_ready_day }
+	acid_rain_ai_advance_candidate = yes
+	if = { limit = { check_variable = { acid_rain_ai_candidate_day > acid_rain_ai_first_day } } set_temp_variable = { acid_rain_ai_opening = constant:acid_rain_runtime.zero } }
+	check_variable = { acid_rain_ai_candidate_day < acid_rain_ai_source_end }
+	OR = {
+		acid_rain_ai_candidate_may_help = yes
+		AND = {
+			# An opening at its floor does not prove later sustained pulses useless.
+			check_variable = { acid_rain_ai_opening = constant:acid_rain_runtime.one }
+			add_to_temp_variable = { acid_rain_ai_candidate_day = acid_rain_ai_cadence_offset }
+			set_temp_variable = { acid_rain_ai_opening = constant:acid_rain_runtime.zero }
+			check_variable = { acid_rain_ai_candidate_day < acid_rain_ai_source_end }
+			acid_rain_ai_candidate_may_help = yes
+		}
+		AND = {
+			# Partial rounding can hide a later full evacuation improvement.
+			check_variable = { acid_rain_ai_is_evacuation = constant:acid_rain_runtime.one }
+			set_temp_variable = { acid_rain_ai_candidate_day = acid_rain_ai_first_day }
+			set_temp_variable = { acid_rain_ai_seek_day = acid_rain_ai_full_day }
+			acid_rain_ai_advance_candidate = yes
+			set_temp_variable = { acid_rain_ai_opening = constant:acid_rain_runtime.zero }
+			if = { limit = { check_variable = { acid_rain_ai_candidate_day = acid_rain_ai_first_day } } set_temp_variable = { acid_rain_ai_opening = constant:acid_rain_runtime.one } }
+			check_variable = { acid_rain_ai_candidate_day < acid_rain_ai_source_end }
+			acid_rain_ai_candidate_may_help = yes
+		}
+	}
+}
+
+# STATE. Current cell identity, without changing an enclosing worker index.
+acid_rain_ai_severe_window_is_useful = {
+	has_state_flag = acid_rain_severe_cell_target
+	has_variable = acid_rain_severe_cell_id
+	check_variable = { acid_rain_severe_cell_id > constant:acid_rain_runtime.zero }
+	check_variable = { var = acid_rain_severe_cell_id value = constant:acid_rain_event.max_severe_cells compare = less_than_or_equals }
+	check_variable = { var = acid_rain_severe_cell_id value = global.acid_rain_severe_cell_count compare = less_than_or_equals }
+	check_variable = { var = acid_rain_severe_forecast_generation value = global.acid_rain_generation_id compare = equals }
+	has_variable = acid_rain_severe_forecast_id
+	check_variable = { var = acid_rain_severe_forecast_id value = acid_rain_severe_cell_id compare = equals }
+	has_variable = acid_rain_severe_forecast_start_day
+	has_variable = acid_rain_severe_forecast_end_day
+	check_variable = { var = acid_rain_severe_forecast_start_day value = global.acid_rain_severe_cell_start_entries^acid_rain_severe_cell_id compare = equals }
+	check_variable = { var = acid_rain_severe_forecast_end_day value = global.acid_rain_severe_cell_end_entries^acid_rain_severe_cell_id compare = equals }
+	check_variable = { global.acid_rain_phase = constant:acid_rain_phase.regional }
+	set_temp_variable = { acid_rain_ai_source_status = global.acid_rain_severe_cell_active_entries^acid_rain_severe_cell_id }
+	set_temp_variable = { acid_rain_ai_source_start = acid_rain_severe_forecast_start_day }
+	set_temp_variable = { acid_rain_ai_source_end = acid_rain_severe_forecast_end_day }
+	set_temp_variable = { acid_rain_ai_class = constant:acid_rain_mortality_class.severe }
+	set_temp_variable = { acid_rain_ai_intensity = constant:acid_rain_intensity.strong }
+	set_temp_variable = { acid_rain_ai_floor = constant:acid_rain_mortality.severe_protection_floor }
+	set_temp_variable = { acid_rain_ai_cap_fraction = constant:acid_rain_mortality.severe_episode_cap }
+	set_temp_variable = { acid_rain_ai_fresh_cap = constant:acid_rain_runtime.zero }
+	if = { limit = { NOT = { check_variable = { var = acid_rain_severe_cap_episode_id value = acid_rain_severe_cell_id compare = equals } } } set_temp_variable = { acid_rain_ai_fresh_cap = constant:acid_rain_runtime.one } }
+	set_temp_variable = { acid_rain_ai_recorded = constant:acid_rain_runtime.zero }
+	if = { limit = { has_variable = acid_rain_severe_cell_opening_recorded } set_temp_variable = { acid_rain_ai_recorded = acid_rain_severe_cell_opening_recorded } }
+	set_temp_variable = { acid_rain_ai_source_last = constant:acid_rain_runtime.zero }
+	if = { limit = { has_variable = acid_rain_last_severe_pulse_day } set_temp_variable = { acid_rain_ai_source_last = acid_rain_last_severe_pulse_day } }
+	set_temp_variable = { acid_rain_ai_candidate_day = constant:acid_rain_runtime.zero }
+	acid_rain_ai_forecast_window_may_help = yes
+}
+
+# STATE. Reused storm slots need their separate current serial.
+acid_rain_ai_superstorm_window_is_useful = {
+	has_state_flag = acid_rain_superstorm_target
+	has_variable = acid_rain_superstorm_id
+	check_variable = { acid_rain_superstorm_id > constant:acid_rain_runtime.zero }
+	check_variable = { var = acid_rain_superstorm_id value = constant:acid_rain_event.max_superstorms compare = less_than_or_equals }
+	check_variable = { var = acid_rain_superstorm_forecast_generation value = global.acid_rain_generation_id compare = equals }
+	has_variable = acid_rain_superstorm_forecast_id
+	check_variable = { var = acid_rain_superstorm_forecast_id value = global.acid_rain_superstorm_episode_entries^acid_rain_superstorm_id compare = equals }
+	check_variable = { acid_rain_superstorm_forecast_id > constant:acid_rain_runtime.zero }
+	has_variable = acid_rain_superstorm_forecast_start_day
+	has_variable = acid_rain_superstorm_forecast_end_day
+	check_variable = { var = acid_rain_superstorm_forecast_start_day value = global.acid_rain_superstorm_start_entries^acid_rain_superstorm_id compare = equals }
+	check_variable = { var = acid_rain_superstorm_forecast_end_day value = global.acid_rain_superstorm_end_entries^acid_rain_superstorm_id compare = equals }
+	check_variable = { global.acid_rain_phase = constant:acid_rain_phase.global }
+	acid_rain_state_has_global_layer = yes
+	has_variable = acid_rain_global_cap_generation
+	check_variable = { var = acid_rain_global_cap_generation value = global.acid_rain_generation_id compare = equals }
+	set_temp_variable = { acid_rain_ai_source_status = global.acid_rain_superstorm_active_entries^acid_rain_superstorm_id }
+	set_temp_variable = { acid_rain_ai_source_start = acid_rain_superstorm_forecast_start_day }
+	set_temp_variable = { acid_rain_ai_source_end = acid_rain_superstorm_forecast_end_day }
+	set_temp_variable = { acid_rain_ai_class = constant:acid_rain_mortality_class.superstorm }
+	set_temp_variable = { acid_rain_ai_intensity = constant:acid_rain_intensity.extreme }
+	set_temp_variable = { acid_rain_ai_floor = constant:acid_rain_mortality.superstorm_protection_floor }
+	set_temp_variable = { acid_rain_ai_cap_fraction = constant:acid_rain_mortality.global_episode_cap }
+	set_temp_variable = { acid_rain_ai_fresh_cap = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_ai_recorded = constant:acid_rain_runtime.zero }
+	if = { limit = { has_variable = acid_rain_superstorm_opening_recorded } set_temp_variable = { acid_rain_ai_recorded = acid_rain_superstorm_opening_recorded } }
+	set_temp_variable = { acid_rain_ai_source_last = constant:acid_rain_runtime.zero }
+	if = { limit = { has_variable = acid_rain_last_superstorm_pulse_day } set_temp_variable = { acid_rain_ai_source_last = acid_rain_last_superstorm_pulse_day } }
+	set_temp_variable = { acid_rain_ai_candidate_day = constant:acid_rain_runtime.zero }
+	acid_rain_ai_forecast_window_may_help = yes
+}
+
+# STATE. Latest possible global pulse derives from the current queued check and
+# the authored eight-check ladder, aligned to the existing three-day clock.
+# It is not a fabricated fixed global lifetime or a future success guarantee.
+acid_rain_ai_global_window_is_useful = {
+	set_temp_variable = { acid_rain_ai_fresh_cap = constant:acid_rain_runtime.zero }
+	if = {
+		limit = { check_variable = { global.acid_rain_phase = constant:acid_rain_phase.global } }
+		acid_rain_state_has_global_layer = yes
+		has_variable = acid_rain_last_pulse_day
+		check_variable = { acid_rain_last_pulse_day > constant:acid_rain_runtime.zero }
+		check_variable = { var = acid_rain_last_pulse_day value = global.date compare = less_than_or_equals }
+		has_variable = acid_rain_global_cap_generation
+		check_variable = { var = acid_rain_global_cap_generation value = global.acid_rain_generation_id compare = equals }
+		has_variable = global.acid_rain_next_dissipation_check_day
+		has_variable = global.acid_rain_dissipation_check_index
+		check_variable = { var = global.acid_rain_dissipation_check_index value = constant:acid_rain_runtime.zero compare = greater_than_or_equals }
+		check_variable = { global.acid_rain_dissipation_check_index < constant:acid_rain_dissipation.global_step_count }
+		set_temp_variable = { acid_rain_ai_global_anchor = acid_rain_last_pulse_day }
+		set_temp_variable = { acid_rain_ai_guarantee_day = global.acid_rain_next_dissipation_check_day }
+		set_temp_variable = { acid_rain_ai_remaining_checks = constant:acid_rain_dissipation.global_step_count }
+		subtract_from_temp_variable = { acid_rain_ai_remaining_checks = global.acid_rain_dissipation_check_index }
+		subtract_from_temp_variable = { acid_rain_ai_remaining_checks = constant:acid_rain_runtime.one }
+	}
+	else = {
+		check_variable = { global.acid_rain_phase = constant:acid_rain_phase.global_warning }
+		has_global_flag = acid_rain_global_warning_pending
+		has_variable = global.acid_rain_global_warning_day
+		check_variable = { global.acid_rain_global_warning_day > constant:acid_rain_runtime.zero }
+		acid_rain_global_evolution_is_not_disabled = yes
+		set_temp_variable = { acid_rain_ai_global_anchor = global.acid_rain_global_warning_day }
+		set_temp_variable = { acid_rain_ai_guarantee_day = constant:acid_rain_evolution.global_minimum_days }
+		multiply_temp_variable = { acid_rain_ai_guarantee_day = constant:chaosx_date_units.hours_per_day }
+		divide_temp_variable = { acid_rain_ai_guarantee_day = constant:chaosx_date_units.hours_per_date_unit }
+		add_to_temp_variable = { acid_rain_ai_guarantee_day = acid_rain_ai_global_anchor }
+		set_temp_variable = { acid_rain_ai_remaining_checks = constant:acid_rain_dissipation.global_step_count }
+		subtract_from_temp_variable = { acid_rain_ai_remaining_checks = constant:acid_rain_runtime.one }
+		set_temp_variable = { acid_rain_ai_fresh_cap = constant:acid_rain_runtime.one }
+	}
+	check_variable = { acid_rain_ai_global_anchor > constant:acid_rain_runtime.zero }
+	check_variable = { acid_rain_ai_guarantee_day > acid_rain_ai_global_anchor }
+	set_temp_variable = { acid_rain_ai_check_hours = acid_rain_ai_guarantee_day }
+	subtract_from_temp_variable = { acid_rain_ai_check_hours = acid_rain_ai_global_anchor }
+	multiply_temp_variable = { acid_rain_ai_check_hours = constant:chaosx_date_units.hours_per_date_unit }
+	round_temp_variable = acid_rain_ai_check_hours
+	set_temp_variable = { acid_rain_ai_check_remainder = acid_rain_ai_check_hours }
+	modulo_temp_variable = { var = acid_rain_ai_check_remainder value = acid_rain_ai_cadence_hours }
+	if = {
+		limit = { check_variable = { acid_rain_ai_check_remainder > constant:acid_rain_runtime.zero } }
+		subtract_from_temp_variable = { acid_rain_ai_check_hours = acid_rain_ai_check_remainder }
+		add_to_temp_variable = { acid_rain_ai_check_hours = acid_rain_ai_cadence_hours }
+	}
+	divide_temp_variable = { acid_rain_ai_check_hours = constant:chaosx_date_units.hours_per_date_unit }
+	set_temp_variable = { acid_rain_ai_guarantee_day = acid_rain_ai_global_anchor }
+	add_to_temp_variable = { acid_rain_ai_guarantee_day = acid_rain_ai_check_hours }
+	set_temp_variable = { acid_rain_ai_check_spacing_hours = constant:acid_rain_dissipation.check_interval_days }
+	multiply_temp_variable = { acid_rain_ai_check_spacing_hours = constant:chaosx_date_units.hours_per_day }
+	set_temp_variable = { acid_rain_ai_check_remainder = acid_rain_ai_check_spacing_hours }
+	modulo_temp_variable = { var = acid_rain_ai_check_remainder value = acid_rain_ai_cadence_hours }
+	if = {
+		limit = { check_variable = { acid_rain_ai_check_remainder > constant:acid_rain_runtime.zero } }
+		subtract_from_temp_variable = { acid_rain_ai_check_spacing_hours = acid_rain_ai_check_remainder }
+		add_to_temp_variable = { acid_rain_ai_check_spacing_hours = acid_rain_ai_cadence_hours }
+	}
+	multiply_temp_variable = { acid_rain_ai_check_spacing_hours = acid_rain_ai_remaining_checks }
+	divide_temp_variable = { acid_rain_ai_check_spacing_hours = constant:chaosx_date_units.hours_per_date_unit }
+	add_to_temp_variable = { acid_rain_ai_guarantee_day = acid_rain_ai_check_spacing_hours }
+	check_variable = { var = acid_rain_ai_guarantee_day value = global.date compare = greater_than_or_equals }
+	set_temp_variable = { acid_rain_ai_class = constant:acid_rain_mortality_class.global }
+	set_temp_variable = { acid_rain_ai_intensity = constant:acid_rain_intensity.standard }
+	set_temp_variable = { acid_rain_ai_floor = constant:acid_rain_mortality.ordinary_protection_floor }
+	set_temp_variable = { acid_rain_ai_cap_fraction = constant:acid_rain_mortality.global_episode_cap }
+	set_temp_variable = { acid_rain_ai_known_ordinary_episode = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_ai_candidate_day = acid_rain_ai_global_anchor }
+	add_to_temp_variable = { acid_rain_ai_candidate_day = acid_rain_ai_cadence_offset }
+	set_temp_variable = { acid_rain_ai_first_day = acid_rain_ai_candidate_day }
+	set_temp_variable = { acid_rain_ai_seek_day = acid_rain_ai_ready_day }
+	acid_rain_ai_advance_candidate = yes
+	check_variable = { var = acid_rain_ai_candidate_day value = acid_rain_ai_guarantee_day compare = less_than_or_equals }
+	set_temp_variable = { acid_rain_ai_opening = constant:acid_rain_runtime.zero }
+	if = { limit = { NOT = { has_state_flag = acid_rain_global_opening_pulse_recorded } check_variable = { acid_rain_ai_candidate_day = acid_rain_ai_first_day } } set_temp_variable = { acid_rain_ai_opening = constant:acid_rain_runtime.one } }
+	OR = {
+		acid_rain_ai_candidate_may_help = yes
+		AND = {
+			check_variable = { acid_rain_ai_opening = constant:acid_rain_runtime.one }
+			add_to_temp_variable = { acid_rain_ai_candidate_day = acid_rain_ai_cadence_offset }
+			set_temp_variable = { acid_rain_ai_opening = constant:acid_rain_runtime.zero }
+			check_variable = { var = acid_rain_ai_candidate_day value = acid_rain_ai_guarantee_day compare = less_than_or_equals }
+			acid_rain_ai_candidate_may_help = yes
+		}
+	}
+}
+
+# STATE. The caller proves the actor once, then tests only this state's sources.
+acid_rain_ai_state_has_useful_window = {
+	acid_rain_ai_state_identity_is_current = yes
+	if = {
+		limit = { check_variable = { acid_rain_ai_is_evacuation = constant:acid_rain_runtime.one } }
+		OR = { acid_rain_ai_severe_window_is_useful = yes acid_rain_ai_superstorm_window_is_useful = yes }
+	}
+	else = {
+		OR = {
+			AND = { check_variable = { global.acid_rain_phase = constant:acid_rain_phase.regional } acid_rain_ai_ordinary_window_is_useful = yes }
+			AND = { check_variable = { global.acid_rain_phase = constant:acid_rain_phase.regional } acid_rain_ai_warning_window_is_useful = yes }
+			acid_rain_ai_severe_window_is_useful = yes
+			acid_rain_ai_global_window_is_useful = yes
+			acid_rain_ai_superstorm_window_is_useful = yes
+		}
+	}
+}
+
+# COUNTRY. Private inputs: ai row and whether to use the already-selected target.
+# No persistent output/cache. This exact predicate is used by scoring and debit
+# preflight. Projects/recovery are outside this urgent-only rule.
+acid_rain_ai_urgent_row_is_useful = {
+	acid_rain_runtime_has_frozen_registry = yes
+	acid_rain_country_has_runtime_record = yes
+	acid_rain_country_action_is_not_stale = yes
+	check_variable = { global.acid_rain_generation_id > constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_ai_actor = THIS }
+	set_temp_variable = { acid_rain_ai_is_evacuation = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_ai_duration = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_ai_effect_duration = constant:acid_rain_runtime.zero }
+	if = {
+		limit = { check_variable = { acid_rain_ai_row = constant:acid_rain_action.urgent_shelter } }
+		acid_rain_shelter_operation_available = yes
+		set_temp_variable = { acid_rain_ai_duration = constant:acid_rain_urgent_cost.shelter_days }
+		set_temp_variable = { acid_rain_ai_effect_duration = constant:acid_rain_preparedness.urgent_shelter_effect_days }
+	}
+	else_if = {
+		limit = { OR = { check_variable = { acid_rain_ai_row = constant:acid_rain_action.urgent_water_land } check_variable = { acid_rain_ai_row = constant:acid_rain_action.urgent_water_island } } }
+		acid_rain_water_operation_available = yes
+		set_temp_variable = { acid_rain_ai_duration = constant:acid_rain_urgent_cost.water_days }
+		set_temp_variable = { acid_rain_ai_effect_duration = constant:acid_rain_preparedness.urgent_water_effect_days }
+	}
+	else_if = {
+		limit = { check_variable = { acid_rain_ai_row = constant:acid_rain_action.urgent_medical } }
+		acid_rain_medical_operation_available = yes
+		set_temp_variable = { acid_rain_ai_duration = constant:acid_rain_urgent_cost.medical_days }
+		set_temp_variable = { acid_rain_ai_effect_duration = constant:acid_rain_preparedness.urgent_medical_effect_days }
+	}
+	else_if = {
+		limit = { check_variable = { acid_rain_ai_row = constant:acid_rain_action.urgent_transport } }
+		acid_rain_transport_operation_available = yes
+		set_temp_variable = { acid_rain_ai_duration = constant:acid_rain_urgent_cost.transport_days }
+		set_temp_variable = { acid_rain_ai_effect_duration = constant:acid_rain_preparedness.urgent_transport_effect_days }
+	}
+	else = {
+		OR = { check_variable = { acid_rain_ai_row = constant:acid_rain_action.urgent_evacuate_land } check_variable = { acid_rain_ai_row = constant:acid_rain_action.urgent_evacuate_island } }
+		acid_rain_country_can_open_evacuation = yes
+		set_temp_variable = { acid_rain_ai_is_evacuation = constant:acid_rain_runtime.one }
+		set_temp_variable = { acid_rain_ai_duration = constant:acid_rain_urgent_cost.evacuation_days }
+	}
+	set_temp_variable = { acid_rain_ai_full_day = acid_rain_ai_duration }
+	multiply_temp_variable = { acid_rain_ai_full_day = constant:chaosx_date_units.hours_per_day }
+	divide_temp_variable = { acid_rain_ai_full_day = constant:chaosx_date_units.hours_per_date_unit }
+	add_to_temp_variable = { acid_rain_ai_full_day = global.date }
+	set_temp_variable = { acid_rain_ai_ready_day = acid_rain_ai_full_day }
+	set_temp_variable = { acid_rain_ai_benefit_end_day = acid_rain_ai_effect_duration }
+	multiply_temp_variable = { acid_rain_ai_benefit_end_day = constant:chaosx_date_units.hours_per_day }
+	divide_temp_variable = { acid_rain_ai_benefit_end_day = constant:chaosx_date_units.hours_per_date_unit }
+	add_to_temp_variable = { acid_rain_ai_benefit_end_day = acid_rain_ai_full_day }
+	if = {
+		limit = { check_variable = { acid_rain_ai_is_evacuation = constant:acid_rain_runtime.one } }
+		set_temp_variable = { acid_rain_ai_ready_day = constant:acid_rain_preparedness.evacuation_partial_delay_days }
+		multiply_temp_variable = { acid_rain_ai_ready_day = constant:chaosx_date_units.hours_per_day }
+		divide_temp_variable = { acid_rain_ai_ready_day = constant:chaosx_date_units.hours_per_date_unit }
+		add_to_temp_variable = { acid_rain_ai_ready_day = global.date }
+	}
+	set_temp_variable = { acid_rain_ai_cadence_hours = constant:acid_rain_runtime.exposure_days }
+	multiply_temp_variable = { acid_rain_ai_cadence_hours = constant:chaosx_date_units.hours_per_day }
+	set_temp_variable = { acid_rain_ai_cadence_offset = acid_rain_ai_cadence_hours }
+	divide_temp_variable = { acid_rain_ai_cadence_offset = constant:chaosx_date_units.hours_per_date_unit }
+	if = {
+		limit = { check_variable = { acid_rain_ai_is_evacuation = constant:acid_rain_runtime.one } }
+		if = {
+			limit = { check_variable = { acid_rain_ai_use_saved_target = constant:acid_rain_runtime.one } }
+			has_variable = acid_rain_selected_action_state
+			var:acid_rain_selected_action_state = { acid_rain_ai_state_has_useful_window = yes }
+		}
+		else = { FROM = { acid_rain_ai_state_has_useful_window = yes } }
+	}
+	else = { any_controlled_state = { acid_rain_ai_state_has_useful_window = yes } }
+}
+
+acid_rain_ai_shelter_is_useful = {
+	set_temp_variable = { acid_rain_ai_row = constant:acid_rain_action.urgent_shelter }
+	set_temp_variable = { acid_rain_ai_use_saved_target = constant:acid_rain_runtime.zero }
+	acid_rain_ai_urgent_row_is_useful = yes
+}
+acid_rain_ai_water_is_useful = {
+	set_temp_variable = { acid_rain_ai_row = constant:acid_rain_action.urgent_water_land }
+	set_temp_variable = { acid_rain_ai_use_saved_target = constant:acid_rain_runtime.zero }
+	acid_rain_ai_urgent_row_is_useful = yes
+}
+acid_rain_ai_medical_is_useful = {
+	set_temp_variable = { acid_rain_ai_row = constant:acid_rain_action.urgent_medical }
+	set_temp_variable = { acid_rain_ai_use_saved_target = constant:acid_rain_runtime.zero }
+	acid_rain_ai_urgent_row_is_useful = yes
+}
+acid_rain_ai_transport_is_useful = {
+	set_temp_variable = { acid_rain_ai_row = constant:acid_rain_action.urgent_transport }
+	set_temp_variable = { acid_rain_ai_use_saved_target = constant:acid_rain_runtime.zero }
+	acid_rain_ai_urgent_row_is_useful = yes
+}
+acid_rain_ai_evacuation_is_useful = {
+	set_temp_variable = { acid_rain_ai_row = constant:acid_rain_action.urgent_evacuate_land }
+	set_temp_variable = { acid_rain_ai_use_saved_target = constant:acid_rain_runtime.zero }
+	acid_rain_ai_urgent_row_is_useful = yes
+}
+acid_rain_ai_selected_urgent_is_useful = {
+	set_temp_variable = { acid_rain_ai_row = acid_rain_selected_action }
+	set_temp_variable = { acid_rain_ai_use_saved_target = constant:acid_rain_runtime.one }
+	acid_rain_ai_urgent_row_is_useful = yes
+}
+
 # COUNTRY SCOPE. A component already two tiers above the weakest component.
 acid_rain_shelter_leads_components = {
 	set_temp_variable = { acid_rain_ai_lead_floor = acid_rain_shelter_tier }
@@ -1711,6 +2401,7 @@ acid_rain_current_action_requirements_hold = {
 		limit = { check_variable = { var = acid_rain_quote_kind value = constant:acid_rain_runtime.one compare = equals } }
 		acid_rain_country_action_is_not_stale = yes
 		acid_rain_country_faces_rain = yes
+		if = { limit = { is_ai = yes } acid_rain_ai_selected_urgent_is_useful = yes }
 	}
 	else = {
 		NOT = { acid_rain_country_faces_rain = yes }
