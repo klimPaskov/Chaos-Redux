@@ -17,9 +17,43 @@ Answers three source-only questions:
 Vanilla reach-through is expected in places, so question 1 consults the vanilla
 install before reporting a name as unresolved.
 
+5. Which sprites and files the engine looks up implicitly from script or
+   localisation data are missing in both the mod and the vanilla install? The
+   engine derives these names from ids and fields rather than from a quoted
+   GFX_ token, so the literal scan cannot see them. Each rule below was checked
+   against the installed vanilla tree with `--calibrate-vanilla` before it is
+   reported as a missing lookup:
+
+   - idea pictures: `picture = x` resolves to `GFX_idea_x`; a visible idea
+     without `picture` resolves to `GFX_idea_<id>`; hidden idea categories are
+     not checked for the default name because they never draw an icon;
+   - decisions: `icon = x` resolves to `GFX_decision_x`;
+   - decision categories: `picture = x` or `icon = x` resolves to
+     `GFX_decision_category_x`;
+   - focus shine: a focus icon also needs `<icon>_shine` for its shine pulse;
+   - subunit icons: `sprite = x` in `sub_units` resolves to
+     `GFX_unit_x_icon_medium`;
+   - text icons: `£name` in localisation resolves to `GFX_name`;
+   - flags: a `gfx/flags/<TAG>*.tga` file, plus a `medium/` and `small/` file,
+     for every real tag in `common/country_tags`. Vanilla ships ideology-suffixed
+     flags, so the check accepts `<TAG>.tga` or `<TAG>_<suffix>.tga`. Cosmetic-tag
+     flags are listed as a vanilla-precedent fallback, not counted as missing,
+     because vanilla itself sets cosmetic tags that have no flag file;
+   - achievement art: `gfx/achievements/<id>.dds` plus `_grey` and
+     `_not_eligible` for every achievement id;
+   - character portrait textures: quoted `.dds` or `.tga` paths in `portraits`.
+
+   Dynamic constructions (a name ending in `_`, a prefix built from a variable)
+   and documentation placeholders (a name seen only in `.md` files) are listed
+   separately and never counted as missing. Technology pictures, equipment and
+   MIO sprites, and scientist-trait or special-project icons have no implicit
+   rule confirmed against vanilla; those entries are explicit `icon =` tokens
+   that question 1 already covers.
+
 Usage:
 	python .tools/audit_asset_wiring_static.py
 	python .tools/audit_asset_wiring_static.py --json out.json
+	python .tools/audit_asset_wiring_static.py --calibrate-vanilla
 """
 
 from __future__ import annotations
@@ -28,9 +62,9 @@ import argparse
 import json
 import re
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
-from typing import Dict, Iterable, List, Set
+from typing import Dict, Iterable, List, Optional, Set, Tuple
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 VANILLA_ROOT = Path(
@@ -85,10 +119,24 @@ def build_asset_index() -> Dict[str, int]:
 
 
 def resolve_asset(reference: str) -> bool:
-	"""Return True when an asset reference resolves to a real file."""
+	"""Return True when an asset reference resolves to a real file.
+
+	A `.tga` reference also resolves to a same-stem `.dds`. Vanilla declares many
+	sprites as `.tga` while shipping only the `.dds` (for example `checkbox_small`
+	and `closebutton_small`), and the engine loads them, so the extension alone
+	does not make a texture missing.
+	"""
 	if not reference:
 		return True
 	normalised = reference.replace("\\", "/")
+	if _resolve_exact(normalised):
+		return True
+	if normalised.lower().endswith(".tga"):
+		return _resolve_exact(normalised[:-4] + ".dds")
+	return False
+
+
+def _resolve_exact(normalised: str) -> bool:
 	if "/" in normalised:
 		for root in (REPO_ROOT, VANILLA_ROOT):
 			if (root / normalised).is_file():
@@ -106,13 +154,26 @@ class Findings:
 		self.missing_vanilla_files: List[Dict[str, str]] = []
 		self.registered_count = 0
 		self.vanilla_registered = 0
+		self.implicit_missing: List[Dict[str, str]] = []
+		self.implicit_checked: Counter = Counter()
+		self.implicit_ok_names: Set[str] = set()
+		self.implicit_unverified: List[Dict[str, str]] = []
+		self.dynamic_refs: List[Dict[str, object]] = []
+		self.documentation_refs: List[Dict[str, object]] = []
 
 
 def read_text(path: Path) -> str:
+	"""Read a source file, dropping whole-line comments so a commented-out sprite is neither a registration nor a use.
+
+	Markdown keeps its headings, so only the Clausewitz-style sources are stripped.
+	"""
 	raw = path.read_bytes()
 	if raw.startswith(b"\xef\xbb\xbf"):
 		raw = raw[3:]
-	return raw.decode("utf-8", errors="replace")
+	text = raw.decode("utf-8", errors="replace")
+	if path.suffix.lower() != ".md":
+		text = "\n".join(line for line in text.splitlines() if not line.lstrip().startswith("#"))
+	return text
 
 
 def iter_source_files(root: Path, excluded: Set[str], pattern: str) -> Iterable[Path]:
@@ -259,10 +320,456 @@ def audit_referenced_vanilla_definitions(
 				)
 
 
+# ---------------------------------------------------------------------------
+# Implicit engine lookups (question 5). Each extractor reads the same source
+# layout from a root, so `--calibrate-vanilla` can measure the rule against the
+# installed vanilla tree before the mod's expectations are trusted.
+# ---------------------------------------------------------------------------
+
+CLZ_TOKEN = re.compile(r'"[^"]*"|\{|\}|=|[^\s{}="#]+|#[^\n]*')
+UPPER_KEY = re.compile(r"^[A-Z][A-Z0-9_]*$")
+PORTRAIT_FILE = re.compile(r"\.(?:dds|tga)$", re.IGNORECASE)
+BARE_EVENT_PICTURE = re.compile(r"\bpicture\s*=\s*([A-Za-z][A-Za-z0-9_]*)\b")
+TEXT_ICON = re.compile(r"£([A-Za-z0-9_]+)")
+IDEA_BODY_KEYS = {
+	"picture", "modifier", "available", "allowed", "cost", "removal_cost",
+	"ai_will_do", "on_add", "on_remove", "character", "ledger", "traits",
+	"visible", "targeted_modifier", "equipment_bonus", "limit", "rule",
+}
+HIDDEN_IDEA_GROUPS = {"hidden_ideas"}
+
+Expectation = Dict[str, object]
+
+
+def parse_clausewitz(text: str) -> List[Tuple[Optional[str], object]]:
+	"""Parse Clausewitz text into (key, value) pairs.
+
+	A value is a string for `key = scalar` and a nested list for `key = { ... }`.
+	A bare block or bare word has key None. Comments are dropped. Stray closing
+	braces at the top level are skipped rather than ending the parse.
+	"""
+	tokens: List[Tuple[bool, str]] = []
+	for match in CLZ_TOKEN.finditer(text):
+		raw = match.group(0)
+		if raw.startswith("#"):
+			continue
+		if raw.startswith('"'):
+			tokens.append((True, raw[1:-1]))
+		else:
+			tokens.append((False, raw))
+	items: List[Tuple[Optional[str], object]] = []
+	index = 0
+	while index < len(tokens):
+		block, index = _parse_items(tokens, index)
+		items.extend(block)
+	return items
+
+
+def _parse_items(tokens: List[Tuple[bool, str]], index: int):
+	items: List[Tuple[Optional[str], object]] = []
+	count = len(tokens)
+	while index < count:
+		quoted, text = tokens[index]
+		if not quoted and text == "}":
+			return items, index + 1
+		if not quoted and text == "{":
+			sub, index = _parse_items(tokens, index + 1)
+			items.append((None, sub))
+			continue
+		if not quoted and text == "=":
+			index += 1
+			continue
+		if index + 1 < count and tokens[index + 1] == (False, "=") and not quoted:
+			if index + 2 < count:
+				value_quoted, value = tokens[index + 2]
+				if not value_quoted and value == "{":
+					sub, index = _parse_items(tokens, index + 3)
+					items.append((text, sub))
+					continue
+				items.append((text, value))
+				index += 3
+				continue
+			index += 2
+			continue
+		items.append((None, text))
+		index += 1
+	return items, index
+
+
+def _children(block: object) -> List[Tuple[Optional[str], object]]:
+	return block if isinstance(block, list) else []
+
+
+def _scalar(block: object, key: str) -> Optional[str]:
+	for name, value in _children(block):
+		if name == key and isinstance(value, str):
+			return value
+	return None
+
+
+def _sub_blocks(block: object) -> List[Tuple[str, list]]:
+	return [(name, value) for name, value in _children(block) if name is not None and isinstance(value, list)]
+
+
+def _has_key(block: object, key: str) -> bool:
+	return any(name == key for name, _ in _children(block))
+
+
+def _find_blocks(block: object, key: str) -> List[list]:
+	"""Return every sub-block stored under `key`, at any depth."""
+	found: List[list] = []
+	for name, value in _children(block):
+		if name == key and isinstance(value, list):
+			found.append(value)
+		if isinstance(value, list):
+			found.extend(_find_blocks(value, key))
+	return found
+
+
+def _rel(root: Path, path: Path) -> str:
+	return str(path.relative_to(root)).replace("\\", "/")
+
+
+def _files(root: Path, folder: str, pattern: str = "*.txt", skip_dirs: Tuple[str, ...] = ()) -> List[Path]:
+	base = root / folder
+	if not base.is_dir():
+		return []
+	result = []
+	for path in sorted(base.rglob(pattern)):
+		parts = path.relative_to(base).parts[:-1]
+		if any(part in skip_dirs for part in parts):
+			continue
+		result.append(path)
+	return result
+
+
+def _parsed(path: Path) -> List[Tuple[Optional[str], object]]:
+	try:
+		return parse_clausewitz(read_text(path))
+	except OSError:
+		return []
+
+
+def _looks_like_idea(block: object) -> bool:
+	return any(name in IDEA_BODY_KEYS for name, _ in _children(block) if name is not None)
+
+
+def _never_visible(block: object) -> bool:
+	"""True for an idea that is never drawn: `visible = { always = no }`, or `allowed = { always = no }` (hidden carriers)."""
+	for name, value in _children(block):
+		if name in ("visible", "allowed") and isinstance(value, list) and _has_pair(value, "always", "no"):
+			return True
+	return False
+
+
+def _has_pair(block: object, key: str, value_text: str) -> bool:
+	return any(name == key and value == value_text for name, value in _children(block))
+
+
+def _walk_ideas(block: object, group: Optional[str], depth: int, out: list) -> None:
+	for key, sub in _sub_blocks(block):
+		if _looks_like_idea(sub):
+			out.append((key, sub, group))
+		elif depth < 2:
+			_walk_ideas(sub, key if group is None else group, depth + 1, out)
+
+
+def _walk_with_icon(block: object, depth: int, out: list) -> None:
+	for key, sub in _sub_blocks(block):
+		if _scalar(sub, "icon") is not None:
+			out.append((key, sub))
+		elif depth < 2:
+			_walk_with_icon(sub, depth + 1, out)
+
+
+def expect_ideas(root: Path) -> List[Expectation]:
+	rows: List[Expectation] = []
+	for path in _files(root, "common/ideas"):
+		for key, value in _parsed(path):
+			if key != "ideas" or not isinstance(value, list):
+				continue
+			found: list = []
+			_walk_ideas(value, None, 0, found)
+			for idea_id, sub, group in found:
+				picture = _scalar(sub, "picture")
+				owner = f"{idea_id} ({group or 'ungrouped'})"
+				if picture is not None:
+					expected = picture if picture.startswith("GFX_") else f"GFX_idea_{picture}"
+					rows.append(_row("idea_picture", "sprite", expected, path, root, owner))
+				elif group not in HIDDEN_IDEA_GROUPS and not _never_visible(sub):
+					rows.append(_row("idea_default", "sprite", f"GFX_idea_{idea_id}", path, root, owner))
+	return rows
+
+
+def expect_decisions(root: Path) -> List[Expectation]:
+	rows: List[Expectation] = []
+	for path in _files(root, "common/decisions", skip_dirs=("categories",)):
+		found: list = []
+		_walk_with_icon(_parsed(path), 0, found)
+		for decision_id, sub in found:
+			icon = _scalar(sub, "icon")
+			expected = icon if icon.startswith("GFX_") else f"GFX_decision_{icon}"
+			rows.append(_row("decision_icon", "sprite", expected, path, root, decision_id))
+	return rows
+
+
+def expect_decision_categories(root: Path) -> List[Expectation]:
+	rows: List[Expectation] = []
+	for path in _files(root, "common/decisions/categories"):
+		for key, sub in _sub_blocks(_parsed_block(path)):
+			picture = _scalar(sub, "picture") or _scalar(sub, "icon")
+			if picture is not None:
+				expected = picture if picture.startswith("GFX_") else f"GFX_decision_category_{picture}"
+				rows.append(_row("category_picture", "sprite", expected, path, root, key))
+	return rows
+
+
+def _parsed_block(path: Path) -> list:
+	return _parsed(path)
+
+
+def expect_focus_shine(root: Path) -> List[Expectation]:
+	rows: List[Expectation] = []
+	for path in _files(root, "common/national_focus"):
+		found: list = []
+		_walk_focus(_parsed(path), 0, found)
+		for focus_id, icon in found:
+			if icon.startswith("GFX_"):
+				rows.append(_row("focus_shine", "sprite", f"{icon}_shine", path, root, focus_id))
+	return rows
+
+
+def _walk_focus(block: object, depth: int, out: list) -> None:
+	for key, sub in _sub_blocks(block):
+		focus_id = _scalar(sub, "id")
+		icon = _scalar(sub, "icon")
+		if focus_id is not None and icon is not None:
+			out.append((focus_id, icon))
+		elif depth < 3:
+			_walk_focus(sub, depth + 1, out)
+
+
+def expect_subunit_icons(root: Path) -> List[Expectation]:
+	rows: List[Expectation] = []
+	for path in _files(root, "common/units"):
+		for key, value in _parsed(path):
+			if key != "sub_units" or not isinstance(value, list):
+				continue
+			for unit_id, sub in _sub_blocks(value):
+				sprite = _scalar(sub, "sprite")
+				if sprite is not None:
+					rows.append(_row("subunit_icon", "sprite", f"GFX_unit_{sprite}_icon_medium", path, root, unit_id))
+	return rows
+
+
+def expect_text_icons(root: Path) -> List[Expectation]:
+	rows: List[Expectation] = []
+	seen: Set[str] = set()
+	for path in _files(root, "localisation", "*.yml"):
+		try:
+			text = read_text(path)
+		except OSError:
+			continue
+		for match in TEXT_ICON.finditer(text):
+			name = match.group(1)
+			if name in seen:
+				continue
+			seen.add(name)
+			expected = name if name.startswith("GFX_") else f"GFX_{name}"
+			rows.append(_row("texticon", "sprite", expected, path, root, f"£{name}"))
+	return rows
+
+
+def _history_tags(root: Path) -> Set[str]:
+	"""Tags that own a history/countries file. Placeholder tags in country_tags have no flag."""
+	tags: Set[str] = set()
+	base = root / "history" / "countries"
+	if not base.is_dir():
+		return tags
+	for path in base.glob("*.txt"):
+		match = re.match(r"^([A-Z][A-Z0-9_]*)[ -]", path.name)
+		if match:
+			tags.add(match.group(1))
+	return tags
+
+
+def expect_flags(root: Path) -> List[Expectation]:
+	rows: List[Expectation] = []
+	tags: Dict[str, Path] = {}
+	real_tags = _history_tags(root)
+	for path in _files(root, "common/country_tags"):
+		for key, value in _parsed(path):
+			if key and isinstance(value, str) and UPPER_KEY.match(key) and value.startswith("countries/"):
+				if key in real_tags:
+					tags.setdefault(key, path)
+	# Vanilla ships ideology-suffixed flags (TAG_<ideology>.tga) for most real
+	# tags and omits the bare TAG.tga, so a real tag resolves when any of its
+	# base or ideology flag files exists in the same folder.
+	for tag, path in sorted(tags.items()):
+		rows.append(_row("flag_any", "prefix", f"gfx/flags/{tag}", path, root, tag))
+		rows.append(_row("flag_medium", "prefix", f"gfx/flags/medium/{tag}", path, root, tag))
+		rows.append(_row("flag_small", "prefix", f"gfx/flags/small/{tag}", path, root, tag))
+	return rows
+
+
+def expect_cosmetic_flags(root: Path) -> List[Expectation]:
+	"""Cosmetic tag keys in common/countries/*cosmetic*; resolved like the base flags."""
+	rows: List[Expectation] = []
+	for path in _files(root, "common/countries"):
+		if "cosmetic" not in path.name:
+			continue
+		for key, sub in _sub_blocks(_parsed_block(path)):
+			if UPPER_KEY.match(key):
+				rows.append(_row("flag_cosmetic", "prefix", f"gfx/flags/{key}", path, root, key))
+	return rows
+
+
+def expect_achievements(root: Path) -> List[Expectation]:
+	rows: List[Expectation] = []
+	for path in _files(root, "common/achievements"):
+		for key, sub in _sub_blocks(_parsed_block(path)):
+			if not re.match(r"^[0-9A-Za-z_]+$", key) or not (_has_key(sub, "possible") or _has_key(sub, "happened")):
+				continue
+			rows.append(_row("achievement_base", "file", f"gfx/achievements/{key}.dds", path, root, key))
+			rows.append(_row("achievement_grey", "file", f"gfx/achievements/{key}_grey.dds", path, root, key))
+			rows.append(_row("achievement_not_eligible", "file", f"gfx/achievements/{key}_not_eligible.dds", path, root, key))
+	return rows
+
+
+def expect_portrait_textures(root: Path) -> List[Expectation]:
+	rows: List[Expectation] = []
+	for path in _files(root, "common/characters"):
+		for portraits in _find_blocks(_parsed(path), "portraits"):
+			for value in _quoted_values(portraits):
+				if PORTRAIT_FILE.search(value):
+					rows.append(_row("portrait_texture", "asset", value, path, root, value))
+	return rows
+
+
+def _quoted_values(block: object) -> List[str]:
+	values: List[str] = []
+	for _, value in _children(block):
+		if isinstance(value, str):
+			values.append(value)
+		elif isinstance(value, list):
+			values.extend(_quoted_values(value))
+	return values
+
+
+def expect_bare_event_pictures(root: Path) -> List[Dict[str, str]]:
+	rows: List[Dict[str, str]] = []
+	for path in _files(root, "events", skip_dirs=()):
+		text = read_text(path)
+		for match in BARE_EVENT_PICTURE.finditer(text):
+			if not match.group(1).startswith("GFX_"):
+				rows.append({"family": "event_bare_picture", "file": _rel(root, path), "name": match.group(1)})
+	return rows
+
+
+def _row(family: str, kind: str, expected: str, path: Path, root: Path, owner: str) -> Expectation:
+	return {"family": family, "kind": kind, "expected": expected, "file": _rel(root, path), "owner": owner}
+
+
+EXTRACTORS = (
+	expect_ideas,
+	expect_decisions,
+	expect_decision_categories,
+	expect_focus_shine,
+	expect_subunit_icons,
+	expect_text_icons,
+	expect_flags,
+	expect_cosmetic_flags,
+	expect_achievements,
+	expect_portrait_textures,
+)
+
+
+def collect_expectations(root: Path) -> List[Expectation]:
+	rows: List[Expectation] = []
+	for extractor in EXTRACTORS:
+		rows.extend(extractor(root))
+	return rows
+
+
+def expectation_resolves(row: Expectation, sprites: Set[str], roots: Tuple[Path, ...]) -> bool:
+	"""Return True when a sprite name or file expectation resolves."""
+	expected = str(row["expected"])
+	if row["kind"] == "sprite":
+		return expected in sprites
+	if row["kind"] == "asset":
+		return resolve_asset(expected)
+	if row["kind"] == "prefix":
+		return any(flag_prefix_exists(root, expected) for root in roots)
+	return any((root / expected).is_file() for root in roots)
+
+
+def flag_prefix_exists(root: Path, prefix: str) -> bool:
+	"""True when `<prefix>.tga` or `<prefix>_<suffix>.tga` exists under root."""
+	folder, _, stem = prefix.rpartition("/")
+	base = root / folder
+	if not base.is_dir():
+		return False
+	for path in base.glob(f"{stem}*.tga"):
+		if path.name == f"{stem}.tga" or path.name.startswith(f"{stem}_"):
+			return True
+	return False
+
+
+def run_calibration() -> int:
+	"""Measure every implicit rule against the installed vanilla tree only."""
+	vanilla_sprites = set(collect_registered(VANILLA_ROOT, set()))
+	rows = collect_expectations(VANILLA_ROOT)
+	tally: Dict[str, Counter] = defaultdict(Counter)
+	samples: Dict[str, List[str]] = defaultdict(list)
+	for row in rows:
+		ok = expectation_resolves(row, vanilla_sprites, (VANILLA_ROOT,))
+		tally[str(row["family"])]["checked"] += 1
+		if ok:
+			tally[str(row["family"])]["resolved"] += 1
+		elif len(samples[str(row["family"])]) < 6:
+			samples[str(row["family"])].append(f"{row['expected']}  <- {row['file']} ({row['owner']})")
+	print("Vanilla calibration of implicit rules (same extractors, vanilla root only)")
+	for family in sorted(tally):
+		counts = tally[family]
+		print(f"{family:24s} checked {counts['checked']:6d}  resolved {counts['resolved']:6d}  unresolved {counts['checked'] - counts['resolved']:6d}")
+		for sample in samples.get(family, []):
+			print(f"    e.g. {sample}")
+	return 0
+
+
+def audit_implicit(findings: Findings, sprites: Set[str]) -> None:
+	"""Check implicit engine lookups against the mod and vanilla registries."""
+	roots = (REPO_ROOT, VANILLA_ROOT)
+	for row in collect_expectations(REPO_ROOT):
+		family = str(row["family"])
+		findings.implicit_checked[family] += 1
+		if family == "flag_cosmetic" and not expectation_resolves(row, sprites, roots):
+			# Vanilla ships cosmetic tags that its own scripts set without a flag file,
+			# so a missing cosmetic flag is reported as a fallback, not as missing.
+			findings.implicit_unverified.append(
+				{"family": "flag_cosmetic_fallback", "file": str(row["file"]), "name": str(row["expected"])}
+			)
+			continue
+		if expectation_resolves(row, sprites, roots):
+			if row["kind"] == "sprite":
+				findings.implicit_ok_names.add(str(row["expected"]))
+			continue
+		findings.implicit_missing.append({key: str(value) for key, value in row.items()})
+	for row in expect_bare_event_pictures(REPO_ROOT):
+		findings.implicit_unverified.append(row)
+
+
 def main() -> int:
 	parser = argparse.ArgumentParser(description=__doc__)
 	parser.add_argument("--json", type=Path, help="also write the findings as JSON")
+	parser.add_argument(
+		"--calibrate-vanilla",
+		action="store_true",
+		help="measure each implicit lookup rule against the vanilla install and exit",
+	)
 	arguments = parser.parse_args()
+	if arguments.calibrate_vanilla:
+		return run_calibration()
 
 	findings = Findings()
 
@@ -280,22 +787,41 @@ def main() -> int:
 	references, defined_in = collect_references()
 	print(f"  {len(references)} distinct GFX names referenced", file=sys.stderr)
 
+	# Literal names that end in `_` are prefixes that a script builds at runtime
+	# (for example `GFX_decision_<x>_`), so they are dynamic rather than missing.
+	# A name seen only in Markdown is a documentation placeholder.
 	for name, sources in sorted(references.items()):
 		if name in mod_registered or name in vanilla_registered:
 			continue
-		findings.unresolved_refs.append(
-			{"name": name, "sources": sorted(sources)[:4], "count": len(sources)}
-		)
+		row = {"name": name, "sources": sorted(sources)[:4], "count": len(sources)}
+		if all(source.endswith(".md") for source in sources):
+			findings.documentation_refs.append(row)
+		elif name.endswith("_"):
+			findings.dynamic_refs.append(row)
+		else:
+			findings.unresolved_refs.append(row)
 
+	dynamic_prefixes = [row["name"] for row in findings.dynamic_refs]
+	print("checking implicit engine lookups ...", file=sys.stderr)
+	audit_implicit(findings, set(mod_registered) | set(vanilla_registered))
+	print(f"  {sum(findings.implicit_checked.values())} implicit lookups checked", file=sys.stderr)
+
+	suppressed_by_implicit = 0
+	dynamic_dead: List[Dict[str, object]] = []
 	for name, definitions in sorted(mod_registered.items()):
 		# Discount the file that defines the sprite: its own `name = "GFX_..."`
 		# line is not a use of the sprite.
 		external = references.get(name, set()) - set(definitions)
 		if external:
 			continue
-		findings.dead_definitions.append(
-			{"name": name, "definitions": definitions[:3], "count": len(definitions)}
-		)
+		if name in findings.implicit_ok_names:
+			suppressed_by_implicit += 1
+			continue
+		row = {"name": name, "definitions": definitions[:3], "count": len(definitions)}
+		if any(name.startswith(prefix) for prefix in dynamic_prefixes):
+			dynamic_dead.append(row)
+			continue
+		findings.dead_definitions.append(row)
 
 	print("indexing asset filenames ...", file=sys.stderr)
 	index = build_asset_index()
@@ -303,7 +829,9 @@ def main() -> int:
 
 	audit_definitions(findings)
 	audit_entities(findings)
-	audit_referenced_vanilla_definitions(findings, set(references))
+	# A vanilla sprite that the mod re-registers is overridden by the mod's own
+	# definition, so its broken vanilla texture no longer reaches the game.
+	audit_referenced_vanilla_definitions(findings, set(references) - set(mod_registered))
 
 	print()
 	print("=" * 78)
@@ -315,6 +843,17 @@ def main() -> int:
 	print(f"dead registrations       : {len(findings.dead_definitions)}")
 	print(f"missing files on disk    : {len(findings.missing_files)}")
 	print(f"missing vanilla files    : {len(findings.missing_vanilla_files)}")
+	print(f"implicit lookups missing : {len(findings.implicit_missing)}")
+	print(f"dynamic name prefixes    : {len(findings.dynamic_refs)} (not counted)")
+	print(f"documentation-only names : {len(findings.documentation_refs)} (not counted)")
+	print(f"dead after implicit use  : suppressed {suppressed_by_implicit}, dynamic-prefix candidates {len(dynamic_dead)}")
+
+	print()
+	print("implicit lookups by family (checked / missing):")
+	families = sorted(set(findings.implicit_checked) | {str(r["family"]) for r in findings.implicit_missing})
+	missing_by_family = Counter(str(r["family"]) for r in findings.implicit_missing)
+	for family in families:
+		print(f"  {family:24s} {findings.implicit_checked[family]:6d} / {missing_by_family[family]:5d}")
 
 	def section(title: str, rows: List[str], limit: int = 40) -> None:
 		print()
@@ -324,6 +863,24 @@ def main() -> int:
 		if len(rows) > limit:
 			print(f"  ... {len(rows) - limit} more")
 
+	section(
+		"implicit engine lookups missing in mod and vanilla",
+		[f"[{r['family']}] {r['expected']}  <- {r['file']} ({r['owner']})" for r in findings.implicit_missing],
+		limit=400,
+	)
+	section(
+		"unverified bare event pictures and vanilla-precedent cosmetic flag fallbacks (not counted)",
+		[f"{r['name']}  <- {r['file']}" for r in findings.implicit_unverified],
+		limit=20,
+	)
+	section(
+		"dynamic name prefixes (not counted)",
+		[f"{r['name']}  ({r['count']} sites)  {', '.join(r['sources'][:2])}" for r in findings.dynamic_refs],
+	)
+	section(
+		"documentation-only names (not counted)",
+		[f"{r['name']}  ({r['count']} sites)  {', '.join(r['sources'][:2])}" for r in findings.documentation_refs],
+	)
 	section(
 		"unresolved GFX references",
 		[f"{r['name']}  ({r['count']} sites)  {', '.join(r['sources'][:2])}" for r in findings.unresolved_refs],
@@ -354,6 +911,12 @@ def main() -> int:
 			"dead_definitions": findings.dead_definitions,
 			"missing_files": findings.missing_files,
 			"missing_vanilla_files": findings.missing_vanilla_files,
+			"implicit_checked": dict(findings.implicit_checked),
+			"implicit_missing": findings.implicit_missing,
+			"implicit_unverified": findings.implicit_unverified,
+			"dynamic_refs": findings.dynamic_refs,
+			"documentation_refs": findings.documentation_refs,
+			"dead_suppressed_by_implicit": suppressed_by_implicit,
 		}
 		arguments.json.write_text(
 			json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8"
