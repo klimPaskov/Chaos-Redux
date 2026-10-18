@@ -556,6 +556,13 @@ A charter vote chooses sanctions, guarantees, volunteers, war, or negotiated set
 
 League failure creates a remembered event and alters later congress attempts. It does not erase every bilateral relationship.
 
+### Patron capture (accepted design, basis: user approval 2026-10-18)
+
+A League is captured when its Patron Capture value first reaches 60 during a formal, durable, or reformed League phase.
+The capture is a latched failure cause that the League crisis entry reads next to cohesion collapse, failed rescue, and member war.
+Staying above 60 does not latch a second time, and reform, dissolution, and restart clear the latch.
+A successful reform returns a Patron Capture value at or above 60 to 30, the warning level at which the secretariat payments incident opens.
+
 ## League faction mechanics
 
 The formal league can use a faction when military cooperation becomes real. Its faction behavior must follow charter rules.

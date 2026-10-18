@@ -154,3 +154,12 @@ It sets `independence_wave_recognition_blockade_active` and runs the country ref
 The flag is cleared when the country reaches treaty-backed recognition (`independence_wave_refresh_recognition_idea`), when the former host's outcome becomes recognized separation (`independence_wave_set_host_outcome`), and when the origin ends (`independence_wave_remove_origin_ideas` and the generation reset).
 DM-11 and DM-16 weigh a blockaded country or blockaded target up for the AI.
 No world iteration is used.
+
+## League patron capture latch
+
+`independence_wave_change_league_values` sets the global `independence_wave_league_patron_captured` latch when the League's patron capture meter first reaches `independence_wave_league.patron_captured` (60) during a formal, durable, or reformed League phase.
+The latch compares the meter before and after the change, so a meter that stays above the level does not latch again.
+`independence_wave_enter_league_crisis` reads the latch next to the cohesion, confidence, failed-rescue, member-war, and rival-bloc causes.
+`independence_wave_reform_league` clears it and returns a meter at or above the captured level to `independence_wave_league.reform_patron_capture` (30, the statehood-incident warning level).
+`independence_wave_dissolve_league_to_network` and `independence_wave_restart_informal_network` clear it with the other failure latches.
+No world iteration is used.

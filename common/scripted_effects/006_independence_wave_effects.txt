@@ -2921,6 +2921,13 @@ independence_wave_reform_league = {
 		set_global_flag = independence_wave_league_reformed
 		clr_global_flag = independence_wave_league_member_war
 		clr_global_flag = independence_wave_league_failed_rescue
+		# The reform ends the outside power's hold, so the meter returns to the
+		# warning level when it stood at or above the captured level.
+		clr_global_flag = independence_wave_league_patron_captured
+		if = {
+			limit = { check_variable = { var = global.independence_wave_league_patron_capture value = constant:independence_wave_league.patron_captured compare = greater_than_or_equals } }
+			set_variable = { global.independence_wave_league_patron_capture = constant:independence_wave_league.reform_patron_capture }
+		}
 		independence_wave_achievement_refresh_cross_regional_clock = yes
 	}
 }
@@ -2987,6 +2994,7 @@ independence_wave_dissolve_league_to_network = {
 		clr_global_flag = independence_wave_radical_charter_active
 		clr_global_flag = independence_wave_league_failed_rescue
 		clr_global_flag = independence_wave_league_member_war
+		clr_global_flag = independence_wave_league_patron_captured
 		if = {
 			limit = { has_event_target = independence_wave_league_leader_target }
 			event_target:independence_wave_league_leader_target = {
@@ -3046,6 +3054,7 @@ independence_wave_restart_informal_network = {
 		clr_global_flag = independence_wave_radical_charter_active
 		clr_global_flag = independence_wave_league_failed_rescue
 		clr_global_flag = independence_wave_league_member_war
+		clr_global_flag = independence_wave_league_patron_captured
 		if = {
 			limit = { has_event_target = independence_wave_league_leader_target }
 			event_target:independence_wave_league_leader_target = {
@@ -3153,12 +3162,28 @@ independence_wave_change_league_values = {
 				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
 			}
 		}
+		set_temp_variable = { independence_wave_league_patron_capture_before = global.independence_wave_league_patron_capture }
 		add_to_variable = { global.independence_wave_league_cohesion = independence_wave_league_cohesion_delta }
 		add_to_variable = { global.independence_wave_league_common_cause = independence_wave_league_common_cause_delta }
 		add_to_variable = { global.independence_wave_league_patron_capture = independence_wave_league_patron_capture_delta }
 		add_to_variable = { global.independence_wave_league_shared_reserve = independence_wave_league_shared_reserve_delta }
 		add_to_variable = { global.independence_wave_league_member_confidence = independence_wave_league_member_confidence_delta }
 		independence_wave_clamp_league_values = yes
+		# Patron capture is the moment the meter first reaches the captured level
+		# in a live formal league. Staying above it does not latch again, and the
+		# latch is cleared by reform, dissolution, and restart.
+		if = {
+			limit = {
+				OR = {
+					check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
+					check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.durable_league }
+					check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
+				}
+				check_variable = { var = independence_wave_league_patron_capture_before value = constant:independence_wave_league.patron_captured compare = less_than }
+				check_variable = { var = global.independence_wave_league_patron_capture value = constant:independence_wave_league.patron_captured compare = greater_than_or_equals }
+			}
+			set_global_flag = independence_wave_league_patron_captured
+		}
 		independence_wave_achievement_refresh_cross_regional_clock = yes
 		independence_wave_evaluate_danger_milestone = yes
 	}
