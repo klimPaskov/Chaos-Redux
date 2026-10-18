@@ -20,6 +20,14 @@ The refresh effect is `brilliant_scientist_refresh_directorate_idea_lifecycle`. 
 
 The Kruger State can independently carry `brilliant_scientist_world_threat_project_state` while its shared world-threat source is active. The idea is removed when the source clears or the state enters defeat aftermath.
 
+## Kruger State opening presentation
+
+`brilliant_scientist_apply_starting_country_ideas` retains the four opening liabilities and the causal Scientific Exodus liability for enclave or rebellion, then calls the existing `brilliant_scientist_focus_hide_original_lifecycle_mechanics` and `brilliant_scientist_focus_refresh_visible_lifecycle_summary` presentation helpers.
+Administration, portfolio, and scientific-population modifier values move to their exact existing hidden counterparts, while command and supply remain visible beside one modifier-free summary.
+This leaves three visible package spirits at setup without granting the first focus’s interrupted-project unlock, snapshot, or any reward.
+The focus audit and later lifecycle transitions retain their existing receipts and modifier ownership.
+The summary uses its existing `GFX_idea_brilliant_scientist_documented_project_portfolio` registration in `interface/016_brilliant_scientist_idea_icons.gfx`, with the existing documented-project-portfolio artwork.
+
 ## Tuning
 
 `common/script_constants/016_brilliant_scientist_idea_constants.txt` owns lifecycle thresholds and modifier values. These values are separate from the general Directorate tuning tables so idea balance can be reviewed without changing project costs, evolution timing, or containment scores.
