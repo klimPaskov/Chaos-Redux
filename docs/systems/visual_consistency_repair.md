@@ -163,7 +163,7 @@ The missing Event 100 and news 79-80 localisation keys are now present in `local
 
 The Greater Hui state-puzzle localisation keys now match the runtime category identifiers in `localisation/english/chaosx_formable_state_puzzles_l_english.yml`.
 
-The duplicate scripted-localisation name in `common/scripted_localisation/fallout_consolidated_scripted_localisation.txt` now has a distinct `FalloutBridgeThatMovedEventLogPayload` identifier.
+The duplicate scripted-localisation name in `common/scripted_localisation/fallout_consolidated_scripted_localisation.txt` now has a distinct `GetFalloutEvent464EventLogDetail` identifier.
 
 The duplicate active `GFX_terrain_water_shallow_sea_day` definition was removed from `interface/countrystateview.gfx`.
 
