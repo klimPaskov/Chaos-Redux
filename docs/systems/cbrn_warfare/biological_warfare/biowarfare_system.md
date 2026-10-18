@@ -136,6 +136,11 @@ Biological weapon use carries major diplomatic costs.
 
 Repeated use drives increasing international backlash and can reshape your strategic relationships, especially with ideologically opposed blocs.
 
+The first publicly confirmed Smallpox use by a country fires the global news event `chaosx_bioweapon.207`.
+`bio_lifecycle_release_confirmed_condemnation_if_due` and `bio_doomsday_record_current_agent_history` raise it just before they set `used_smallpox_weapon`, so each country announces it once.
+The first Smallpox outbreak detected in a country's controlled state fires `chaosx_bioweapon.208` for that controller.
+`bio_lifecycle_mark_current_agent_detected` raises it and sets `smallpox_victim`, so each controller receives it once.
+
 ## AI Behavior
 
 AI chooses research, production, stockpile safety, countermeasures, and delivery according to country program, doctrine route, war state, retaliation status, medical readiness, likely friendly spread, sanction exposure, and target evidence.

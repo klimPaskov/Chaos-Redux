@@ -211,6 +211,9 @@ Courses after the first use weaker agent-specific growth and death multipliers, 
 The historical Smallpox program consumes 150 Political Power and takes 180 days to begin, with its original live-threat visibility and 30-day withdrawal.
 It reserves no Medical Capacity and adds no equipment payment.
 Its national idea supplies the existing Consumer Goods and Political Power tradeoff, while the shared lifecycle applies vaccination to Smallpox growth, spread, and deaths.
+The historical state-penalty reduction applies as well.
+`bio_lifecycle_prepare_legacy_antibiotic_protection` sets `smallpox_vaccination_protection_active` on a detected Smallpox state while its controller holds the program idea, with an effectiveness of controlled civilian factories times `smallpox_vaccination.weekly_per_10civ`, limited to `smallpox_vaccination.weekly_cap`.
+It clears the flag and effectiveness on the next refresh after the program ends, and last-episode lifecycle cleanup clears them as well.
 
 ## Biological special projects in the ordinary outbreak lifecycle
 

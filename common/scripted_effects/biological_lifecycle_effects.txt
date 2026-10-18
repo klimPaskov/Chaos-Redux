@@ -1274,6 +1274,16 @@ bio_lifecycle_mark_current_agent_detected = {
 		}
 		BIO_AGENT = "[?bio_active_agent|.0]"
 	}
+	if = {
+		limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } }
+		CONTROLLER = {
+			if = {
+				limit = { NOT = { has_country_flag = smallpox_victim } }
+				set_country_flag = smallpox_victim
+				country_event = { id = chaosx_bioweapon.208 }
+			}
+		}
+	}
 	bio_lifecycle_load_current_agent_record = yes
 	bio_lifecycle_update_current_agent_attribution = yes
 	bio_lifecycle_refresh_state_modifiers = yes
@@ -1561,6 +1571,10 @@ bio_lifecycle_release_confirmed_condemnation_if_due = {
 						}
 						else_if = {
 							limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } }
+							if = {
+								limit = { NOT = { has_country_flag = used_smallpox_weapon } }
+								news_event = { id = chaosx_bioweapon.207 }
+							}
 							set_country_flag = used_smallpox_weapon
 						}
 						cbrn_achievement_record_biological_confirmation = yes
@@ -2323,6 +2337,29 @@ bio_lifecycle_prepare_legacy_antibiotic_protection = {
 		else = {
 			clr_state_flag = tularemia_antibiotics_protection_active
 			clear_variable = tularemia_antibiotics_protection_effectiveness
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } }
+		if = {
+			limit = { CONTROLLER = { has_idea = smallpox_vaccination_program_idea } }
+			set_state_flag = smallpox_vaccination_protection_active
+			CONTROLLER = {
+				if = {
+					limit = { num_of_civilian_factories > constant:bio_lifecycle_math.zero }
+					set_temp_variable = { bio_legacy_antibiotic_factory_bonus = num_of_civilian_factories }
+					multiply_temp_variable = { bio_legacy_antibiotic_factory_bonus = constant:smallpox_vaccination.weekly_per_10civ }
+					if = {
+						limit = { check_variable = { var = bio_legacy_antibiotic_factory_bonus value = constant:smallpox_vaccination.weekly_cap compare = greater_than } }
+						set_temp_variable = { bio_legacy_antibiotic_factory_bonus = constant:smallpox_vaccination.weekly_cap }
+					}
+				}
+			}
+			set_variable = { smallpox_vaccination_protection_effectiveness = bio_legacy_antibiotic_factory_bonus }
+		}
+		else = {
+			clr_state_flag = smallpox_vaccination_protection_active
+			clear_variable = smallpox_vaccination_protection_effectiveness
 		}
 	}
 }
