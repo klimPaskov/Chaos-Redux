@@ -1,5 +1,230 @@
 # Demon model repair — 18 October 2026
 
+## Current third-run result
+
+The winged Event 002 demon's horns and improved arm/wing skinning are installed under the parent's explicit no-regression acceptance rule.
+The final mesh is no worse than the original installed mesh in any of the eight actions, with no action requiring the permitted 0.01-unit regression allowance.
+All eight existing animation binaries, including the accepted move/retreat repairs and the sibling's support attack, remain byte-for-byte unchanged.
+Pan Sappers was not touched in this run.
+The remaining wing stretch is reduced and explicitly accepted by the third-run instruction; this is not a claim that all membrane deformation has disappeared.
+
+For this section, `D` means `docs/assets/002_zombie_outbreak/models_3d/demonic_zombies`.
+The third-run instruction supersedes the earlier refusal to install solely because of residual wing stretching.
+It permits installation when each per-action maximum is no worse than the installed baseline within 0.01 source units and the horns read correctly from the map camera, followed by further deliberate weight improvement.
+
+### Root cause and production changes
+
+The installed skull lacked the two modeled horns shown on its counter.
+The retained candidate already contained the connected skull extrusions and rigid Head binding, inappropriate arm/wing influence corrections, and the closed-shell topology repair described in the historical second-run record.
+The new comparison found that candidate's idle maximum was 0.015931 units worse than the installed baseline, so it was not installed unchanged.
+The worst candidate edge joined source vertices 12737 and 13197 across an abrupt change between proximal and distal wing-strut influences; it also caused the death-frame-18 and training-frame-25 peaks.
+
+In the isolated live Blender Lab session, I manually adjusted the explicit four-bone weights on that two-vertex transition, reviewed death/training/idle extremes, exported and reimported it, and installed the first passing improvement.
+A further deliberate correction to vertex 13197 and the adjacent transition vertex 12701 reduced the remaining death and training peaks; this second export is the final installed mesh.
+The exact normalized assignments, before/after weights, positions and source indices are in `D/evidence/wing_acceptance/manual_seam_weights_1.json` and `manual_seam_weights_2.json`.
+No formula, automatic rig, automatic weight generator, new bone or new keyframe was used.
+The final mesh retains the two short curved dark horns, existing texture palette, original object name `char1.001`, four material streams, and 44-bone names and hierarchy.
+Decoded export topology is one outward-oriented closed shell with 30,988 triangles and no boundary, non-manifold, duplicate or degenerate faces at the documented source tolerances.
+The GFX meshsettings already matched `char1.001` indices 0–3, so its only edit corrects the descriptive triangle-count comment.
+
+### Actual-byte all-frame comparison
+
+Each entry is the maximum of `posed edge length - rest edge length` across every integer frame of the same installed action bytes after native Blender reimport.
+The space is Blender object/source units; the scan includes all imported edge records, including UV/normal seam duplicates, without a weight or length filter, matching the previous `delivered_review` scan.
+Record counts are not presented as unique physical-edge counts, and the same maximum-length metric is used for every column.
+The original installed baseline is mesh `1f22772883c2e1b16ba4ed6c64752602b59048bf19d6592cf3dd87a24386eacc`; the retained candidate export is `fa56843c623801c2c5aee94cea511b26aa90937463966877f4395e213a411ac8`.
+The raw baseline, candidate and final scans retain all 1,038 frame samples, exact action hashes, peak frames and edge positions under `D/evidence/wing_acceptance/`.
+
+| Action | Original installed | Retained candidate | First installed correction | Final installed | Final peak frame |
+|---|---:|---:|---:|---:|---:|
+| idle | 0.252176 | 0.268108 | 0.242861 | 0.237110 | 110 |
+| move | 0.251081 | 0.184444 | 0.184444 | 0.184444 | 140 |
+| attack | 0.245484 | 0.140240 | 0.140240 | 0.140240 | 21 |
+| defend | 0.245648 | 0.190735 | 0.176245 | 0.174981 | 22 |
+| support_attack | 0.389290 | 0.226293 | 0.226293 | 0.226293 | 24 |
+| retreat | 0.226678 | 0.226677 | 0.226677 | 0.226677 | 77 |
+| training | 0.318047 | 0.310719 | 0.275622 | 0.265114 | 25 |
+| death | 0.482646 | 0.376323 | 0.367706 | 0.339229 | 42 |
+
+The final death maximum is about 29.7% below the original installed model and training is about 16.6% lower.
+The first accepted seam correction was installed before the second improvement was attempted, as requested.
+The final correction also does not regress any per-action maximum against that first accepted correction.
+The old retained candidate's idle regression and both subsequent corrections remain recorded rather than being relabeled as passes.
+
+### Runtime installation and files
+
+| Changed file or selected artifact | Final SHA-256 |
+|---|---|
+| `gfx/models/units/chaosx_demonic_zombies/chaosx_demonic_zombies.mesh` | `8a3574639bbc11d556737b968ff379eca048b9c2de52e7c4040b38acd75a5c89` |
+| `gfx/entities/chaosx_demonic_zombies.gfx` | `602416106f27971b4e858621a092678c9f59e0adf2ef90320d49c8cb165653fb` |
+| `docs/assets/002_zombie_outbreak/models_3d/demonic_zombies/job.yaml` | `92adfc56dd8d7c68c14ef54d641a9703032fb9553fc56a05fdd7f80a9047ed9b` |
+| `docs/assets/002_zombie_outbreak/models_3d/demonic_zombies/blender/checkpoints/demonic_horns_wing_seam_v2.blend` | `ebc99f460bbc0cf060ae066cd5879240b986c2fa0a4caf3189d0195d931d3616` |
+| `docs/assets/002_zombie_outbreak/models_3d/demonic_zombies/blender/checkpoints/demonic_horns_wing_seam_v1.blend` | `073bafd811f4b7369583eb77bcc87898cfa780a41c3c1d9c6c0f050b01237ebf` |
+| `docs/assets/002_zombie_outbreak/models_3d/demonic_zombies/export/wing_seam_v2/chaosx_demonic_zombies.mesh` | `8a3574639bbc11d556737b968ff379eca048b9c2de52e7c4040b38acd75a5c89` |
+| `docs/assets/002_zombie_outbreak/models_3d/demonic_zombies/evidence/wing_acceptance/final_reimport_actions_contact_sheet.png` | `9e98a00de7922c512ee2dbd9873a34520fa1e354d8807f84bb83e9536e408557` |
+
+The selected source is `D/export/wing_seam_v2/chaosx_demonic_zombies.mesh`, copied to `gfx/models/units/chaosx_demonic_zombies/chaosx_demonic_zombies.mesh` with source/destination hash equality and an expected-preimage check.
+The first promotion receipt is `D/runtime/wing_seam_v1_install.json`; the final promotion receipt is `D/runtime/wing_seam_v2_install.json`.
+Both record source/destination paths, SHA-256 values, preimage hashes, copy time and actor, and the original preimage is retained under `D/export/wing_acceptance/preimage/`.
+Every retained job artifact and each changed maintained file has a final SHA-256 in `D/evidence/wing_acceptance/final_artifact_hashes.json`, including this handoff; that inventory excludes only its own recursive self-hash.
+No entity state, animation identifier, sound definition, unit definition, gameplay file or texture changed.
+
+### Review evidence and remaining limits
+
+I personally reviewed all eight final action panels from front, side and the approximately 53-degree-down three-quarter map camera, including five ordinary phases per action, training frame 25 and death frames 18, 29, 41, 42 and 46.
+Each phase also has a close map-camera head view showing the horns remain attached to the skull and read as two short horns throughout the action.
+The retained combined evidence is `D/evidence/wing_acceptance/final_reimport_actions_contact_sheet.png`.
+The exact individual render paths and hashes of their source mesh/actions are in `seam_v2_scan.json`; the phase images were consolidated into the contact sheet and removed during cleanup.
+The manually reviewed regional close-ups covered death 18 and 42, training 25 and idle 110 before final export.
+
+All 42 added unique exported positions are rigidly weighted 1.0 to Head, verified against the original mesh in `horn_rigid_binding.json`.
+The final native adapter reimport receipt is `D/evidence/wing_acceptance/reimport_receipt.json`, and the full decoded topology receipt is `D/export/wing_seam_v2/chaosx_demonic_zombies.delivery.json`.
+`runtime_binding_review.json` checks the exported object/stream names against current GFX overrides and preserves the unchanged texture and animation hashes.
+`anim_signs.py` checked all eight current actions into separate scratch outputs: zero negative-dot transitions and byte-identical outputs for every file.
+No animation was reauthored or re-exported, and the earlier gait/vanilla timing and contact evidence applies to those unchanged bytes.
+The fresh scans and renders establish mesh deformation and horn appearance with those actions, not in-game validation or a renewed full action-design audit.
+
+The explicit acceptance limitation is residual wing stretching, with the final death and training maxima listed above.
+No unapproved simplification, missing horn, alternate model, reduced rig, static animation substitute or texture substitution was shipped.
+The current third-run installation and additional improvement are complete under the stated acceptance rule; total elimination of wing stretch is not claimed.
+
+### Workspace, tools and provenance
+
+The kept accepted source checkpoint is `D/blender/checkpoints/demonic_horns_wing_seam_v2.blend`; its immediate predecessor is `D/blender/checkpoints/demonic_horns_wing_seam_v1.blend`.
+Cleanup removed superseded checkpoints, numbered Blender backups, individual preview/phase images and successful adapter logs while retaining provider downloads, references, textures, accepted exports, provenance, manifests, receipts and the final contact sheet.
+`D/evidence/wing_acceptance/workspace_cleanup.json` records exact removed paths, hashes and sizes; 476 superseded files were removed, reducing the root from 972.4 to 696.6 MiB before final metadata.
+Pan's already completed workspace was not modified, following the latest instruction not to touch it.
+
+The only live Lab was the hidden locked Blender 5.2.2 process PID 23640 on port 9883, verified through both the port listener and the live MCP response.
+Adapter 1.11.0, its locked source hashes, the compatibility archive and installed io_pdx_mesh patch hashes matched the lock.
+The owned process was closed at the end and its PID/listener absence recorded in `D/evidence/wing_acceptance/session_closed.json`.
+No other Blender process, game process or game setting was touched.
+The reference MCP routes were absent; the pertinent local Entity modding sections and installed infantry registration/shader were read directly, using the paths and revision evidence retained below.
+The directly read source paths, line spans and current SHA-256 revisions are recorded in `D/evidence/wing_acceptance/current_reference_read.json`.
+The installed documentation directory had no dedicated skeletal meshsettings section; that reference gap is not reported as a passed MCP check.
+
+New provider task IDs: none.
+Meshy generation, rigging, animation, balance and other calls: **0**; credits used: **0**.
+No audio source was downloaded, created, processed or installed; existing sound sources, URLs, authors and licences remain as attributed in the historical audio section below.
+Skills used: `chaos-redux-3d-model-pipeline` with its start gates, Blender/export, unit rebuild and audio/counter references, and `chaos-redux-event-assets` with reference-library/unit-visual guidance.
+No skill was created or updated.
+All changes remain uncommitted for the parent.
+
+## Historical second-run record
+
+The following records the second run's result at that time; the third-run result above is authoritative for current acceptance and installation.
+
+
+
+**The complete demon repair remains incomplete.**
+Pan Sappers' topology repair is installed and reviewed from its exported bytes.
+The winged demon's two horns and regional arm/wing corrections exist in a reviewed, uninstalled candidate; residual wing deformation prevents accepting or installing that candidate.
+All three previously accepted gait files remain byte-for-byte unchanged, as does the sibling zombie job's demonic support-attack file.
+No Meshy operation, balance call, paid task, audio production, game launch or Git commit occurred.
+No in-game validation is claimed.
+
+### Accepted decisions and remaining production work
+
+The continuation request identifies the winged Event 002 demonic zombie and explicitly requires two short, slightly curved, dark bone-coloured horns matching `gfx/interface/counters/divisions_large/unit_demonic_zombies_icon.dds`; no hair is required.
+The same request accepts Pan's current two-horned goat head and fur.
+These decisions supersede the two pending head questions in the historical first-run record below.
+No further design answer or permission is needed.
+
+The demon candidate extrudes the two skull patches into connected, closed horn geometry, using the existing dark skull palette and rigid `Head` weights for the added vertices.
+Manual work also corrects inappropriate arm/wing influences, reunites exactly coincident UV/material seam vertices without moving their positions or changing loop UVs, smooths the reviewed joint regions with native Blender weight-paint operators, and removes the tiny four-triangle extra shell.
+The candidate export has one outward-facing closed shell, 30,988 triangles, no boundary/non-manifold edges, the original `char1.001` object and four material streams, and the original 44-bone names/hierarchy.
+Those topology results do **not** establish deformation acceptance.
+
+The actual-byte all-frame scan of the retained candidate still finds maximum added edge length of `0.376323` source units in death frame 18 and `0.310719` in training frame 25.
+The corresponding native review includes death frames 18, 29 and 46, as well as the five ordinary phases for every action.
+Later narrow influence and broader rib/panel trials displaced or worsened the discontinuities; the last rib trial reached about `0.720` added units in death frame 46 and was rejected.
+Those rejected checkpoints were removed during cleanup; their explicit before/after weight receipts and measured findings remain in `D/evidence/horns_wings/`.
+The retained candidate needs further deliberate wing skinning and, if required, action cleanup with complete actual-byte deformation review before it may replace the runtime mesh.
+It is not an accepted fallback, and the horns are **not yet present in the installed demon mesh**.
+
+For this continuation, `D` means `docs/assets/002_zombie_outbreak/models_3d/demonic_zombies` and `P` means `docs/assets/012_africa/models_3d/pan_sappers`.
+
+### Installed Pan repair and exact runtime copy
+
+Pan's source mesh had 125 boundary edges and 122 non-manifold edges.
+Marked head, equipment and torso views identified 231 extra attached faces, mostly internal flaps.
+Removing those exposed thirteen four-face pinches and one small remaining opening.
+The live session replaced the pinched local vertex neighborhoods, inspected their closed perimeters, and completed the surface with existing boundary vertices plus five manually placed, explicitly weighted patch-center vertices.
+No automated rig, weight-generation formula, new skeleton or new animation was used.
+
+The final decoded export passes topology and outward-winding checks as one closed 30,730-triangle shell.
+Front/side/rear/map comparisons preserve the silhouette, fur, horns, clothing, equipment and textures.
+The current GFX `char1.001` indices 0–3 match the decoded streams exactly; only its descriptive triangle-count comment changed.
+All 24 bone names, indices and parents are preserved; native reimport/export changes the float32 inverse-bind matrices by at most `0.0000126362` source units.
+All eight current actions were reimported with this mesh and reviewed in five phases from front, side and the approximately 53-degree-down map camera.
+Every integer frame was measured, and the material comparison uses the same final DDS bytes with both native-importer and engine-channel interpretations.
+These checks close this task's topology repair, not unrelated Pan equipment or action-design work in the WP1 report.
+
+| Source | Runtime destination | Source and destination SHA-256 |
+|---|---|---|
+| `P/export/topology_repair/chaosx_pan_sappers.mesh` | `gfx/models/units/012_africa_pan_sappers/chaosx_pan_sappers.mesh` | `5ca47fdc7777f701fcc129bc77fc4752072945429b4587f2207215d359f06852` |
+
+The preimage was `9f5b97f8702e1ab4c90f41624af453e5fd86c75276aed4fcb82bb95103053e24` and is retained in `P/export/topology_repair/preimage/`.
+`P/runtime/topology_repair_install.json` records the checked preimage, source/destination hashes, copy time and actor.
+The final `gfx/entities/chaosx_pan_sappers.gfx` hash is `0ede754b35bcb72726919b1db4b56a21eef86ff87d9c3df54e137b9aff256e0b`.
+No demon runtime file, entity state, animation registry, sound definition, unit definition or texture was modified in this continuation.
+
+### Retained evidence, checkpoints and cleanup
+
+- Pan accepted checkpoint: `P/blender/checkpoints/pan_topology_accepted.blend`; production predecessor: `P/blender/checkpoints/pan_topology_final.blend`.
+- Demon unaccepted review checkpoint: `D/blender/checkpoints/demonic_horns_wings_reviewed_candidate.blend`; production predecessor: `D/blender/checkpoints/demonic_horns_wings_final.blend`.
+- Pan accepted contact sheet: `P/evidence/final_topology/final_reimport_actions_contact_sheet.png`.
+- Demon candidate contact sheet, explicitly marked uninstalled/incomplete: `D/evidence/final_horns_wings/final_reimport_actions_contact_sheet.png`.
+- Each sheet's paired `delivered_review.json` records the exact mesh/action hashes, phase paths and all-frame measurements.
+- The final export topology receipts are `P/export/topology_repair/chaosx_pan_sappers.delivery.json` and `D/export/horns_wings_final/chaosx_demonic_zombies.delivery.json`.
+- The complete retained-file SHA-256 inventory and deleted-artifact inventory are linked by `D/evidence/horns_wings/continuation_artifacts.json`.
+
+I personally reviewed all sixteen action panels, both horn detail comparisons, Pan's before/after topology views, the marked repair regions and the final Pan material comparison.
+Individual phase renders were consolidated into the retained contact sheets and then removed.
+Cleanup retained only the two checkpoints named above in each job, provider downloads, references, texture/export sets, sources, manifests and receipts.
+It removed 3,118 superseded working/preview/log artifacts from D and 1,573 from P, reducing the roots from 2,307.4 to 654.6 MiB and 2,236.7 to 1,154.2 MiB respectively before the final metadata inventory.
+The historical checkpoint and individual-preview paths below are historical evidence references and may have been removed by this explicitly requested cleanup.
+The accepted gait export binaries and their receipts remain available.
+
+The hidden Blender Lab session used only port 9883 and owned PID 40876.
+The executable, adapter source hashes/operation arrays, compatibility archive and installed io_pdx patch hashes matched the existing lock.
+That process was closed and both its PID and port listener were confirmed absent; no other Blender process was touched.
+The session and cleanup receipts are retained under `.tmp/models_1018/demon/` and copied into the continuation evidence inventory.
+
+### Tools, sources and limits
+
+The connected reference MCP routes were absent in this continuation, so the pertinent local Entity modding sections and vanilla infantry registration were read directly using the same paths/citations as the first-run record below.
+The installed documentation directory had no dedicated skeletal-mesh/meshsettings section matching the targeted search.
+The offline wiki and installed shader/infantry source remain the relevant source references; unavailable reference tools are not reported as passed.
+
+The bounded material binder failed first on an outside-job preview image and then, after that path was corrected, on the existing BC1 diffuse format.
+No further retry was made; retrying that binder requires support for the pipeline's BC1 diffuse contract.
+The live session bound the same verified DDS bytes through native material nodes, with explicit glossiness inversion and packed-normal decoding; no texture bytes were regenerated.
+Pan's first native reimport request found no adjacent DDS files; staging the unchanged maps beside the export corrected that input and the single retry succeeded.
+Actual exported/reimported geometry and rendered review are retained separately from these route failures.
+
+`anim_signs.py` scanned all sixteen installed actions through separate scratch outputs: all had zero negative-dot quaternion transitions, and every output hash equaled its input hash.
+No animation was re-exported or installed in this continuation.
+The first run's vanilla timing, plant and symmetry evidence remains applicable to the unchanged gait bytes.
+
+New provider task IDs: none; Meshy calls and credits used: **0**.
+No audio was downloaded, synthesized, recorded, processed or installed.
+The existing sourced footstep/hoof credits and URLs in the historical audio section below remain unchanged.
+Skills used: `chaos-redux-3d-model-pipeline`, its start-gates, Blender/export, unit-rebuild and unit-audio/counter references, and `chaos-redux-event-assets` with its unit-visual/reference-library guidance.
+No skill was created or updated, and no unit definition was touched.
+
+### Simplifications, omissions and unresolved work
+
+- Pan topology repair is installed; its head and accepted gait remain unchanged.
+- Demon horns and arm/wing work remain **staged, uninstalled and incomplete** because the membrane still fails deformation acceptance.
+- No reduced rig, alternate design, replacement model, procedural animation or other fallback was shipped.
+- No user decision is pending; the remaining work is model production and verification.
+- There is no in-game validation claim and no Git commit.
+
+## Historical first-run record
+
+The following records the prior run's result at that time; the continuation result above is authoritative for current decisions and installation status.
+
 The job is incomplete.
 Three gait repairs are installed and checked from exported runtime bytes: demonic zombie move, demonic zombie retreat, and Pan Sappers move.
 Head-reference decisions, the complete demonic wing/arm repair, and Pan's mesh-topology defects remain unresolved.
