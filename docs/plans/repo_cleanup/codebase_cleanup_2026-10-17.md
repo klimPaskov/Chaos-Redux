@@ -144,3 +144,20 @@ Disposition: implemented; the user approved the remaining fixes and the final pu
 - Push: no new commit needed filtering (no history-only LFS, no AI trailers); `master` went fast-forward `d07f471e9` to `51ff05269` with 131 LFS objects (39 MB).
 
 Left as they are: the unwired Malta art (super-event and news pictures, mission icons, the Holy World emblem, equipment icons) stays untracked until its deferred routes ship, and other sessions' unrelated uncommitted work stays with its owners.
+
+## Dormant working-tree work and runtime errors (2026-10-18, third push)
+
+Disposition: implemented; the user approved committing the remaining work and fixing the errors from their 22:51 campaign log without another game launch.
+
+- No other session was editing the repository, so the roughly 200 modified and 1,100 untracked files were reviewed per package against their specs and committed when complete: Events 1, 5 and 6; Events 14, 16 and 19 (including a stray `nt_more_options` fragment that had stopped five 014 and 016 report options from parsing); Events 12 to 30, 36, 77 and 89 (another fragment repair in 19 event files, paged option lists for Events 23 and 29); shared systems (Event 42 registered in the Chaos Meter, Events Log, settings and achievements, the Various Anomalies cluster); migration local-integration receipts; docs, specs for Events 106 to 114, tools and config.
+- Working-tree regressions were reset to the committed versions, with their diffs saved in `.tmp/cleanup_2026-10-17/wt_regressions_2026-10-18.patch`: debug `log` lines in the Event 6 execution effects, an Event 6 category file that undid the 13 October restore, an Event 6 support event that dropped an AI rule, an unused focus sprite alias, and whitespace-only or duplicated-paragraph edits.
+- The 8,832 runtime scope errors in the user log (state triggers evaluated in country scope through unset state pointers in the migration, famine, camp, humanitarian, zombie and natural-disaster triggers, and a missing corridor event target) are guarded at their source (`ced1aadd8`). This is source review only; it is not observed in game.
+- The Australasia formable used `malenesia` tooltip keys; it uses the vanilla `melanesia` keys.
+- Checks: the static audits on HEAD show no unresolved sprite, missing file, undefined localisation binding, duplicate key or modifier, and HEAD calls nothing defined only in the working tree. All 119 tracked tests pass, as do the Event 28 validators and the planning identifier check.
+- A debug probe that the game loaded was moved to the Recycle Bin, and the 29 mechanics-guide images missing from disk were restored.
+
+Left as they are:
+- The Event 102 spec revision, which has no recorded acceptance and links a missing file, and the two edited repo-cleanup prompt files stay uncommitted for the user.
+- About 2,700 untracked images that no committed file references, mostly art staged for events that are not implemented yet, stay on disk and out of the repository.
+- Event 33 GUI renders, MCP receipts and other generated plan evidence stay local and are ignored.
+
