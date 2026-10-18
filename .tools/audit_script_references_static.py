@@ -51,12 +51,19 @@ TOKEN = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
 STEM = re.compile(r"([A-Za-z_][A-Za-z0-9_]*_)(?:\[|@|\$)")
 EVENT_STEM = re.compile(r"\b([A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z0-9_]+)*\.[A-Za-z0-9_]*)\[")
 EVENT_ID = re.compile(r"\b([A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z0-9_]+)+)\b")
+CONSTANT_REF = re.compile(r"constant:([A-Za-z0-9_]+)\.")
+FLAG_USE = re.compile(
+	r"\b(set|has)_(?:%s)_flag\s*=\s*(?:\{[^}]*?\bflag\s*=\s*)?([A-Za-z_][A-Za-z0-9_]*)(?![A-Za-z0-9_@\[\$])" % "|".join(FLAG_SCOPES)
+)
 TOP_KEY = re.compile(r"([A-Za-z0-9_@.:\-]+)\s*=\s*\{")
 
 
 def strip_comments(text: str) -> str:
 	out = []
 	for line in text.split("\n"):
+		if "#" not in line:
+			out.append(line)
+			continue
 		quoted = False
 		for i, c in enumerate(line):
 			if c == '"':
@@ -127,16 +134,27 @@ def dirty_paths() -> set:
 	return {line[3:].strip().strip('"') for line in out.splitlines()}
 
 
-def collect_definitions(texts: Dict[str, str]) -> Dict[str, List[Tuple[str, str, int]]]:
-	defs: Dict[str, List[Tuple[str, str, int]]] = defaultdict(list)
+def helper_blocks(texts: Dict[str, str]) -> Dict[str, Tuple[str, List[Tuple[str, int, int, int]]]]:
+	"""Parse every scripted effect and trigger file once: rel -> (kind, top-level blocks)."""
+	blocks = {}
 	for rel, t in texts.items():
 		if not rel.endswith(".txt"):
 			continue
 		if rel.startswith("common/scripted_effects/"):
-			defs["scripted_effect"] += [(k, rel, ln) for k, ln, _, _ in keys_at_depth(t, 0) if not k.startswith("@")]
+			blocks[rel] = ("effect", keys_at_depth(t, 0))
 		elif rel.startswith("common/scripted_triggers/"):
-			defs["scripted_trigger"] += [(k, rel, ln) for k, ln, _, _ in keys_at_depth(t, 0) if not k.startswith("@")]
-		elif rel.startswith("common/scripted_localisation/"):
+			blocks[rel] = ("trigger", keys_at_depth(t, 0))
+	return blocks
+
+
+def collect_definitions(texts: Dict[str, str], blocks) -> Dict[str, List[Tuple[str, str, int]]]:
+	defs: Dict[str, List[Tuple[str, str, int]]] = defaultdict(list)
+	for rel, (kind, found) in blocks.items():
+		defs["scripted_" + kind] += [(k, rel, ln) for k, ln, _, _ in found if not k.startswith("@")]
+	for rel, t in texts.items():
+		if not rel.endswith(".txt") or rel in blocks:
+			continue
+		if rel.startswith("common/scripted_localisation/"):
 			for m in re.finditer(r'defined_text\s*=\s*\{\s*name\s*=\s*"?([A-Za-z0-9_]+)', t):
 				defs["scripted_localisation"].append((m.group(1), rel, t.count("\n", 0, m.start()) + 1))
 		elif rel.startswith("common/ideas/"):
@@ -159,15 +177,14 @@ def audit_dead(texts, defs, dirty):
 	tokens: Counter = Counter()
 	stems = set()
 	event_refs: Counter = Counter()
+	const_refs: Counter = Counter()
 	for rel, t in texts.items():
 		tokens.update(TOKEN.findall(t))
+		const_refs.update(CONSTANT_REF.findall(t))
 		stems.update(STEM.findall(t))
 		if not rel.endswith(".yml"):
 			event_refs.update(EVENT_ID.findall(t))
 			stems.update(EVENT_STEM.findall(t))
-	const_refs: Counter = Counter()
-	for t in texts.values():
-		const_refs.update(re.findall(r"constant:([A-Za-z0-9_]+)\.", t))
 	out = {}
 	for kind, items in defs.items():
 		counts = Counter(n for n, _, _ in items)
@@ -193,7 +210,6 @@ def audit_dead(texts, defs, dirty):
 
 
 def audit_flags(texts):
-	name = r"([A-Za-z_][A-Za-z0-9_]*)(?![A-Za-z0-9_@\[\$])"
 	set_c: Counter = Counter()
 	chk_c: Counter = Counter()
 	where: Dict[str, set] = defaultdict(set)
@@ -201,13 +217,9 @@ def audit_flags(texts):
 	for rel, t in texts.items():
 		if rel.endswith(".yml"):
 			continue
-		for s in FLAG_SCOPES:
-			for m in re.finditer(r"\bset_%s_flag\s*=\s*(?:\{[^}]*?\bflag\s*=\s*)?%s" % (s, name), t):
-				set_c[m.group(1)] += 1
-				where[m.group(1)].add(rel)
-			for m in re.finditer(r"\bhas_%s_flag\s*=\s*(?:\{[^}]*?\bflag\s*=\s*)?%s" % (s, name), t):
-				chk_c[m.group(1)] += 1
-				where[m.group(1)].add(rel)
+		for m in FLAG_USE.finditer(t):
+			(set_c if m.group(1) == "set" else chk_c)[m.group(2)] += 1
+			where[m.group(2)].add(rel)
 		dyn.update(re.findall(r"\b(?:set|has|clr)_[a-z_]+_flag\s*=\s*(?:\{[^}]*?\bflag\s*=\s*)?([A-Za-z_][A-Za-z0-9_]*?)(?:@|\[|\$)", t))
 
 	def is_dynamic(flag):
@@ -231,14 +243,12 @@ def _param(body):
 	return re.sub(r"\b[A-Z][A-Z0-9]{2}\b", "TAG", b)
 
 
-def audit_clones(texts):
+def audit_clones(texts, blocks):
 	exact = defaultdict(list)
 	param = defaultdict(list)
-	for rel, t in texts.items():
-		kind = "effect" if rel.startswith("common/scripted_effects/") else "trigger" if rel.startswith("common/scripted_triggers/") else None
-		if not kind or not rel.endswith(".txt"):
-			continue
-		for name, ln, s, e in keys_at_depth(t, 0):
+	for rel, (kind, found) in blocks.items():
+		t = texts[rel]
+		for name, ln, s, e in found:
 			body = t[s:e]
 			nb = _norm(body)
 			if len(nb) < MIN_CLONE_CHARS:
@@ -260,13 +270,14 @@ def main() -> int:
 	sections = set(args.sections.split(","))
 	texts = load_tree()
 	dirty = dirty_paths()
+	blocks = helper_blocks(texts) if sections & {"dead", "clones"} else {}
 	result = {}
 	if "dead" in sections:
-		result["dead"] = audit_dead(texts, collect_definitions(texts), dirty)
+		result["dead"] = audit_dead(texts, collect_definitions(texts, blocks), dirty)
 	if "flags" in sections:
 		result["flags"] = audit_flags(texts)
 	if "clones" in sections:
-		result["clones"] = audit_clones(texts)
+		result["clones"] = audit_clones(texts, blocks)
 
 	print("=" * 78)
 	print("Chaos Redux static script reference audit")
