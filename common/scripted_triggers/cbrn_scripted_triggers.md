@@ -329,6 +329,7 @@ The STATE relevance gates are side-effect free; hospitals accept exact alert OR 
 Shelters, alarm and industry continuity retain exact-alert-only contracts; the exact-alert adapter has no active source caller in the audited source, and hospital contamination entry does not fabricate alerts for those actions.
 
 - `cbrn_state_has_exact_chemical_raid_alert`: exact alert flag only.
+- `cbrn_state_has_active_distribution_disruption`: STATE gate for the active bombing or combat cost multiplier of mask distribution. It is true when the state was strategically bombed within `cbrn_mask_distribution.active_bombing_days` days, or when the state is in a border war or border conflict. `cbrn_distribute_requested_masks_to_state_internal` and `cbrn_quote_state_mask_reservation_internal` both apply `cbrn_mask_distribution.active_combat_cost_mult` through it, so the quote and the debit agree. It reads engine state and keeps no flag that needs cleanup.
 - `cbrn_state_has_hospital_response_resources`: retained cache-based mask/support checker; the current public hospital payment path uses its fresh population quote instead.
 - `cbrn_state_has_shelter_response_resources`: the controller has the population-scaled support/train amounts stored on the state.
 - `cbrn_state_has_hospital_response_need`: exact alert OR actual chemical contamination. `cbrn_state_can_protect_hospitals_and_utilities` adds ROOT control and no active secured-state response; resources are checked separately so a shortage does not hide a relevant target.

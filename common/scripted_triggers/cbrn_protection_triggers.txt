@@ -771,7 +771,7 @@ cbrn_quote_state_mask_reservation_internal = {
 	clamp_temp_variable = { var = cbrn_reservation_quote_new_filter min = constant:cbrn_mask_filters.condition_minimum max = constant:cbrn_mask_filters.condition_maximum }
 	if = { limit = { OR = { is_capital = yes has_state_category = city has_state_category = large_city has_state_category = metropolis has_state_category = megalopolis } } multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_mask_distribution.urban_or_capital_cost_mult } }
 	if = { limit = { infrastructure < 4 } multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_mask_distribution.low_infrastructure_cost_mult } }
-	if = { limit = { has_state_flag = cbrn_active_distribution_disruption } multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_mask_distribution.active_combat_cost_mult } }
+	if = { limit = { cbrn_state_has_active_distribution_disruption = yes } multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_mask_distribution.active_combat_cost_mult } }
 	if = { limit = { NOT = { is_core_of = ROOT } } multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_mask_distribution.occupied_non_core_cost_mult } }
 	ROOT = {
 		if = { limit = { has_country_flag = cbrn_civil_defence_established } multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_mask_distribution.civil_defence_cost_mult } }
@@ -815,6 +815,16 @@ cbrn_quote_state_mask_reservation_internal = {
 
 cbrn_state_has_exact_chemical_raid_alert = {
 	has_state_flag = cbrn_chemical_raid_alert_active
+}
+
+# STATE scope. Active bombing or fighting in the state disrupts mask distribution
+# and applies `cbrn_mask_distribution.active_combat_cost_mult` to its cost.
+cbrn_state_has_active_distribution_disruption = {
+	OR = {
+		days_since_last_strategic_bombing < constant:cbrn_mask_distribution.active_bombing_days
+		has_border_war = yes
+		is_border_conflict = yes
+	}
 }
 
 cbrn_state_has_hospital_response_resources = {
