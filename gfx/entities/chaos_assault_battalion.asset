@@ -1,8 +1,5 @@
-# Chaos Redux Chaos Assault Battalion land-unit entity.
-# The public chaos_battalion sprite resolves to this dedicated gas-masked chemical trooper, who carries a
-# pistol-gripped spray lance fed by a backpack reservoir. The aerosol leaves the lance_nozzle locator.
-# Actions run at 30 FPS; each event time is (frame - first frame) / 30 at the measured phase it voices.
-
+# Gas-masked chemical infantry with a retained, reservoir-fed spray lance.
+# All actions use 30 FPS; cues follow the measured sole, discharge and landing phases.
 entity = {
 	name = "chaos_battalion_entity"
 	pdxmesh = "chaos_assault_battalion_mesh"
@@ -15,21 +12,19 @@ entity = {
 		animation_speed = 1.0
 		looping = no
 		next_state = "attack"
-		# Braces at frame 7 and sweeps the spray across the ground from frame 15 to frame 106.
-		event = { time = 0.4000 node = "lance_nozzle" particle = "chaosx_chem_spray_particle" }
+		event = { time = 0.4000 node = "lance_nozzle" particle = "chaosx_chem_spray_burst_particle" }
 		event = { time = 0.4000 sound = { soundeffect = "chaos_assault_battalion_attack" } }
-		event = { time = 2.0000 node = "lance_nozzle" particle = "chaosx_chem_spray_cloud_particle" }
 	}
+
 	state = {
 		name = "defend"
 		animation = "defend"
 		animation_blend_time = 0.3
 		animation_speed = 1.0
 		looping = yes
-		# Swaps the reservoir canister behind cover, seating it at frame 76.
 		event = { time = 0.1000 trigger_once = yes sound = { soundeffect = "chaos_assault_battalion_idle" } }
-		event = { time = 2.5000 sound = { soundeffect = "chaos_assault_battalion_reservoir_seat" } }
 	}
+
 	state = {
 		name = "support_attack"
 		animation = "support_attack"
@@ -37,64 +32,59 @@ entity = {
 		animation_speed = 1.0
 		looping = no
 		next_state = "support_attack"
-		# Kneels and fires two short bursts at frames 22 and 52, then stands.
-		event = { time = 0.6333 node = "lance_nozzle" particle = "chaosx_chem_spray_burst_particle" }
-		event = { time = 0.6333 sound = { soundeffect = "chaos_assault_battalion_support_attack_gas" } }
-		event = { time = 1.6333 node = "lance_nozzle" particle = "chaosx_chem_spray_burst_particle" }
-		event = { time = 1.6333 sound = { soundeffect = "chaos_assault_battalion_support_attack_gas" } }
+		event = { time = 0.6667 node = "lance_nozzle" particle = "chaosx_chem_spray_burst_particle" }
+		event = { time = 0.6667 sound = { soundeffect = "chaos_assault_battalion_support_attack_gas" } }
+		event = { time = 2.1333 node = "lance_nozzle" particle = "chaosx_chem_spray_burst_particle" }
+		event = { time = 2.1333 sound = { soundeffect = "chaos_assault_battalion_support_attack_gas" } }
 	}
+
 	state = {
 		name = "move"
 		animation = "move"
 		animation_blend_time = 0.5
 		animation_speed = 1.0
 		looping = yes
-		# Laden steps under the reservoir: frames 19, 64, 87, 136, 151, and 189.
-		event = { time = 0.6000 sound = { soundeffect = "chaos_assault_battalion_move" } }
-		event = { time = 2.1000 sound = { soundeffect = "chaos_assault_battalion_move" } }
-		event = { time = 2.8667 sound = { soundeffect = "chaos_assault_battalion_move" } }
-		event = { time = 4.5000 sound = { soundeffect = "chaos_assault_battalion_move" } }
-		event = { time = 5.0000 sound = { soundeffect = "chaos_assault_battalion_move" } }
-		event = { time = 6.2667 sound = { soundeffect = "chaos_assault_battalion_move" } }
+		event = { time = 0.5667 sound = { soundeffect = "chaos_assault_battalion_move" } }
+		event = { time = 1.2333 sound = { soundeffect = "chaos_assault_battalion_move" } }
 	}
+
 	state = {
 		name = "retreat"
 		animation = "retreat"
 		animation_blend_time = 0.3
 		animation_speed = 1.0
 		looping = yes
-		# Backing away with the lance levelled: plants at frames 5 and 12.
-		event = { time = 0.1333 sound = { soundeffect = "chaos_assault_battalion_retreat_move" } }
-		event = { time = 0.3667 sound = { soundeffect = "chaos_assault_battalion_retreat_move" } }
+		event = { time = 0.5333 sound = { soundeffect = "chaos_assault_battalion_retreat_move" } }
+		event = { time = 1.1667 sound = { soundeffect = "chaos_assault_battalion_retreat_move" } }
 	}
+
 	state = {
 		name = "death"
 		animation = "death"
 		animation_blend_time = 0.3
 		animation_speed = 1.0
 		looping = no
-		# Shot and falling slowly backward; the body lands at frame 80.
 		event = { time = 0.1000 sound = { soundeffect = "chaos_assault_battalion_death" } }
-		event = { time = 2.6333 sound = { soundeffect = "chaos_assault_battalion_impact_body" } }
+		event = { time = 2.9333 sound = { soundeffect = "chaos_assault_battalion_impact_body" } }
 	}
+
 	state = {
 		name = "idle"
 		animation = "idle"
 		animation_blend_time = 0.3
 		animation_speed = 1.0
 		looping = yes
-		event = { trigger_once = yes sound = { soundeffect = "chaos_assault_battalion_idle" } }
+		event = { time = 0.1000 trigger_once = yes sound = { soundeffect = "chaos_assault_battalion_idle" } }
 	}
+
 	state = {
 		name = "training"
 		animation = "training"
 		animation_blend_time = 0.3
 		animation_speed = 1.0
 		looping = yes
-		# Kneeling reload drill; the respirator breathes as the canister is changed.
 		event = { time = 0.1000 trigger_once = yes sound = { soundeffect = "chaos_assault_battalion_idle" } }
 	}
 
-	# The mesh keeps the vanilla infantry source height, so the vanilla entity scale applies once.
 	scale = 0.8
 }
