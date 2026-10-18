@@ -106,7 +106,8 @@ class SpecialPayloadContract(unittest.TestCase):
     def test_held_warhead_returns_once_or_is_consumed_once(self):
         release = EFFECTS['missiles_release_operation_payload']
         guarded = value(release, 'if')
-        self.assertEqual(value(guarded, 'limit'), [('has_country_flag', 'missiles_operation_payload_escrow_active')])
+        # The escrow flag is internal state, so the release guard hides it from tooltips.
+        self.assertEqual(value(guarded, 'limit'), [('hidden_trigger', [('has_country_flag', 'missiles_operation_payload_escrow_active')])])
         returned = nodes(guarded)
         self.assertIn(('add_nuclear_bombs', 'constant:missiles_resolution.nuclear_payload_units'), returned)
         for bomb in ('anthrax_bomb_1', 'plague_bomb_1', 'tularemia_bomb_1', 'smallpox_bomb_1'):

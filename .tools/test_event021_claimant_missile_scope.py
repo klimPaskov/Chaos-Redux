@@ -104,6 +104,7 @@ class Object:
     controller: object = None
     missions: set = field(default_factory=set)
     nukes: Decimal = Decimal(0)
+    dynamic_modifiers: set = field(default_factory=set)
 
 
 class Model:
@@ -291,6 +292,9 @@ class Model:
             return body == "no"
         if key == "has_war":
             return body == "no"  # All fixture countries are at peace.
+        if key == "has_dynamic_modifier":
+            assert [k for k, _ in body] == ["modifier"], ("unmodelled trigger", key, body)
+            return value(body, "modifier") in obj.dynamic_modifiers
         if key in TRIGGERS:
             return self.conditions(TRIGGERS[key], stack)
         raise AssertionError(("unmodelled trigger", key))
@@ -415,7 +419,13 @@ class Model:
             elif key == "add_nuclear_bombs":
                 self.boundaries.append((obj.name, key, body))
                 obj.nukes += self.number(body, stack)  # Idealized native credit.
-            elif key in ("add_ideas", "remove_ideas", "add_dynamic_modifier", "remove_dynamic_modifier"):
+            elif key in ("add_dynamic_modifier", "remove_dynamic_modifier"):
+                # Applied set only, so guarded removals read add/remove state.
+                modifier = value(body, "modifier")
+                assert modifier is not None, ("unmodelled effect", key, body)
+                (obj.dynamic_modifiers.add if key == "add_dynamic_modifier" else obj.dynamic_modifiers.discard)(modifier)
+                self.boundaries.append((obj.name, key, body))
+            elif key in ("add_ideas", "remove_ideas"):
                 self.boundaries.append((obj.name, key, body))  # Presentation only.
             elif key in EFFECTS:
                 self.call(key, stack=stack)

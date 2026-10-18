@@ -95,6 +95,9 @@ class SiteMachine(EvolutionMachine):
         self.wallet_outcomes = defaultdict(deque)
         self.getter_outcomes = defaultdict(deque)
         self.registrations, self.presentation, self.mission_requests = [], [], []
+        # Applied dynamic modifiers as (scope identity, modifier) pairs, so
+        # guarded removals read the same state that add/remove maintain.
+        self.dynamic_modifiers = set()
         self.garrison_reads = []
         self.scored_states, self.score_outputs, self.payment_pools = [], [], []
         self.native_regions = {}
@@ -222,6 +225,10 @@ class SiteMachine(EvolutionMachine):
                 self.current.infrastructure, self.value(v))
         if k == 'is_capital':
             return self.current.is_capital == (v == 'yes')
+        if k == 'has_dynamic_modifier':
+            if not isinstance(v, list) or {c.key for c in v} != {'modifier'}:
+                self.unmodeled(n)
+            return (self.current.identity, item(v, 'modifier')) in self.dynamic_modifiers
         return super().predicate(n)
 
     def call(self, name, trigger=False):
@@ -308,7 +315,16 @@ class SiteMachine(EvolutionMachine):
                 if self.current.kind != 'state' or not isinstance(v, str):
                     self.unmodeled(n)
                 (self.current.flags.add if k == 'set_state_flag' else self.current.flags.discard)(v)
-            elif k in ('add_dynamic_modifier', 'remove_dynamic_modifier', 'add_ideas', 'remove_ideas'):
+            elif k in ('add_dynamic_modifier', 'remove_dynamic_modifier'):
+                if not isinstance(v, list) or item(v, 'modifier') is None:
+                    self.unmodeled(n)
+                entry = (self.current.identity, item(v, 'modifier'))
+                if k == 'add_dynamic_modifier':
+                    self.dynamic_modifiers.add(entry)
+                else:
+                    self.dynamic_modifiers.discard(entry)
+                self.presentation.append((self.current, k, v))
+            elif k in ('add_ideas', 'remove_ideas'):
                 self.presentation.append((self.current, k, v))
             elif k in ('every_owned_state', 'every_controlled_state'):
                 if self.current.kind != 'country':

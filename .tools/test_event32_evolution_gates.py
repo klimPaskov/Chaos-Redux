@@ -271,9 +271,11 @@ class EvolutionLogIdentity(unittest.TestCase):
         self.assertEqual(summary, ['missiles.evolution.summary'])
         detail = [text['localization_key'] for text in LOG_TEXTS['GetEventsLogEventDetailDescription'] if any(v == 'constant:missiles_event.id' for _, v in descendants(text['trigger']))]
         self.assertEqual(detail, ['missiles.event_log.detail'])
+        # History rows show the event name like every other event; Event 32
+        # keeps no bespoke recipient-count row on the shared history surface.
         history = [text['localization_key'] for text in LOG_TEXTS['GetEventsLogHistoryRowText'] if any(v == 'constant:missiles_event.id' for _, v in descendants(text['trigger']))]
-        self.assertEqual(history, ['missiles.event_log.history.row'])
-        used = {'missiles.evolution.type', 'missiles.evolution.summary', 'missiles.event_log.detail', 'missiles.event_log.history.row'}
+        self.assertEqual(history, [])
+        used = {'missiles.evolution.type', 'missiles.evolution.summary', 'missiles.event_log.detail'}
         used |= {f'missiles.evolution.{loc}.{suffix}' for _, _, loc, _ in LOG_TRACKS for suffix in ('title', 'body')}
         for key in sorted(used):
             self.assertRegex(LOCALISATION, rf'(?m)^{re.escape(key)}: "')

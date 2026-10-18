@@ -214,8 +214,8 @@ An evolution may create its own news item when the change is globally visible (p
 One global history row is recorded for each firing:
 
 - event ID `32`, type Minor Repeatable, date, no actor
-- the frozen recipient count as the row payload, shown as how many countries started or expanded a program (`missiles.event_log.history.row`)
-- a firing with no valid recipient keeps the generic row instead of reporting zero programs
+- the frozen recipient count as the row payload; the visible row is the shared event-name row used by every event (user decision recorded in commit `78e6554af`, Restore event history rows to event names, which removed the bespoke `missiles.event_log.history.row` text)
+- a firing with no valid recipient records a zero payload and shows the same event-name row
 - repeatable weight and cap behavior through the shared event system
 
 The row is never duplicated per recipient.

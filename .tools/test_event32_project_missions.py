@@ -183,7 +183,8 @@ class ProjectMissionContract(unittest.TestCase):
 
     def test_suspended_sites_cannot_launch_and_restoration_stays_reachable(self):
         site_triggers = source('common/scripted_triggers/032_missiles_triggers.txt')
-        self.assertIn(('NOT', [('has_state_flag', 'missiles_site_suspended')]), site_triggers['missiles_site_can_launch'])
+        # The suspension flag is internal state, so the launch gate hides it from tooltips.
+        self.assertIn(('NOT', [('hidden_trigger', [('has_state_flag', 'missiles_site_suspended')])]), site_triggers['missiles_site_can_launch'])
         visible = list(descendants(value(DECISIONS['missiles_restore_retaliation_network'], 'visible')))
         self.assertIn(('missiles_maintenance_actions_are_visible', 'yes'), visible)
         self.assertNotIn(('has_country_flag', 'missiles_program_phase_retaliation'), visible)

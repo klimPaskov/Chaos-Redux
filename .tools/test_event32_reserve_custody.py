@@ -81,7 +81,8 @@ class Ledger:
         selected = self.selected(key, stack)
         if selected is not None:
             return self.condition(body, [*stack, selected])
-        if key in ('AND', 'limit'):
+        # hidden_trigger evaluates its children like AND and only hides the tooltip.
+        if key in ('AND', 'limit', 'hidden_trigger'):
             return self.condition(body, stack)
         if key == 'NOT':
             return not any(self.term(k, v, stack) for k, v in body)

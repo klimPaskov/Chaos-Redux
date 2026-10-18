@@ -857,8 +857,20 @@ class NativeEvolutionTests(unittest.TestCase):
             self.assertEqual(item(event, 'is_triggered_only'), 'no')
             inspect(item(event, 'trigger'), set())
             mtth = item(event, 'mean_time_to_happen')
-            self.assertEqual(self.s.event_locals[f'chaosx.nr32.{track[4]}'][item(mtth, 'days')], '1')
-            self.assertEqual(item(item(mtth, 'modifier'), 'factor'), f'global.missiles_evolution_{track[2]}_mtth_days')
+            # A native base above one day avoids the automatic-event diagnostic;
+            # an always-on reciprocal factor keeps the effective unit at exactly
+            # one day, so the global variable alone sets the median duration.
+            local = self.s.event_locals[f'chaosx.nr32.{track[4]}']
+            self.assertEqual(item(mtth, 'days'), '@missiles_mtth_unit_days')
+            base = D(local['@missiles_mtth_unit_days'])
+            self.assertGreater(base, D(1))
+            modifiers = [n.value for n in mtth if n.key == 'modifier']
+            self.assertEqual(len(modifiers), 2)
+            self.assertEqual(item(modifiers[0], 'factor'), '@missiles_mtth_unit_reciprocal')
+            self.assertEqual(item(modifiers[0], 'always'), 'yes')
+            self.assertEqual(base * D(local['@missiles_mtth_unit_reciprocal']), D(1))
+            self.assertEqual(item(modifiers[1], 'factor'), f'global.missiles_evolution_{track[2]}_mtth_days')
+            self.assertEqual([n.key for n in modifiers[1]], ['factor'])
         for helper in ('missiles_run_evolution_watch', 'missiles_queue_evolution_watch'):
             self.assertFalse(any(n.key == 'country_event' for n in walk(self.s.effects[helper][0])))
         self.pulse(ordinary=True)

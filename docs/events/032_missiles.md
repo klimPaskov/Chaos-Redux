@@ -131,7 +131,7 @@ The logged tier is the chaos tier id of each track's minimum chaos: Saturation 3
 | Event Logs surface | Event 32 entry |
 | --- | --- |
 | Event Details text (`GetEventsLogEventDetailDescription`) | `missiles.event_log.detail` |
-| History row (`GetEventsLogHistoryRowText`), firings with at least one recipient | `missiles.event_log.history.row`, showing the frozen recipient count carried as the row payload |
+| History row (`GetEventsLogHistoryRowText`) | The shared event-name row; the frozen recipient count is carried as the row payload, and Event 32 adds no bespoke row text |
 | Event Details evolution preview (`events_log_rebuild_open_event_details_view`) | Five rows from `missiles_event.evolution_<i..v>_stage` and `_tier`, each with its enable toggle before the track unlocks |
 | Evolution type label (main list, history details, Event Details) | `missiles.evolution.type` |
 | Evolution names (main list, history details, Event Details) and selected evolution title | `missiles.evolution.<track>.title` |
