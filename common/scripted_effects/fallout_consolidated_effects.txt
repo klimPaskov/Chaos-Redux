@@ -80330,7 +80330,6 @@ fallout_event_747_schedule_callback = {
 	set_temp_variable = { fallout_event_requested_target = constant:fallout_event_runtime.zero }
 	set_temp_variable = { fallout_event_requested_cleanup_token = constant:fallout_event_id.health_without_borders_cleanup }
 	fallout_event_schedule_delayed_result = yes
-	if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } set_country_flag = fallout_event_747_callback_scheduled }
 }
 
 fallout_event_747_resolve_result_and_schedule_callback = {
@@ -80344,7 +80343,22 @@ fallout_event_747_resolve_result_and_schedule_callback = {
 		fallout_event_747_apply_result_effects = yes
 		set_temp_variable = { fallout_event_747_history_stage = constant:fallout_event_runtime.one }
 		fallout_event_747_record_history = yes
+		set_variable = { fallout_event_747_result_cleanup_ticket = fallout_event_747_result_ticket }
 		fallout_event_747_schedule_callback = yes
+		if = {
+			limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+			set_country_flag = fallout_event_747_callback_scheduled
+			set_variable = { fallout_event_747_callback_cleanup_ticket = fallout_event_transaction_ticket }
+		}
+		else = {
+			set_country_flag = fallout_event_747_target_invalidated
+			set_temp_variable = { fallout_event_requested_ticket = fallout_event_747_result_ticket }
+			set_temp_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.cancelled_before_choice }
+			set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.target_lost }
+			fallout_event_cancel_delayed_result = yes
+			set_temp_variable = { fallout_event_747_history_stage = constant:fallout_event_747_log.cancelled_stage }
+			fallout_event_747_record_history = yes
+		}
 	}
 	set_temp_variable = { fallout_event_747_result_ticket = 0 }
 	set_temp_variable = { fallout_event_747_result_mode = 0 }
@@ -88732,7 +88746,6 @@ fallout_event_614_schedule_callback = {
 	set_temp_variable = { fallout_event_requested_target = constant:fallout_event_runtime.zero }
 	set_temp_variable = { fallout_event_requested_cleanup_token = constant:fallout_event_id.metro_republic_below_cleanup }
 	fallout_event_schedule_delayed_result = yes
-	if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } set_country_flag = fallout_event_614_callback_scheduled }
 }
 
 fallout_event_614_resolve_result_and_schedule_callback = {
@@ -88746,7 +88759,22 @@ fallout_event_614_resolve_result_and_schedule_callback = {
 		fallout_event_614_apply_result_effects = yes
 		set_temp_variable = { fallout_event_614_history_stage = constant:fallout_event_runtime.one }
 		fallout_event_614_record_history = yes
+		set_variable = { fallout_event_614_result_cleanup_ticket = fallout_event_614_result_ticket }
 		fallout_event_614_schedule_callback = yes
+		if = {
+			limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+			set_country_flag = fallout_event_614_callback_scheduled
+			set_variable = { fallout_event_614_callback_cleanup_ticket = fallout_event_transaction_ticket }
+		}
+		else = {
+			set_country_flag = fallout_event_614_target_invalidated
+			set_temp_variable = { fallout_event_requested_ticket = fallout_event_614_result_ticket }
+			set_temp_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.cancelled_before_choice }
+			set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.target_lost }
+			fallout_event_cancel_delayed_result = yes
+			set_temp_variable = { fallout_event_614_history_stage = constant:fallout_event_614_log.cancelled_stage }
+			fallout_event_614_record_history = yes
+		}
 	}
 	set_temp_variable = { fallout_event_614_result_ticket = 0 }
 	set_temp_variable = { fallout_event_614_result_mode = 0 }
@@ -102017,7 +102045,6 @@ fallout_event_740_schedule_callback = {
 	set_temp_variable = { fallout_event_requested_target = constant:fallout_event_runtime.zero }
 	set_temp_variable = { fallout_event_requested_cleanup_token = constant:fallout_event_id.open_the_sealed_city_cleanup }
 	fallout_event_schedule_delayed_result = yes
-	if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } set_country_flag = fallout_event_740_callback_scheduled }
 }
 
 fallout_event_740_resolve_result_and_schedule_callback = {
@@ -102031,7 +102058,22 @@ fallout_event_740_resolve_result_and_schedule_callback = {
 		fallout_event_740_apply_result_effects = yes
 		set_temp_variable = { fallout_event_740_history_stage = constant:fallout_event_runtime.one }
 		fallout_event_740_record_history = yes
+		set_variable = { fallout_event_740_result_cleanup_ticket = fallout_event_740_result_ticket }
 		fallout_event_740_schedule_callback = yes
+		if = {
+			limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+			set_country_flag = fallout_event_740_callback_scheduled
+			set_variable = { fallout_event_740_callback_cleanup_ticket = fallout_event_transaction_ticket }
+		}
+		else = {
+			set_country_flag = fallout_event_740_target_invalidated
+			set_temp_variable = { fallout_event_requested_ticket = fallout_event_740_result_ticket }
+			set_temp_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.cancelled_before_choice }
+			set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.target_lost }
+			fallout_event_cancel_delayed_result = yes
+			set_temp_variable = { fallout_event_740_history_stage = constant:fallout_event_740_log.cancelled_stage }
+			fallout_event_740_record_history = yes
+		}
 	}
 	set_temp_variable = { fallout_event_740_result_ticket = 0 }
 	set_temp_variable = { fallout_event_740_result_mode = 0 }
@@ -110184,7 +110226,6 @@ fallout_event_621_schedule_callback = {
 	set_temp_variable = { fallout_event_requested_target = constant:fallout_event_runtime.zero }
 	set_temp_variable = { fallout_event_requested_cleanup_token = constant:fallout_event_id.rail_spine_vote_cleanup }
 	fallout_event_schedule_delayed_result = yes
-	if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } set_country_flag = fallout_event_621_callback_scheduled }
 }
 
 fallout_event_621_resolve_result_and_schedule_callback = {
@@ -110198,7 +110239,22 @@ fallout_event_621_resolve_result_and_schedule_callback = {
 		fallout_event_621_apply_result_effects = yes
 		set_temp_variable = { fallout_event_621_history_stage = constant:fallout_event_runtime.one }
 		fallout_event_621_record_history = yes
+		set_variable = { fallout_event_621_result_cleanup_ticket = fallout_event_621_result_ticket }
 		fallout_event_621_schedule_callback = yes
+		if = {
+			limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+			set_country_flag = fallout_event_621_callback_scheduled
+			set_variable = { fallout_event_621_callback_cleanup_ticket = fallout_event_transaction_ticket }
+		}
+		else = {
+			set_country_flag = fallout_event_621_target_invalidated
+			set_temp_variable = { fallout_event_requested_ticket = fallout_event_621_result_ticket }
+			set_temp_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.cancelled_before_choice }
+			set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.target_lost }
+			fallout_event_cancel_delayed_result = yes
+			set_temp_variable = { fallout_event_621_history_stage = constant:fallout_event_621_log.cancelled_stage }
+			fallout_event_621_record_history = yes
+		}
 	}
 	set_temp_variable = { fallout_event_621_result_ticket = 0 }
 	set_temp_variable = { fallout_event_621_result_mode = 0 }
