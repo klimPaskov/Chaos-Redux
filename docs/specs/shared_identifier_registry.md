@@ -74,7 +74,7 @@ Event 043/046 Alien Invasions membership remains a separate design conflict.
 | --- | --- | --- |
 | 1 | Wars | implemented |
 | 2 | Liberations | implemented |
-| 3 | Diplomacy (runtime key `diplomatic_panic`) | implemented |
+| 3 | Diplomatic Panic (runtime key `diplomatic_panic`) | implemented |
 | 4 | Peace | implemented |
 | 5 | Natural Disasters | implemented |
 | 6 | Formables | implemented |
