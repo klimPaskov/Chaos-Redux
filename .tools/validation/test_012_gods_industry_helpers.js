@@ -114,6 +114,8 @@ class VM {
 	test(nodes,c,mode='AND') {
 		const check=n=>{
 			if(n.key==='custom_trigger_tooltip')return this.test(n.value.filter(x=>x.key!=='tooltip'),c);
+			// hidden_trigger only hides the tooltip; the engine evaluates it like AND.
+			if(n.key==='hidden_trigger')return this.test(n.value,c);
 			if(['AND','OR','NOT'].includes(n.key))return this.test(n.value,c,n.key);
 			if(n.key==='if') {const lim=n.value.find(x=>x.key==='limit');return !this.test(lim.value,c)||this.test(n.value.filter(x=>x!==lim),c);}
 			if(n.key==='else')return this.test(n.value,c);
@@ -209,7 +211,13 @@ class VM {
 	}
 	retireTuple() {for(const a of ['host_id','generation','origin_host_id','epoch','contract_id'])this.temp[P+'retire_'+a]=this.host.vars[R+a];}
 }
-module.exports = { parse, VM, effects, triggers, constants, external, fixed, country, state, P, R, root, read };
+// hidden_trigger only hides tooltip text and is evaluated like AND, so AST comparisons against
+// pre-wrapper snapshots splice its children into the parent list.
+function unhide(ns) {
+	if (!Array.isArray(ns)) return ns;
+	return ns.flatMap(n => n.key === 'hidden_trigger' && Array.isArray(n.value) ? unhide(n.value) : [Array.isArray(n.value) ? {...n, value: unhide(n.value)} : n]);
+}
+module.exports = { unhide, parse, VM, effects, triggers, constants, external, fixed, country, state, P, R, root, read };
 if (require.main === module) {
 let cases=0;
 function test(name,fn){fn();cases++;console.log('PASS '+name);}

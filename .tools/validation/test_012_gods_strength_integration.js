@@ -7,6 +7,7 @@
 const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto');
 const assert = require('node:assert/strict');
 const { InputsVM, parse, effects, triggers, constants, fixed, state, namedBlock, C, addCountry, P, F } = require('./test_012_gods_strength_inputs.js');
+const { unhide } = require('./test_012_gods_industry_helpers.js');
 const root = path.resolve(__dirname, '../..');
 const handoffs = 'docs/plans/012_africa_plans/subagent_handoffs/';
 const evidenceDir = path.join(root, handoffs, 'own_strength_integration_evidence');
@@ -272,7 +273,7 @@ function runSuite() {
 	test('pinned_eight_source_hashes_and_preserved_weighted_penalty_smoothing_tail', () => {
 		assert.equal(beforeSources.length, 8); assert(beforeSources.every(s => s.verified));
 		const oldBody = field(baseline, 'if').filter(n => n.key !== 'limit');
-		const current = withoutPrivateForeachState(field(effects[P + 'refresh_strength'], 'if').filter(n => n.key !== 'limit'));
+		const current = unhide(withoutPrivateForeachState(field(effects[P + 'refresh_strength'], 'if').filter(n => n.key !== 'limit')));
 		assert.deepEqual(field(field(effects[P + 'refresh_strength'], 'if'), 'limit'), parse(P + 'strength_host_is_current = yes'));
 		const index = oldBody.findIndex(n => n.key === 'set_temp_variable' && n.value[0].key === F + 'target'); assert(index > 0);
 		const gate = current.find(n => n.key === 'if' && walk(n.value).some(x => x.key === P + 'strength_input_factors_applied'));

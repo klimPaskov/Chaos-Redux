@@ -13,6 +13,7 @@ const fs = require('node:fs'), path = require('node:path'), crypto = require('no
 const assert = require('node:assert/strict');
 const {spawnSync} = require('node:child_process');
 const {parse, effects, triggers, constants, namedBlock, C, addCountry, P, F} = require('./test_012_gods_strength_inputs.js');
+const {unhide} = require('./test_012_gods_industry_helpers.js');
 const {IntegrationVM, runSuite: integrationSuite, decorate, invoke, sample, executeRetained,
 	assertPublished, snapshotPublic, callCount} = require('./test_012_gods_strength_integration.js');
 const root = path.resolve(__dirname, '../..'), scratch = path.join(root, '.tmp/012_gods_refresh_hooks');
@@ -327,7 +328,17 @@ function runSuite(baselineDir = scratch) {
 					});
 					assert.equal(removed, owners.length);
 				}
-				assert.deepEqual(projected, before, p + ': all non-hook AST, guards, prices and weights unchanged');
+				// f63ab274b wrapped internal flag checks in hidden_trigger (tooltip only) and 6f37b6085 removed the unreferenced
+				// owners below, so the snapshot is compared after splicing hidden_trigger and without those owners (the first-contact helpers
+				// went with the same commit).
+				const removedDeadOwners = ['gods_of_africa_resolve_extension', 'gods_of_africa_terminate_system', 'africa_prepare_first_contact_targets', 'africa_register_first_contact_regional_power', 'africa_register_first_contact_subject', 'africa_register_first_contact_threatened'];
+				for (const name of removedDeadOwners) assert(!current.some(n => n.key === name), name + ' stays removed');
+				// Owners that later shared-helper commits rewrote on purpose (ceeba4d9f first-proof failure transition,
+				// 8db1ce0c5 Event 19 pay and refund provider hooks); none of them carry a Strength hook.
+				const rewrittenAfterHooks = p === relations ? ['africa_record_lost_first_delegation', 'chaos_unit_family_provider_512_event19_pay_management_action', 'chaos_unit_family_provider_512_event19_refund_management_action', 'chaos_unit_family_provider_513_event19_pay_management_action', 'chaos_unit_family_provider_513_event19_refund_management_action'] : [];
+				const comparable = owners => owners.filter(n => !removedDeadOwners.includes(n.key) && !rewrittenAfterHooks.includes(n.key));
+				for (const name of rewrittenAfterHooks) assert(!walk(current.filter(n => n.key === name)).some(n => n.key === active), name + ' carries no Strength hook');
+				assert.deepEqual(comparable(unhide(projected)), comparable(unhide(before)), p + ': all non-hook AST, guards, prices and weights unchanged');
 				projection.push({path: p, beforePath: baseline, removedExactNodes: removed, projectedHash: sha(JSON.stringify(projected)), beforeHash: sha(JSON.stringify(before))});
 			}
 			evidence.structuralProjection = projection;

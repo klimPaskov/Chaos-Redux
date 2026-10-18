@@ -62,6 +62,10 @@ for (const item of manifest) {
 }
 for (const category of historical.get(decisionPath).filter(n => Array.isArray(n.value)))
 	for (const row of category.value) beforeDecisions.set(row.key, row.value);
+// hidden_trigger and custom_trigger_tooltip only change tooltip text; the engine evaluates their contents like AND.
+// Snapshots taken before f63ab274b and 5210c2414 are compared after splicing both wrappers (and the tooltip key).
+const plain = ns => Array.isArray(ns) ? ns.flatMap(n => (n.key === 'hidden_trigger' || n.key === 'custom_trigger_tooltip') && Array.isArray(n.value)
+	? plain(n.value.filter(x => !(n.key === 'custom_trigger_tooltip' && x.key === 'tooltip'))) : [Array.isArray(n.value) ? { ...n, value: plain(n.value) } : n]) : ns;
 const results = [], failures = [], executed = new Set(), boundaryCalls = new Set();
 function test(name, fn) {
 	try { const details = fn(); results.push({ name, status: 'passed', ...(details ?? {}) }); }
@@ -268,7 +272,8 @@ test('AST_preservation_all_existing_decisions_prices_weights_and_gameplay', () =
 		if (gated.includes(short)) {
 			const gate = gateFor(short);
 			assert.deepEqual(field(current, 'visible'), [{ key: gate, op: '=', value: 'yes' }, ...field(old, 'visible')], id + ' live visibility');
-			assert.deepEqual(field(current, 'available'), [{ key: 'hidden_trigger', op: '=', value: [{ key: gate, op: '=', value: 'yes' }] }, ...field(old, 'available')], id + ' availability');
+			assert.deepEqual(field(current, 'available')[0], { key: 'hidden_trigger', op: '=', value: [{ key: gate, op: '=', value: 'yes' }] }, id + ' availability gate');
+			assert.deepEqual(plain(field(current, 'available').slice(1)), plain(field(old, 'available')), id + ' availability');
 			const hidden = field(field(current, 'complete_effect'), 'hidden_effect');
 			assert.equal(hidden.length, 1); assert.equal(hidden[0].key, 'if');
 			assert.equal(field(hidden[0].value, 'limit')[0].key, gate);
@@ -277,7 +282,7 @@ test('AST_preservation_all_existing_decisions_prices_weights_and_gameplay', () =
 			assert.deepEqual(field(current, 'complete_effect').filter(n => n.key !== 'hidden_effect'), field(old, 'complete_effect').filter(n => n.key !== 'hidden_effect'));
 		} else {
 			assert.deepEqual(field(current, 'complete_effect'), field(old, 'complete_effect'), id + ' gameplay');
-			assert.deepEqual(field(current, 'available'), field(old, 'available'), id + ' availability');
+			assert.deepEqual(plain(field(current, 'available')), plain(field(old, 'available')), id + ' availability');
 		}
 	}
 	assert.equal(field(decisions.get(P + 'seek_reconciliation'), 'ai_hint_pp_cost'), undefined, 'mixed free/paid reconciliation must not reserve a fixed fee');
@@ -359,13 +364,18 @@ test('AST_owner_trigger_effect_and_tuning_preservation', () => {
 			expected = normalize(expected); assert.equal(replacements, 1);
 		}
 		const unchanged = ns => ns.filter(n => !(path === effectPath && industrialOwners.has(n.key)) && !strengthChangedOwners.get(path).has(n.key));
-		assert.deepEqual(unchanged(strip(load(path))), unchanged(expected), path + ' unchanged owners');
+		// 6f37b6085 removed these two owners as unreferenced dead code.
+		const deadOwners = ['gods_of_africa_resolve_extension', 'gods_of_africa_terminate_system'];
+		assert.deepEqual(plain(unchanged(strip(load(path)))), plain(unchanged(expected).filter(n => !deadOwners.includes(n.key))), path + ' unchanged owners');
 		if (path === effectPath) for (const [owner, hooks] of presentationHooks)
 			for (const hook of hooks) assert.equal(observed.get(owner + '/' + hook), 1, owner + ' exactly one ' + hook);
 	}
+	// 6f37b6085 removed this unreferenced trigger.
+	const deadTriggers = new Set([P + 'registry_review_due']);
 	for (const old of historical.get(triggerPath)) {
+		if (deadTriggers.has(old.key)) { assert(!load(triggerPath).some(n => n.key === old.key), old.key + ' stays removed'); continue; }
 		const actual = block(load(triggerPath), old.key);
-		if (suffixes.includes(old.key.slice(P.length))) assert.deepEqual(actual, [{ key: 'NOT', op: '=', value: [{ key: 'has_country_flag', op: '=', value: P + 'final_ultimatum_pending' }] }, ...old.value]);
+		if (suffixes.includes(old.key.slice(P.length))) assert.deepEqual(plain(actual), plain([{ key: 'NOT', op: '=', value: [{ key: 'has_country_flag', op: '=', value: P + 'final_ultimatum_pending' }] }, ...old.value]));
 		else if (old.key === P + 'participant_can_receive_protection' && actual.length === 1 && actual[0].key === 'custom_trigger_tooltip') {
 			// Parent-owned F2: this exact wrapper and one private policy gate.
 			assert.equal(actual[0].op, '=');
@@ -378,10 +388,13 @@ test('AST_owner_trigger_effect_and_tuning_preservation', () => {
 			// Physical industrial payment gates are executed in the integration suite.
 			assert.ok(allNodes(actual).some(n => n.key === P + (old.key.endsWith('can_be_paid') ? 'industry_full_payment_can_execute' : 'industry_partial_payment_can_execute')));
 		}
-		else assert.deepEqual(actual, old.value, old.key);
+		else assert.deepEqual(plain(actual), plain(old.value), old.key);
 	}
 	const constantPath = 'common/script_constants/012_africa_gods_constants.txt';
-	const expectedTuning = historical.get(constantPath).map(n => n.key === P + 'strength' ? { ...n, value: n.value.filter(x => x.key !== 'chaos_divisor') } : n);
+	// 6f37b6085 removed the unreferenced response and history constant categories.
+	const deadCategories = [P + 'response', P + 'history'];
+	for (const name of deadCategories) assert(!load(constantPath).some(n => n.key === name), name + ' stays removed');
+	const expectedTuning = historical.get(constantPath).filter(n => !deadCategories.includes(n.key)).map(n => n.key === P + 'strength' ? { ...n, value: n.value.filter(x => x.key !== 'chaos_divisor') } : n);
 	const currentTuning = load(constantPath).map(n => {
 		if (n.key === P + 'history_kind') {
 			assert.deepEqual(n.value.filter(x => x.key === 'industry_service_ended'), [{ key: 'industry_service_ended', op: '=', value: '23' }]);
@@ -501,7 +514,7 @@ test('012_GODS_HOST_REPLIES_PREEMPT_and_daily_prewarm', () => {
 	for (const id of answers) {
 		const row = decisions.get(P + id), old = beforeDecisions.get(P + id);
 		assert.deepEqual(field(row, 'target_trigger'), [{ key: 'FROM', op: '=', value: [{ key: 'exists', op: '=', value: 'yes' }] }]);
-		assert.deepEqual(field(row, 'available'), field(old, 'available'));
+		assert.deepEqual(plain(field(row, 'available')), plain(field(old, 'available')));
 		const f = fixture(); assert.equal(f.visible(id), false);
 		const ctx = f.context(); assert.equal(f.every(field(row, 'target_trigger'), ctx), true);
 		offer(f, id === 'accept_reconciliation' ? 'paid' : 'substitute');

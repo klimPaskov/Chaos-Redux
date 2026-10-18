@@ -42,7 +42,7 @@ function fixture() {
 	}
 	function condition(nodes, actor) { return nodes.every(n => {
 		if (n.key === 'NOT') return !condition(n.value, actor);
-		if (n.key === 'AND') return condition(n.value, actor);
+		if (n.key === 'AND' || n.key === 'hidden_trigger') return condition(n.value, actor); // hidden_trigger hides the tooltip only; the engine evaluates it like AND
 		if (n.key === 'OR') return n.value.some(x => condition([x], actor));
 		if (n.key === 'has_variable') { const [vars, key] = ref(n.value, actor); return vars.has(key); }
 		if (n.key === 'has_country_flag') return actor.flags.has(n.value);

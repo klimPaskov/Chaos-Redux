@@ -15,6 +15,7 @@
 const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto');
 const {spawnSync, execFileSync} = require('node:child_process');
 const assert = require('node:assert/strict');
+const { unhide } = require('./test_012_gods_industry_helpers.js');
 const { InputsVM, parse, effects, triggers, constants, fixed, state, namedBlock, C, addCountry, P, F } = require('./test_012_gods_strength_inputs.js');
 const { IntegrationVM, runSuite: strengthSuite, worldCensus, stageScalars, stageArrays, decorate, invoke, executeRetained, assertPrivateReset } = require('./test_012_gods_strength_integration.js');
 const root = path.resolve(__dirname, '../..'), defaultBaseline = path.join(root, '.tmp/012_gods_iterator_isolation');
@@ -170,7 +171,10 @@ function runSuite(baselineDir = defaultBaseline) {
 			assert.equal(inventory.length, 144); assert.equal(new Set(inventory.map(r => r.breakVariable)).size, 144);
 			const seen = new Set(); let previousExplicit = 0;
 			for (const file of new Set(inventory.map(r => r.path))) {
-				const current = auditParse(read(file)), before = auditParse(beforeSource(file));
+				// Owners that 6f37b6085 removed as unreferenced dead code are absent from the current file.
+				const removedOwners = new Set(['gods_of_africa_resolve_extension', 'gods_of_africa_terminate_system']);
+				const current = auditParse(read(file)), before = auditParse(beforeSource(file)).filter(owner => !removedOwners.has(owner.key));
+				for (const name of removedOwners) assert(!current.some(owner => owner.key === name), name + ' stays removed');
 				function strip(ns, owner) {
 					const result = [];
 					for (let i = 0; i < ns.length; i++) {
@@ -188,7 +192,19 @@ function runSuite(baselineDir = defaultBaseline) {
 					}
 					return result;
 				}
-				assert.deepEqual(strip(current, null), before, file + ': non-break AST changed');
+				// Later intentional additions inside the otherwise unchanged owners. 17520e6b2 appended the Strength
+				// refresh hook (test_012_gods_refresh_hooks pins each hook site), and 586ed38d0 made the successor copy
+				// of the sponsorship target list reopen the obligation decision for targets that owe something.
+				const laterAddition = n => (n.key === 'gods_of_africa_refresh_active_strength' && n.value === 'yes')
+					|| (n.key === 'if' && n.value.some(x => x.key === 'activate_targeted_decision' && x.value.some(y => y.key === 'decision' && y.value === 'africa_world_sponsorship_obligation')));
+				const withoutRefreshHook = ns => ns.filter(n => !laterAddition(n)).map(n => Array.isArray(n.value) ? {...n, value: withoutRefreshHook(n.value)} : n);
+				// africa_world_install_current_package and africa_world_default_current_sponsorship_obligation were rewritten
+				// by 586ed38d0 and c041810a8 (sponsorship guarantees, default penalties and the decision merge), so their
+				// bodies are no longer comparable with the pinned source. Its loop bindings are still
+				// verified by strip, and its ordinal sequence by the final ordinal check.
+				const rewrittenAfterPin = new Set(['africa_world_install_current_package', 'africa_world_default_current_sponsorship_obligation']);
+				const comparable = owners => owners.filter(owner => owner.key !== 'gods_of_africa_refresh_active_strength' && !rewrittenAfterPin.has(owner.key));
+				assert.deepEqual(comparable(withoutRefreshHook(unhide(strip(current, null)))), comparable(unhide(before)), file + ': non-break AST changed');
 				previousExplicit += walk(before).filter(n => ['for_each_loop', 'for_each_scope_loop'].includes(n.key) && n.value.some(x => x.key === 'break')).length;
 			}
 			assert.deepEqual([...seen].sort(), inventory.map(r => r.breakVariable).sort());
