@@ -96,7 +96,10 @@ through their owning effects and must call the matching clamp helper.
 
 Each route conference is a single political transaction. Its package helper
 first verifies that no incompatible shared route was locked while the timed
-conference ran. It then writes the shared route and package route together,
+conference ran. The IW-093 conference focus does not read the shared route lock, because
+a compatible shared route must still allow the package conference; the IW-093
+route-lock flag is written with the package route and cleared with it. It then
+writes the shared route and package route together,
 sets party popularities from a centralized 100-point distribution, and
 changes legitimacy, recognition, administrative capacity, security, and
 instability. The emergency routes trade recognition and legitimacy for
