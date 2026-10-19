@@ -1,0 +1,152 @@
+# Elephant-specific state wrapper around the installed vanilla rider.
+# The elephant root propagates these unique seated/combat states, using the
+# installed rider mesh, native clips, and inherited weapon attachments.
+entity = {
+	clone = "infantry_rider_entity"
+	name = "chaosx_elephant_rider_entity"
+	default_state = "elephant_idle"
+	get_state_from_parent = yes
+
+	state = {
+		name = "elephant_attack"
+		animation = "attack"
+		animation_blend_time = 0.0
+		propagate_state = { rifle2 = "defend" }
+	}
+	state = {
+		name = "elephant_defend"
+		animation = "attack"
+		animation_blend_time = 0.0
+		propagate_state = { rifle2 = "defend" }
+	}
+	state = {
+		name = "elephant_support_attack"
+		animation = "support_attack"
+		animation_blend_time = 0.0
+		propagate_state = { rifle2 = "support_attack" }
+	}
+
+	state = {
+		name = "elephant_idle"
+		animation = "elephantry_idle"
+		animation_blend_time = 0.0
+		propagate_state = { rifle2 = "idle" }
+	}
+	state = {
+		name = "elephant_move"
+		animation = "elephantry_move"
+		animation_blend_time = 0.0
+		propagate_state = { rifle2 = "idle" }
+	}
+	state = {
+		name = "elephant_training"
+		animation = "elephantry_idle"
+		animation_blend_time = 0.0
+		propagate_state = { rifle2 = "idle" }
+	}
+	state = {
+		name = "elephant_death"
+		animation = "elephantry_idle"
+		animation_blend_time = 0.0
+		propagate_state = { rifle2 = "idle" }
+	}
+}
+
+# Elephantry mount with eight articulated roles and an installed rider.
+entity = {
+	name = "elephantry_entity"
+	pdxmesh = "chaosx_elephant_mesh"
+	default_state = "idle"
+	scale = 0.8
+
+	state = {
+		name = "idle"
+		event = { time = 2.281916 trigger_once = yes node = "Head" sound = { soundeffect = "chaosx_elephant_idle_call" } }
+		animation = "idle"
+		animation_blend_time = 0.0
+		looping = yes
+		propagate_state = { infantry_unit = "elephant_idle" }
+	}
+	state = {
+		name = "move"
+		event = { time = 0.515249 trigger_once = no node = "Front_L_Foot" sound = { soundeffect = "chaosx_elephant_move_contact" } }
+		event = { time = 1.115249 trigger_once = no node = "Rear_R_Foot" sound = { soundeffect = "chaosx_elephant_move_contact" } }
+		event = { time = 1.681916 trigger_once = no node = "Front_R_Foot" sound = { soundeffect = "chaosx_elephant_move_contact" } }
+		event = { time = 2.281916 trigger_once = no node = "Rear_L_Foot" sound = { soundeffect = "chaosx_elephant_move_contact" } }
+		animation = "move"
+		animation_blend_time = 0.0
+		looping = yes
+		propagate_state = { infantry_unit = "elephant_move" }
+	}
+	state = {
+		name = "retreat"
+		event = { time = 0.381916 trigger_once = no node = "Front_L_Foot" sound = { soundeffect = "chaosx_elephant_move_contact" } }
+		event = { time = 0.848583 trigger_once = no node = "Rear_R_Foot" sound = { soundeffect = "chaosx_elephant_move_contact" } }
+		event = { time = 1.315249 trigger_once = no node = "Front_R_Foot" sound = { soundeffect = "chaosx_elephant_move_contact" } }
+		event = { time = 1.748583 trigger_once = no node = "Rear_L_Foot" sound = { soundeffect = "chaosx_elephant_move_contact" } }
+		animation = "retreat"
+		animation_blend_time = 0.0
+		looping = yes
+		propagate_state = { infantry_unit = "elephant_move" }
+	}
+	state = {
+		name = "attack"
+		event = { time = 0.348583 trigger_once = yes node = "Head" sound = { soundeffect = "chaosx_elephant_attack_call" } }
+		event = { time = 1.115249 trigger_once = yes node = "Front_L_Foot" sound = { soundeffect = "chaosx_elephant_impact_contact" } }
+		event = { time = 1.215249 trigger_once = yes node = "Front_R_Foot" sound = { soundeffect = "chaosx_elephant_move_contact" } }
+		event = { time = 2.598583 trigger_once = yes node = "Front_L_Foot" sound = { soundeffect = "chaosx_elephant_move_contact" } }
+		event = { time = 2.598583 trigger_once = yes node = "Front_R_Foot" sound = { soundeffect = "chaosx_elephant_move_contact" } }
+		animation = "attack"
+		animation_blend_time = 0.0
+		looping = no
+		next_state = "attack"
+		propagate_state = { infantry_unit = "elephant_attack" }
+	}
+	state = {
+		name = "defend"
+		event = { time = 0.681916 trigger_once = yes node = "Head" sound = { soundeffect = "chaosx_elephant_attack_call" } }
+		event = { time = 1.381916 trigger_once = yes node = "Front_L_Foot" sound = { soundeffect = "chaosx_elephant_impact_contact" } }
+		event = { time = 1.481916 trigger_once = yes node = "Front_R_Foot" sound = { soundeffect = "chaosx_elephant_impact_contact" } }
+		event = { time = 2.698583 trigger_once = yes node = "Front_L_Foot" sound = { soundeffect = "chaosx_elephant_move_contact" } }
+		event = { time = 2.715249 trigger_once = yes node = "Front_R_Foot" sound = { soundeffect = "chaosx_elephant_move_contact" } }
+		animation = "defend"
+		animation_blend_time = 0.0
+		looping = no
+		next_state = "defend"
+		propagate_state = { infantry_unit = "elephant_defend" }
+	}
+	state = {
+		name = "support_attack"
+		event = { time = 1.248583 trigger_once = yes node = "Head" sound = { soundeffect = "chaosx_elephant_attack_call" } }
+		animation = "support_attack"
+		animation_blend_time = 0.0
+		looping = no
+		next_state = "support_attack"
+		propagate_state = { infantry_unit = "elephant_support_attack" }
+	}
+	state = {
+		name = "training"
+		event = { time = 0.215023 trigger_once = yes node = "Howdah" sound = { soundeffect = "chaosx_elephant_supply_load_creak" } }
+		event = { time = 1.181916 trigger_once = yes node = "Front_L_Foot" sound = { soundeffect = "chaosx_elephant_move_contact" } }
+		event = { time = 2.631916 trigger_once = yes node = "Front_L_Foot" sound = { soundeffect = "chaosx_elephant_move_contact" } }
+		event = { time = 2.715249 trigger_once = yes node = "Front_R_Foot" sound = { soundeffect = "chaosx_elephant_move_contact" } }
+		event = { time = 3.998583 trigger_once = yes node = "Front_R_Foot" sound = { soundeffect = "chaosx_elephant_move_contact" } }
+		animation = "training"
+		animation_blend_time = 0.0
+		looping = no
+		next_state = "training"
+		propagate_state = { infantry_unit = "elephant_training" }
+	}
+	state = {
+		name = "death"
+		event = { time = 0.848583 trigger_once = yes node = "Head" sound = { soundeffect = "chaosx_elephant_death_call" } }
+		event = { time = 1.465249 trigger_once = yes node = "Rear_R_Foot" sound = { soundeffect = "chaosx_elephant_move_contact" } }
+		event = { time = 2.998583 trigger_once = yes node = "Spine_Back" sound = { soundeffect = "chaosx_elephant_impact_contact" } }
+		animation = "death"
+		animation_blend_time = 0.0
+		looping = no
+		propagate_state = { infantry_unit = "elephant_death" }
+	}
+
+	attach = { name = "infantry_unit" Saddle_Node = "chaosx_elephant_rider_entity" }
+}
