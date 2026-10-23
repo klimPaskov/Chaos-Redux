@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the flat Chaos Redux source bundle used for ChatGPT projects."""
+"""Build the Chaos Redux source bundle with linked skill guidance in its ZIP."""
 
 from __future__ import annotations
 
@@ -96,18 +96,24 @@ def write_subagents_archive(destination: Path, sources: list[Path]) -> None:
 				raise OSError(f"Subagent archive content verification failed: {source}")
 
 
-def write_all_sources_archive(staging: Path, names: set[str]) -> None:
-	"""Archive and verify every loose file produced by the packager."""
+def write_all_sources_archive(staging: Path, files: dict[str, Path], root: Path) -> None:
+	"""Archive staged files with canonical skill paths so relative links work."""
+	skills_dir = root / ".claude" / "skills"
+	archive_files = {
+		(source.relative_to(root).as_posix() if skills_dir in source.parents else name): staging / name
+		for name, source in files.items()
+	}
+	archive_files["subagents.zip"] = staging / "subagents.zip"
 	destination = staging / ALL_SOURCES_ARCHIVE
 	with zipfile.ZipFile(destination, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
-		for name in sorted(names):
-			archive.write(staging / name, arcname=name)
+		for name, source in sorted(archive_files.items()):
+			archive.write(source, arcname=name)
 
 	with zipfile.ZipFile(destination, "r") as archive:
-		if archive.namelist() != sorted(names):
+		if archive.namelist() != sorted(archive_files):
 			raise OSError("Project sources archive entry verification failed")
-		for name in names:
-			if archive.read(name) != (staging / name).read_bytes():
+		for name, source in archive_files.items():
+			if archive.read(name) != source.read_bytes():
 				raise OSError(f"Project sources archive content verification failed: {name}")
 
 
@@ -170,6 +176,7 @@ def build_package(output: Path, root: Path, *, make_zip: bool, dry_run: bool) ->
 			print(f"  {destination} <- {source.relative_to(root)}")
 		print(f"  subagents.zip <- {len(subagents)} files from .claude/agents")
 		print(f"  {ALL_SOURCES_ARCHIVE} <- all {len(loose_names)} loose bundle files")
+		print("    Skills retain their .claude/skills/<skill>/ paths inside the archive")
 		return source_count, total_bytes
 
 	validate_output(output, root, {*loose_names, ALL_SOURCES_ARCHIVE})
@@ -183,7 +190,7 @@ def build_package(output: Path, root: Path, *, make_zip: bool, dry_run: bool) ->
 			if not filecmp.cmp(source, copied, shallow=False):
 				raise OSError(f"Copied file verification failed: {source}")
 		write_subagents_archive(staging / "subagents.zip", subagents)
-		write_all_sources_archive(staging, loose_names)
+		write_all_sources_archive(staging, files, root)
 		install_staging_directory(staging, output)
 	except Exception:
 		if staging.exists():
@@ -204,7 +211,7 @@ def build_package(output: Path, root: Path, *, make_zip: bool, dry_run: bool) ->
 
 def parse_args() -> argparse.Namespace:
 	parser = argparse.ArgumentParser(
-		description="Build the flat Chaos Redux source bundle for a ChatGPT project."
+		description="Build the Chaos Redux source bundle with skill folder structure preserved in its ZIP."
 	)
 	parser.add_argument(
 		"--output",

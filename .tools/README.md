@@ -28,10 +28,10 @@ Before retiring a tool, search its filename, module name, output signatures, and
 - `package_chatgpt_project_sources.py` builds the curated ChatGPT project-source bundle and places `all-project-sources.zip` beside the loose files in the output folder. `package_chatgpt_project_sources.bat` is the Windows launcher and opens the finished package by default.
 
 The packager reads canonical `.claude/skills/chaos-redux-*/` skills and includes their Markdown guidance recursively, including nested reference and template documents.
-Main skill files retain names such as `chaos-redux-events.md`; supplemental files use the skill name and relative path separated by `__`, such as `chaos-redux-events__references__event-log-evolutions-and-clusters.md`.
-These files appear both loose and inside `all-project-sources.zip`.
+Loose main skill files retain names such as `chaos-redux-events.md`; loose supplemental files use the skill name and relative path separated by `__`, such as `chaos-redux-events__references__event-log-evolutions-and-clusters.md`.
+Inside `all-project-sources.zip`, skills preserve their original `.claude/skills/<skill>/SKILL.md`, `references/`, and other guidance subfolder paths so relative links work after extraction.
 Asset libraries, tools, scripts, vendor dependencies, `node_modules`, caches, and hidden subdirectories are excluded from skill traversal, and only `.md` files are copied from skills.
-The package remains flat, and filename collisions stop packaging instead of silently replacing guidance.
+The loose files remain flat for individual uploads, and filename collisions stop packaging instead of silently replacing guidance.
 
 Run the catalog exporter after every successful workbook edit:
 
