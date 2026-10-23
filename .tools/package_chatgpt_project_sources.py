@@ -16,6 +16,7 @@ from pathlib import Path
 
 PACKAGE_NAME = "chaos-redux-chatgpt-project-sources"
 ALL_SOURCES_ARCHIVE = "all-project-sources.zip"
+SKILL_EXCLUDED_DIRS = {"assets", "tools", "scripts", "vendor", "node_modules", "__pycache__"}
 
 STATIC_FILES = {
 	"AGENTS.md": Path("AGENTS.md"),
@@ -41,12 +42,31 @@ def default_output() -> Path:
 def collect_sources(root: Path) -> dict[str, Path]:
 	"""Return destination names mapped to their authoritative source files."""
 	files = {name: root / relative for name, relative in STATIC_FILES.items()}
+	destination_names = {name.casefold() for name in files}
 
 	skills_dir = root / ".claude" / "skills"
 	for skill_dir in sorted(skills_dir.glob("chaos-redux-*")):
-		source = skill_dir / "SKILL.md"
-		if source.is_file():
-			files[f"{skill_dir.name}.md"] = source
+		if not (skill_dir / "SKILL.md").is_file():
+			continue
+		for directory, subdirectories, filenames in os.walk(skill_dir):
+			# Prune asset libraries and executable/dependency trees before descending.
+			subdirectories[:] = sorted(
+				name for name in subdirectories
+				if not name.startswith(".") and name.casefold() not in SKILL_EXCLUDED_DIRS
+			)
+			for filename in sorted(filenames):
+				source = Path(directory) / filename
+				if source.suffix.lower() != ".md" or source.is_symlink():
+					continue
+				relative = source.relative_to(skill_dir)
+				if relative == Path("SKILL.md"):
+					destination = f"{skill_dir.name}.md"
+				else:
+					destination = "__".join((skill_dir.name, *relative.parts))
+				if destination.casefold() in destination_names:
+					raise ValueError(f"Duplicate flattened package filename: {destination} ({source})")
+				files[destination] = source
+				destination_names.add(destination.casefold())
 
 	missing = [str(source) for source in files.values() if not source.is_file()]
 	if missing:
