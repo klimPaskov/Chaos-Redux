@@ -2,7 +2,7 @@
 
 When implementation is separately authorized, implement the accepted Event 104 Rule design to its fullest supported extent.
 The user's 10 October 2026 choice accepts 104 Rule and companion 105 Random Idea as planning IDs.
-Migrate the old catalog labels only within later authorized catalog work. The user released legacy Rule 107 for Lootboxes 107 on 10 October 2026, while legacy Random Idea 110 remains held.
+Use the catalog identity migration authorized by the user on 24 October 2026. Current identities are Rule 104 and Random Idea 105; the former Rule row 107 belongs to Lootboxes and the former Random Idea row 110 moved with that design. Consult the [shared identifier registry](../shared_identifier_registry.md#imported-event-identity-proposals). This migration does not authorize gameplay design changes or runtime registration.
 Read the six `104_rule_spec_part_*` files, `104_rule_native_feasibility.md`, `104_rule_implementation_handoff.md`, `104_rule_validation_matrix.md`, `104_rule_subagent_and_mcp_usage_map.md`, and the source authority and improvement closure documents before making gameplay changes.
 Read current AGENTS, owner skills, dynamic helper documentation, achievement framework, relevant consumer instructions, and assigned role definitions as required by their current contracts.
 The historical source protocol and archived instruction copies are provenance, rather than additional current files to recreate or a repeated source-reading gate.

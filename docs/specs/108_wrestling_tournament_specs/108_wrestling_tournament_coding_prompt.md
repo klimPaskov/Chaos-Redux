@@ -20,9 +20,9 @@ Use the current shared commit workflow for any authorized repository delivery.
 
 Reinspect source owners at the actual coding revision.
 The planning evidence is pinned to `a3ef485c5da7e2337122eca04ac65c175050f251` and does not establish the state of a later checkout.
-Reconcile current Event 108, original catalogue ID 113, Minor Repeatable, To Be Reworked, Chaos 1 and unassigned cluster before editing registration or the canonical workbook.
+Use current Event 108 catalog identity under the user's 24 October 2026 authorization to adopt uploaded IDs and migrate the catalog. Former catalog row 113 is historical provenance; consult the [shared identifier registry](../shared_identifier_registry.md#imported-event-identity-proposals) for the current map. Preserve the accepted Minor Repeatable, To Be Reworked, Chaos 1 and unassigned-cluster design metadata. This migration does not approve gameplay design or runtime registration.
 The proposed root is `chaosx.nr108.1`.
-Inspect identifier collisions rather than replacing the legacy unrelated Event 108 or assuming old Event 116 is the present Sparta owner.
+Use the user-authorized current identity map in the [shared identifier registry](../shared_identifier_registry.md#imported-event-identity-proposals). Preserve unrelated legacy concepts and runtime owners; do not treat former numeric rows as additional live events. Runtime remains Unavailable pending implementation.
 
 ## Establish the native implementation first
 

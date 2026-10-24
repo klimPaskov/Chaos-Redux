@@ -14,43 +14,41 @@ Real peaceful contributions through existing shared systems can reduce this infl
 
 | Field | Required design |
 | --- | --- |
-| Event number | 107, selected by the user; shared catalog and registry migration remains parent-owned |
+| Event number | 107, accepted canonical uploaded ID; catalog and registry migration is accepted and parent-owned |
 | Established event name | Lootboxes |
 | Event type | Minor Fire-Once in the imported design; unresolved pending parent acceptance |
 | Package disposition | Explicitly confirmed core constraints are accepted; remaining imported design claims are unresolved. See [README.md](README.md). |
 | Chaos level | 1 in the imported design; unresolved pending parent acceptance |
 | Cluster | Standalone in the imported design; unresolved pending parent acceptance |
-| Recipient | The country selected by the normal event recipient route |
+| Recipients | Every country existing at the first global firing, including every human country, subject, and minor |
 | Lasting access | One permanent country-owned Lootboxes category |
 | Repeatable activity | Buying and opening boxes after access has been granted |
-| Purchase price | Exactly 50 Political Power for every box |
+| Later purchase price | Exactly 50 Political Power for every purchased box |
 | Opening price | Zero |
 | Opening interactions | Five accepted chest activations |
-| Pending inventory | One paid, unresolved box per country |
+| Pending inventory | At most one unresolved box per country, whether free welcome or paid, until that box resolves |
 
-The initial event retains the shared Fire-Once selection contract. Repeat purchases do not re-fire the opening event, count as new initial event occurrences, or turn its catalog entry into a repeatable event. Normal event selection may offer it independently without a cluster-member severity.
+The initial event has one global first-fire distribution. A root-level first-fire guard admits that distribution once, then one all-country pass grants exactly one welcome box to every country that exists at that moment. A per-country first-grant guard makes each delivery idempotent. Repeat purchases do not re-fire the event, count as new initial event occurrences, or create recurring worldwide gifts. No later-created country receives an automatic welcome box.
 
-Access does not require the recipient to have 50 Political Power at the moment the event arrives. A country with little Political Power can receive the category and purchase later. War, peace, ideology, subject status, and a small industrial base are not additional Lootboxes access gates. The normal shared recipient filter remains responsible for excluding invalid administrative, deleted, or test-only recipients from ordinary selection.
-
-An implementation must preserve this narrow distribution. It must not grant access to every country merely because one country received the initial event. Forced test or existing administrative delivery routes must use the same idempotent access helper. Repeating such a request for the same country must not reset its pending box, reward history, rarity adaptation, or influence.
+The first-fire distribution does not select a single recipient. It includes every existing country, including human-controlled countries in multiplayer, AI countries, subjects, and minors, without a Political Power affordability gate or human-exclusion roll. Every recipient receives lasting access and one free sealed welcome box. The first-fire guard and per-country first-grant guard prevent repeated delivery from changing access, the pending box, reward history, rarity adaptation, or influence.
 
 ## First encounter
 
-The opening report presents an unfamiliar supply market whose political cost is clear and whose contents remain uncertain. Its art should fit the mod's period presentation while making the chest recognizable as the object used in the later opening window. The report establishes permanent access and points naturally toward the decisions interface.
+The first-fire event introduces an unfamiliar supply market whose contents remain uncertain. Its art should fit the mod's period presentation while making the chest recognizable in the welcome opening window that appears automatically for every human recipient. The global delivery grants lasting access and presents the free welcome box immediately.
 
-The report does not give a free demonstration box. This keeps the first opening inside the same 50 PP transaction that will govern every later purchase. Acknowledging the report grants or confirms access only once. There is no separate irreversible choice about accepting a curse, choosing a rarity track, or joining an organization.
+The first-fire welcome box is free and enters the same opening flow as an ordinary box. Its rarity and complete reward are sampled and sealed through the normal selection path. Every human recipient sees the dedicated window automatically on first delivery and opens the box through five meaningful chest clicks. AI recipients use the same authoritative gameplay resolver without a human GUI. The welcome box records explicit zero-payment provenance and does not claim or debit 50 PP. The first-fire event gives access and the box once; it does not create a separate irreversible choice about accepting a curse, choosing a rarity track, or joining an organization.
 
 Writing direction should be concise and slightly curious. The humour comes from a national government treating unexplained boxes as an ordinary procurement opportunity. The opening should not explain the concealed influence, identify a demon, diagnose dependence, or advertise a future achievement route. Final report text and the acknowledgement remark are authored during localisation production. Structural names in this package are working labels unless the brief already establishes them.
 
 ## The recurring player loop
 
-The category remains easy to understand after the initial report. In its normal state it offers one purchase action with the standard Political Power icon and the exact 50 PP cost. An unresolved paid box replaces that action with a free resumption action. The player should never need to navigate an inventory, choose a box size, select a currency conversion, or find a separate redemption menu.
+The category remains easy to understand after the welcome opening. In its normal state it offers one later purchase action with the standard Political Power icon and the exact 50 PP cost. An unresolved paid or welcome box replaces that action with a free resumption action. The player should never need to navigate an inventory, choose a box size, select a currency conversion, or find a separate redemption menu.
 
 Purchasing creates a durable country-owned record before the opening window is shown. That record seals the rarity, shell family, reward contents, quantities, delivery policies, and relevant reward evolution state. It also records that the exact 50 PP was paid. These facts are not recreated by opening the GUI.
 
-Arrival starts the chest animation. Each accepted click advances one stage and produces a distinct physical reaction. The first four clicks do not grant anything. The fifth accepted click commits the completed opening through one authoritative resolver. That resolver delivers the full sealed reward, records completion, updates rarity history once, and adds hidden influence once. An omen evaluation is a separate consequence of the completed opening and is never a component in the prize manifest.
+Arrival starts the chest animation. Each accepted click advances one stage and produces a distinct physical reaction. The first four clicks do not grant anything. The fifth accepted click commits either the welcome or paid opening through one authoritative resolver. That resolver delivers the full sealed reward, records completion, updates ordinary rarity history once, and adds hidden influence once. The welcome opening keeps ordinary completion accounting but its separate zero-payment provenance never records a 50 PP purchase. An omen evaluation is a separate consequence of the completed opening and is never a component in the prize manifest.
 
-After a successful reveal, the result screen shows the exact rarity and every delivered benefit. It remains readable until the player closes it. A short flourish may finish before the result settles, but the player is not forced to wait through a long cinematic. The next purchase becomes available through the same category once this paid opening has resolved. Closing the result is navigation and cannot grant, remove, or recalculate a prize.
+After a successful reveal, the result screen shows the exact rarity and every delivered benefit. It remains readable until the player closes it. A short flourish may finish before the result settles, but the player is not forced to wait through a long cinematic. The next purchase becomes available through the same category once the welcome or paid opening has resolved. Closing the result is navigation and cannot grant, remove, or recalculate a prize.
 
 ## Authoritative state model
 
@@ -58,30 +56,31 @@ The following labels describe internal states. They are not final localisation o
 
 | State | Player-visible behavior | Authoritative consequence | Permitted next state |
 | --- | --- | --- | --- |
-| Access unavailable | Category absent | No purchase or GUI entry | Access ready after a valid initial grant |
+| Access unavailable | Category absent | No purchase or GUI entry | Access and welcome box ready after the globally guarded first-fire grant |
 | Access ready | One purchase action | Recheck affordability and delivery readiness at activation | Paid and sealed |
-| Paid and sealed | Chest arrives or free resumption is available | One receipt proves 50 PP paid and fixes the prize | Opening stages 0 to 4 |
+| Welcome box sealed | Chest arrives automatically for human recipients; AI enters the common resolver | One first-fire receipt proves zero payment and fixes the ordinary sampled prize | Opening stages 0 to 4 or AI resolution |
+| Paid and sealed | Chest arrives or free resumption is available | One receipt proves exactly 50 PP paid and fixes the prize | Opening stages 0 to 4 |
 | Opening stages 0 to 4 | Current chest condition and physical click response | Each accepted input advances one stage, with no reward or influence charge | Next stage or hidden window |
-| Window hidden with a paid box | Free resumption replaces purchase | Pending reward and click stage remain unchanged | Same opening stage when resumed |
+| Window hidden with an unresolved box | Free resumption replaces purchase | Pending reward, provenance, and click stage remain unchanged | Same opening stage when resumed |
 | Fifth activation resolving | Final opening begins | One fresh completion receipt authorizes the complete grant and one influence increase | Result available |
 | Result available | Rarity and full delivered contents | Durable completion proof makes repeats harmless | Result closed or later result view |
 | Result closed | Category returns to purchase state | Completed proof remains, transient visual state can clear | New independent purchase |
 
-GUI animation frames are presentation state. They do not become the payment or reward authority. A completed click stage may be saved even if its impact animation has not yet settled. Reloading that state restores a coherent settled pose for the saved stage, without inventing another accepted click or repeating the associated gameplay effects.
+GUI animation frames are presentation state. They do not become the payment or reward authority. A completed click stage may be saved even if its impact animation has not yet settled. Both welcome and paid boxes share this persistence contract. Reloading that state restores a coherent settled pose for the saved stage, without inventing another accepted click or repeating the associated gameplay effects.
 
-The final resolving transition must have an explicit duplicate-call guard. Merely finding an old record marked consumed does not authorize another grant. The current invocation must receive fresh proof that it alone accepted the unresolved purchase. Repeated input, stale callbacks, co-operative multiplayer clicks, and reload recovery all consult the same country and purchase identity.
+The fifth click grants nothing until the normal completion transition; the first four accepted clicks grant nothing. The final resolving transition must have an explicit duplicate-call guard. Merely finding an old record marked consumed does not authorize another grant. The current invocation must receive fresh proof that it alone accepted the unresolved box. Repeated input, stale callbacks, co-operative multiplayer clicks, and reload recovery all consult the same country and transaction identity, regardless of whether its provenance is welcome or paid.
 
 ## Payment and sealing contract
 
-The purchase uses one authoritative fixed quote of 50 PP. The displayed amount, enabled state, click-time affordability check, debit, and receipt must agree. Exactly 50 PP is sufficient. An amount below 50 is insufficient. The opening stage has no price field that can accidentally debit the player again.
+Every later purchase uses one authoritative fixed quote of 50 PP. The displayed amount, enabled state, click-time affordability check, debit, and paid receipt must agree. Exactly 50 PP is sufficient. An amount below 50 is insufficient. The free welcome grant bypasses purchase affordability only and carries explicit zero-payment provenance. Opening either kind of box has no price field that can debit the player again.
 
 The fixed price is an explicit exception to variable pricing and sale modifiers. Premium status does not change it. Black Friday and other shared discount sources must not silently turn it into 25 PP, 12.5 PP, or another amount. This exception applies only to the Lootboxes purchase and must not alter shared discounts for other actions.
 
-The purchase preflight validates the country, access, absence of an unresolved purchase, payment capacity, and a complete certified reward pool. It must not mutate gameplay or sample a prize merely because the player hovers a tooltip. Once activated, the action establishes one purchase identity, seals its result, records the actual payment, and opens the local presentation. Rejected preflight leaves Political Power, random history, influence, and cooldowns unchanged.
+A later paid-purchase preflight validates the country, access, absence of an unresolved purchase, 50 PP payment capacity, and a complete certified reward pool. It must not mutate gameplay or sample a prize merely because the player hovers a tooltip. The one-time welcome grant bypasses this affordability check only. It establishes a distinct welcome identity, samples and seals an ordinary prize, records zero-payment provenance, and opens the human recipient’s local presentation or routes AI to the common resolver. Rejected paid preflight leaves Political Power, random history, influence, and cooldowns unchanged.
 
-Each genuinely new paid purchase evaluates the reward-selection path once using fresh per-purchase randomness, then seals every selected value. Resumption, saving, reloading, later opening clicks, resolution retries, and result replay read that sealed receipt and never sample again. The read-only auditor verified that a repeated native decision uses `fixed_random_seed = no` in the decision body when its random selection must vary across purchases: see the offline Decision modding reference at lines 383–386 and vanilla `common/decisions/FRA.txt`, line 56, inside `FRA_communist_civil_war_decision`. Apply that setting only if the selected Lootboxes sampling path runs through a repeatable decision; consult the [auditor handoff](../../plans/108_wrestling_tournament_plans/subagent_handoffs/107_108_probability_review_2026-10-10.md) for the source revision and limits. Do not guess another token or alter rarity weights to satisfy this rule.
+The welcome grant and each genuinely new paid purchase evaluate the same ordinary reward-selection path once using fresh randomness, then seal every selected value. The welcome grant uses normal random rarity selection and the same recipe and evolution rules as an ordinary opening. Resumption, saving, reloading, later opening clicks, resolution retries, and result replay read that sealed receipt and never sample again. The read-only auditor verified that a repeated native decision uses `fixed_random_seed = no` in the decision body when its random selection must vary across purchases: see the offline Decision modding reference at lines 383–386 and vanilla `common/decisions/FRA.txt`, line 56, inside `FRA_communist_civil_war_decision`. Apply that setting only if the selected Lootboxes sampling path runs through a repeatable decision; consult the [auditor handoff](../../plans/108_wrestling_tournament_plans/subagent_handoffs/107_108_probability_review_2026-10-10.md) for the source revision and limits. Do not guess another token or alter rarity weights to satisfy this rule.
 
-A normal close or Escape action is not cancellation of the purchase. It does not refund 50 PP, discard the box, or allow another draw. The free resumption action remains available whenever the country can be controlled again. There is no paid reroll, discard-and-rebuy action, or sale of unwanted contents.
+A normal close or Escape action is not cancellation of a purchase or welcome grant. It does not refund an actual 50 PP payment, discard the box, or allow another draw. The free resumption action remains available whenever the country can be controlled again. There is no paid reroll, discard-and-rebuy action, or sale of unwanted contents.
 
 Technical repair is distinct from a normal player action. A migrated record must preserve its original identity, paid amount, and prize whenever those facts can be recovered. A verified invalid legacy record that has granted nothing may be repaired or compensated exactly once through a dedicated recovery contract. A compensation cannot refund an already completed box or clear its duplicate-grant proof. Such recovery is recorded as a technical outcome and does not count as a completed opening or an achievement purchase.
 
@@ -106,7 +105,7 @@ Each bundle component needs an exact delivery result. All components must be pre
 | Reload after a completed reveal | Show or close the stored result without granting again |
 | Evolution unlocks while a box waits | Keep that box's reward and shell snapshot, apply the new reward rules to later purchases |
 | Peaceful credit arrives while a box waits | Reduce existing influence normally, with no effect on the sealed prize |
-| Human control changes to AI | The AI can resolve the same pending record through the common resolver, once |
+| Human control changes to AI | The AI can resolve the same paid or welcome pending record through the common resolver, once |
 | AI control changes to human | The human receives the current unresolved or completed state, without a second purchase |
 | Cosmetic country identity changes | Preserve the owning country's continuing transaction and history |
 | Civil war or country splitting | Keep one authoritative owner for each purchase, prevent inherited copies from receiving duplicate rights |

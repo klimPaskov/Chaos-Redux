@@ -2,6 +2,8 @@
 
 Event 106 Resistance is a Minor Repeatable event at Chaos level 1, in Domestic Unrest with Low severity. One firing raises current resistance in every valid occupied state under every country. It adds 25 percentage points at baseline, then 50, 75, or 100 through the user's three evolutions, always capped at 100%.
 
+The user authorized adopting uploaded IDs and migrating the catalog on 24 October 2026. Event 106's former catalog row 111 is historical provenance; see the [shared identifier registry](../shared_identifier_registry.md#imported-event-identity-proposals) for the current identity map. Runtime remains Unavailable. The identity decision does not approve gameplay design or implementation.
+
 This package contains the complete expanded design and implementation handoffs. The game catalog status remains **To Be Reworked**. The package does not claim that gameplay, art, localisation, achievements, or catalogs have been implemented.
 
 ## Install the specifications

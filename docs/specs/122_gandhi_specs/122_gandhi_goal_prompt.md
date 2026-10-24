@@ -1,0 +1,21 @@
+# Event 122 Gandhi: implementation goal
+
+After the parent accepts the gameplay design, read all thirteen parts, evidence, research, agent/MCP map, and specialist prompts as the package design input. The user-authorized Event 122 catalog/registry migration is already implemented. Follow current `AGENTS.md`; read the owning skills and task-relevant references for the systems actually touched, and inspect current definitions/callers changed by the work. Reuse prior evidence while inputs remain unchanged; re-read and recheck changed inputs. Report any material source or tool limits honestly.
+
+The proposal is Event 122, original catalog 133, Minor Fire-Once, Chaos level 1, Liberations High. This prompt is not authorized for execution until the parent accepts the gameplay design. The user-authorized catalog migration is recorded: Gandhi is 122, Cossacks is 112, and the former legacy 122 hold is released. Audit current numeric registrations only within a later authorized implementation task.
+
+One worldwide incident reaches every valid non-core holder, including AI minors, subjects, annexed land and zero-resistance occupations. Deliver actual independence through frozen, revalidated releases, or finite noncooperation. Non-fascist refusal sets resistance and compliance to 0 and denies all useful occupied factory, resource and manpower output, with temporary Loss of Morale. Prove exact yields under stacking. Preserve the fascist exception, which retains output and can improve control. Prevent repeated benefits and timer resets.
+
+Handle competing claims, living beneficiaries, wars and the last state. Whole-country succession needs explicit consent, exact coverage and human continuation only after commit. Keep existing national identities, meaningful focus trees and immutable origins. New civil councils need coherent researched packages, real starts and ordinary human forces.
+
+Keep one Gandhi identity. Hosting, civic leadership and national rulership are separate. A late historical-death appearance is one explicit fictional Chaos return. Later capture or death matters. Use a sourced real portrait through the prescribed workflow.
+
+Peace League at 400+ requires durable successes and voluntary members. Build paid reconstruction, genuine mediation, leadership, admission, exit, expulsion and a separately consented defence compact. Nuclear Pacifism at 800+ requires a strong League and real researched or lawfully acquired weapons with credible delivery. Research creates no free bombs. Separate national inventory, custody, policy, consent and delivery. Respect exact-target retaliation and national vetoes. Do not depend on unresolved pooled custody.
+
+The Ultimate Society requires Chaos strictly above 1000 and its earned political, industrial and arsenal gates. Gandhi becomes ruler through an explicit domestic mandate. Implement the 120-day congress, informed departures, 720-day campaign, demands, opposition, defeat and bounded 90-day stabilization. Keep play active until universal settlement commits through the shared terminal owner. Preserve peaceful completion and reform.
+
+Use two public custom values, Movement Momentum and League Cohesion, and three replacing spirit families. Implement every decision, mission, focus branch, country package, rare variant and achievement. Costs include real assets, industry, access, time and security. Bound visible choices without truncating global coverage. No custom 3D or rich GUI is needed.
+
+Keep planning labels separate from final localisation. Research super-event quotes and music. Produce and wire the required visuals through the asset prompts. Use current OGG music, separate audio IDs and volume variants. Delegate bounded work through the role map with parent review.
+
+Account Chaos only for actual distinct outcomes. Shared releases, wars, nuclear effects and civilian consequences keep their owners. No stage or button grants Chaos. Verify the acceptance scenarios, actual AI pools, technology consumers, transactions, cleanup and renders with available tools. State unavailable checks. Do not launch a live game without explicit invocation. Resolve one substantive depth review, update current docs and registries, then report what was implemented, checked and still uncertain.

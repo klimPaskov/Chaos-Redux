@@ -2,7 +2,7 @@
 
 ## Package purpose
 
-This package contains the complete planning specification for current Event 111, originally cataloged as 116. Extract the ZIP into `docs/specs/` so the resulting folder is `docs/specs/111_this_is_sparta_specs/`.
+This package contains the complete planning specification for current Event 111, formerly catalog row 116. The user authorized adopting uploaded IDs and migrating the catalog on 24 October 2026; see the [shared identifier registry](../shared_identifier_registry.md#imported-event-identity-proposals) for the current map. Runtime remains Unavailable, and the identity migration does not approve gameplay design or implementation. Extract the ZIP into `docs/specs/` so the resulting folder is `docs/specs/111_this_is_sparta_specs/`.
 
 The user-authorized premise is an immediately independent Sparta in Laconia, a finite returned ancient army, a weak modern state, a large modernization and conquest tree, five major campaigns and the high-Chaos Age of Heroes evolution. The package develops that premise into playable institutions, geography, military growth, decisions, treaties, failure recovery, AI, assets and implementation contracts.
 
@@ -65,6 +65,6 @@ The included evidence is about what was actually read and checked. No HOI4 MCP t
 
 ## Catalog handling
 
-The current brief identifies this event as 111 and its original identity as 116. Supplied exports and the inspected repository still use the legacy numbering. Their old row 111 names Resistance. The implementation must reconcile that collision without guessing destinations or relabeling ambiguous old history.
+The current brief identifies this event as 111 and its former catalog identity as 116. The 24 October 2026 user authorization resolved the catalog identity migration; the shared registry records the current map. Historical exports and evidence retain their observed row labels unchanged.
 
 The editable catalog is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`. CSV files are export-only. The connected repository fetch exposed only a Git LFS pointer for the workbook, so no live workbook cells, formulas, validation or status were inspected or changed. This specification retains the brief's To Be Reworked status and unassigned cluster.

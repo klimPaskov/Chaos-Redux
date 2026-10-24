@@ -2,9 +2,9 @@
 
 ## A permanent category with one clear next action
 
-The category supports the repeated purchase loop without becoming an inventory system. It has one gameplay action available at a time. A country with access and no unresolved purchase can buy a box. A country with a paid unresolved purchase can resume that box for free. Closing a resolved result returns the player to the same purchase entry point.
+The category supports the repeated purchase loop without becoming an inventory system. It has one gameplay action available at a time. A country with access and no unresolved box can buy one for 50 PP. A country with a paid or welcome unresolved box can resume that same box for free. Closing a resolved result returns the player to the same purchase entry point.
 
-The category does not expose a custom meter, progress score, public currency, or influence diagnosis. It can show ordinary purchase availability and the fact that a paid box is waiting. Progress is communicated through the chest's physical state inside the window. The player does not manage the internal receipts or probability history.
+The category does not expose a custom meter, progress score, public currency, or influence diagnosis. It can show ordinary purchase availability and the fact that a welcome or paid box is waiting. Progress is communicated through the chest's physical state inside the window. The player does not manage the internal receipts or probability history.
 
 All row names below are working action roles. Production localisation must be written from their intended meaning and checked against the native interface. The established category name remains Lootboxes.
 
@@ -12,13 +12,13 @@ All row names below are working action roles. Production localisation must be wr
 
 | Working action role | Visibility | Availability | Cost | Outcome | Repetition and AI |
 | --- | --- | --- | --- | --- | --- |
-| Purchase one box | Country has permanent access and no unresolved paid box | Valid owner, complete certified pool, no in-flight purchase, and at least 50 PP | Exactly 50 PP, paid once | Seal one prize and shell, create a payment receipt, then open local presentation or resolve through the AI path | Human can repeat after resolution and affordability, AI uses the strategy policy below |
-| Resume paid opening | Country has one valid unresolved paid box | Correct controller and valid pending purchase identity | Free | Reopen at the saved accepted stage with the same sealed result | Never samples, pays, or advances influence by itself, AI may resolve the same pending record |
-| Initial report acknowledgement | Valid initial event recipient | Report belongs to the current delivery | Free | Establish access once and allow normal category navigation | AI acknowledges through the ordinary event route, duplicate delivery is harmless |
+| Purchase one box | Country has permanent access and no unresolved welcome or paid box | Valid owner, complete certified pool, no in-flight purchase, and at least 50 PP | Exactly 50 PP, paid once | Seal one prize and shell, create a payment receipt, then open local presentation or resolve through the AI path | Human can repeat after resolution and affordability, AI uses the strategy policy below |
+| Resume pending opening | Country has one valid unresolved welcome or paid box | Correct controller and valid pending purchase identity | Free | Reopen at the saved accepted stage with the same sealed result | Never samples, pays, or advances influence by itself, AI may resolve the same pending record |
+| First-fire welcome delivery | Every country existing at the one global first firing | Root first-fire guard and country first-grant idempotency | Free, with explicit zero-payment provenance | Grant lasting access and one ordinarily sampled sealed box; automatically open the human recipient window or pass AI to the common resolver | No affordability gate or human exclusion; repeated delivery cannot reroll or replace pending state |
 
-The initial report acknowledgement is an event option rather than a third decision row. Receipt scrolling and closing are navigation controls within the dedicated window. The active category therefore remains small even after all evolutions are enabled.
+The welcome delivery is part of the one global first-fire event, not a purchase decision. Every human country receives its own local opening window automatically; AI resolves the same reward through the common gameplay path without a GUI. Receipt scrolling and closing are navigation controls within the dedicated window. The active category therefore remains small even after all evolutions are enabled.
 
-The purchase and resumption rows each receive a distinct 32x32 decision-family icon under the accepted asset prompt. The purchase icon emphasizes a sealed crate and procurement. The resumption icon emphasizes an already held crate and continuation without suggesting a second payment. The initial report and three evolution reports receive their own 210x176 report-card compositions. Their art communicates the public reward improvement and never diagnoses the hidden influence.
+The purchase and resumption rows each receive a distinct 32x32 decision-family icon under the accepted asset prompt. The purchase icon emphasizes a sealed crate and procurement. The resumption icon emphasizes an already held crate and continuation without suggesting a second payment. The first-fire event and three evolution reports receive their own 210x176 report-card compositions. Their art communicates the public reward improvement and never diagnoses the hidden influence.
 
 ### Purchase requirements and feedback
 
@@ -26,7 +26,7 @@ Use the correct Political Power texticon beside the displayed 50 PP. The same in
 
 Check pending ownership before allowing a second transaction. A box remains pending after the player closes it, leaves the category, changes the selected map state, saves, or reloads. If a purchase is already being accepted, a second request is rejected without another random draw or debit.
 
-Public disabled feedback should explain the actual immediate reason: insufficient Political Power, an already paid box awaiting completion, a currently resolving request, or loss of the necessary country context. Production needs distinct readable control states where the native interface supports them. It must not use a hidden influence threshold, an omen cooldown, or an addiction flag as a public purchase requirement.
+Public disabled feedback should explain the actual immediate reason: insufficient Political Power, an already sealed welcome or paid box awaiting completion, a currently resolving request, or loss of the necessary country context. Production needs distinct readable control states where the native interface supports them. It must not use a hidden influence threshold, an omen cooldown, or an addiction flag as a public purchase requirement.
 
 The decision does not ask the player to choose a reward service, spend experience, sacrifice equipment, or negotiate with a supplier. Those additions would alter the simple 50 PP promise. Strategic variety comes from deciding when to spend scarce Political Power and how to use the reward after it arrives.
 
@@ -34,13 +34,13 @@ Each newly accepted paid purchase must evaluate the reward-selection path once w
 
 ### Resumption and retained results
 
-The resumption action must clearly communicate that payment has already occurred and that opening is free. It preserves the saved stage and uses the same local opening window. A country with 0 PP can resume its paid box.
+The resumption action must clearly communicate whether the sealed box was a free welcome grant or an already-paid purchase, and that opening is free. It preserves the saved stage and uses the same local opening window. A country with 0 PP can resume either kind of box.
 
 After resolution, any retained result view reads the completed receipt only. The implementation must make replay safe even if a stale GUI instance, save recovery, or accessibility flow opens that view again. Reviewing the same receipt does not count as another opening or refresh a temporary reward.
 
 ## AI purchase policy
 
-AI countries use the same access rule, 50 PP price, reward sampler, sealed recipe system, completed-opening resolver, influence accumulation, omen rules, and peaceful contribution observer. They do not receive guaranteed useful rarities, exempt Common influence, extra recovery credit, or a reduced price.
+AI countries receive the same first-fire welcome grant as human countries, without any GUI, and later use the same 50 PP price, reward sampler, sealed recipe system, completed-opening resolver, influence accumulation, omen rules, and peaceful contribution observer. They do not receive guaranteed useful rarities, exempt Common influence, extra recovery credit, or a reduced price.
 
 The AI does not require a human chest window. A valid AI purchase seals the same prize and resolves it through the common completion path without generating local visual or audio effects for a human. It records one completed opening, regardless of the number of components in the reward. The five-interaction rule remains the human presentation contract.
 
@@ -94,11 +94,11 @@ An AI country can therefore improve its situation through ordinary peaceful play
 
 ## Shared event and evolution integration
 
-The implementation needs one coherent identity across initial selection, the event root, recipient ownership, access state, enablement defaults, Event Log, Event Details, evolution information, and the catalog. The user selected Event 107 for Lootboxes, and the parent reports that the registry and cross-package 107-hold amendments are complete with current identifier checks passing. Use the mapping in [`shared_identifier_registry.md`](../shared_identifier_registry.md). The workbook state last reported by the parent remains row 107 Rule/Unavailable with Type, Chaos, and cluster empty, and row 112 Lootboxes/Unavailable; workbook/runtime catalog migration and status changes remain parent-owned and queued.
+The implementation needs one coherent identity across initial selection, the event root, recipient ownership, access state, enablement defaults, Event Log, Event Details, evolution information, and the catalog. The user accepted Lootboxes as canonical Event 107 and directed catalog migration on 24 October 2026. Former catalog Lootboxes 112 is historical only. Parent owns workbook and shared-registry migration; confirm its completion before runtime registration.
 
-The initial event log records the actual recipient. A hover, failed purchase, resumed opening, or repeated result view is not another initial occurrence. Ordinary box transactions retain their country-owned receipts for gameplay and achievements without flooding the shared event history with five click records or hidden omen diagnostics.
+The initial event log records the global first-fire occurrence and its country deliveries under the supported event-log contract. A hover, failed purchase, resumed opening, or repeated result view is not another initial occurrence. Ordinary box transactions retain their country-owned receipts for gameplay and achievements without flooding the shared event history with five click records or hidden omen diagnostics.
 
-Disabling future selection of the initial event after access has been granted does not revoke that permanent category or confiscate a paid box. Evolution and global Chaos settings retain their own supported semantics. Whatever their future-selection effect, they must preserve existing paid obligations, complete ordinary symptom expiry, and avoid erasing burden as a settings side effect.
+Disabling future selection of the initial event after access has been granted does not revoke that permanent category or confiscate a paid or welcome box. Evolution and global Chaos settings retain their own supported semantics. Whatever their future-selection effect, they must preserve existing paid and welcome-box obligations, complete ordinary symptom expiry, and avoid erasing burden as a settings side effect.
 
 The three evolution states must be consulted through their shared owner. Unlocking an evolution updates future purchase capabilities and the corresponding visible presentation. It does not overwrite an already paid box. An event arriving after the shared evolutions are active initializes directly into the appropriate visible reward state.
 
@@ -108,7 +108,7 @@ A falling Chaos value can affect current hidden risk as described in Part 3, whi
 
 | Surface | Event 107 responsibility | Shared or external responsibility |
 | --- | --- | --- |
-| Initial event and access | Idempotent access and correct country state | Normal selection, recipient filtering, settings, shared occurrence accounting |
+| Global first-fire welcome distribution | Every existing country receives access and one sealed zero-payment box exactly once | Root first-fire guard, per-country idempotency, complete country coverage including MP humans/subjects/minors, no affordability gate, no future gifts |
 | Fixed purchase | Quote, preflight, one payment, one sealed record | Native PP debit support and any neutral receipt framework |
 | Rarity and recipes | Soft history model, complete tier pools, exact sealed manifest | Equipment definitions, native research and building rules, compatible owner providers |
 | Opening window | Event-owned presentation contract and public state | Verified native GUI, input, animation, local audio behavior |
@@ -145,15 +145,15 @@ Nested calls must freeze the country, purchase, component, and source-action ide
 
 Every helper output consumed by its caller must be initialized in that caller, including forwarding boundaries. Clearing one-shot inputs must not erase returned success or delivery results. A stale temporary success value cannot authorize an irreversible effect.
 
-Use bounded pending work and preserve unvisited entries when the engine's loop limit is reached. An expired symptom should clean up its own effect and stop. A repeated callback must not reset its expiry, create another withdrawal episode, award peaceful credit twice, or revisit every country in the world.
+Use bounded pending work and preserve unvisited entries when the engine's loop limit is reached. An expired symptom should clean up its own effect and stop. A repeated callback must not reset its expiry, create another withdrawal episode, award peaceful credit twice, or revisit every country in the world. The single all-country welcome pass is explicitly limited to the guarded first firing.
 
-Load recovery checks consistency without replaying purchases. It can resume an already paid opening, finish only the missing components of an interrupted supported transaction, restore current finite modifiers, and retain completed receipts as duplicate protection. It cannot treat the absence of a local window as proof that the country has no pending box.
+Load recovery checks consistency without replaying the first-fire distribution or purchases. It can resume an already sealed welcome or paid opening, finish only the missing components of an interrupted supported transaction, restore current finite modifiers, and retain completed receipts as duplicate protection. It cannot treat the absence of a local window as proof that the country has no pending box.
 
 ## Country compatibility
 
-Small countries, majors, subjects, countries at war, countries at peace, and countries with unusual existing equipment should use the same core loop. Recipe eligibility adapts to their real capacities, while the top-level rarity probabilities remain identical for equivalent form and history state.
+Small countries, majors, subjects, countries at war, countries at peace, human countries, AI countries, and countries with unusual existing equipment should use the same welcome and purchase completion rules. Recipe eligibility adapts to their real capacities, while the top-level rarity probabilities remain identical for equivalent form and history state.
 
-A missing DLC feature must not empty a rarity or make a paid box unusable. Base-game-compatible recipes carry the core event. A DLC-specific or custom equipment provider is eligible only when its exact consumer and grant behavior exist. Paid boxes preserve the provider version that made their original contents valid.
+A missing DLC feature must not empty a rarity or make a paid box unusable. Base-game-compatible recipes carry the core event. A DLC-specific or custom equipment provider is eligible only when its exact consumer and grant behavior exist. Paid and welcome boxes preserve the provider version that made their original contents valid.
 
 Government changes and cosmetic identity changes should preserve continuing country state. Country splits require explicit ownership so duplicated inherited flags cannot create free access to the same paid reward. Annexation, restoration, observer mode, and human/AI handover need the lifecycle cases in Part 6.
 
@@ -163,7 +163,7 @@ Public text should make the ordinary action easy to understand without explainin
 
 The opening report's light parchment uses plain readable text. Final English localisation follows current project encoding and syntax requirements. Other supported languages must not leak raw keys, internal recipe names, private state tokens, or debug explanations when a translation is absent.
 
-The catalog workbook is the editable authority. CSV files are generated exports. After a supported workbook update, run the canonical export process and verify the exact mirrored public detail fields. A planning package does not make an event Playable, resolve a live identity collision, or prove that native behavior is implemented.
+The catalog workbook is the editable authority. CSV files are generated exports. After a supported workbook update, run the canonical export process and verify the exact mirrored public detail fields. A planning package does not make an event Playable or prove that native behavior is implemented.
 
 ## Integration acceptance
 

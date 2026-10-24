@@ -4,9 +4,9 @@ This handoff accompanies the idea-first design parts. It distinguishes requireme
 
 ## Identity migration and current evidence
 
-The user defines Event 110 IMRO, original catalog ID 115. Supplied historical catalogs still assign IMRO to 115, list Freedom or Death separately as 144, use 110 for Random Idea and use 106 for Paranoia. The cluster export lists other Liberation members and does not yet implement the user's IMRO Severe membership. Treat the user's design identity as authoritative and the old catalog as a migration input.
+The user defines current Event 110 IMRO, formerly catalog row 115. Historical catalogs also list Freedom or Death separately as 144, use 110 for Random Idea and use 106 for Paranoia; preserve those observations as historical provenance. The user authorized adopting uploaded IDs and migrating the catalog on 24 October 2026. Consult the [shared identifier registry](../shared_identifier_registry.md#imported-event-identity-proposals) for the current map. Runtime remains Unavailable, and identity migration does not approve the design or implement IMRO's Severe membership.
 
-The canonical editable catalog is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`. CSV files are exports. Before changing the workbook, inspect its actual bytes, the XLSX skill's catalog and preservation references, the current spreadsheet README and the exporter. Reserve IDs and update the workbook through its owner, then regenerate exports with `.tools/export_event_catalog_csv.py`. Do not manually edit a CSV to make the new design appear integrated.
+The canonical editable catalog is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`. CSV files are exports. Any future workbook changes must be coordinated with its owner and regenerated with `.tools/export_event_catalog_csv.py`; do not manually edit CSVs. The identity migration does not itself implement runtime registration.
 
 The repository investigation used `klimPaskov/Chaos-Redux` pinned to observed revision `a3ef485c5da7e2337122eca04ac65c175050f251`. It did not establish that this revision contains every change in the newer supplied archive or that it is the user's installed working tree. The targeted evidence file records 28 fetched source records with Git blob hashes and relevant excerpts. The main verified findings are:
 

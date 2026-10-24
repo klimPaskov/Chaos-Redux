@@ -1,6 +1,6 @@
 # Event 114 end-to-end implementation prompt
 
-Implement Event 114 Demilitarization completely from docs/specs/114_demilitarization_specs/. Read README.md, all seven design files, validation and handoff, research and sources, review dispositions, and the separate asset, achievement, decision/mission, and goal prompts. Follow current AGENTS.md and all relevant current owner skills. The supplied brief and accepted specifications govern the intended gameplay. Do not substitute the legacy Event 124 baseline or treat a catalog export as the live registry.
+Implement Event 114 Demilitarization completely from docs/specs/114_demilitarization_specs/. Read README.md, all seven design files, validation and handoff, research and sources, review dispositions, and the separate asset, achievement, decision/mission, and goal prompts. Follow current AGENTS.md and all relevant current owner skills. The supplied brief and accepted specifications govern the intended gameplay. Event 124 is historical provenance; consult the [shared identifier registry](../shared_identifier_registry.md#imported-event-identity-proposals) for current identity. Do not treat a catalog export as the live runtime registry.
 
 This is a complete implementation task. Continue through native capability research, code, localisation, ordinary UI, assets, achievements, integration, validation, and the actual near-completion review. Keep an exact issue list for anything blocked by missing tools or native proof. Source-shaped scaffolding and a passing parser are not completion.
 

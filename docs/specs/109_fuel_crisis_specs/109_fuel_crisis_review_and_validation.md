@@ -2,7 +2,7 @@
 
 ## Completion boundary
 
-This record covers the planning package for Event 109 Fuel Crisis. The design remains a Minor Fire-Once worldwide reserve loss with intact upstream fuel supply, ordinary recovery, no evolutions, and a bounded connection to Event 101 Tasks.
+This record covers the planning package for Event 109 Fuel Crisis. The design remains a Minor Fire-Once worldwide reserve loss with intact upstream fuel supply, ordinary recovery, no evolutions, and a bounded connection to Event 101 Tasks. Its accepted cluster assignment is Various Anomalies 11, Severe, with existing eligibility unchanged. This is a documentation acceptance, not runtime registration.
 
 The planning result and future gameplay implementation have separate evidence. Source reading, design review, arithmetic, and package integrity were checked here. Native game behavior, actual Tasks integration, final localisation, runtime art, and live gameplay were not produced or validated.
 
@@ -36,7 +36,7 @@ The parent read the complete final improvement-loop closure report and accepted 
 | A remaining stock gap could be interpreted as negative when the target is reached during action lead | Define G as max of zero and R minus projected stock | Part 3 and decision-mission prompt |
 | Oil eligibility referred to a total without showing its source decomposition | State Q0 plus Jother must be below 1.10 times D0 in the same assignment-time units | Part 3 |
 | Player abandonment could be confused with relinquishing country control | Inaction while retaining control keeps the normal deadline. Relinquishing control follows neutral cancellation | Part 3 |
-| Achievement acceptance could be read without its complete authoritative condition set | Link Part 5 directly to Part 4 and make visible catalog status explicit | Parts 4 and 5 |
+| Achievement acceptance could be read without its complete authoritative condition set | Link Part 5 directly to Part 4 and record the accepted canonical identity and keep catalog status parent-owned | Parts 4 and 5 |
 | Technical material made the design parts read like an implementation blueprint | Keep five design parts and a separate technical implementation handoff. Keep all execution prompts outside the specs | Package structure |
 | Role coverage omitted the icon producer and the required near-completion loop | Add the icon artist and improvement-loop planner with bounded ownership and evidence requirements | Implementation handoff and coding prompt |
 
@@ -80,7 +80,7 @@ Final assembly checks cover JSON parsing, source inventory row count, relative M
 
 | Gate | Evidence still needed |
 | --- | --- |
-| Catalog identity | Reconcile 109, historical 114, occupied labels, and save semantics in the actual checkout and authoritative XLSX workbook |
+| Catalog identity | Complete the accepted Event 109 migration, treat former identity 114 as historical, and verify displaced labels and save semantics in the actual checkout and authoritative XLSX workbook |
 | Exact world operation | Installed fuel setter, current-country iteration, precision, immediate execution order, and save boundaries |
 | Shared accounting | Real manifestation helper, eligibility, dispatch, log and pacing interfaces, and duplicate-safe owner integration |
 | Event 101 | Actual selector, owner API, meaningful-demand and feasibility gates, delivered-oil and action measurements, conversion units, active-task storage, progress evaluator, and terminal hooks |

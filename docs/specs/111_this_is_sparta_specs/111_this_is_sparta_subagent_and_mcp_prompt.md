@@ -10,7 +10,7 @@ Every custom-role assignment is self-contained. Use the exact canonical role def
 
 Every packet must carry these facts:
 
-- Current event identity is 111 and original catalog identity is 116. Cluster remains unassigned.
+- Current event identity is 111; former catalog row 116 is historical provenance. The user authorized adopting uploaded IDs and migrating the catalog on 24 October 2026; consult `docs/specs/shared_identifier_registry.md`. Cluster remains unassigned. Runtime remains Unavailable.
 - SPARTA_TAG and the Laconia state/province roles are placeholders until a complete installed-content audit. Do not invent final numeric tags or shared registry IDs.
 - The mandatory build-time Laconia split, preserved former-owner country, legal remaining capital and legal existing troop disposition precede normal registration.
 - The default opening uses settled ownership and control. An occupied-state handover is disabled until separately validated.

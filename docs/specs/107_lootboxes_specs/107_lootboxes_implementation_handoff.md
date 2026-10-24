@@ -17,9 +17,9 @@ Read the current repository `AGENTS.md` and the applicable current project skill
 
 ## Implementation order
 
-1. **Use the confirmed identity mapping.** The user-selected IDs are 107 Lootboxes, 108 Wrestling Tournament, and 112 Rise of Cossacks; see `docs/specs/shared_identifier_registry.md`.
+1. **Use the accepted uploaded IDs.** The user authorized migration to 107 Lootboxes, 108 Wrestling Tournament, 122 Rise of Cossacks, 109 Fuel Crisis, and 114 Demilitarization on 24 October 2026. The parent owns the registry/workbook writes and current evidence; confirm migration before runtime registration.
    The parent reports the registry and cross-package 107-hold amendments complete with identifier checks passing.
-   The workbook state last reported by the parent is row 107 Rule/Unavailable and row 112 Lootboxes/Unavailable; workbook/runtime catalog migration remains queued under parent ownership.
+   The user authorized migration to the accepted uploaded IDs. Lootboxes 107 is canonical and former catalog identity 112 is historical only. Parent owns current workbook and shared-registry writes; verify completion before runtime registration.
 2. **Review source feasibility.** Check current native documentation, vanilla examples, and Chaos Redux consumers for real-time input, local window/audio ownership, Escape, sealed persistence, full delivery, and peaceful contribution owners.
    Use available tools only to answer concrete questions, under the current retry limit; then continue with source review if unavailable.
    No game launch or waiting for live evidence is part of the agent workflow.

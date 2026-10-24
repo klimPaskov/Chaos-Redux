@@ -136,33 +136,59 @@ Keep each final recording and sound registration unique, and recheck occupancy b
 
 ## Imported event identity proposals
 
-Event roots use their own namespace, separately from scenario and presentation numbers.
-The user explicitly selected uploaded IDs 104 and 105 on 10 October 2026, establishing Rule 104 and Random Idea 105 as the planning identities.
-Tasks 101 retains its matching catalog identity.
-The import records the older catalog labels without migrating runtime or workbook entries.
-The source reviews found no event definitions in the 101, 102, 103, 104, 105, 107, 108, 110, 112, 113 or 122 namespaces.
+On 24 October 2026, the user explicitly instructed: “Adopt uploaded IDs and migrate the catalog.”
+The catalog uses the package identities below for Events 104 through 122.
+The migration carries the earlier package identities through the dependency chain so that moving IMRO, SPARTA and Cossacks does not erase Random Idea, Resistance, Lootboxes, Rule or Wrestling Tournament.
+The [import and migration report](../plans/repo_cleanup/planning_package_import_2026-10-24.md) records the completed workbook checks and the [machine-readable record](../plans/repo_cleanup/planning_package_import_2026-10-24.json) preserves all original rows and displaced concepts.
+Catalog identity approval does not approve every proposed mechanic, register runtime content or change availability.
+All migrated events remain `Unavailable` because their event roots are absent.
 
-| Planned event ID | Imported package | Current workbook label | Disposition |
+| Event ID | Package | Former catalog ID | Disposition |
 | --- | --- | --- | --- |
-| 101 | [Tasks](101_tasks_specs/README.md) | Tasks | Reserved imported proposal, current catalog Unavailable |
-| 102 | [Serial Killer](102_serial_killer_specs/102_serial_killer_spec_part_1_core.md) | Serial killer | Reserved imported proposal, current catalog Unavailable |
-| 103 | [Chaos Directorate](103_chaos_directorate_specs/00_package_guide.md) | Conscription | Imported replacement proposal explicitly stated in its source brief |
-| 104 | [Rule](104_rule_specs/104_rule_reading_guide.md) | Stability or War support | User-confirmed Rule identity, former 107 hold explicitly released for Lootboxes |
-| 105 | [Random Idea](105_random_idea_specs/README.md) | Anti-player ideology | User-confirmed Random Idea identity, legacy catalog row 110 stays held |
-| 107 | [Lootboxes](107_lootboxes_specs/README.md) | Rule | User-confirmed identity, original Lootboxes catalog row 112 recorded for migration |
-| 108 | [Wrestling Tournament](108_wrestling_tournament_specs/00%20-%20Package%20Guide.md) | Fury | User-confirmed identity, original catalog row 113 stays held |
-| 112 | [Rise of Cossacks](112_rise_of_cossacks_specs/README.md) | Lootboxes | User-confirmed identity, original catalog row 122 stays held |
+| 104 | [Rule](104_rule_specs/104_rule_reading_guide.md) | 107 | User-confirmed catalog identity, runtime unimplemented |
+| 105 | [Random Idea](105_random_idea_specs/README.md) | 110 | User-confirmed catalog identity, runtime unimplemented |
+| 106 | [Resistance](106_resistance_specs/README.md) | 111 | User-confirmed catalog identity, runtime unimplemented |
+| 107 | [Lootboxes](107_lootboxes_specs/README.md) | 112 | User-confirmed catalog identity, runtime unimplemented |
+| 108 | [Wrestling Tournament](108_wrestling_tournament_specs/00%20-%20Package%20Guide.md) | 113 | User-confirmed catalog identity, runtime unimplemented |
+| 109 | [Fuel Crisis](109_fuel_crisis_specs/README.md) | 114 | User-confirmed catalog identity, runtime unimplemented |
+| 110 | [IMRO](110_imro_specs/README.md) | 115 | User-confirmed catalog identity, runtime unimplemented |
+| 111 | [This is SPARTA!!!](111_this_is_sparta_specs/111_this_is_sparta_index.md) | 116 | User-confirmed catalog identity, runtime unimplemented |
+| 112 | [Rise of Cossacks](112_rise_of_cossacks_specs/README.md) | 122 | User-confirmed catalog identity, runtime unimplemented |
+| 113 | [The Partition](113_the_partition_specs/113_the_partition_package_guide.md) | 123 | User-confirmed catalog identity, runtime unimplemented |
+| 114 | [Demilitarization](114_demilitarization_specs/README.md) | 124 | User-confirmed catalog identity, runtime unimplemented |
+| 115 | [Heroic Crusade](115_heroic_crusade_specs/README.md) | 126 | User-confirmed catalog identity, runtime unimplemented |
+| 116 | [Warlords](116_warlords_specs/README.md) | 127 | User-confirmed catalog identity, runtime unimplemented |
+| 117 | [Autonomy](117_autonomy_specs/README.md) | 128 | User-confirmed catalog identity, runtime unimplemented |
+| 118 | [Shaman](118_shaman_specs/README.md) | 129 | User-confirmed catalog identity, runtime unimplemented |
+| 119 | [Mistresses](119_mistresses_specs/README.md) | 130 | User-confirmed catalog identity, runtime unimplemented |
+| 120 | [Widespread Mutiny](120_widespread_mutiny_specs/README.md) | 131 | User-confirmed catalog identity, runtime unimplemented |
+| 121 | [Investment](121_investment_specs/README.md) | 132 | User-confirmed catalog identity, runtime unimplemented |
+| 122 | [Gandhi](122_gandhi_specs/README.md) | 133 | User-confirmed catalog identity, runtime unimplemented |
 
-The current import handoffs record the exact user decision.
-On 10 October 2026 the user selected uploaded IDs 107 Lootboxes, 108 Wrestling Tournament and 112 Rise of Cossacks, explicitly releasing the former Rule 107 hold.
-Rule retains planning ID 104.
-Legacy catalog IDs 110, 113 and 122 remain held against reuse.
-The displaced Fury catalog concept at 108 remains recorded with its later identity unresolved.
-Its name alone does not establish equivalence with Event 007 World in Fury.
-Catalog migration remains queued for authorized implementation work.
-Do not reuse the held catalog IDs, silently delete displaced concepts, or infer runtime registration from the imported folder names.
-The machine-readable entries preserve the exact catalog labels, proposed roots, evidence and holds.
-Achievement, helper, sprite, scenario and cluster names remain separate identifiers with their own ownership.
+The former catalog holds at 110, 113 and 122 are released by this authorized migration.
+Their historical hold records remain in the JSON ledger.
+Event 122 belongs to Gandhi, and Rise of Cossacks belongs to Event 112.
+Presentation and playback audio identifiers remain separate namespaces and are not derived from the event number.
+
+The displaced catalog concepts are Stability or War support (104), Anti-player ideology (105), Paranoia (106), Fury (108), Custom laws (109), 5-Way Civil War (117), Plague of locust (118), Random New Alliance (119), Massive Volcano Eruption (120) and The Pact (121).
+Their full pre-migration rows are preserved separately, without inventing replacement IDs or silently treating them as aliases of another event.
+Old source rows 123, 124 and 126 through 133 are retired after their concepts move to their canonical IDs.
+Non-Aggressions retains 125.
+
+Tasks 101 and Serial Killer 102 retain their existing catalog identities.
+Chaos Directorate 103 remains a separate imported replacement proposal for the catalog’s Conscription entry, outside this migration.
+Its original brief and previous import receipt retain the existing acceptance boundary.
+
+## Current event-design decisions
+
+The user’s 24 October instruction makes Lootboxes a worldwide first-fire event.
+Every country existing at that first firing receives access and one free box using normal random rarity and ordinary reward resolution, and each human country receives the opening window automatically.
+Later purchases remain 50 PP, and the first grant has its own zero-payment receipt and once-only guard.
+The Event 107 specification and catalog description carry this accepted design, with runtime implementation still queued.
+
+The same instruction places Fuel Crisis 109 in Various Anomalies (cluster 11) as a Severe member.
+The catalog membership is recorded under 109 after migration from 114.
+The core event’s independent eligibility is unchanged, and runtime cluster registration remains queued with the event implementation.
 
 ## Deaths accounting reasons
 

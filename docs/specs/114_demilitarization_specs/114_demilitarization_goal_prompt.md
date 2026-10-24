@@ -2,7 +2,7 @@
 
 Complete Event 114 Demilitarization from docs/specs/114_demilitarization_specs/. Read all files listed in README.md. Follow current AGENTS.md and relevant owner skills. Complete code, integration, localisation, assets, achievements, audits, and review. Keep native gates explicit.
 
-Retain Minor Repeatable identity 114, original catalog 124, Chaos level 1, and High membership in Peace cluster 4. Reconcile current registries and the canonical workbook. Prepare the correct global history actor. Make Peace runtime prerequisites follow selected members so 114 can initiate without a White Peace target.
+Use current Event 114 identity, formerly catalog row 124, with Minor Repeatable, Chaos level 1, and High membership in Peace cluster 4. The user authorized adopting uploaded IDs and migrating the catalog on 24 October 2026; consult `docs/specs/shared_identifier_registry.md`. Runtime remains Unavailable. Prepare the correct global history actor and make Peace runtime prerequisites follow selected members so 114 can initiate without a White Peace target.
 
 Every peaceful controller demilitarizes all true land-border states. Deeper adds exactly one same-controller inward hop from an immutable border snapshot. Total adds all controlled non-capital states without exempting a capital already in either belt. Preserve exact existing formations, including in zero-space countries. Prove native behaviour instead of adding capital exceptions, replacement units, or baseline disbanding.
 

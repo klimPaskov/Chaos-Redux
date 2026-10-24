@@ -6,7 +6,7 @@ Every box delivers an authentic benefit. Its value depends on its rarity and the
 
 The reward pool combines immediate material relief with improvements that support a plan over the following weeks. Equipment helps fill shortages or build a reserve. Fuel can support current operations. Manpower and experience can improve readiness. Research, construction, and production support create useful opportunities for countries that are not fighting. A country should not need to enter a war, found a fleet, or activate an unrelated event simply to receive meaningful prizes.
 
-The primary selection process has four design steps: select the shell form, select rarity, select a useful recipe from that rarity, and seal the complete scaled contents. Each genuinely new paid purchase uses fresh per-purchase randomness and performs this selection once. These steps are one purchase transaction. Reward generation does not run again on every GUI click, tooltip refresh, load, resumption, retry, or result replay. The exact RNG syntax must come from the current installed reference and the auditor's cited finding.
+The primary selection process has four design steps: select the shell form, select rarity, select a useful recipe from that rarity, and seal the complete scaled contents. The one-time first-fire welcome grant and each genuinely new paid purchase use fresh randomness and perform this selection once. These steps create one sealed box; only later paid purchases are purchase transactions. Reward generation does not run again on every GUI click, tooltip refresh, load, resumption, retry, or result replay. The exact RNG syntax must come from the current installed reference and the auditor's cited finding.
 
 Names for recipe families in this part are working labels. Their purpose is to explain composition, relative strength, recipient fit, and delivery requirements. They are not final item names or localisation lines.
 
@@ -131,13 +131,13 @@ Capacity support must not remove or invalidate still-unused prize value when it 
 
 If a native provider cannot meet its full-delivery contract, it remains disabled before purchase while that particular technical gap is resolved. This does not authorize deleting fuel, experience, research, or construction from the agreed design. The implementation remains incomplete for that family. Existing pending boxes from a supported earlier provider version must retain a compatible delivery path during migration.
 
-A country can become temporarily invalid through annexation or loss of its government while a paid box waits. Preserve the pending ownership and restoration contract from Part 1. Do not invent a new recipient or give the conqueror its prize. Supported-country eligibility at the fifth activation must still yield a real delivery path for every certified recipe.
+A country can become temporarily invalid through annexation or loss of its government while a paid or welcome box waits. Preserve the pending ownership and restoration contract from Part 1. Do not invent a new recipient or give the conqueror its prize. Supported-country eligibility at the fifth activation must still yield a real delivery path for every certified recipe.
 
 ## Evolution framework
 
 The three evolutions improve the visible reward system and enable different hidden consequence families. They use the shared evolution mechanism and its enablement, timing, and history rules. Reaching a Chaos threshold creates eligibility, while the actual unlock follows the shared event evolution pacing. Do not turn the threshold into an instant independent daily poll or grant an evolution whose shared setting is disabled.
 
-The two entry paths both matter. A country may already have Lootboxes access when an evolution unlocks, or it may receive Lootboxes after one or more evolutions are already active. Both cases must produce the same capabilities for newly purchased boxes. A pre-fire evolved opening does not replay several introductory reports, reset the country's private state, or give several free boxes.
+The two entry paths both matter. A country may already have Lootboxes access when an evolution unlocks, or it may receive Lootboxes after one or more evolutions are already active. Both cases must produce the same capabilities for newly purchased boxes. A pre-fire evolved welcome opening uses the then-active evolution rules once. It does not replay several introductory reports, reset the country's private state, or issue more than the single first-fire welcome box.
 
 | Evolution | Shared Chaos eligibility | Visible change | Hidden family enabled | Existing paid boxes |
 | --- | ---: | --- | --- | --- |
@@ -183,9 +183,9 @@ Borrowed Prosperity can affect the country's normal performance after exposure a
 
 ## Fuel Crisis connection
 
-The current catalog identifies the Fuel Crisis as Event 114, `Unavailable`; the parent reports that its source scan found no Event 114 root. Event 107's fuel-prize connection therefore targets Event 114 as a proposed integration, not an existing implementation. Under this proposal, a completed fuel award increases the recipient's actual reserve, and a Lootboxes omen cannot spill it, recall it, destroy it, or disguise a missing amount as national inefficiency.
+Fuel Crisis uses accepted design ID 109; former catalog identity 114 is historical only under the user-authorized migration. No runtime implementation is claimed. Event 107's fuel-prize connection remains a proposed integration, not an existing implementation. Under this proposal, a completed fuel award increases the recipient's actual reserve, and a Lootboxes omen cannot spill it, recall it, destroy it, or disguise a missing amount as national inefficiency.
 
-If the Event 114 integration is implemented, preserve that event's ordinary rules and add no special Event 107 fuel clawback. Verify the current source owners and fuel delivery when the link is wired; do not claim Event 114 behavior while its root remains absent.
+If the Event 109 integration is implemented, preserve that event's ordinary rules and add no special Event 107 fuel clawback. Verify the current source owners and fuel delivery when the link is wired; do not claim runtime behavior while the event remains unimplemented.
 
 ## Balance questions with concrete acceptance criteria
 

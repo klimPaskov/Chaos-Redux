@@ -431,6 +431,12 @@ The runtime ID 19 entry retains the separate whole-pool activation contract docu
 
 Various Anomalies is registered in the live runtime at cluster ID 11, the ID the authoritative workbook assigns. It is a one-time cluster with unlock tier 3 (Chaos level 4). Its live rows are Equipment from Heavens (row 11001) and BOOM (row 11002), both optional Low members with primary-trigger eligibility. Equipment from Heavens keeps its independent Chaos level 1 eligibility, and its single row limits every transaction to one delivery. When no ordinary country can receive a delivery, the row records the canonical `equipment_from_heavens_recipient` reason. BOOM stays disabled by default until its rework, so its row records the disabled reason. The live constants still use the legacy IDs for Diseases (8) and Random Stuff (12), so the v2 migration described above has not changed those two identifiers in runtime.
 
+The user assigned Fuel Crisis to Various Anomalies as a Severe member on 24 October 2026.
+The catalog records this membership under canonical Event 109 after the authorized migration from former catalog ID 114.
+Its independent event eligibility is unchanged.
+Fuel Crisis has no runtime root, so the catalog membership does not add an executable cluster row or enable the event.
+Runtime membership remains queued with the [Fuel Crisis implementation](../../specs/109_fuel_crisis_specs/README.md), and the [import and migration report](../../plans/repo_cleanup/planning_package_import_2026-10-24.md) records the catalog evidence.
+
 ### Domestic Unrest: Communist Insurgency, Independence Wave and Random Terror
 
 Cluster ID `16` is the Domestic Unrest cluster, registered in the live runtime as a repeatable cluster with unlock tier 0 (Chaos level 1) and a 120-day cooldown.

@@ -6,7 +6,7 @@ Read current `AGENTS.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`
 
 ## Owned actions
 
-The permanent Lootboxes category offers one next gameplay action. With access and no unresolved box, the country may purchase one box for exactly 50 PP. With an unresolved paid box, it may resume that same opening for free. The initial report acknowledgement establishes access once and is not a repeat purchase or a free demonstration box.
+The permanent Lootboxes category offers one next gameplay action. With access and no unresolved box, the country may purchase one box for exactly 50 PP. With an unresolved paid box, it may resume that same opening for free. The one global first firing grants access and exactly one free sealed welcome box to every then-existing country, with no affordability gate or human exclusion. This is the only free box. It uses ordinary random rarity/reward selection and ordinary completion accounting, with explicit zero-payment provenance. Human countries open an automatic local window through all five clicks; AI uses the same resolver without GUI. Root and per-country idempotency protect save/reload/resume and repeated delivery. Later purchases remain exactly 50 PP.
 
 Keep the single purchase row through Premium Boxes, Bonus Drops, and Chaos Loot. Premium is an automatic random form selected after the shared evolution owner unlocks it. It is not a second priced product. Ordinary remains possible. The shared thresholds are 200+, 400+, and 600+, while actual enablement, unlock and pacing remain with the evolution owner.
 

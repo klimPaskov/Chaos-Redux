@@ -1,6 +1,6 @@
 # Event 110 IMRO specification package
 
-**Complete planning handoff, 10 October 2026.** Event 110, original catalog ID 115. Minor Fire-Once, Chaos level 1, Liberations cluster, Severe member. The working event remains a rework in the project catalog until implementation and its catalog migration are completed.
+**Complete planning handoff, 10 October 2026.** Current Event 110 IMRO, formerly catalog row 115. Minor Fire-Once, Chaos level 1, Liberations cluster, Severe member. The user authorized adopting uploaded IDs and migrating the catalog on 24 October 2026; see the [shared identifier registry](../shared_identifier_registry.md#imported-event-identity-proposals) for current identities. Runtime remains Unavailable, and this identity decision does not approve gameplay design or implementation.
 
 Extract the ZIP's `110_imro_specs/` folder into `docs/specs/`. All internal file links are relative to that folder. Start with the core and read the numbered parts in order. The implementation prompts refer to this complete design rather than supplying a smaller replacement brief.
 

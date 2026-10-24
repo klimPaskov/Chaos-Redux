@@ -2,6 +2,8 @@
 
 This package contains the full expanded planning specification for Event 114 Demilitarization. Place the enclosing 114_demilitarization_specs folder directly under docs/specs/. Filenames are flat and ready for the repository handoff.
 
+The user authorized adopting uploaded IDs and migrating the catalog on 24 October 2026. Event 114's former catalog row 124 is historical provenance; see the [shared identifier registry](../shared_identifier_registry.md#imported-event-identity-proposals) for the current identity map. Runtime remains Unavailable. Identity migration does not approve gameplay design or implementation.
+
 The specification retains the supplied universal peaceful-border rule, war suspension, peace restoration, three named evolutions, actual fielded-army desertion, and Event 096 independence. It expands those ideas into a complete territorial and military lifecycle, four response families, two missions, five achievements, AI policy, Chaos accounting, history, presentation, and implementation evidence requirements.
 
 All titles, labels, descriptions, options, and achievement names are working directions. Final localisation is implementation work. All authored balance numbers remain initial targets until validated.
@@ -47,6 +49,6 @@ The actual scripted-system architect and near-completion improvement-loop planne
 
 Implementation still needs proof of true-land adjacency, exact army preservation with no legal domestic state, real partial division-manpower mutation, exact peaceful refunds, persistent unit identity, all DMZ source owners, lifecycle wake-ups, and effective production integration. These are named gates with acceptance cases. No HOI4 MCP tool, game execution, probability evaluation, game UI render, or asset production ran in this planning session.
 
-The supplied catalog CSVs were read. The canonical repository workbook was not opened or edited. The source appendix records the legacy 114/124 conflict and current Peace-context discrepancy for deliberate owner reconciliation.
+Historical supplied catalog CSV observations and their 114/124 conflict remain in the source appendix unchanged. The identity migration is recorded in the shared registry. The current Peace-context discrepancy is a separate implementation concern.
 
 This is a complete specification and implementation handoff. It does not establish a working game implementation or justify changing the catalog to Playable.

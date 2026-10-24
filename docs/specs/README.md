@@ -135,6 +135,18 @@ It does not assert acceptance or current implementation status.
 | 112 Rise of Cossacks | [`112_rise_of_cossacks_specs/README.md`](112_rise_of_cossacks_specs/README.md) |
 | 113 The Partition | [`113_the_partition_specs/113_the_partition_package_guide.md`](113_the_partition_specs/113_the_partition_package_guide.md) |
 | 114 Demilitarization | [`114_demilitarization_specs/README.md`](114_demilitarization_specs/README.md) |
+| 115 Heroic Crusade | [`115_heroic_crusade_specs/README.md`](115_heroic_crusade_specs/README.md) |
+| 116 Warlords | [`116_warlords_specs/README.md`](116_warlords_specs/README.md) |
+| 117 Autonomy | [`117_autonomy_specs/README.md`](117_autonomy_specs/README.md) |
+| 118 Shaman | [`118_shaman_specs/README.md`](118_shaman_specs/README.md) |
+| 119 Mistresses | [`119_mistresses_specs/README.md`](119_mistresses_specs/README.md) |
+| 120 Widespread Mutiny | [`120_widespread_mutiny_specs/README.md`](120_widespread_mutiny_specs/README.md) |
+| 121 Investment | [`121_investment_specs/README.md`](121_investment_specs/README.md) |
+| 122 Gandhi | [`122_gandhi_specs/README.md`](122_gandhi_specs/README.md) |
+
+Packages 115 through 122 were imported for documentation review on 24 October 2026.
+Their folder numbers identify the supplied planning packages, with catalog conflicts recorded in the [shared identifier registry](shared_identifier_registry.md).
+Importing a package does not register an event or make it playable.
 
 Shared and cross-event specification packages are indexed below.
 

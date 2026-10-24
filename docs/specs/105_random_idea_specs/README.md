@@ -13,22 +13,18 @@ The accepted specification decisions include the complete loaded national-idea p
 The native-engine capabilities and integration evidence named in the handoffs still require implementation-stage proof.
 A completed planning package is not a claim that Event 105 is implemented or Playable.
 
-## Current import review, 10 October 2026
+## Current import review and identity migration
 
 The user authorized importing and reviewing this planning package.
 Its recorded planning-parent acceptance in [review dispositions](105_random_idea_review_dispositions.md) and [architect acceptance note](evidence/105_architecture_research.md#parent-disposition-after-research) supplies the design basis preserved by this import.
-The import retains that reported planning acceptance as historical evidence and authorizes documentation review only.
-Future implementation follows the accepted scope of its own task, with the accepted planning numbering and pending catalog migration kept explicit.
+The import retains that reported planning acceptance as historical evidence. On 24 October 2026, the user explicitly authorized adopting the uploaded IDs and migrating the catalog. Random Idea's current catalog identity is 105; former catalog row 110 moved with this design, and former row 107 moved with Rule to Lootboxes 107. The [shared identifier registry](../shared_identifier_registry.md#imported-event-identity-proposals) is the current identity map.
 The three design parts and their promoted source contracts remain under specs.
 The current import review is [the documentation handoff](../../plans/105_random_idea_plans/subagent_handoffs/105_import_review_2026-10-10.md), with current hashes and repository checks in [parent import evidence](../../plans/105_random_idea_plans/105_import_evidence_2026-10-10.json).
 
-The canonical workbook currently labels 105 Anti-player ideology and 110 Random idea, both Unavailable, with row 110 describing occupied resistance.
-It labels 104 Stability or War support and 107 Rule, also Unavailable.
-The current parent check found no runtime roots for 104, 105, 107, or 110.
+The historical workbook snapshot labels 105 Anti-player ideology, 110 Random idea, 104 Stability or War support and 107 Rule; those observations predate the authorized migration.
 On 10 October 2026, the user explicitly chose "Use uploaded IDs 104 and 105 (Recommended)", accepting Event 105 Random Idea and independent Event 104 Rule as planning IDs.
 This decision approves numbering only and does not supply fresh approval of all gameplay design or authorize implementation.
-Catalog migration remains later work. The user released legacy Rule 107 for Lootboxes 107 on 10 October 2026, while Rule keeps planning ID 104 and legacy Random Idea 110 remains held. See the [shared identifier registry](../shared_identifier_registry.md#imported-event-identity-proposals).
-Do not renumber, migrate catalog rows, or change status automatically.
+The parent is performing the authorized catalog migration. Runtime roots remain absent and all affected events remain Unavailable; identity migration does not approve gameplay design or implementation.
 Randomizations cluster 14 is reserved in the shared identifier ledger and catalogs member 46 with Medium severity, but has no current runtime constant.
 This package adds no numeric cluster reservation.
 

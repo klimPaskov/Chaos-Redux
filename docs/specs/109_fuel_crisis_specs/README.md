@@ -1,4 +1,4 @@
-# Event 109: Fuel Crisis planning package
+# Event 109: Fuel Crisis design package
 
 ## The design in one paragraph
 
@@ -9,12 +9,13 @@ Fuel Crisis removes every existing country's national stored fuel in one event r
 | Field | Value |
 | --- | --- |
 | Event | 109 Fuel Crisis |
-| Original catalog ID | 114 |
+| Canonical event ID | 109, accepted uploaded identity |
+| Former catalog identity | 114, historical only under the authorized migration |
 | Slug | fuel_crisis |
 | Type | Minor Fire-Once |
-| Status | To Be Reworked |
+| Runtime status | No runtime implementation is claimed by this documentation package |
 | Chaos level | 1 |
-| Cluster | Unassigned |
+| Cluster | Various Anomalies, cluster 11, Severe member |
 | Package | 109_fuel_crisis_planning_package.zip |
 | ZIP root | 109_fuel_crisis_specs/ |
 | Intended repository destination | docs/specs/109_fuel_crisis_specs/ |
@@ -31,7 +32,7 @@ Extract the ZIP's single top-level folder into the repository's `docs/specs/` di
 | [Part 4: presentation and achievement](109_fuel_crisis_spec_part_4_presentation_and_achievement.md) | Direction-only localisation, news and report scene production, shared consumer requirements, and the complete achievement contract |
 | [Part 5: acceptance](109_fuel_crisis_spec_part_5_acceptance.md) | Experience goals, campaign and task boundary scenarios, selection review, compatibility, performance, and completion evidence |
 
-The five parts are the canonical design. The [implementation handoff](109_fuel_crisis_implementation_handoff.md) separates technical ownership, native verification, occurrence receipts, integration details, source evidence, and the Subagent Usage and MCP Usage maps from the readable game specification.
+The five parts are the canonical design. The canonical Event 109 identity is accepted; former catalog identity 114 is historical only, with migration authorized and parent-owned. The accepted cluster assignment and parent-owned migration boundary are recorded in the [current cluster handoff](../../plans/109_fuel_crisis_plans/subagent_handoffs/109_cluster_correction_2026-10-24.md). The [implementation handoff](109_fuel_crisis_implementation_handoff.md) separates technical ownership, native verification, occurrence receipts, integration details, source evidence, and the Subagent Usage and MCP Usage maps from the readable game specification.
 
 ## Future execution prompts
 
@@ -66,11 +67,13 @@ Repository research was narrower. It used relevant files and sections around com
 
 ## Design authority and tuning
 
-The user supplied the current event identity, exact worldwide reserve loss, intact upstream economy, ordinary recovery, no evolutions, and Tasks connection. The source catalog snapshot has 109 as Custom laws, 114 as Fuel crisis, and older availability labels. Those historical rows do not override the current brief. Their disposition must be reconciled in the actual checkout and editable workbook before implementation writes.
+On 24 October 2026, the user directed: “Adopt uploaded IDs and migrate the catalog.” This accepts Fuel Crisis as Event 109 and makes former catalog identity 114 historical only. The same date’s direct instruction accepts Various Anomalies cluster 11, Severe member, with existing event eligibility unchanged. The authorized workbook and registry migration is complete and recorded in the [migration report](../../plans/repo_cleanup/planning_package_import_2026-10-24.md).
+This does not claim runtime activation or implementation. The other documented design choices retain their prior acceptance basis and are not expanded by this correction.
 
-The editable catalog source is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`. The fully read `chaos_redux_events_catalog.csv` is an export snapshot. No workbook or CSV content was changed by this planning task.
+The editable catalog source is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`. The fully read `chaos_redux_events_catalog.csv` is an export snapshot. The original planning task did not change workbook or CSV content.
+The 24 October migration updates Fuel Crisis to catalog ID 109 and records cluster 11 Severe membership.
 
-The Chaos bands, scaled reserve and delivery targets, 90 to 180 day task duration range, observed holds, image composition, and difficult achievement are parent-authored planning choices under the request to expand the idea. They are proposed starting design and tuning. They are not attributed to existing gameplay or separate explicit user approval.
+The Chaos bands, scaled reserve and delivery targets, 90 to 180 day task duration range, observed holds, image composition, and difficult achievement remain documented design choices with their previously recorded acceptance limits. The cluster correction changes none of those mechanics.
 
 Earlier specialist alternatives were reconciled into the canonical parts. In particular, the universal 180-day task, later 365-day ceiling, and conservation-only reserve route were superseded. Use Part 3's final formulas and alternative action routes.
 

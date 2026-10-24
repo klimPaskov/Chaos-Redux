@@ -67,7 +67,7 @@ The action-count requirement prevents one duplicated callback from masquerading 
 
 ## A4. Rare restraint
 
-**Eligible country.** Any valid recipient that has genuinely received all five rarities through its own paid completed openings, including at least one Legendary. All five must have been possible through the ordinary base pool throughout the campaign. Achievement progress cannot modify those probabilities.
+**Eligible country.** Any valid recipient that has genuinely received all five rarities through its own completed openings, while retaining the listed achievement-specific conditions, including at least one Legendary. All five must have been possible through the ordinary base pool throughout the campaign. Achievement progress cannot modify those probabilities.
 
 **Unlock conditions.** After the collection is complete, begin an initial target interval of 180 days with no further completed opening and no initiated aggressive war. During that interval, earn at least three actual allocated negative Chaos points from at least two distinct qualifying peaceful action episodes. At least one of those actions must be an existing nonwar restorative action. Fractional participant shares count accurately toward the total.
 

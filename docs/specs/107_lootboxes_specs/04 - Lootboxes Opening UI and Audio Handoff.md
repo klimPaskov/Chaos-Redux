@@ -2,7 +2,7 @@
 
 ## 1. Purpose and fixed contract
 
-This document specifies the presentation of Event 107's purchased lootbox, from arrival through five accepted interactions to the genuine reward receipt.
+This document specifies the presentation of Event 107's free first-fire welcome box and later purchased lootboxes, from arrival through five accepted interactions to the genuine reward receipt.
 It is a design and implementation handoff, not executable engine code or evidence that native behavior has been verified.
 New interface labels, asset identifiers, and descriptive names below are working labels.
 Localisation direction describes intended meaning only, with final player-facing wording authored and reviewed during production.
@@ -403,7 +403,7 @@ Never claim these checks have run in this planning package.
 The presentation source is complete only when every accepted asset row has its source, final runtime registration, actual consumer, conditional binding, and current review record.
 The parent also needs the GUI worker's reference mapping, available matched visual evidence, audio source/format evidence, and the core owner's source evidence that displayed results match the committed receipt.
 
-Acceptance requires five distinct accepted responses, rarity-neutral pre-reveal states, full genuine bundle and capacity-support readability, saved pending progress and reward snapshot, free resume, one complete final outcome, and local-only interface/audio without campaign-time dependence.
+Acceptance requires automatic first-fire window presentation for every human recipient, zero-payment welcome provenance, five distinct accepted responses with no grant before the fifth, rarity-neutral pre-reveal states, full genuine bundle and capacity-support readability, saved pending progress and reward snapshot, free resume, one complete final outcome, and local-only interface/audio without campaign-time dependence.
 It also requires complete normal animation, static fallbacks, working closing behavior, truthful disabled causes, and no hidden-system disclosure.
 
 If current source or a useful check confirms missing native real-time support, unresolved ownership, unsupported required input, inadequate texture performance, absent licensed audio, invalid alpha, or an unreviewed accepted row, report that concrete blocker.

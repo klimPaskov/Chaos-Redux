@@ -1,9 +1,9 @@
 # The Partition: planning package guide
 
-This is the complete accepted planning package for Event 113 The Partition, original catalog 123.
+This is the complete accepted planning package for Event 113 The Partition, formerly catalog row 123. The user authorized adopting uploaded IDs and migrating the catalog on 24 October 2026; see the [shared identifier registry](../shared_identifier_registry.md#imported-event-identity-proposals) for the current map.
 It expands the user's Minor Repeatable diplomacy event into independent simultaneous partition crises with bargaining, protection, real defense, exact territorial settlement and campaign-dependent outcomes.
 The requested catalog status remains To Be Reworked.
-The package is ready for implementation review and does not claim that the gameplay or assets have already been produced.
+The package is ready for implementation review and does not claim that the gameplay or assets have already been produced. Runtime remains Unavailable; identity migration does not approve gameplay design or implementation.
 
 Extract the single `113_the_partition_specs` folder into the repository's `docs/specs/` directory.
 The resulting path is `docs/specs/113_the_partition_specs/`.
@@ -75,8 +75,7 @@ The later pass also fully read 16 selected offline wiki files and 17 targeted re
 Truncated source outputs were recovered in complete smaller ranges.
 The exact audit boundaries and ledgers are included.
 
-The actual catalog workbook `docs/spreadsheets/chaos_redux_events_catalog.xlsx` remains unread because only its Git LFS pointer was returned.
-The supplied exports also conflict with the requested 113 identity, so implementation must hydrate the workbook and reconcile the rows before registration or catalog edits.
+The historical catalog evidence records the former 123 identity and the collision observed in supplied exports. The authorized migration resolves current identity; preserve those old observations as provenance and consult the shared registry for the current map. Runtime registration remains unimplemented.
 Installed Windows game documentation and native visual references were unavailable.
 The required HOI4 event, GUI, map and probability tool routes were not exposed.
 

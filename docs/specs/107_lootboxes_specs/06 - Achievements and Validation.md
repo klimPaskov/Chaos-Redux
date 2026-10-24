@@ -63,7 +63,7 @@ The action-count requirement prevents one duplicated callback from masquerading 
 
 ## A4. Rare restraint
 
-**Eligible country.** Any valid recipient that has genuinely received all five rarities through its own paid completed openings, including at least one Legendary. All five must have been possible through the ordinary base pool throughout the campaign. Achievement progress cannot modify those probabilities.
+**Eligible country.** Any valid recipient that has genuinely received all five rarities through its own completed openings; the ordinary achievement-specific purchase conditions remain as written, including at least one Legendary. All five must have been possible through the ordinary base pool throughout the campaign. Achievement progress cannot modify those probabilities.
 
 **Unlock conditions.** After the collection is complete, begin an initial target interval of 180 days with no further completed opening and no initiated aggressive war. During that interval, earn at least three actual allocated negative Chaos points from at least two distinct qualifying peaceful action episodes. At least one of those actions must be an existing nonwar restorative action. Fractional participant shares count accurately toward the total.
 
@@ -95,14 +95,14 @@ The following cases are concrete acceptance targets. Expected values use the fin
 
 | ID | Case | Required result |
 | --- | --- | --- |
-| LB-T01 | Initial access delivered twice to the same country | One permanent category, no state reset or free reward |
-| LB-T02 | Recipient has 0 PP at event arrival | Access granted, purchase unavailable, later purchase possible |
+| LB-T01 | A per-country first-fire welcome delivery repeats | One permanent category and welcome transaction; no duplicate box, reroll, overwrite, or state reset |
+| LB-T02 | Every existing country is included in first-fire delivery, including MP humans and poor AI/human countries | Exactly one free ordinarily sampled box is sealed with zero-payment provenance; the human window opens automatically, AI uses the common resolver, and later purchases still require 50 PP |
 | LB-T03 | Buyer has 49, fractional below 50, exactly 50, and above 50 PP | Display and click-time inclusive gate agree, exact payment only at affordability |
 | LB-T04 | Black Friday inactive, active, overlapping, and expired | Every Lootboxes quote and actual debit stays exactly 50 |
 | LB-T05 | Two purchase requests overlap | One payment and one sealed record, second request harmless |
 | LB-T06 | One tier has no certified recipe for the country | No payment, no roll, explicit pool defect in the implementation report |
 | LB-T07 | Valid paid box is closed and country falls to 0 PP | Free resumption remains available |
-| LB-T08 | Initial-event enablement changes after access | Existing access and paid obligations follow the permanent-access contract, with no silent confiscation |
+| LB-T08 | Initial-event enablement changes after access | Existing access and pending paid or welcome boxes follow the permanent-access contract, with no silent confiscation |
 | LB-T09 | Repeated purchases through the same native decision plus resume, reload, and result replay | Each genuinely new paid purchase samples once with fresh per-purchase randomness; all continuations use the sealed receipt without another sample |
 | LB-T10 | Matched fixture copies of one sealed purchase: immediate AI completion and human close/resume before later completion | Both paths use the common resolver and each grants its copy's sealed receipt once; the human retains free timing choice, with no new timeout, payment, or balance rule |
 
@@ -110,8 +110,8 @@ The following cases are concrete acceptance targets. Expected values use the fin
 
 | ID | Case | Required result |
 | --- | --- | --- |
-| LB-O01 | Close and resume at stages 0, 1, 2, 3, and 4 | Same paid prize and accepted stage, no influence before completion |
-| LB-O02 | Save/reload at every pending stage | Same purchase identity, shell, rarity, exact contents, provider version, and stage |
+| LB-O01 | Close and resume a welcome or paid box at stages 0, 1, 2, 3, and 4 | Same sealed prize, provenance, and accepted stage; no influence before completion |
+| LB-O02 | Save/reload at every pending welcome or paid stage | Same transaction identity, payment provenance, shell, rarity, exact contents, provider version, and stage |
 | LB-O03 | Held input, rapid clicks, and stale stage requests | Each accepted fresh activation advances exactly one visible stage |
 | LB-O04 | Fifth activation delivered twice | One complete grant, one history update, one influence charge |
 | LB-O05 | Close after commit before the result appears | Resumption reads the completed result and grants nothing again |
@@ -122,6 +122,8 @@ The following cases are concrete acceptance targets. Expected values use the fin
 | LB-O10 | Human/AI handover during a pending opening | Same record resolves once through the proper presentation path |
 | LB-O11 | Cosmetic change, civil war, annexation, and restoration | One lawful purchase owner, no copied grant rights, supported restoration preserved |
 | LB-O12 | A bundle component fails in a supported interruption scenario | Recovery completes only missing components, without declaring partial delivery complete |
+| LB-O13 | Human first-fire welcome box is opened in multiplayer | Local window appears automatically; clicks 1–4 grant nothing, click 5 resolves once, and no other human view is seized |
+| LB-O14 | AI receives a first-fire welcome box with 0 PP | The sealed ordinary rarity/reward uses the common completion resolver without GUI or affordability checks |
 
 ### Rewards and probabilities
 

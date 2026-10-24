@@ -6,7 +6,7 @@ Implement the world loss defined in Parts 1 and 2 as one admitted Event 109 occu
 
 The preferred native operation is `set_fuel = 0` in each current country scope of one `every_country` pass. This operation has both repository offline reference support and an existing mod precedent. Installed native documentation and MCP evidence must confirm the supported operation before gameplay implementation.
 
-The event identity remains **109, Fuel Crisis, Minor Fire-Once, To Be Reworked, Chaos level 1, cluster unassigned**. Original ID 114 is historical. No implementation, native analysis, or live validation is claimed by this specification.
+The design identity is Event 109 Fuel Crisis, Minor Fire-Once, Chaos level 1, Severe member of Various Anomalies cluster 11. The user explicitly accepted cluster 11 Severe membership on 24 October 2026, with existing event eligibility unchanged. Former catalog identity 114 is historical only under the user-authorized migration; the parent owns the workbook and shared-registry writes. No runtime activation, workbook migration, native analysis, or live validation is claimed by this specification.
 
 The user explicitly supplied the identity, one-time all-country reserve wipe, unchanged upstream oil economy, ordinary recovery, no evolutions, and connection to Event 101 Tasks. The 109-owned receipt contract and Part 1's transient Chaos calculation are parent-promoted planning choices within that brief. They are neither tested code nor additional mechanics explicitly requested by the user.
 
@@ -118,15 +118,15 @@ When Tasks is disabled, no player is eligible, an existing task prevents admissi
 
 ## Identity, registration, and shared consumers
 
-Resolve the supplied catalog conflict before coding or writing catalog rows. Older snapshots place Custom Laws at 109 and Fuel Crisis at 114. The current design assigns 109 to Fuel Crisis and retains 114 only as its original historical reference. The parent must establish the authoritative disposition of the occupied Custom Laws label and any historical save records. Do not overwrite unrelated content or translate old 114 fired records automatically.
+Complete the parent-owned accepted ID migration before runtime registration or writing catalog rows from implementation. The inspected pre-migration catalog snapshot placed Custom Laws at 109 and Fuel Crisis at 114. The user accepted the uploaded Event 109 identity and authorized catalog migration on 24 October 2026, making 114 historical for Fuel Crisis. The parent owns the workbook and registry updates, including the displaced Custom Laws identity and any historical save records. Do not overwrite unrelated content or translate old 114 fired records automatically.
 
-This planning deliverable does not edit the workbook. A later authorized catalog update belongs to `chaosx_spreadsheet_doc_worker` and the repository's XLSX workflow. The workbook is the editable catalog source. CSV snapshots remain exports.
+This documentation subtask does not edit the workbook. The parent owns the user-authorized catalog migration and should use `chaosx_spreadsheet_doc_worker` and the repository's XLSX workflow. The workbook is the editable catalog source. CSV snapshots remain exports.
 
 Register the reconciled 109 identity as Minor Fire-Once through the existing category and all-events machinery. Its player-facing Chaos level 1 maps to internal `constant:chaos_meter_tier_id.tier_0` in the inspected repository. Eligibility level is distinct from the numeric onset manifestation contribution.
 
-Cluster unassigned means no assigned static cluster member. The existing generic Random Stuff mechanism samples the complete authoritative event pool. A registered, eligible 109 may therefore be drawn there while remaining statically unassigned. Its entry still uses the same receipt admission. Do not add a special exclusion or cluster membership to conceal this distinction.
+Cluster membership is Various Anomalies 11, Severe. This registration must preserve the event’s existing eligibility and ordinary occurrence admission. It does not authorize changes to its trigger, selection weights, repeat guards, or runtime hooks.
 
-Keep the event name, debug name, shared event log, Event Details, history, localization, asset references, and catalog identity consistent. Retain To Be Reworked until the appropriate implementation and completion review authorizes a status change.
+Keep the event name, debug name, shared event log, Event Details, history, localization, asset references, and catalog identity consistent. Do not infer a catalog status from this handoff or historical source snapshots. Parent-owned catalog work determines any future status statement.
 
 Part 4 owns the one native announcement, its acknowledgment, the log image, and the difficult Tasks-dependent achievement. Shared log and details changes remain parent-owned framework integration. Their data consumers must be inspected and rendered when changed. No event-specific scripted window is introduced by this specification, so `chaosx_event_ui_worker` is not assigned shared framework work.
 
@@ -229,5 +229,5 @@ No 109 or 114 implementation was found in the inspected event filename listing, 
 
 Installed native documentation, callable HOI4 MCP tools, the verified Event 101 API and actual delivery accessors, matched native presentation evidence, and user live-game validation were unavailable here. No gameplay source was edited and no HOI4 process was launched.
 
-Future implementation may mark a surface complete only against its own evidence. The core can be implemented separately from the blocked adapter, but the Event 101 connection and Tasks-dependent achievement remain visible completion blockers. Preserve To Be Reworked and report partial progress accurately until the parent reviews the full accepted specification against the implemented feature and the required validation.
+Future implementation may mark a surface complete only against its own evidence. The core can be implemented separately from the blocked adapter, but the Event 101 connection and Tasks-dependent achievement remain visible completion blockers. Do not report catalog status from this historical handoff. The parent reviews implementation against the accepted specification and required validation.
 

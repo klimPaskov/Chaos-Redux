@@ -1,6 +1,6 @@
 # Event 111 coding-agent implementation prompt
 
-Implement the complete This is SPARTA!!! design in `docs/specs/111_this_is_sparta_specs/`. The current identity is 111 and the original catalog identity is 116. This prompt is a future implementation handoff. The specification authoring session did not implement the event, run the game, generate production assets or prove native behavior.
+Implement the complete This is SPARTA!!! design in `docs/specs/111_this_is_sparta_specs/`. The current identity is 111; former catalog row 116 is historical provenance. The user authorized adopting uploaded IDs and migrating the catalog on 24 October 2026; consult the [shared identifier registry](../shared_identifier_registry.md#imported-event-identity-proposals). This prompt is a future implementation handoff. The specification authoring session did not implement the event, run the game, generate production assets or prove native behavior. Runtime remains Unavailable.
 
 Read the package index, all eight specification parts, the research and source-reading reports, the improvement review disposition and every separate prompt. Treat the gameplay parts as the design authority, with Part 1 owning shared entry and Chaos rules, Part 3 owning territorial predicates, Part 4 owning ordinary transactions, Part 5 owning mythology and Part 6 owning achievement conditions. Resolve contradictions explicitly rather than choosing whichever statement is easiest to code.
 
@@ -10,9 +10,9 @@ Keep iterating until the complete design is implemented to its fullest extent. D
 
 ## Resolve identity and geography first
 
-The inspected repository snapshot was `a3ef485c5da7e2337122eca04ac65c175050f251`. Its export still assigned old row 111 to Resistance and row 116 to Sparta. The user brief is the authority for this event's current ID. Inspect the real active registry and workbook before migrating. Preserve the old Resistance identity and history. Do not subtract an assumed offset from unrelated event IDs and do not treat 111 and 116 as two independently fireable Spartas.
+The inspected repository snapshot was `a3ef485c5da7e2337122eca04ac65c175050f251`. Its export assigned row 111 to Resistance and row 116 to Sparta; retain this as historical evidence. The user authorized adopting uploaded IDs and migrating the catalog on 24 October 2026. Current identity is 111; consult the [shared identifier registry](../shared_identifier_registry.md#imported-event-identity-proposals). Preserve Resistance's distinct identity and history, and do not treat 111 and 116 as two independently fireable Spartas. Runtime remains Unavailable.
 
-Use the shared `chaosx.nr111.1` entry convention only after that reconciliation. Prepare the new actor before the shared event history is written. Do not add a second ad hoc history row after founding. Ambiguous old numeric-only save rows require a proved migration or a declared new-campaign requirement. A map-changing patch must not claim arbitrary old-save compatibility.
+Use the shared `chaosx.nr111.1` entry convention for implementation. Prepare the new actor before the shared event history is written. Do not add a second ad hoc history row after founding. Ambiguous old numeric-only save rows require a proved migration or a declared new-campaign requirement. A map-changing patch must not claim arbitrary old-save compatibility.
 
 Audit vanilla, the complete active Chaos Redux checkout, enabled Workshop content and sibling local mods before allocating the country tag, state ID, cosmetic identities or shared registry IDs. `SPARTA_TAG` is a role placeholder, not a proposed free three-character tag. Reuse an existing valid identity where appropriate, with actual consumer provenance. Cluster remains unassigned.
 

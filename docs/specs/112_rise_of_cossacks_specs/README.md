@@ -2,8 +2,8 @@
 
 ## Result
 
-This is the imported design and implementation handoff for the user-confirmed Event 112, Rise of Cossacks. The package originally used catalog entry 122; the current workbook migration is still queued.
-The imported [final package audit](../../plans/112_rise_of_cossacks_plans/imported_review/review_evidence/curator/final_package_audit.md) records the user-specified design classification as Minor Fire-Once, To Be Reworked, Chaos level 1, and Formables with Medium severity. The current workbook still has 112 as Lootboxes and 122 as Rise of Cossacks, both Unavailable with Type, Chaos, and cluster fields blank; see Part 13 for the current crosswalk.
+This is the imported design and implementation handoff for the user-confirmed Event 112, Rise of Cossacks. Its former catalog entry was 122; the user authorized adopting uploaded IDs and migrating the catalog on 24 October 2026. See the [shared identifier registry](../shared_identifier_registry.md#imported-event-identity-proposals) for the current identity map.
+The imported [final package audit](../../plans/112_rise_of_cossacks_plans/imported_review/review_evidence/curator/final_package_audit.md) records the user-specified design classification as Minor Fire-Once, To Be Reworked, Chaos level 1, and Formables with Medium severity. Runtime remains Unavailable. The identity migration does not approve gameplay design or implementation.
 The package expands the immediate Cossack rising into a full country campaign with regional institutions, military and economic development, distinct national projects, an evolved resurgence and playable defeat or refuge outcomes.
 All structural titles, keys, route names and asset labels are working labels, not final localisation.
 

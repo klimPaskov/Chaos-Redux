@@ -110,6 +110,6 @@ The required world work is one pass per admitted occurrence. Ongoing task observ
 
 Planning is complete when the design, numerical assumptions, presentation, dependency boundaries, source record, review dispositions, and implementation instructions agree. This package completes that design task. Its final review record identifies the review performed and any corrections made before delivery.
 
-Gameplay completion is a later claim. It requires implemented files, the verified native and Tasks interfaces, finished localisation and assets, supported source and MCP evidence, and the user's live-game observations. The separate implementation handoff assigns those checks and their owners.
+Gameplay completion is a later claim. It requires implemented files, proportionate source and reference review, useful available checks, finished localisation and assets, and verified native and Tasks interfaces where supported. Disclose unavailable runtime evidence and other material limits. The separate implementation handoff assigns those checks and their owners. Agents do not request or await user live-game testing.
 
-Retain the requested **To Be Reworked** status during this planning handoff. Report the core, each Tasks route, achievement, assets, integration, and validation separately during implementation. A functioning world wipe cannot stand in for the rest of the accepted feature.
+Treat catalog status as parent-owned and do not repeat historical labels as current. Register the accepted cluster 11 Severe membership while preserving existing event eligibility. Report the core, each Tasks route, achievement, assets, integration, and validation separately during implementation. A functioning world wipe cannot stand in for the rest of the accepted feature.

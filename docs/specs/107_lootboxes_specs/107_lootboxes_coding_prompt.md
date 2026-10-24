@@ -6,16 +6,16 @@ Follow the current repository `AGENTS.md`, `chaos-redux-event-planning`, `chaos-
 
 ## Confirmed identity and current source status
 
-Use Event 107 Lootboxes, Event 108 Wrestling Tournament, and Event 112 Rise of Cossacks as recorded in the shared registry; the parent reports its 107-hold amendments complete and identifier checks passing.
-The workbook state last reported by the parent is row 107 Rule/Unavailable and row 112 Lootboxes/Unavailable; workbook/status changes remain parent-owned.
-The parent source scan identifies Fuel Crisis as Event 114, Unavailable, with no Event 114 root.
+Use accepted uploaded IDs: Event 107 Lootboxes, Event 108 Wrestling Tournament, Event 122 Rise of Cossacks, Event 109 Fuel Crisis, and Event 114 Demilitarization. Parent owns catalog and shared-registry migration; verify it before runtime registration.
+Lootboxes 107 is the accepted canonical uploaded ID. Former catalog identity 112 is historical only. The user authorized catalog migration, and the parent owns the workbook and shared-registry updates; confirm completion before runtime registration.
+Fuel Crisis uses accepted design ID 109; former catalog identity 114 is historical only under the authorized parent migration. No runtime implementation is claimed.
 Treat 114 as the proposed Lootboxes integration target and preserve full fuel delivery; do not imply an existing Event 114 implementation.
 
 The imported package proposes a standalone Minor Fire-Once event at Chaos level 1 with permanent country access after initial delivery. Follow the accepted scope map in the README for these and other non-core design details.
 
 ## Core pass conditions
 
-Buying costs exactly 50 PP, including under Premium and all discount sources. Opening and resuming cost zero. A country owns one unresolved paid box. Purchase-time sealing fixes the form, rarity, complete reward, quantities, provider version, deterministic delivery policy, and reward evolution snapshot. Close, Escape, save/reload, waiting, or reopening cannot reroll it.
+Every later purchase costs exactly 50 PP, including under Premium and all discount sources. Opening and resuming cost zero. On the one global first firing, every existing country receives one free sealed welcome box with zero-payment provenance. The welcome box uses ordinary random rarity and reward selection and the same five-click human/common AI completion resolver. Only the purchase-affordability check is bypassed. A country owns at most one unresolved paid or welcome box. Purchase-time sealing fixes the form, rarity, complete reward, quantities, provider version, deterministic delivery policy, and reward evolution snapshot. Close, Escape, save/reload, waiting, or reopening cannot reroll it.
 
 The human opening window immediately presents a large central animated chest over the dimmed campaign. The player activates the chest itself five times. Each accepted fresh input has distinct real motion and synchronized physical sound. The first four stages grant nothing. The fifth invokes one authoritative completion, delivers every genuine component, updates reward history once, and adds influence once. Result replay is read-only. AI resolves the same paid record without a human window.
 
@@ -73,7 +73,7 @@ Use Part 6's scenario matrix to scope meaningful source checks and identify evid
 
 The archived planning review reports that its improvement pass found no open addendum and recommended design closure. Do not repeat that unchanged review. After substantial accepted implementation work, or when a distinct new design gap appears, use one bounded `chaosx_improvement_loop_planner` pass under the current improvement-loop skill and disposition its findings. Record a closure handoff when further expansion would add bloat.
 
-Align event metadata, public descriptions, evolution information, shared mirrors, and catalog fields only against verified implementation facts. The parent or `chaosx_spreadsheet_doc_worker` owns the workbook and generated exports; do not edit exported CSVs. Keep the current `Unavailable` status until the parent records an approved status basis; completed identifier migration alone does not upgrade it.
+Align event metadata, public descriptions, evolution information, shared mirrors, and catalog fields only against verified implementation facts. The parent or `chaosx_spreadsheet_doc_worker` owns the workbook and generated exports; do not edit exported CSVs. Do not assert a workbook status from this prompt; the parent owns catalog status updates and any implementation-based change.
 
 Return a required-versus-implemented route table covering every decision, variant, reward family, evolution entry, hidden episode, contribution source, AI case, achievement, asset row, and persistence case. Report missing, renamed, merged, simplified, substituted, or blocked routes. Include exact changed files, evidence identities, tests actually run, remaining risks, and all review dispositions.
 

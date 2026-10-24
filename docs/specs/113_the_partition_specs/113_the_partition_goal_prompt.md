@@ -6,7 +6,7 @@ Use 113_the_partition_acceptance_matrix.md, 113_the_partition_probability_scenar
 
 Read current AGENTS.md, full planning and relevant skills, roles, implementation owners, installed documentation and native references before patching.
 Recover truncated reads and disclose unavailable sources.
-Hydrate the actual catalog XLSX and resolve ID 113 against original 123 and the unrelated 113 row before registration.
+Use current catalog identity 113 under the user's 24 October 2026 authorization to adopt uploaded IDs and migrate the catalog. Former row 123 and the displaced entry are historical provenance; consult `docs/specs/shared_identifier_registry.md`. Runtime remains Unavailable until separately implemented and reviewed.
 Preserve unrelated content and use the workbook exporter.
 
 Build one repeatable wave with independent target crises.

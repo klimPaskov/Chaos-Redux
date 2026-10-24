@@ -7,7 +7,7 @@ Implement the accepted Event 112 package in `docs/specs/112_rise_of_cossacks_spe
 Read all thirteen specification parts, research notes, bibliography, implementation usage maps and companion prompts.
 The archived [source authority record](../../plans/112_rise_of_cossacks_plans/imported_review/source_reading_and_authority.md) and [parent improvement closure](../../plans/112_rise_of_cossacks_plans/imported_review/112_rise_of_cossacks_improvement_and_closure.md) preserve historical decisions and acceptance basis.
 Event ID 112, Rise of Cossacks, is the explicit current user-selected planning identity.
-The original Cossack catalog row 122 remains held for migration.
+The user authorized adopting uploaded IDs and migrating the catalog on 24 October 2026. Event 112 is the current identity; former row 122 is historical provenance. Consult the [shared identifier registry](../shared_identifier_registry.md#imported-event-identity-proposals). Runtime remains Unavailable; this does not approve gameplay design or implementation.
 The prior user-directed planning target and parent closure record Minor Fire-Once, To Be Reworked, Chaos 1 and Formables Medium, but the parent reports that current workbook rows 112 and 122 are both Unavailable with Type, Chaos and cluster blank.
 The parent owns the queued catalog/runtime crosswalk; this prompt does not assign a new runtime registration or authorize a workbook edit.
 The labels in the planning package are working labels, not final localisation.

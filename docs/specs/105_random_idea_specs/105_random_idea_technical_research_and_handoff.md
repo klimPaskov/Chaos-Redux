@@ -7,7 +7,7 @@ The 10 October import preserves that reported design disposition as history, whi
 Current workflow, root/catalog findings, and parent-owned import evidence are linked from [README](README.md#current-import-review-10-october-2026).
 Pinned research below remains historical, and named source paths are future implementation targets.
 The user's 10 October 2026 choice accepts planning IDs 105 Random Idea and independent 104 Rule, as recorded in README.
-Catalog migration remains later work. The user released legacy Rule 107 for Lootboxes 107 on 10 October 2026, while legacy Random Idea 110 remains held.
+The user authorized adopting uploaded IDs and migrating the catalog on 24 October 2026. Random Idea is current catalog identity 105 and former row 110 is historical provenance; Rule is 104 and former row 107 belongs to Lootboxes. See the [shared identifier registry](../shared_identifier_registry.md#imported-event-identity-proposals). This changes identity metadata only; implementation and runtime availability remain separate.
 
 The design requires the complete effective loaded set of technically addable national ideas.
 Use supported native runtime discovery if the installed engine exposes it.
@@ -295,11 +295,10 @@ This package preserves the name and Medium severity and allocates no new shared 
 
 The supplied event CSV labels 105 Anti-player ideology, 107 Rule, 109 Custom laws with a national-spirit premise, and 110 Random idea with a different premise.
 The current user explicitly supplies Random Idea 105 and Rule 104.
-Reconcile those exact records with the authoritative workbook and actual current implementation before a catalog write.
-Do not copy the old row wholesale or renumber unrelated implemented content.
+Those records were reconciled by the user's 24 October 2026 authorization to adopt uploaded IDs and migrate the catalog. Preserve the old row observations as historical evidence; do not copy an old row wholesale or renumber unrelated implemented content.
 The workbook was not supplied or inspected in the historical planning session, and no catalog file was changed by it.
-The current parent check confirms those catalog identity conflicts and the absence of roots for 104, 105, 107, and 110, with all four workbook rows Unavailable.
-Requested To Be Reworked remains package metadata pending catalog migration and the current catalog-status contract, rather than an instruction to change a rootless entry's status.
+The historical parent check confirmed those catalog identity conflicts and the absence of roots for 104, 105, 107, and 110 at that time, with all four workbook rows Unavailable.
+Requested To Be Reworked remains design metadata. Identity migration does not change runtime availability or authorize a Playable status.
 
 ## Implementation completion gate
 

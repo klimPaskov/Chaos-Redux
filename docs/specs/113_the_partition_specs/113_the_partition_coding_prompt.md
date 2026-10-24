@@ -30,12 +30,12 @@ Also read the asset, super-event, achievement, decision-mission and goal prompts
 The source evidence records what was actually inspected during planning at commit `a3ef485c5da7e2337122eca04ac65c175050f251`.
 It is a starting reference, not permission to skip a newer implementation or installed dependency.
 
-The user's present identity is Event 113, original catalog 123, The Partition, Minor Repeatable, To Be Reworked, Chaos 1, Diplomacy, High member severity.
+The user's present identity is Event 113, formerly catalog row 123, The Partition, Minor Repeatable, To Be Reworked, Chaos 1, Diplomacy, High member severity. The user authorized adopting uploaded IDs and migrating the catalog on 24 October 2026; consult the [shared identifier registry](../shared_identifier_registry.md#imported-event-identity-proposals). This authorizes identity migration only and does not approve additional gameplay design or runtime registration.
 Supplied exports instead place Wrestling Tournament at 113 and The Partition at 123.
 Hydrate and inspect `docs/spreadsheets/chaos_redux_events_catalog.xlsx` before resolving this collision.
 Preserve the unrelated event and the original identity history.
 Do not overwrite a catalog row, invent a replacement event number, or claim the LFS pointer is the workbook.
-If the actual workbook still makes the requested identity migration ambiguous, isolate that registration blocker and obtain the necessary allocation decision after presenting the exact conflicting rows.
+The user authorized adopting uploaded IDs and migrating the catalog on 24 October 2026. Do not reopen the resolved identity choice; consult the shared identifier registry for the current mapping. Any separate implementation blocker must be evidenced independently. Runtime remains Unavailable.
 Complete independent reviewable implementation work while that owner decision remains pending.
 
 ## Deliver the whole playable event

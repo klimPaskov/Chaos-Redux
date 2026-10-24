@@ -3,11 +3,10 @@
 ## Authority and current status
 
 Event 112 Rise of Cossacks is the user's selected planning identity.
-The original Cossack catalog row 122 remains held for the parent-owned migration.
-The parent reports that the current workbook still lists row 112 as Lootboxes and row 122 as Rise of Cossacks, both Unavailable, with Type, Chaos and cluster fields blank.
+The user authorized adopting uploaded IDs and migrating the catalog on 24 October 2026. Rise of Cossacks is current identity 112; former row 122 and the displaced Lootboxes row are historical provenance. Consult the [shared identifier registry](../shared_identifier_registry.md#imported-event-identity-proposals). Runtime remains Unavailable, and this asset task does not implement the catalog or approve gameplay design.
 The prior user-directed planning target records Minor Fire-Once, To Be Reworked, Chaos 1 and Formables Medium; those values are not reported as current workbook contents.
 The source and acceptance history is in the [source authority record](../../plans/112_rise_of_cossacks_plans/imported_review/source_reading_and_authority.md) and [parent improvement closure](../../plans/112_rise_of_cossacks_plans/imported_review/112_rise_of_cossacks_improvement_and_closure.md).
-The later catalog/runtime migration remains queued with the parent.
+Catalog identity migration is separately owned; runtime registration remains unimplemented.
 
 This file is a future asset handoff.
 It does not authorize a provider purchase, image or audio production, model operation, runtime integration, workbook edit or game session.

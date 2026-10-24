@@ -15,17 +15,18 @@ The disappearance remains unexplained. The presentation can show empty gauges an
 | Field | Specification |
 | --- | --- |
 | Event ID | 109 |
-| Original catalog ID | 114 |
+| Canonical event ID | 109, accepted uploaded identity |
+| Former catalog identity | 114, historical only under the authorized migration |
 | Event name | Fuel Crisis |
 | Type | Minor Fire-Once |
-| Status | To Be Reworked |
+| Runtime status | No runtime implementation is claimed by this specification |
 | Chaos level | 1 |
-| Cluster | Unassigned |
+| Cluster | Various Anomalies, cluster 11, Severe member |
 | Ordinary occurrence | Once per campaign through the shared Fire-Once system |
 | Direct connection | Event 101 Tasks |
 | Evolution policy | No evolutions |
 
-These values preserve the current user brief. The supplied catalog snapshots use older identifiers and availability labels. The migration record in the implementation handoff resolves their treatment without changing this design identity.
+The user accepted Event 109 as Fuel Crisis by directing on 24 October 2026: “Adopt uploaded IDs and migrate the catalog.” Former catalog identity 114 is historical only. The user also accepted Various Anomalies cluster 11, Severe member, with existing event eligibility unchanged. The parent owns the authorized workbook and registry migration. This design field does not claim runtime registration or activation.
 
 ## The exact world change
 
@@ -93,7 +94,7 @@ These are adjustable operational choices. The event does not lock a country into
 
 ## Chaos impact map
 
-The disappearance is a concrete abnormal world event and should contribute Chaos when fuel is actually lost. The following numbers are proposed starting balance values for this rework. They are not observations from an implemented Event 109.
+The disappearance is a concrete abnormal world event and should contribute Chaos when fuel is actually lost. The following numbers are proposed starting balance values for the design. They are not observations from an implemented Event 109.
 
 Define two temporary counts during the onset pass:
 
