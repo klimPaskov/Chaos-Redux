@@ -191,9 +191,13 @@ Its idempotent apply effect requests a capacity refresh; the current owner recal
 This registration does not supply missing services, create a cohort or route, move population, start a famine problem, or apply mortality.
 Starting and exercising a real reception case still needs its exact owner inputs; registration alone is not a capacity or execution proof.
 
-## Event 149 retirement
+## Event 149 retirement and Event 131
 
-Event 149 `Immigrations` is retired and absorbed into this system. No replacement event ID, event object, event-pool registration, flat population drain, event-log row, or event-pacing pulse is permitted, and state/accounting pulses are not event pacing.
+Event 149 `Immigrations` is retired and absorbed into this system, and its old identity is superseded by Event 131 `Immigrations`.
+Event 131 is the one planned exception to the event-free contract: a repeatable migration starter that only supplies the cause and provenance of a bounded request, specified in [docs/specs/131_immigrations_specs](../specs/131_immigrations_specs/README.md).
+This system keeps ownership of every population obligation, route, refusal, reception action, settlement, and return.
+Apart from Event 131, no replacement event ID, event object, event-pool registration, flat population drain, event-log row, or event-pacing pulse is permitted, and state/accounting pulses are not event pacing.
+Event 131 is not implemented yet, so no runtime root exists for it.
 
 ## Validation limits
 

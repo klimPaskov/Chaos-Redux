@@ -82,7 +82,7 @@ Context-complete prompts for the relevant project subagents are under `subagent_
 - Famine and migration remain separate mechanics. For player presentation, accepted [Part 9](national_policy_panels_part9.md) provides quiet-accessible management panels; crisis, local pressure, capacity, cost, and pending-work facts gate the operational actions inside them. Native AI missions retain their existing paths. Register helpers record accounting/presentation context only; no incident event layer exists. Sustained displacement remains an operational issue gate, not a condition for opening the panel.
 - AI receives the same usable response paths as the player.
 - The system uses event-driven and active-registry processing. It does not require a whole-world daily, weekly, or monthly scan.
-- Preserve the recorded Event 149 `Immigrations` retirement so the mod has one migration model.
+- Preserve the recorded Event 149 `Immigrations` retirement so the mod has one migration model. Event 131 `Immigrations` supersedes that identity as a starter that only supplies a request (see `docs/specs/131_immigrations_specs/`).
 
 ## Historical manifests and reading limits
 

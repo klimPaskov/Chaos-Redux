@@ -660,7 +660,7 @@ Its useful premise should be absorbed into the separate mechanics through explic
 - receiving-country responses
 - long-term integration or return
 
-Event 149 is retired and must not be replaced by an incident event or flat population reduction. The deleted famine and migration incident event files and constants are deliberate, and all earlier incident-event or incident-option probability wording is superseded.
+Event 149 is retired and must not be replaced by an incident event or flat population reduction. Its identity is superseded by Event 131 `Immigrations` (see `docs/specs/131_immigrations_specs/`), a bounded request starter that feeds this system's accepted-request path and owns no population movement itself. The deleted famine and migration incident event files and constants are deliberate, and all earlier incident-event or incident-option probability wording is superseded.
 
 ## Acceptance outcomes for migration
 

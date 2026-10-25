@@ -143,8 +143,13 @@ It does not assert acceptance or current implementation status.
 | 120 Widespread Mutiny | [`120_widespread_mutiny_specs/README.md`](120_widespread_mutiny_specs/README.md) |
 | 121 Investment | [`121_investment_specs/README.md`](121_investment_specs/README.md) |
 | 122 Gandhi | [`122_gandhi_specs/README.md`](122_gandhi_specs/README.md) |
+| 123 Equipment choice | [`123_equipment_choice_specs/README.md`](123_equipment_choice_specs/README.md) |
+| 124 Sun moves away | [`124_sun_moves_away_specs/README.md`](124_sun_moves_away_specs/README.md) |
+| 131 Immigrations | [`131_immigrations_specs/README.md`](131_immigrations_specs/README.md) |
+| 132 Secret Society Influence | [`132_secret_society_influence_specs/README.md`](132_secret_society_influence_specs/README.md) |
 
 Packages 115 through 122 were imported for documentation review on 24 October 2026.
+Packages 123, 124, 131 and 132 adopted their uploaded catalog identities on 25 October 2026.
 Their folder numbers identify the supplied planning packages, with catalog conflicts recorded in the [shared identifier registry](shared_identifier_registry.md).
 Importing a package does not register an event or make it playable.
 

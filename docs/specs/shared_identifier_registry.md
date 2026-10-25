@@ -179,6 +179,24 @@ Tasks 101 and Serial Killer 102 retain their existing catalog identities.
 Chaos Directorate 103 remains a separate imported replacement proposal for the catalog’s Conscription entry, outside this migration.
 Its original brief and previous import receipt retain the existing acceptance boundary.
 
+## Imported identity adoptions on 25 October 2026
+
+On 25 October 2026, the parent relayed the user’s authorization to adopt the uploaded identities for four newly imported planning packages and migrate the catalog rows.
+The migration moves each row to its canonical ID with its name, Type, Chaos level, Cluster ID and Status unchanged.
+The former rows 135, 136, 149 and 150 are consumed by these moves and are no longer active catalog identities.
+Event 131 is restored as a repeatable migration starter owned by the existing migration system, so its former retired-row Details text is superseded.
+
+| Event ID | Package | Former catalog ID | Disposition |
+| --- | --- | --- | --- |
+| 123 | [Equipment choice](123_equipment_choice_specs/README.md) | 135 | User-confirmed catalog identity, runtime unimplemented |
+| 124 | [Sun moves away](124_sun_moves_away_specs/README.md) | 136 | User-confirmed catalog identity, runtime unimplemented |
+| 131 | [Immigrations](131_immigrations_specs/README.md) | 149 | User-confirmed catalog identity, runtime unimplemented |
+| 132 | [Secret Society Influence](132_secret_society_influence_specs/README.md) | 150 | User-confirmed catalog identity, runtime unimplemented |
+
+Catalog identity adoption does not approve the packages’ proposed mechanics, register runtime content or change availability.
+All four events remain `Unavailable` because their event roots are absent.
+The Event 124 Details were corrected on the same date to the parent-supplied description of the Sun moves away event.
+
 ## Current event-design decisions
 
 The user’s 24 October instruction makes Lootboxes a worldwide first-fire event.
