@@ -164,9 +164,22 @@ def main():
     entry = dict((k, v) for k, _, v in events["chaosx.nr28.1"])
     returned = dict((k, v) for k, _, v in events["chaosx.nr28.8"])
     assert entry["fire_only_once"] == "yes"
-    assert "fire_only_once" not in returned and "immediate" not in returned
-    entry_options = [dict((k, v) for k, _, v in b) for k, _, b in events["chaosx.nr28.1"] if k == "option"]
-    return_options = [dict((k, v) for k, _, v in b) for k, _, b in events["chaosx.nr28.8"] if k == "option"]
+    assert "fire_only_once" not in returned
+    # The reopened board only refreshes the stored board result; it must not repeat the entry setup.
+    assert returned.get("immediate", []) == [("asteroid_incoming_refresh_board_ready", "=", "yes")]
+    # Both boards are paginated report events (docs/systems/event_system/report_event_choice_pages.md):
+    # their AI-only companion keeps the complete original option pool, so compare those pools.
+    def complete_option_pool(event_id):
+        options = [dict((k, v) for k, _, v in b) for k, _, b in events[event_id] if k == "option"]
+        resolution = [o for o in options if o.get("name") == "chaosx_event_ai_resolution"]
+        assert len(resolution) == 1, f"{event_id} has no single AI resolution route"
+        companion = [v for k, _, v in resolution[0]["hidden_effect"] if k == "country_event"]
+        assert len(companion) == 1
+        companion_id = dict((k, v) for k, _, v in companion[0])["id"]
+        return [dict((k, v) for k, _, v in b) for k, _, b in events[companion_id] if k == "option"]
+
+    entry_options = complete_option_pool("chaosx.nr28.1")
+    return_options = complete_option_pool("chaosx.nr28.8")
     assert len(entry_options) == len(return_options) == 5
     for first, again in zip(entry_options, return_options):
         assert first["ai_chance"] == again["ai_chance"]

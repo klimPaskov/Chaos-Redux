@@ -160,7 +160,7 @@ They are maintained regression tests under the README's retention rule, so the d
 | `validation/test_012_gods_*.js` (10), `validation/test_033_*.js` (14), `tests/event016_*.test.js` (2) | S, H or **N** | pass | **Keep and move**; copy the shared parser they `require()` from `docs/plans/033_acid_rain_plans/validation/` into `tests/lib/` |
 | `validation/validate_028_near_miss.py`, `validate_028_presentation.py` | H | pass | **Keep and move** |
 | `validation/validate_028_availability.py` | H | **fails**: `chaosx.nr28.8` now has an `immediate` block | **Improve** (D12): the event change is deliberate; allow exactly the `asteroid_incoming_refresh_board_ready` call |
-| `validation/validate_033_acid_rain.py` | H + `docs/events` | **fails**: workbook description differs from localisation, most likely since the 24 October catalog import | **Keep** (D12): the finding is real; correct the workbook row to match the localisation |
+| `validation/validate_033_acid_rain.py` | H + `docs/events` | **fails**: workbook description differs from localisation since the deliberate localisation restore of 12 October (`a7e7466d3f`) | **Keep** (D12): the finding is real; correct the workbook row to match the localisation |
 | `audit_mengele_conventional_incident_contract.mjs` | S + H | **fails**: `TypeError` at line 286 | **Retire** (D12) to `.tmp/archive/` |
 | `audit_mengele_project_adapter_contract.mjs` | S + H | **fails**: unsupported trigger `request_is_deployment` | **Retire** (D12) to `.tmp/archive/` |
 
@@ -459,6 +459,27 @@ Each entry gives the question, the decision, and the evidence it rests on.
   - `validate_028_availability.py` is outdated. `chaosx.nr28.8` gained an `immediate` block that only calls `asteroid_incoming_refresh_board_ready`, from the deliberate target-board change of 4 October. The assertion is relaxed to allow exactly that refresh call; the rest of the validator is kept.
   - `audit_mengele_conventional_incident_contract.mjs` and `audit_mengele_project_adapter_contract.mjs` are retired to `.tmp/archive/` (recoverable from Git history). Each embeds its own script interpreter that breaks whenever source uses a trigger it does not model, here `request_is_deployment`. Active references in `common/**/*.md` are updated in the same commit.
 - **D13 Machine-specific paths.** Decision: tools read the game directory from the `HOI4_GAME_DIR` environment variable, defaulting to `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV`. This covers the two main audits, `3d_pipeline/review/provider_intake.py` and the two Event 012 JS tests, and the generic package port reuses it. `live_testing/clausewitz_linux.py` keeps its WSL paths, which belong to its runtime adapter configuration.
+
+## 13. Implementation record
+
+This section is the single current report for the implementation; each step updates it in place.
+
+### Step 1: owner fixes (25 October 2026)
+
+- **Event 028 validator.** `validate_028_availability.py` failed on two outdated assumptions, both from deliberate event changes. `chaosx.nr28.8` now has an `immediate` block that only calls `asteroid_incoming_refresh_board_ready` (commit `f9cb13c4f8`, 4 October); the assertion now allows exactly that block and still rejects `fire_only_once` and any other setup. The 12 October report pagination (`01a1e2be19`, `docs/systems/event_system/report_event_choice_pages.md`) left four direct options on each board, so the option comparison now reads the complete five-option pool from each board's AI-only companion event (`chaosx.nr28.94699` and `chaosx.nr28.94799`). All 19 source-model cases pass, as do the sibling `validate_028_near_miss.py` and `validate_028_presentation.py`.
+- **Event 033 catalog row.** The workbook was the stale side: the localisation was deliberately restored on 12 October (`a7e7466d3f`) and the workbook kept the earlier wording. `chaosx_spreadsheet_doc_worker` replaced two inline-string cells through the narrow OOXML route, `Events` row ID 33 column C (now "…the inhabited states registered at formation… crossed every eligible state.") and `Clusters` row ID 5 (Natural Disasters) column C, which the same validator also compares with localisation. Only `xl/worksheets/sheet1.xml` and `sheet2.xml` changed (workbook SHA-256 `d9ad04ce…` to `3e0b8dbf…`); the export changed exactly one cell in each of the events and clusters CSVs and none in the scenarios CSV.
+- **Event 033 validator.** With the workbook aligned, `validate_033_acid_rain.py` reached a second outdated block: it asserted the Acid Rain mixed-Major cluster pacing override, which the 13 October historical restore (`1927a7901c`) removed deliberately. That block now asserts the restored contract instead: the effective pacing type comes from `get_event_cluster_type` with no Acid Rain override, the major and minor pacing updates run once each, Acid Rain is registered once as a Major event and never as repeatable, and `acid_rain_cluster_reserved` is still set (it is checked in `033_acid_rain_triggers.txt`). The validator and all 14 `test_033_*.js` tests pass.
+
+### Owner hand-offs
+
+These findings came from the audit; per the plan they are reported to their owners rather than fixed inside the tooling change.
+
+| Finding | Evidence | Proposed fix | Owner surface |
+|---|---|---|---|
+| Building icon strip frame count | `interface/countrystateview.gfx` sprite `GFX_buildings_strip` declares `noOfFrames = 35` for `gfx/interface/buildings/building_icon_strip.dds` (1,656x46). A contact sheet on a 46-px grid shows 36 icons, each in its own 46-px cell, so the engine slices 47.31-px frames and every icon after the first drifts. The 35 was set on 2 August (`34a22131be`, "Fix custom building interface coverage"); the texture was last changed in January | Set `noOfFrames = 36`, then check every `frame =` index that points into this strip | Building interface (`interface/countrystateview.gfx`) |
+| DHR flag origin | `gfx/flags/DHR_democratic.tga` and `DHR_neutrality.tga`, and their `medium/` and `small/` copies, are top-origin TGAs; the flag rule in `chaos-redux-event-assets/references/event-images-and-flags.md` forbids that, while vanilla ships 5 of 2,203 flags that way (D4) | If the flags display upside down, rewrite the six TGAs bottom-origin with the same pixels | DHR country package |
+| Event 038 parchment colour code | `chaosx.nr38.42.d` (the `desc` of the event at `events/038_malta_crusaders.txt:812`, localisation line 136) wraps `[FROM.GetMaltaPrStatus]` in `§Y…§!`, which the `chaos-redux-events` parchment rule forbids; `report_colour_audit.py` reports it | Remove the `§Y`/`§!` codes and keep the plain status text | Event 038 localisation |
+| Leftovers of the removed Acid Rain pacing override | After `1927a7901c`, nothing sets `acid_rain_cluster_pacing_type_@var:…`, yet `chaosx_event_cluster_effects.txt` still clears it at lines 2962 and 4376, and `event_cluster_get_effective_pacing_type` still sets the unused temporary `event_cluster_acid_rain_pacing_row_index` (line 2913) | Remove the three dead lines with `chaos-redux-codebase-cleanup` | Event cluster system |
 
 ## Appendix: how the measurements were taken
 
