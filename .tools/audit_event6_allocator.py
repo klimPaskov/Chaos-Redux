@@ -11,8 +11,9 @@ from __future__ import annotations
 import re
 import sys
 import csv
-import os
 from pathlib import Path
+
+from lib.game import game_dir
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -202,12 +203,7 @@ def parse_capital_map(raw: str) -> dict[str, int]:
 
 
 def load_vanilla_owned_states(errors: list[str]) -> dict[str, set[int]]:
-	vanilla_root = Path(
-		os.environ.get(
-			"HOI4_ROOT",
-			r"C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV",
-		)
-	)
+	vanilla_root = game_dir()
 	state_root = vanilla_root / "history" / "states"
 	if not state_root.is_dir():
 		errors.append(

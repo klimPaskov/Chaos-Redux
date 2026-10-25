@@ -33,7 +33,7 @@ python -B .tools/check.py full                          # whole repository
 python -B .tools/check.py full --json .tmp/checks/full.json --verbose
 ```
 
-It runs the localisation, asset-wiring and parchment-colour audits, the guidance size check (`sync/sync_read_limits.py --check`), the maintained regression tests, and, in `full` only, the script-reference audit. `quick` starts only the checks whose inputs the changed paths can affect, reports only findings located in those paths, and runs the tests only when `.tools/` changed; `--only <check>` narrows either mode.
+It runs the localisation, asset-wiring and parchment-colour audits, the script-syntax rules, the GFX conformance checks, the guidance size check (`sync/sync_read_limits.py --check`), the generator freshness checks, the maintained regression tests, and, in `full` only, the script-reference audit. `quick` also validates changed script files through HOI4 Agent Tools, and skips that step with a notice when the MCP server cannot start. `quick` starts only the checks whose inputs the changed paths can affect, reports only findings located in those paths, and runs the tests only when `.tools/` changed; `--only <check>` narrows either mode. The module docstring of `check.py` lists every check and its tool.
 Errors print one per line as `path:line: level RULE message`, followed by one summary line per check; `quick` and `--verbose` also print warnings, and review candidates appear only in the `--json` report.
 Exit status is `0` with no errors, `1` with errors, and `2` when a check could not run.
 On 25 October 2026 a typical single-event `quick` run took about 20 s, and `full` took about 75 s.
@@ -42,6 +42,16 @@ The shared contract lives in `lib/report.py`: every finding has a check, a rule 
 The audits listed below accept `--paths` or `--paths-from FILE` to limit reporting to findings in those files or folders (cross-reference audits still read the whole repository to resolve references) and `--fail-on none` to report without failing; by default they exit `1` when they report an error.
 `tests/test_check_contract.py` seeds synthetic findings to prove each audit's levels, the path filter and the exit codes.
 Maintained tests that need arguments are listed in `TEST_ARGUMENTS` in `check.py`; every other file matching its `TEST_PATTERNS` runs bare from the mod root.
+Tools that read the installed game take its folder from `HOI4_GAME_DIR` (default: the Steam path) through `lib/game.py`, and exit `2` naming the variable when the game is not there.
+
+Checks added for the deterministic-tooling plan (`docs/plans/repo_cleanup/deterministic_tooling_plan_2026-10-25.md`):
+
+- `audit_script_rules.py` reports `<=`/`>=`, unary minus on a variable token and `§`/`£` written in scripted localisation (`CLAUDE.md` sections 1 and 2) as errors. It is comment- and string-aware and lexical only; ordinal localisation keys are reported by the localisation audit. Fixtures: `tests/fixtures/script_rules/`.
+- `validate_scripts_mcp.py --paths <files>` runs `hoi4.script_validate` for changed script files in one MCP session (`lib/mcp_session.py`, server from `.mcp.json`). Syntax, command-kind and scope errors are errors; known-mistake matches and unresolved commands are warnings, because the tool's own rules can misfire; unchecked argument blocks are review items. It never scans the whole repository.
+- `gfx/gfx.py audit` (or `sprites`, `flags`, `achievements`, `binaries`) checks frame-strip widths, the flag size ladder and TGA origin, achievement art size, and runtime binaries for LFS pointers and truncation; see `gfx/README.md`.
+- `export_event_catalog_csv.py --check`, `generate_formable_state_puzzle_runtime.mjs --check` and `build_event016_transit_state_catalog.py --check` compare their generated files with a fresh render without writing; `sync/sync_agents.py --verify` covers the agent mirrors.
+
+`lib/mcp_session.py` is separate from `3d_pipeline/lib/mcp_stdio.py` because that client is hash-pinned in `3d_pipeline/config/dependencies.lock.json` and changes only with an adapter release.
 
 ### Catalog and project packaging
 

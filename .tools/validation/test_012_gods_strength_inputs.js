@@ -20,7 +20,8 @@ for (const p of ['common/script_constants/012_africa_constants.txt', 'common/scr
 	for (const cat of parse(readSource(p))) for (const n of cat.value)
 		if (typeof n.value === 'string' && Number.isFinite(Number(n.value))) constants[cat.key + '.' + n.key] = Number(n.value);
 }
-const collectionFile = 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/collections/collections.txt';
+// HOI4_GAME_DIR overrides the default install, as for every repository tool (.tools/lib/game.py).
+const collectionFile = (process.env.HOI4_GAME_DIR || 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV') + '/common/collections/collections.txt';
 function namedBlock(source, name) {
 	const start = source.search(new RegExp('^' + name + '\\s*=\\s*\\{', 'm'));
 	assert.ok(start >= 0, name);

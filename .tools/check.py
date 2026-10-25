@@ -18,12 +18,19 @@ The command never edits tracked files; the checks it starts write only to `.tmp/
 
 Checks (rule ids and levels are defined by each tool; see `.tools/lib/report.py`):
 
-- localisation   `audit_localisation_static.py`        localisation integrity and key wiring
-- asset-wiring   `audit_asset_wiring_static.py`        sprite, texture and implicit GFX lookups
-- parchment      `report_colour_audit.py`              colour codes in parchment report text
-- guidance       `sync/sync_read_limits.py --check`    guidance size ceilings and read-limit drift
-- tests          maintained regression tests in `.tools/` (full, or quick when `.tools/` changed)
-- references     `audit_script_references_static.py`   dead code, flags and clones (full only; review)
+- localisation     `audit_localisation_static.py`       localisation integrity and key wiring
+- asset-wiring     `audit_asset_wiring_static.py`       sprite, texture and implicit GFX lookups
+- parchment        `report_colour_audit.py`             colour codes in parchment report text
+- script-rules     `audit_script_rules.py`              `<=`/`>=`, unary minus, scripted-localisation format codes
+- gfx              `gfx/gfx.py audit`                   frame strips, flag ladder, achievement size, runtime binaries
+- guidance         `sync/sync_read_limits.py --check`   guidance size ceilings and read-limit drift
+- generators       `--check` modes of the generators    catalog CSV, formable puzzles, Event 016 catalog, agent mirrors
+- tests            maintained regression tests in `.tools/` (full, or quick when `.tools/` changed)
+- references       `audit_script_references_static.py`  dead code, flags and clones (full only; review)
+- script-validate  `validate_scripts_mcp.py`            HOI4 Agent Tools script validation of changed files (quick
+                   only; skipped with a notice when the MCP server cannot start)
+
+Set `HOI4_GAME_DIR` when the game is not installed at the default Steam path (`.tools/lib/game.py`).
 """
 
 from __future__ import annotations
@@ -67,18 +74,22 @@ TEST_PATTERNS = (
 
 class Check(NamedTuple):
 	name: str
-	inputs: Tuple[str, ...]  # path prefixes whose change makes `quick` run the check
+	inputs: Tuple[str, ...]  # path prefixes (folders end in `/`) whose change makes `quick` run the check
 	quick: bool
 	run: Callable[[Optional[List[str]]], Tuple[List[Finding], Optional[str]]]
 
 
-def run_report_tool(name: str, script: str, extra: Sequence[str] = ()) -> Callable:
-	"""Run a tool that writes the shared `findings` JSON and return its findings."""
+def run_report_tool(name: str, script: str, extra: Sequence[str] = (), optional: bool = False) -> Callable:
+	"""Run a tool that writes the shared `findings` JSON and return its findings.
+
+	`extra` arguments come first, so a subcommand such as `gfx.py audit` works. An `optional`
+	tool that exits 2 (its service is unavailable) is reported as skipped instead of failing.
+	"""
 
 	def runner(paths: Optional[List[str]]) -> Tuple[List[Finding], Optional[str]]:
 		with tempfile.TemporaryDirectory(prefix="chaosx_check_") as folder:
 			destination = Path(folder) / "report.json"
-			command = [sys.executable, "-B", str(TOOLS / script), "--json", str(destination), "--fail-on", "none", *extra]
+			command = [sys.executable, "-B", str(TOOLS / script), *extra, "--json", str(destination), "--fail-on", "none"]
 			if paths:
 				# A path list can exceed the Windows command-line limit, so it travels in a file.
 				listing = Path(folder) / "paths.txt"
@@ -91,6 +102,9 @@ def run_report_tool(name: str, script: str, extra: Sequence[str] = ()) -> Callab
 				return [], f"{script} timed out after {AUDIT_TIMEOUT_SECONDS} s"
 			if completed.returncode != 0 or not destination.exists():
 				tail = (completed.stderr or completed.stdout).strip().splitlines()[-3:]
+				if optional and completed.returncode == 2:
+					print(f"{name}: skipped: {' | '.join(tail)}")
+					return [], None
 				return [], f"{script} exited {completed.returncode}: {' | '.join(tail)}"
 			payload = json.loads(destination.read_text(encoding="utf-8"))
 		return [Finding(**row) for row in payload.get("findings", [])], None
@@ -116,6 +130,51 @@ def run_guidance(paths: Optional[List[str]]) -> Tuple[List[Finding], Optional[st
 		tail = (completed.stderr or completed.stdout).strip().splitlines()[-3:]
 		return findings, f"sync_read_limits.py exited {completed.returncode}: {' | '.join(tail)}"
 	return findings, None
+
+
+class Generator(NamedTuple):
+	name: str
+	command: Tuple[str, ...]
+	inputs: Tuple[str, ...]  # sources and generated outputs; also the finding location when the check fails
+
+
+# Generated files must equal what their generator writes from the current sources (plan check A4).
+GENERATORS = (
+	Generator("event catalog CSV", ("python", ".tools/export_event_catalog_csv.py", "--check"),
+		("docs/spreadsheets/chaos_redux_events_catalog.xlsx", "docs/spreadsheets/")),
+	Generator("formable state puzzles", ("node", ".tools/generate_formable_state_puzzle_runtime.mjs", "--check"),
+		("docs/formables/state_puzzles/", "interface/chaosx_formable_state_puzzle", "common/scripted_guis/chaosx_formable_state_puzzles.txt",
+		"common/scripted_localisation/chaosx_formable_state_puzzles.txt", "localisation/english/chaosx_formable_state_puzzles_l_english.yml")),
+	Generator("Event 016 transit catalog", ("python", ".tools/build_event016_transit_state_catalog.py", "--check"),
+		("docs/testing/event016_transit_catalog_20261008/state_membership.json", "common/script_constants/016_transit_catalog_constants.txt",
+		"common/scripted_triggers/016_transit_state_province_catalog_")),
+	Generator("agent mirrors", ("python", ".tools/sync/sync_agents.py", "--verify"),
+		(".claude/agents/", ".claude/skills/", ".tools/sync/", ".codex/", ".cursor/", ".qoder/", ".opencode/", ".agents/")),
+)
+
+
+def run_one_generator(generator: Generator) -> List[Finding]:
+	program = [sys.executable, "-B"] if generator.command[0] == "python" else [generator.command[0]]
+	completed = subprocess.run([*program, *generator.command[1:]], cwd=REPO_ROOT, capture_output=True, text=True,
+		encoding="utf-8", errors="replace", timeout=AUDIT_TIMEOUT_SECONDS)
+	stale = [line[len("Would update "):].strip() for line in completed.stdout.splitlines() if line.startswith("Would update ")]
+	findings = [Finding("generators", "GEN-STALE", "error", relative(path), 0,
+		f"differs from what the {generator.name} generator writes; rerun `{' '.join(generator.command[:2])}`") for path in stale]
+	if completed.returncode != 0 and not findings:
+		lines = [line.strip() for line in (completed.stderr + completed.stdout).splitlines() if line.strip()]
+		detail = next((line for line in reversed(lines) if "Error" in line), lines[-1] if lines else "no output")
+		findings.append(Finding("generators", "GEN-FAILED", "error", generator.inputs[0], 0,
+			f"the {generator.name} generator could not reproduce its outputs: {detail}"))
+	return findings
+
+
+def run_generators(paths: Optional[List[str]]) -> Tuple[List[Finding], Optional[str]]:
+	# A changed tool can change any generator's output, so `.tools/` changes rerun them all.
+	everything = not paths or any(p.startswith(".tools/") for p in paths)
+	chosen = [g for g in GENERATORS if everything or any(p.startswith(i) for p in paths for i in g.inputs)]
+	with ThreadPoolExecutor(max_workers=max(1, len(chosen))) as pool:
+		results = list(pool.map(run_one_generator, chosen))
+	return [finding for found in results for finding in found], None
 
 
 def discover_tests() -> List[str]:
@@ -153,11 +212,21 @@ CHECKS = (
 		run_report_tool("asset-wiring", "audit_asset_wiring_static.py")),
 	Check("parchment", ("events/", "localisation/", "common/scripted_localisation/"), True,
 		run_report_tool("parchment", "report_colour_audit.py")),
+	Check("script-rules", ("common/", "events/", "history/"), True,
+		run_report_tool("script-rules", "audit_script_rules.py")),
+	Check("gfx", ("gfx/", "interface/", "sound/", "music/"), True,
+		run_report_tool("gfx", "gfx/gfx.py", ("audit",))),
 	Check("guidance", ("CLAUDE.md", "AGENTS.md", ".claude/", ".codex/", ".opencode/", ".tools/sync/"), True,
 		run_guidance),
+	Check("generators", tuple(sorted({i for g in GENERATORS for i in g.inputs} | {".tools/"})), True, run_generators),
 	Check("tests", (".tools/",), True, run_tests),
 	Check("references", (), False, run_report_tool("references", "audit_script_references_static.py")),
+	# Changed-file validation through the HOI4 Agent Tools MCP server; quick only, because a
+	# whole-repository pass would validate thousands of files one call at a time.
+	Check("script-validate", ("common/", "events/", "history/"), True,
+		run_report_tool("script-validate", "validate_scripts_mcp.py", optional=True)),
 )
+QUICK_ONLY = {"script-validate"}
 
 
 def changed_paths() -> List[str]:
@@ -184,8 +253,9 @@ def selected_checks(mode: str, paths: Sequence[str], only: Optional[Sequence[str
 		if only and check.name not in only:
 			continue
 		if mode == "full":
-			chosen.append(check)
-		elif check.quick and any(PathFilter(check.inputs).matches(path) for path in paths):
+			if check.name not in QUICK_ONLY:
+				chosen.append(check)
+		elif check.quick and any(path.startswith(prefix) for path in paths for prefix in check.inputs):
 			chosen.append(check)
 	return chosen
 

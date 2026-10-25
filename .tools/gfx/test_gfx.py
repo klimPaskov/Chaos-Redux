@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 from pathlib import Path
 import struct
 import subprocess
@@ -21,7 +22,8 @@ gfx = importlib.util.module_from_spec(SPEC)
 assert SPEC and SPEC.loader
 SPEC.loader.exec_module(gfx)
 
-VANILLA = Path(r"C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\gfx\interface\counters")
+# Same lookup as `.tools/lib/game.py`, which this directory cannot import.
+VANILLA = Path(os.environ.get("HOI4_GAME_DIR") or r"C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV") / "gfx" / "interface" / "counters"
 
 
 class GfxHelpersTests(unittest.TestCase):

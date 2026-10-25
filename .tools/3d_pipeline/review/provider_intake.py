@@ -144,7 +144,9 @@ def main():
         # into the namespace, because adapter reference paths are namespace-relative).
         profiles = json.loads((PIPE / "config" / "asset_profiles.json").read_text(encoding="utf-8"))["profiles"]
         ref = dict(profiles[prep.get("profile", "humanoid_unit")]["vanilla_reference"])
-        vanilla = Path(json.loads((PIPE / "config" / "dependencies.lock.json").read_text(encoding="utf-8"))
+        # HOI4_GAME_DIR overrides the lock file, as for every repository tool (.tools/lib/game.py).
+        vanilla = Path(os.environ.get("HOI4_GAME_DIR") or
+                       json.loads((PIPE / "config" / "dependencies.lock.json").read_text(encoding="utf-8"))
                        .get("vanilla_game_root", "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV")) / ref["mesh"]
         (ns_dir / "reference").mkdir(exist_ok=True)
         import shutil

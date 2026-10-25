@@ -2,7 +2,7 @@
 
 Run from the mod root with Python 3.9 or later.
 Install dependencies with `python -m pip install -r .tools/gfx/requirements.txt`.
-These tools operate only on explicitly selected paths; there is no implicit repository-wide mutation.
+The repair and conversion tools operate only on explicitly selected paths; there is no implicit repository-wide mutation. The conformance checks below read the repository and write nothing.
 All repair and conversion outputs go to a separate directory for review before the asset owner installs them.
 
 ## Commands
@@ -32,6 +32,28 @@ python -B .tools/gfx/gfx.py dds docs/plans/gfx_fix_2026-10/review/gfx/interface/
 # Narrowed adaptation of the review's gfx_sheets.py: all registered sprites in selected groups.
 python -B .tools/gfx/gfx.py sheet --groups 015 shared_chaosx_texticons --out docs/plans/gfx_fix_2026-10/sheets --label before
 ```
+
+Read-only repository conformance checks follow the `.tools/lib/report.py` contract (`--paths`, `--paths-from`, `--json`, `--fail-on`), so `.tools/check.py` can run them:
+
+```powershell
+python -B .tools/gfx/gfx.py audit                       # all four checks below
+python -B .tools/gfx/gfx.py sprites --paths interface/countrystateview.gfx
+python -B .tools/gfx/gfx.py flags
+python -B .tools/gfx/gfx.py achievements
+python -B .tools/gfx/gfx.py binaries --paths gfx/interface/goals
+```
+
+| Rule | Level | What it checks and why |
+|---|---|---|
+| `GFX-FRAME-WIDTH` | warning | A multi-frame sprite's texture width divides by `noOfFrames`. Vanilla ships 79 of 1,798 uneven strips, so the engine tolerates it; the message gives the per-frame width for review. |
+| `GFX-FLAG-SIZE` | error | Normal, medium and small flag TGAs are 82x52, 41x26 and 10x7 (event-assets flag rules; 2,202 of 2,203 vanilla files per folder). |
+| `GFX-FLAG-LADDER` | warning | A flag exists in all three sizes. The skill requires it for completion, but vanilla ships incomplete ladders. |
+| `GFX-FLAG-ORIGIN` | warning | A flag TGA is stored bottom-origin, as the flag rules require; vanilla ships 5 top-origin flags (plan decision D4). |
+| `GFX-ACHIEVEMENT-SIZE` | error | Achievement art is 64x64 (882 of 882 vanilla files). Triplet presence for defined achievements is checked by `audit_asset_wiring_static.py`. |
+| `GFX-LFS-POINTER`, `GFX-TRUNCATED` | error | Runtime binaries under `gfx/`, `sound/` and `music/` hold real data: no LFS pointer, a complete header, and at least the payload their DDS or TGA header declares. DX10, compressed and mipmapped DDS are accepted. |
+
+These checks establish geometry and file integrity only, never visual quality.
+The size profiles of the `size` command are separate and still come from the October repair task; the plan's decisions D1–D3 settle the focus, decision and idea targets.
 
 Use the actual vanilla texture path from its `.gfx` definition; the counter command requires this explicit reference and does not guess it from a unit name.
 Exit status is `0` when every requested operation/check succeeds, and `1` for findings or input errors.

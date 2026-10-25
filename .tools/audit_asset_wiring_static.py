@@ -75,12 +75,11 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Set, Tuple
 
+from lib.game import game_dir, require_game_dir
 from lib.report import Finding, add_arguments, exit_code, merge_json, print_findings, relative, requested_paths, select
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-VANILLA_ROOT = Path(
-	"C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV"
-)
+VANILLA_ROOT = game_dir()
 
 EXCLUDED_TOP_LEVEL = {
 	".git", ".tools", ".tmp", ".agents", ".claude", ".codex", ".cursor",
@@ -813,6 +812,9 @@ def main() -> int:
 	)
 	add_arguments(parser)
 	arguments = parser.parse_args()
+	missing_game = require_game_dir()
+	if missing_game is not None:
+		return missing_game
 	if arguments.calibrate_vanilla:
 		return run_calibration()
 

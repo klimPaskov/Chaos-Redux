@@ -4,6 +4,10 @@
 The workbook is the only editable catalog source. This tool overwrites the
 three export-only CSV files atomically after a successful read of the Events,
 Clusters, and Scenarios sheets.
+
+`--check` exports into a temporary folder instead, compares the result with the
+tracked CSV files byte for byte, prints `Would update <path>` for each stale or
+missing export, and exits 1 when any differs. It writes no tracked file.
 """
 
 from __future__ import annotations
@@ -180,11 +184,44 @@ def _parse_args() -> argparse.Namespace:
 		default=None,
 		help="Directory for the three CSV exports. Defaults to the workbook directory.",
 	)
+	parser.add_argument(
+		"--check",
+		action="store_true",
+		help="Compare a fresh export with the existing CSV files without writing them; exit 1 when stale.",
+	)
 	return parser.parse_args()
+
+
+def check_exports(workbook_path: Path, output_dir: Optional[Path]) -> int:
+	"""Export into a temporary folder and compare each CSV with the tracked export."""
+	output_dir = (output_dir or workbook_path.resolve().parent).resolve()
+	with tempfile.TemporaryDirectory(prefix="catalog_export_check_") as folder:
+		fresh = export_catalog(workbook_path, Path(folder))
+		stale = [
+			output_dir / item["target"].name
+			for item in fresh
+			if not (output_dir / item["target"].name).is_file()
+			or (output_dir / item["target"].name).read_bytes() != item["target"].read_bytes()
+		]
+	for path in stale:
+		try:
+			shown = path.relative_to(REPO_ROOT).as_posix()
+		except ValueError:
+			shown = str(path)
+		print(f"Would update {shown}")
+	if not stale:
+		print("Catalog CSV exports match the workbook.")
+	return 1 if stale else 0
 
 
 def main() -> int:
 	args = _parse_args()
+	if args.check:
+		try:
+			return check_exports(args.workbook, args.output_dir)
+		except (OSError, KeyError, RuntimeError) as error:
+			print(f"CSV export check failed: {error}", file=sys.stderr)
+			return 2
 	try:
 		result = export_catalog(args.workbook, args.output_dir)
 	except (OSError, KeyError, RuntimeError) as error:

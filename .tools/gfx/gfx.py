@@ -11,6 +11,7 @@ import os
 from pathlib import Path
 import re
 import struct
+import sys
 import tempfile
 
 import numpy as np
@@ -18,6 +19,12 @@ from PIL import Image, ImageDraw, ImageFilter
 from scipy.ndimage import distance_transform_edt, binary_erosion, label
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / '.tools'))
+from lib.game import game_dir  # noqa: E402
+from lib.report import (  # noqa: E402
+    Finding, PathFilter, add_arguments, exit_code, merge_json, print_findings, requested_paths,
+    relative as report_relative,
+)
 CONVERTER = ROOT / '.claude/skills/chaos-redux-event-assets/tools/convert_to_dds.py'
 PROFILES = {
     'focus': (94, 86, 2), 'decision': (34, 34, 2),
@@ -280,6 +287,8 @@ def sprite_registry(root):
         # Keep hashes inside quoted strings; comments cannot contain braces for scanning.
         source = re.sub(r'"[^"\n]*"|#[^\n]*', lambda m: m[0] if m[0].startswith('"') else '', source)
         for match in re.finditer(r'(?:spriteType|frameAnimatedSpriteType|corneredTileSpriteType)\s*=\s*\{', source, re.I):
+            # Comment removal keeps every newline, so offsets still map to source lines.
+            line = source.count('\n', 0, match.start()) + 1
             depth, end = 1, match.end()
             quoted = False
             while end < len(source) and depth:
@@ -297,8 +306,231 @@ def sprite_registry(root):
                 basename = path.stem
                 group = basename[:3] if re.match(r'\d{3}_', basename) else ('shared_' + basename if basename.startswith('chaosx') else basename)
                 entries.append({'group': group, 'sprite': name[1], 'texture': texture[1].replace('//', '/'),
-                                'frames': int(count[1]) if count else 1, 'registry': path.relative_to(root).as_posix()})
+                                'frames': int(count[1]) if count else 1, 'registry': path.relative_to(root).as_posix(),
+                                'line': line})
     return entries
+
+
+# ---------------------------------------------------------------------------
+# Repository-wide read-only conformance checks (`sprites`, `flags`, `achievements`, `binaries`, `audit`).
+# They follow the `.tools/lib/report.py` contract. Each rule cites its source:
+# - GFX-FRAME-WIDTH (warning): a horizontal strip is sliced into `noOfFrames` equal frames, so an uneven
+#   width shifts every later frame (vanilla `building_icon_strip.dds`: 1426 px / 31 frames = 46 px). Vanilla
+#   itself ships 79 of 1798 multi-frame sprites with uneven widths, so the engine tolerates it and the
+#   message gives the per-frame width for review.
+# - GFX-FLAG-SIZE (error): normal, medium and small flags are 82x52, 41x26 and 10x7 (event-assets skill flag
+#   rules; 2202 of 2203 vanilla files per folder).
+# - GFX-FLAG-LADDER (warning): the skill requires all three sizes before a flag is complete, but vanilla
+#   ships incomplete ladders (89 normal flags without a small file), so a gap is not an engine failure.
+# - GFX-FLAG-ORIGIN (warning, decision D4): the skill forbids top-origin flag TGAs; vanilla ships 5.
+# - GFX-ACHIEVEMENT-SIZE (error): achievement art is 64x64 (882 of 882 vanilla files;
+#   `process_achievement_icons.py`). The base, `_grey` and `_not_eligible` files of every defined
+#   achievement are already required by `audit_asset_wiring_static.py` (implicit achievement-art rule).
+# - GFX-LFS-POINTER and GFX-TRUNCATED (error): a runtime binary must hold real data. Header parsing accepts
+#   legacy, DX10, compressed and mipmapped DDS, which the game loads, rather than requiring Pillow support.
+# ---------------------------------------------------------------------------
+
+LFS_POINTER = b'version https://git-lfs.github.com/spec/v1'
+FLAG_LADDER = {'': (82, 52), 'medium': (41, 26), 'small': (10, 7)}
+ACHIEVEMENT_SIZE = (64, 64)
+RUNTIME_BINARY_DIRS = ('gfx', 'sound', 'music')
+RUNTIME_BINARY_SUFFIXES = {'.dds', '.tga', '.png', '.mesh', '.anim', '.wav', '.ogg'}
+GFX_LEVELS = {
+    'GFX-FRAME-WIDTH': 'warning', 'GFX-FLAG-SIZE': 'error', 'GFX-FLAG-LADDER': 'warning', 'GFX-FLAG-ORIGIN': 'warning',
+    'GFX-ACHIEVEMENT-SIZE': 'error', 'GFX-LFS-POINTER': 'error', 'GFX-TRUNCATED': 'error',
+}
+# Bytes per 4x4 block (compressed) or per pixel (uncompressed) for DDS formats with a known payload size.
+DDS_BLOCK_BYTES = {b'DXT1': 8, b'DXT2': 16, b'DXT3': 16, b'DXT4': 16, b'DXT5': 16, b'ATI1': 8, b'BC4U': 8, b'ATI2': 16, b'BC5U': 16}
+DXGI_BLOCK_BYTES = {71: 8, 72: 8, 74: 16, 75: 16, 77: 16, 78: 16, 80: 8, 81: 8, 83: 16, 84: 16, 98: 16, 99: 16}
+DXGI_PIXEL_BYTES = {28: 4, 29: 4, 87: 4, 91: 4}
+
+
+def gfx_finding(rule, path, line, message, check='gfx'):
+    return Finding(check, rule, GFX_LEVELS[rule], report_relative(path), line, message)
+
+
+def header_size(path):
+    """Return (width, height) from the file header without decoding pixels."""
+    raw = Path(path).read_bytes()[:64]
+    if raw.startswith(LFS_POINTER):
+        raise ValueError('Git LFS pointer, not image data')
+    if raw[:4] == b'DDS ' and len(raw) >= 20:
+        height, width = struct.unpack_from('<2I', raw, 12)
+        return width, height
+    if raw[:8] == b'\x89PNG\r\n\x1a\n' and len(raw) >= 24:
+        return struct.unpack_from('>2I', raw, 16)
+    if Path(path).suffix.lower() == '.tga' and len(raw) >= 18:
+        return struct.unpack_from('<2H', raw, 12)
+    with Image.open(path) as image:
+        return image.size
+
+
+def dds_payload_bytes(header):
+    """Minimum payload length for a DDS header, or None when the format's size is not known here."""
+    height, width = struct.unpack_from('<2I', header, 12)
+    flags, mips = struct.unpack_from('<I', header, 8)[0], struct.unpack_from('<I', header, 28)[0]
+    pf_flags, fourcc, bit_count = struct.unpack_from('<I', header, 80)[0], header[84:88], struct.unpack_from('<I', header, 88)[0]
+    caps2 = struct.unpack_from('<I', header, 112)[0]
+    levels = mips if flags & 0x20000 and mips else 1
+    block = pixel = None
+    if pf_flags & 0x4 and fourcc == b'DX10':
+        if len(header) < 148 or struct.unpack_from('<I', header, 140)[0] != 1:
+            return None  # texture arrays are outside the runtime formats checked here
+        dxgi = struct.unpack_from('<I', header, 128)[0]
+        block, pixel = DXGI_BLOCK_BYTES.get(dxgi), DXGI_PIXEL_BYTES.get(dxgi)
+    elif pf_flags & 0x4:
+        block = DDS_BLOCK_BYTES.get(fourcc)
+    elif pf_flags & 0x40 and bit_count % 8 == 0:
+        pixel = bit_count // 8
+    if caps2 & 0x200 or (block is None and pixel is None):
+        return None  # cube maps and unlisted formats
+    total = 0
+    for level in range(levels):
+        w, h = max(1, width >> level), max(1, height >> level)
+        total += ((w + 3) // 4) * ((h + 3) // 4) * block if block else w * h * pixel
+    return total
+
+
+def binary_problem(path):
+    """Return (rule, message) when a runtime binary is not usable data, else None."""
+    path = Path(path)
+    size = path.stat().st_size
+    with path.open('rb') as stream:
+        head = stream.read(160)
+    if head.startswith(LFS_POINTER):
+        return 'GFX-LFS-POINTER', 'is a Git LFS pointer, not the binary; run git lfs checkout for this path'
+    suffix = path.suffix.lower()
+    if suffix == '.dds':
+        if head[:4] != b'DDS ' or size < 128:
+            return 'GFX-TRUNCATED', 'has no complete DDS header'
+        header_length = 148 if head[84:88] == b'DX10' else 128
+        payload = dds_payload_bytes(head)
+        if payload is not None and size < header_length + payload:
+            return 'GFX-TRUNCATED', f'holds {size} bytes; its DDS header needs at least {header_length + payload}'
+    elif suffix == '.tga':
+        if size < 18:
+            return 'GFX-TRUNCATED', 'has no complete TGA header'
+        id_length, colour_map_type, image_type = head[0], head[1], head[2]
+        width, height = struct.unpack_from('<2H', head, 12)
+        if image_type in (2, 3) and colour_map_type == 0:
+            needed = 18 + id_length + width * height * (head[16] // 8)
+            if size < needed:
+                return 'GFX-TRUNCATED', f'holds {size} bytes; its TGA header needs at least {needed}'
+    elif suffix == '.png' and head[:8] != b'\x89PNG\r\n\x1a\n':
+        return 'GFX-TRUNCATED', 'does not start with the PNG signature'
+    elif suffix == '.wav' and not (head[:4] == b'RIFF' and head[8:12] == b'WAVE'):
+        return 'GFX-TRUNCATED', 'does not start with a RIFF/WAVE header'
+    elif suffix == '.ogg' and head[:4] != b'OggS':
+        return 'GFX-TRUNCATED', 'does not start with an Ogg page header'
+    return None
+
+
+def check_binaries(root=ROOT, paths=None):
+    selector, findings = PathFilter(paths), []
+    for folder in RUNTIME_BINARY_DIRS:
+        base = Path(root) / folder
+        if not base.is_dir():
+            continue
+        for path in sorted(base.rglob('*')):
+            if path.suffix.lower() not in RUNTIME_BINARY_SUFFIXES or not path.is_file():
+                continue
+            rel = path.relative_to(root).as_posix()
+            if not selector.matches(rel):
+                continue
+            problem = binary_problem(path)
+            if problem:
+                findings.append(gfx_finding(problem[0], rel, 0, f'{rel} {problem[1]}'))
+    return findings
+
+
+def resolve_texture(texture, root, vanilla):
+    """Find a registered texture in the mod, then vanilla; a `.tga` reference also matches a same-stem `.dds`."""
+    for base in (Path(root), Path(vanilla)):
+        for candidate in (texture, texture[:-4] + '.dds' if texture.lower().endswith('.tga') else None):
+            if candidate and (base / candidate).is_file():
+                return base / candidate
+    return None
+
+
+def check_sprites(root=ROOT, paths=None, vanilla=None):
+    selector, findings = PathFilter(paths), []
+    vanilla = vanilla or game_dir()
+    for entry in sprite_registry(root):
+        if entry['frames'] <= 1:
+            continue
+        if paths and not (selector.matches(entry['registry']) or selector.matches(entry['texture'])):
+            continue
+        texture = resolve_texture(entry['texture'], root, vanilla)
+        if texture is None:
+            continue  # a missing texture is reported by audit_asset_wiring_static.py
+        try:
+            width, _ = header_size(texture)
+        except Exception:
+            continue  # unreadable binaries are reported by the binaries check
+        if width % entry['frames']:
+            findings.append(gfx_finding('GFX-FRAME-WIDTH', entry['registry'], entry['line'],
+                f"{entry['sprite']}: {entry['texture']} is {width} px wide, which does not divide into "
+                f"noOfFrames = {entry['frames']} ({width / entry['frames']:.2f} px per frame)"))
+    return findings
+
+
+def check_flags(root=ROOT, paths=None):
+    selector, findings, stems = PathFilter(paths), [], {}
+    for folder in FLAG_LADDER:
+        base = Path(root) / 'gfx' / 'flags' / folder
+        stems[folder] = {p.stem: p for p in base.glob('*.tga')} if base.is_dir() else {}
+    for folder, (want_w, want_h) in FLAG_LADDER.items():
+        for stem, path in sorted(stems[folder].items()):
+            rel = path.relative_to(root).as_posix()
+            if not selector.matches(rel):
+                continue
+            label = folder or 'normal'
+            try:
+                width, height = header_size(path)
+            except Exception as error:
+                findings.append(gfx_finding('GFX-FLAG-SIZE', rel, 0, f'{label} flag {stem} cannot be read: {error}'))
+                continue
+            if (width, height) != (want_w, want_h):
+                findings.append(gfx_finding('GFX-FLAG-SIZE', rel, 0, f'{label} flag {stem} is {width}x{height}, not {want_w}x{want_h}'))
+            missing = [other or 'normal' for other in FLAG_LADDER if other != folder and stem not in stems[other]]
+            if missing:
+                findings.append(gfx_finding('GFX-FLAG-LADDER', rel, 0, f'{label} flag {stem} has no {" or ".join(missing)} size'))
+            if path.read_bytes()[17:18] and path.read_bytes()[17] & 0x20:
+                findings.append(gfx_finding('GFX-FLAG-ORIGIN', rel, 0, f'{label} flag {stem} is stored top-origin'))
+    return findings
+
+
+def check_achievements(root=ROOT, paths=None):
+    selector, findings = PathFilter(paths), []
+    base = Path(root) / 'gfx' / 'achievements'
+    files = {p.stem: p for p in base.glob('*.dds')} if base.is_dir() else {}
+    for stem, path in sorted(files.items()):
+        rel = path.relative_to(root).as_posix()
+        if not selector.matches(rel):
+            continue
+        try:
+            size = header_size(path)
+        except Exception:
+            continue  # unreadable binaries are reported by the binaries check
+        if tuple(size) != ACHIEVEMENT_SIZE:
+            findings.append(gfx_finding('GFX-ACHIEVEMENT-SIZE', rel, 0, f'achievement art {stem} is {size[0]}x{size[1]}, not 64x64'))
+    return findings
+
+
+CONFORMANCE_CHECKS = {
+    'sprites': check_sprites, 'flags': check_flags, 'achievements': check_achievements, 'binaries': check_binaries,
+}
+
+
+def run_conformance(command, args):
+    paths = requested_paths(args)
+    chosen = CONFORMANCE_CHECKS if command == 'audit' else {command: CONFORMANCE_CHECKS[command]}
+    findings = sorted((f for check in chosen.values() for f in check(ROOT, paths)),
+                      key=lambda f: (f.path, f.line, f.rule, f.message))
+    print_findings('gfx', findings)
+    if args.json:
+        merge_json(Path(args.json), findings, GFX_LEVELS)
+    return exit_code(findings, args.fail_on)
 
 
 def sheet(entries, root, out, label='review'):
@@ -395,7 +627,13 @@ def main():
     p.add_argument('--groups', nargs='+', required=True)
     p.add_argument('--out', required=True)
     p.add_argument('--label', default='review')
+    for command in (*CONFORMANCE_CHECKS, 'audit'):
+        p = sub.add_parser(command, help='read-only repository conformance check (see the module comments)')
+        p.add_argument('--json', help='also write the findings as JSON')
+        add_arguments(p)
     args = parser.parse_args()
+    if args.command in CONFORMANCE_CHECKS or args.command == 'audit':
+        return run_conformance(args.command, args)
     if args.command == 'counter' and args.frames != 2:
         parser.error('Counter convention checks require exactly two frames')
     if args.command == 'sheet':

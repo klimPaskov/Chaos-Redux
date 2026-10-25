@@ -353,7 +353,7 @@ function runSuite(baselineDir = beforeSnapshot) {
 			// Retain all original dependency identities, including the real native
 			// Africa collection, world census, observer, and complete guard files.
 			for (const s of r.sourceHashes) read(s.path);
-			const collection = 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/collections/collections.txt'; read(collection);
+			const collection = (process.env.HOI4_GAME_DIR || 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV') + '/common/collections/collections.txt'; read(collection);
 		});
 		test('original_inputs_26_CLI_groups_remain_unchanged_and_integration_import_is_silent', () => {
 			const run = spawnSync(process.execPath, ['.tools/validation/test_012_gods_strength_inputs.js'], {cwd: root, encoding: 'utf8'});

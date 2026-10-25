@@ -4,11 +4,17 @@
 // English localisation surfaces from reviewed exact-geometry manifests.
 // The generated files are committed; this script keeps future map rebuilds
 // reproducible and fails closed when a selected category lacks a manifest.
+//
+// `--check` renders every output in memory, prints `Would update <path>` for each
+// file whose committed text differs or is missing, writes nothing, and exits 1
+// when anything is stale. It cannot see a stale file whose manifest was removed.
 
 import fs from "node:fs";
 import path from "node:path";
 
 const workspace = process.cwd();
+const checkOnly = process.argv.includes("--check");
+const stale = [];
 const manifestRoot = path.join(workspace, "docs", "formables", "state_puzzles");
 
 const normalise = (value) => value.replace(/[^A-Za-z0-9_]/g, "_").toLowerCase();
@@ -743,8 +749,12 @@ function generateLocalisation(manifests) {
 
 function write(relativePath, source) {
 	const absolutePath = path.join(workspace, relativePath);
-	fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
 	if (fs.existsSync(absolutePath) && fs.readFileSync(absolutePath, "utf8") === source) return;
+	if (checkOnly) {
+		stale.push(relativePath);
+		return;
+	}
+	fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
 	for (let attempt = 0; attempt < 40; attempt++) {
 		try {
 			fs.writeFileSync(absolutePath, source, "utf8");
@@ -778,4 +788,10 @@ write("common/scripted_localisation/chaosx_formable_state_puzzles.txt", generate
 write("localisation/english/chaosx_formable_state_puzzles_l_english.yml", generateLocalisation(manifests));
 
 const stateEntries = manifests.reduce((count, manifest) => count + manifest.states.length, 0);
-process.stdout.write(`Generated ${manifests.length} formable state puzzles with ${stateEntries} state-piece entries.\n`);
+if (checkOnly) {
+	for (const relativePath of stale) process.stdout.write(`Would update ${relativePath}\n`);
+	process.stdout.write(`${stale.length ? "Stale" : "Current"}: ${manifests.length} formable state puzzles with ${stateEntries} state-piece entries.\n`);
+	process.exitCode = stale.length ? 1 : 0;
+} else {
+	process.stdout.write(`Generated ${manifests.length} formable state puzzles with ${stateEntries} state-piece entries.\n`);
+}

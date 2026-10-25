@@ -88,14 +88,27 @@ class QuickSelection(unittest.TestCase):
 	def test_localisation_change_runs_text_checks(self):
 		self.assertEqual(self.names(["localisation/english/x_l_english.yml"]), ["localisation", "asset-wiring", "parchment"])
 
-	def test_skill_change_runs_guidance_only(self):
-		self.assertEqual(self.names([".claude/skills/x/SKILL.md"]), ["guidance"])
+	def test_skill_change_runs_guidance_and_agent_mirror_checks(self):
+		self.assertEqual(self.names([".claude/skills/x/SKILL.md"]), ["guidance", "generators"])
+
+	def test_unrelated_change_runs_nothing(self):
+		self.assertEqual(self.names(["README.md", "docs/plans/x.md"]), [])
+
+	def test_sound_change_runs_runtime_binary_checks(self):
+		self.assertEqual(self.names(["sound/x.wav"]), ["gfx"])
 
 	def test_tool_change_runs_tests(self):
 		self.assertIn("tests", self.names([".tools/lib/report.py"]))
 
-	def test_full_runs_every_check(self):
-		self.assertEqual(len(check.selected_checks("full", [], None)), len(check.CHECKS))
+	def test_full_runs_every_check_except_changed_file_validation(self):
+		names = [c.name for c in check.selected_checks("full", [], None)]
+		self.assertEqual(len(names), len(check.CHECKS) - len(check.QUICK_ONLY))
+		self.assertNotIn("script-validate", names)
+
+	def test_script_change_runs_syntax_and_mcp_validation(self):
+		names = self.names(["events/x.txt"])
+		self.assertIn("script-rules", names)
+		self.assertIn("script-validate", names)
 
 
 if __name__ == "__main__":

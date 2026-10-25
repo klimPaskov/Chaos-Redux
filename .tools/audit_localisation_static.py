@@ -56,6 +56,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Set, Tuple
 
+from lib.game import game_dir, require_game_dir
 from lib.report import (
 	Finding, add_arguments, exit_code, merge_json, print_findings, relative, requested_paths, select, split_site,
 )
@@ -648,9 +649,7 @@ def collect_referenced_keys(
 # `hidden_trigger` or `custom_trigger_tooltip` are not displayed, and a scripted
 # trigger whose own name is a localisation key replaces its expansion with that
 # text, so its body is not followed.
-VANILLA_LOCALISATION_DIR = Path(
-	"C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/localisation/english"
-)
+VANILLA_LOCALISATION_DIR = game_dir() / "localisation" / "english"
 REQUIREMENT_BLOCKS = {"available", "bypass"}
 UNDISPLAYED_BLOCKS = {"hidden_trigger", "custom_trigger_tooltip"}
 # Names followed by `[` are assembled at runtime by meta effects and are skipped.
@@ -783,7 +782,7 @@ def audit_requirement_flags(known: Set[str], findings: Findings) -> None:
 
 REQUIRED = "required"
 ADVISORY = "advisory"
-VANILLA_ROOT = Path("C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV")
+VANILLA_ROOT = game_dir()
 
 CW_TOKEN = re.compile(r'"(?:[^"\\\n]|\\.)*"|#[^\n]*|[{}]|<=|>=|!=|[=<>]|[^\s{}=<>"#]+|\n')
 COMPARATORS = {"=", "<", ">", "<=", ">=", "!="}
@@ -1776,6 +1775,9 @@ def main() -> int:
 	)
 	add_arguments(parser)
 	arguments = parser.parse_args()
+	missing_game = require_game_dir()
+	if missing_game is not None:
+		return missing_game
 	if arguments.calibrate:
 		return calibrate_against_vanilla()
 
