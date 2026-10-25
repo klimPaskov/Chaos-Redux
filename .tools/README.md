@@ -27,7 +27,7 @@ Before retiring a tool, search its filename, module name, output signatures, and
 | `check.py` | Single read-only entry point for every check (see Repository checks) |
 | `quality.py`, `quality_baseline.json`, `requirements-dev.txt` | Ruff and mypy for the tooling, with the ratchet baseline and pinned versions (see Code quality) |
 | `export_event_catalog_csv.py` | Catalog CSV exporter; it stays at the top level because `CLAUDE.md`, the xlsx skill and over a hundred specs cite this exact command |
-| `lib/` | Canonical shared code: `report.py` (finding contract), `clausewitz.py` (script reader), `localisation.py` (localisation reader), `game.py` (`HOI4_GAME_DIR`), `mcp_session.py` (MCP client) |
+| `lib/` | Canonical shared code: `report.py` (finding contract), `clausewitz.py` (script reader), `localisation.py` (localisation reader), `game.py` (game folder lookup), `doctor.py` (`check.py doctor` report), `mcp_session.py` (MCP client) |
 | `audits/` | Repository-wide read-only audits and the indentation tool |
 | `events/` | Event-scoped static validators and generators that are still maintained (Event 006 and Event 016) |
 | `formables/` | Formable state-puzzle runtime generator |
@@ -79,7 +79,8 @@ The folder is flat because the tests import each other by module name across eve
 `python -B .tools/check.py full --only tests` runs every file the way its author ran it; `python -B -m unittest discover -s .tools/tests -p "test_*.py"` runs the Python tests through standard discovery (613 cases on 25 October 2026, including five plain-assert scripts that run their checks on import).
 Tests write evidence only under `.tmp/`, create that folder themselves, and write nothing when imported.
 `gfx/test_gfx.py`, `3d_pipeline/tests/` and `live_testing/test_clausewitz_linux.py` stay beside the packages they test.
-Tools that read the installed game take its folder from `HOI4_GAME_DIR` (default: the Steam path) through `lib/game.py`, and exit `2` naming the variable when the game is not there.
+Tools that read the installed game take its folder through `lib/game.py`: `HOI4_GAME_DIR`, then the machine-local `.tools/local_settings.json` (gitignored; `python -B .tools/check.py doctor --save-game-dir <folder>` writes it), then the Steam libraries on the machine. They exit `2` with that advice when the game is not there.
+On a new machine, install the Python packages with `python -m pip install -r .tools/requirements.txt` and run `python -B .tools/check.py doctor`; it lists every missing requirement of a `full` run with its fix. `python -B .tools/quality.py --adopt` records the quality findings of Python files that have no baseline entries yet (pre-existing tools when the tooling is first installed in a mod) and never relaxes a recorded file.
 
 Checks added for the deterministic-tooling plan (`docs/plans/repo_cleanup/deterministic_tooling_plan_2026-10-25.md`):
 
@@ -137,7 +138,8 @@ Do not hand-edit generated Codex, Qoder, Cursor, or opencode agent files.
 
 ### Universal formable-state tooling
 
-- `formables/generate_formable_state_puzzle_runtime.mjs` discovers complete manifests and emits the shared runtime surfaces; `--check` compares without writing.
+- `formables/generate_formable_state_puzzle_runtime.mjs` discovers complete manifests and emits the shared runtime surfaces; `--check` compares without writing. It also owns the player-facing puzzle wording and the `<category>_state_puzzle_category` localisation aliases of the standalone attachment categories, so change those in the generator and regenerate rather than editing the localisation file.
+- Decision categories must be unique across manifests, with one exception: manifests that declare the same `group_id` share one scripted GUI and window and may name the same `decision_category`, because that GUI is attached to every category the group's members are offered in. Output order and GFX comments follow the manifest's `category_id` (falling back to `decision_category`), then `formable_id`.
 
 This is the sole supported formable-state tool in `.tools`. It rebuilds the shared GFX, GUI, scripted-GUI, scripted-localisation, and localisation outputs from complete manifests under `docs/formables/state_puzzles/`.
 

@@ -8,6 +8,9 @@
 // `--check` renders every output in memory, prints `Would update <path>` for each
 // file whose committed text differs or is missing, writes nothing, and exits 1
 // when anything is stale. It cannot see a stale file whose manifest was removed.
+//
+// Decision categories must be unique across manifests, except that manifests of one
+// `group_id` share a scripted GUI and window and may share a category.
 
 import fs from "node:fs";
 import path from "node:path";
@@ -143,6 +146,10 @@ function normaliseManifest(manifest, manifestPath) {
 	};
 }
 
+// Grouped members may share a decision category, so ordering and the GFX comments use the manifest's own id.
+const manifestId = (manifest) => manifest.category_id ?? manifest.decision_category;
+const compareManifests = (left, right) => manifestId(left).localeCompare(manifestId(right)) || left.formable_id.localeCompare(right.formable_id);
+
 function readManifests() {
 	if (!fs.existsSync(manifestRoot)) {
 		throw new Error(`Manifest root is missing: ${manifestRoot}`);
@@ -172,12 +179,15 @@ function readManifests() {
 	for (const manifest of manifests) {
 		const categoryKey = normalisedId(manifest.decision_category, `${manifest.__path}: decision_category`);
 		const formableKey = normalisedId(manifest.formable_id, `${manifest.__path}: formable_id`);
-		if (seenCategories.has(categoryKey)) throw new Error(`Duplicate normalized decision category manifest: ${manifest.decision_category} conflicts with ${seenCategories.get(categoryKey)}`);
-		if (seenFormables.has(formableKey)) throw new Error(`Duplicate normalized formable manifest: ${manifest.formable_id} conflicts with ${seenFormables.get(formableKey)}`);
-		seenCategories.set(categoryKey, manifest.decision_category);
-		seenFormables.set(formableKey, manifest.formable_id);
 		const group = groupConfig(manifest);
 		manifest.__group = group;
+		// A group's scripted GUI is attached to every decision category its members are offered in,
+		// so members of one group may share a category; any other sharing is a collision.
+		const existingCategory = seenCategories.get(categoryKey);
+		if (existingCategory && !(group && existingCategory.groupKey === group.key)) throw new Error(`Duplicate normalized decision category manifest: ${manifest.decision_category} conflicts with ${existingCategory.raw}`);
+		if (seenFormables.has(formableKey)) throw new Error(`Duplicate normalized formable manifest: ${manifest.formable_id} conflicts with ${seenFormables.get(formableKey)}`);
+		seenCategories.set(categoryKey, { raw: manifest.decision_category, groupKey: group ? group.key : null });
+		seenFormables.set(formableKey, manifest.formable_id);
 		if (group) {
 			const existingGroup = seenGroups.get(group.key);
 			if (existingGroup && (existingGroup.rawId !== group.rawId || existingGroup.scriptedGui !== group.scriptedGui || existingGroup.window !== group.window)) {
@@ -205,7 +215,7 @@ function readManifests() {
 		}
 	}
 
-	return manifests.sort((left, right) => left.decision_category.localeCompare(right.decision_category));
+	return manifests.sort(compareManifests);
 }
 
 function validateManifest(manifest) {
@@ -319,7 +329,7 @@ function generateGfx(manifests) {
 		"spriteTypes = {",
 	];
 	for (const manifest of manifests) {
-		lines.push(`\t# ${manifest.decision_category}`);
+		lines.push(`\t# ${manifestId(manifest)}`);
 		for (const state of manifest.states) {
 			for (const variant of ["unresolved", "qualifying"]) {
 				lines.push("\tspriteType = {");
@@ -439,7 +449,7 @@ function generateGui(manifests) {
 		lines.push(`\t\tsize = { width = ${width} height = ${height} }`);
 		lines.push("\t\tclipping = yes");
 		lines.push("");
-		for (const manifest of members.sort((left, right) => left.decision_category.localeCompare(right.decision_category))) {
+		for (const manifest of members.sort(compareManifests)) {
 			const form = formableNames(manifest);
 			appendFamilyGui(lines, manifest, "\t\t", `${form.formableKey}_overlay`);
 		}
@@ -537,7 +547,7 @@ function generateScriptedGui(manifests) {
 		groups.set(manifest.__group.key, members);
 	}
 	for (const { config, manifests: members } of [...groups.values()].sort((left, right) => left.config.key.localeCompare(right.config.key))) {
-		const sortedMembers = members.sort((left, right) => left.decision_category.localeCompare(right.decision_category));
+		const sortedMembers = members.sort(compareManifests);
 		lines.push(`\t${config.scriptedGui} = {`);
 		lines.push("\t\tcontext_type = decision_category");
 		lines.push(`\t\twindow_name = ${quote(config.window)}`);
@@ -707,15 +717,24 @@ function generateScriptedLocalisation(manifests) {
 function generateLocalisation(manifests) {
 	const lines = [
 		"l_english:",
-		"chaosx_formable_state_puzzle_status_qualifying: \"§GQualifying§!\"",
-		"chaosx_formable_state_puzzle_status_unresolved: \"§YUnresolved§!\"",
+	];
+	for (const manifest of manifests.filter((candidate) => !candidate.__group)) {
+		// The attachment category in zzz_chaosx_formable_state_puzzle_categories.txt keeps the decision category's case.
+		const categoryBase = manifest.decision_category.replace(/_category$/, "");
+		const aliasKey = categoryBase.endsWith("_state") ? `${categoryBase}_puzzle_category` : `${categoryBase}_state_puzzle_category`;
+		lines.push(`${aliasKey}: \"$${manifest.decision_category}$\"`);
+		lines.push(`${aliasKey}_desc: \"$${manifest.decision_category}_desc$\"`);
+	}
+	lines.push(
+		"chaosx_formable_state_puzzle_status_qualifying: \"§GMet§!\"",
+		"chaosx_formable_state_puzzle_status_unresolved: \"§YNot met§!\"",
 		"chaosx_formable_state_puzzle_core_yes: \"§GYes§!\"",
 		"chaosx_formable_state_puzzle_core_no: \"§YNo§!\"",
 		"chaosx_formable_state_puzzle_no_owner: \"No owner\"",
 		"chaosx_formable_state_puzzle_no_controller: \"No controller\"",
 		"chaosx_formable_state_puzzle_summary_ready: \"§GFormation ready§!\"",
 		"chaosx_formable_state_puzzle_summary_incomplete: \"§YRequirements incomplete§!\"",
-	];
+	);
 	const maximumCount = Math.max(...manifests.map((manifest) => manifest.__summaryRequiredCountExplicit
 		? Math.max(manifest.states.length, manifest.summary_required_count)
 		: manifest.states.length));
@@ -726,11 +745,11 @@ function generateLocalisation(manifests) {
 	for (const manifest of manifests) {
 		const form = formableNames(manifest);
 		const denominator = manifest.__summaryRequiredCountExplicit ? manifest.summary_required_count : manifest.states.length;
-		lines.push(`${form.summaryKey}: \"Qualifying states: §Y[GetChaosxFormable${form.pascalKey}QualifyingCount] / ${denominator}§! | [GetChaosxFormable${form.pascalKey}SummaryStatus]\"`);
+		lines.push(`${form.summaryKey}: \"States held: §Y[GetChaosxFormable${form.pascalKey}QualifyingCount] / ${denominator}§! | [GetChaosxFormable${form.pascalKey}SummaryStatus]\"`);
 		for (const state of manifest.states) {
 			uniqueStates.add(state.state_id);
 			const names = stateNames(manifest, state);
-			lines.push(`${names.hoverKey}: \"§Y[${state.state_id}.GetName]§!\\nOwner: [GetChaosxFormableState${state.state_id}Owner]\\nController: [GetChaosxFormableState${state.state_id}Controller]\\nFormation status: [${names.qualificationFunction}]\\nOur core: [GetChaosxFormableState${state.state_id}CoreStatus]\"`);
+			lines.push(`${names.hoverKey}: \"§Y[${state.state_id}.GetName]§!\\nOwner: [GetChaosxFormableState${state.state_id}Owner]\\nController: [GetChaosxFormableState${state.state_id}Controller]\\nControl requirement: [${names.qualificationFunction}]\\nOur core: [GetChaosxFormableState${state.state_id}CoreStatus]\"`);
 		}
 	}
 	for (const stateId of [...uniqueStates].sort((left, right) => left - right)) {

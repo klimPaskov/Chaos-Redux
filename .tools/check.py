@@ -5,6 +5,7 @@
 	python -B .tools/check.py quick --paths events/x.txt localisation/english/x.yml
 	python -B .tools/check.py full                       # whole repository
 	python -B .tools/check.py full --json .tmp/checks/full.json
+	python -B .tools/check.py doctor                     # what the checks need on this machine, and how to fix it
 
 `quick` runs only the checks whose inputs the changed paths can affect and reports only
 findings located in those paths. `full` runs every check over the whole repository. Both print
@@ -33,7 +34,8 @@ Checks (rule ids and levels are defined by each tool; see `.tools/lib/report.py`
 - script-validate  `audits/validate_scripts_mcp.py`     HOI4 Agent Tools script validation of changed files (quick
                    only; skipped with a notice when the MCP server cannot start)
 
-Set `HOI4_GAME_DIR` when the game is not installed at the default Steam path (`.tools/lib/game.py`).
+The game folder comes from `HOI4_GAME_DIR`, `.tools/local_settings.json` or the Steam libraries (`.tools/lib/game.py`);
+`doctor` reports it with every other requirement.
 """
 
 from __future__ import annotations
@@ -49,6 +51,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Callable, Dict, List, NamedTuple, Optional, Sequence, Set, Tuple
 
+from lib import doctor
 from lib.report import LEVELS, Finding, format_finding, relative, to_json
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -273,24 +276,47 @@ def selected_checks(mode: str, paths: Sequence[str], only: Optional[Sequence[str
 	return chosen
 
 
+def requested(arguments: argparse.Namespace) -> List[str]:
+	"""Return the paths a quick run checks (given or changed in git); a full run checks everything."""
+	if arguments.mode != "quick":
+		return []
+	return [relative(path) for path in arguments.paths] if arguments.paths else changed_paths()
+
+
+def print_report(checks: Sequence[Check], outcomes: Sequence[Tuple[List[Finding], Optional[str]]],
+		all_findings: List[Finding], failures: List[str], shown: Tuple[str, ...]) -> None:
+	"""Print the shown findings, one summary line per check, and every check that could not run."""
+	for finding in sorted(all_findings, key=lambda f: (f.path, f.line, f.rule, f.message)):
+		if finding.level in shown:
+			print(format_finding(finding))
+	for check, (findings, _) in zip(checks, outcomes):
+		counts = {level: sum(1 for f in findings if f.level == level) for level in LEVELS}
+		print(f"{check.name}: " + ", ".join(f"{counts[level]} {level}" for level in LEVELS))
+	for failure in failures:
+		print(failure)
+	if failures:
+		print("Run `python -B .tools/check.py doctor` to see what this machine is missing and how to fix it.")
+
+
 def main() -> int:
 	parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-	parser.add_argument("mode", choices=("quick", "full"))
+	parser.add_argument("mode", choices=("quick", "full", "doctor"))
 	parser.add_argument("--paths", nargs="+", metavar="PATH", help="quick: check these paths instead of the git changes")
 	parser.add_argument("--only", nargs="+", choices=[check.name for check in CHECKS], help="run only these checks")
 	parser.add_argument("--json", type=Path, help="write every finding, including review candidates, to this file")
 	parser.add_argument("--verbose", action="store_true", help="also print warnings in full mode")
+	parser.add_argument("--save-game-dir", type=Path, metavar="FOLDER", help="doctor: record this machine's game folder")
 	arguments = parser.parse_args()
 
-	if arguments.mode == "quick":
-		paths = [relative(path) for path in arguments.paths] if arguments.paths else changed_paths()
-		if not paths:
-			print("quick: no changed paths")
-			return 0
-	else:
-		if arguments.paths:
-			parser.error("--paths applies to quick mode only")
-		paths = []
+	if arguments.mode == "doctor":
+		return doctor.run(REPO_ROOT, [doctor.executable_item("node", True, "the formable generator and JavaScript tests", "install Node.js 18 or newer")], arguments.save_game_dir)
+
+	if arguments.mode == "full" and arguments.paths:
+		parser.error("--paths applies to quick mode only")
+	paths = requested(arguments)
+	if arguments.mode == "quick" and not paths:
+		print("quick: no changed paths")
+		return 0
 	checks = selected_checks(arguments.mode, paths, arguments.only)
 	if not checks:
 		print(f"quick: no check reads the {len(paths)} changed path(s)")
@@ -316,14 +342,7 @@ def main() -> int:
 			failures.append(f"{check.name}: could not run: {failure}")
 
 	shown = ("error", "warning") if arguments.mode == "quick" or arguments.verbose else ("error",)
-	for finding in sorted(all_findings, key=lambda f: (f.path, f.line, f.rule, f.message)):
-		if finding.level in shown:
-			print(format_finding(finding))
-	for check, (findings, _) in zip(checks, outcomes):
-		counts = {level: sum(1 for f in findings if f.level == level) for level in LEVELS}
-		print(f"{check.name}: " + ", ".join(f"{counts[level]} {level}" for level in LEVELS))
-	for failure in failures:
-		print(failure)
+	print_report(checks, outcomes, all_findings, failures, shown)
 
 	if arguments.json:
 		arguments.json.parent.mkdir(parents=True, exist_ok=True)
