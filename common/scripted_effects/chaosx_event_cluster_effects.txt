@@ -2910,7 +2910,6 @@ event_cluster_get_effective_pacing_type = {
 	set_temp_variable = { event_cluster_type_value = constant:event_cluster_type.repeatable }
 	get_event_cluster_type = yes
 	set_temp_variable = { event_cluster_effective_pacing_type = event_cluster_type_value }
-	set_temp_variable = { event_cluster_acid_rain_pacing_row_index = constant:acid_rain_runtime.negative_one }
 }
 
 event_cluster_prepare_acid_rain_reservation = {
@@ -2956,11 +2955,6 @@ event_cluster_release_acid_rain_reservation_from_pending_queue = {
 
 event_cluster_clear_pending_member_queue = {
 	event_cluster_release_acid_rain_reservation_from_pending_queue = yes
-	for_each_loop = {
-		array = event_cluster_pending_member_batch_id_entries
-		value = event_cluster_pacing_cleanup_batch_id
-		clear_variable = acid_rain_cluster_pacing_type_@var:event_cluster_pacing_cleanup_batch_id
-	}
 	clear_array = event_cluster_pending_member_event_id_entries
 	clear_array = event_cluster_pending_member_batch_index_entries
 	clear_array = event_cluster_pending_member_event013_state_entries
@@ -4373,7 +4367,6 @@ random_stuff_cluster_force_fire = {
 }
 
 event_cluster_finalize_automatic_batch = {
-	clear_variable = acid_rain_cluster_pacing_type_@var:event_cluster_pending_batch_id
 	if = {
 		limit = {
 			check_variable = { event_cluster_pending_batch_manual < 1 }

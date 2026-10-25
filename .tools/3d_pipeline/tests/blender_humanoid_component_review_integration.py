@@ -136,7 +136,7 @@ def png_dimensions(path: Path) -> tuple[int, int]:
 
 
 def main() -> None:
-    verified_environment()
+    config = verified_environment()
     with tempfile.TemporaryDirectory(prefix="chaosx_component_review_fixture_") as temporary:
         job = Path(temporary).resolve()
         (job / "blender/checkpoints").mkdir(parents=True)
@@ -222,7 +222,7 @@ def main() -> None:
             blender_worker._render_component_group = original_render
         assert digest(source) == source_hash and not (job / f"blender/reports/component_review_{'4' * 32}.json").exists()
         print(json.dumps({"status": "pass", "fixture_only": True, "production_asset_acceptance": False,
-                          "reviewed_registered_candidate": True, "adapter_version": adapter["version"],
+                          "reviewed_registered_candidate": True, "adapter_version": config["adapter_version"],
                           "source_sha256": source_hash, "native_action_sha256": inventory["native_action_sha256"],
                           "component_catalog_sha256": review["component_catalog_sha256"],
                           "component_ids": review["component_page"]["component_ids"],
