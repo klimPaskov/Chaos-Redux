@@ -1,4 +1,4 @@
-"""Shared finding, path-filter and exit-code contract for the read-only Chaos Redux checks.
+"""Shared finding, path-filter and exit-code contract for the read-only repository checks.
 
 Every check reports each finding at one of three levels:
 

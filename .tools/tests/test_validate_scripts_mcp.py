@@ -6,8 +6,10 @@ Run from the mod root: `python -B .tools/tests/test_validate_scripts_mcp.py`.
 
 import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 TOOLS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TOOLS / "audits"))
@@ -39,8 +41,13 @@ class FindingLevels(unittest.TestCase):
 		])
 
 	def test_only_script_files_are_sent(self):
-		self.assertEqual(validator.script_paths(["events/chemical_warfare_events.txt", "localisation/english/x.yml",
-			"gfx/x.dds", "common/missing_file.txt"]), ["events/chemical_warfare_events.txt"])
+		with tempfile.TemporaryDirectory() as folder:
+			root = Path(folder)
+			(root / "events").mkdir()
+			(root / "events" / "present.txt").write_text("namespace = test", encoding="utf-8")
+			with patch.object(validator, "REPO_ROOT", root):
+				self.assertEqual(validator.script_paths(["events/present.txt", "localisation/english/x.yml",
+					"gfx/x.dds", "common/missing_file.txt"]), ["events/present.txt"])
 
 
 if __name__ == "__main__":

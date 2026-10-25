@@ -17,11 +17,18 @@ except AttributeError:
     RESAMPLE_LANCZOS = Image.LANCZOS
     RESAMPLE_BICUBIC = Image.BICUBIC
 
+
+def project_setting(name: str) -> str:
+    """Return one project value from project_settings.json beside this tool (shared-tool contract)."""
+    settings = json.loads(Path(__file__).with_name("project_settings.json").read_text(encoding="utf-8"))
+    return str(settings[name])
+
+
 REPO_ROOT = Path(__file__).resolve().parents[4]
-DEFAULT_PROVENANCE = REPO_ROOT / "docs" / "systems" / "event_system" / "report_image_provenance.json"
+DEFAULT_PROVENANCE = REPO_ROOT / project_setting("report_provenance")
 PROVENANCE_ABOUT = (
     "Processing records for report event pictures, written by "
-    ".claude/skills/chaos-redux-event-assets/tools/process_report_event_image.py --runtime and checked by "
+    f"{Path(__file__).resolve().relative_to(REPO_ROOT).as_posix()} --runtime and checked by "
     "`python -B .tools/gfx/gfx.py reports`. pixels_sha256 is the SHA-256 of the processed image's RGBA bytes, "
     "which the uncompressed BGRA DDS conversion preserves."
 )
@@ -257,7 +264,7 @@ def parse_size(value: str) -> Tuple[int, int]:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
-            "Process Chaos Redux report event images into black-and-white sepia tilted "
+            f"Process {project_setting('project_label')} report event images into black-and-white sepia tilted "
             "transparent 210x176 cards with a soft drop shadow."
         )
     )

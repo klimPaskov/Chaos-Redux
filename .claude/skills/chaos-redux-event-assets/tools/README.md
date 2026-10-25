@@ -1,6 +1,10 @@
 # Chaos Redux Event-Asset Tools
 
-These are the active reusable tools for the `chaos-redux-event-assets` skill. Call them from the mod root. Canonical engine-surface reference lookups use:
+These are the active reusable tools for the `chaos-redux-event-assets` skill. Call them from the mod root.
+
+Chaos Redux is the upstream of the Agentic HOI4 Modding package's copies of these tools, which are byte-identical (that package's `scripts/shared_tools.json` records them and its CI fails on drift). Keep project values out of the code: the label, identifier prefix, reference-asset folder, texconv image hint and report-provenance registry path live in `project_settings.json` beside the tools, and a changed tool is copied to the package with `python scripts/check_shared_tools.py --upstream <this mod> --write` there.
+
+Canonical engine-surface reference lookups Canonical engine-surface reference lookups use:
 
 `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references`
 

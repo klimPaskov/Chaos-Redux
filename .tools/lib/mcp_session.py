@@ -57,7 +57,7 @@ class McpSession:
 		threading.Thread(target=self._read_stdout, daemon=True).start()
 		threading.Thread(target=lambda: self.stderr.extend(self._pipe("stderr")), daemon=True).start()
 		self._request("initialize", {"protocolVersion": "2024-11-05", "capabilities": {},
-			"clientInfo": {"name": "chaos-redux-checks", "version": "1.0.0"}})
+			"clientInfo": {"name": "hoi4-repository-checks", "version": "1.0.0"}})
 		self._send({"jsonrpc": "2.0", "method": "notifications/initialized"})
 		return self
 

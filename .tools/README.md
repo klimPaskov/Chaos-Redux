@@ -89,6 +89,8 @@ Checks added for the deterministic-tooling plan (`docs/plans/repo_cleanup/determ
 - `export_event_catalog_csv.py --check`, `formables/generate_formable_state_puzzle_runtime.mjs --check` and `events/build_event016_transit_state_catalog.py --check` compare their generated files with a fresh render without writing; `sync/sync_instructions.py --check` covers `AGENTS.md` and `sync/sync_agents.py --verify` the agent mirrors.
 - `audits/indentation.py` warns, one finding per file, about lines indented with spaces (`INDENT-SPACES`) and lines whose tabs differ from their brace depth (`INDENT-DEPTH`); its `--apply-tabs` and `--apply-depth` fixers need explicit `--paths`.
 
+`lib/`, `audits/audit_script_rules.py`, `audits/validate_scripts_mcp.py`, `gfx/gfx.py` with its tests, the event-assets tools and `save_inspect.py` are the upstream of byte-identical copies in the Agentic HOI4 Modding package (its `scripts/shared_tools.json`); their repository values live in `gfx/settings.json`, `gfx/profiles.json` and the event-assets `tools/project_settings.json`, so a change to the shared code stays project-neutral and is copied there with that package's `check_shared_tools.py --write`.
+
 `lib/mcp_session.py` is separate from `3d_pipeline/lib/mcp_stdio.py` because that client is hash-pinned in `3d_pipeline/config/dependencies.lock.json` and changes only with an adapter release.
 
 ### Catalog and project packaging

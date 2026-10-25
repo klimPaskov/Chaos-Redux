@@ -15,7 +15,7 @@ from pathlib import Path
 from PIL import Image
 
 TOOLS = Path(__file__).resolve().parents[1]
-SPEC = importlib.util.spec_from_file_location("chaosx_gfx_conformance", TOOLS / "gfx" / "gfx.py")
+SPEC = importlib.util.spec_from_file_location("gfx_conformance_under_test", TOOLS / "gfx" / "gfx.py")
 gfx = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(gfx)
 
@@ -111,8 +111,9 @@ def png(width, height, background=(0, 0, 0, 0), subject=(200, 160, 90, 255), emp
 	return buffer.getvalue()
 
 
+@unittest.skipUnless({"focus", "decision", "idea"} <= set(gfx.PROFILE_DATA), "profiles.json has no focus, decision and idea rows")
 class FamilyChecks(unittest.TestCase):
-	"""B1-B4 on a tiny mod: consumers come from focus, decision and idea script, textures from the .gfx file."""
+	"""Family checks on a tiny mod: consumers come from focus, decision and idea script, textures from the .gfx file."""
 
 	def test_family_levels(self):
 		tree = Tree(self)

@@ -33,11 +33,17 @@ MAX_OPENING_CENTER_OFFSET = 0.001
 MAX_OPENING_SIZE_ERROR = 0.01
 UNDER_FRAME_BLEED_PIXELS = 2
 PORTRAIT_EDGE_GUARD_PIXELS = 1
+def project_setting(name: str) -> str:
+	"""Return one project value from project_settings.json beside this tool (shared-tool contract)."""
+	settings = json.loads(Path(__file__).with_name("project_settings.json").read_text(encoding="utf-8"))
+	return str(settings[name])
+
+
 SKILL_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_TEMPLATE = (
 	SKILL_ROOT
 	/ "assets"
-	/ "gfx_references"
+	/ project_setting("reference_folder")
 	/ "portraits"
 	/ "advisors"
 	/ "advisor_template.png"
@@ -728,7 +734,7 @@ def write_metadata(
 	card = Image.open(preview_path).convert("RGBA")
 	alpha_coverage = audit_portrait_alpha_coverage(card, template)
 	payload: dict[str, Any] = {
-		"workflow": "chaos-redux-advisor-dossier-v4",
+		"workflow": f"{project_setting('id_prefix')}-advisor-dossier-v4",
 		"source": {
 			"path": str(source_path),
 			"sha256": sha256(source_path),

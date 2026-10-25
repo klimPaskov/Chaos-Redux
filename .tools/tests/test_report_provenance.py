@@ -26,8 +26,8 @@ def load(name, path):
 	return module
 
 
-gfx = load("chaosx_gfx_reports", TOOLS / "gfx" / "gfx.py")
-PROCESSOR = ROOT / ".claude" / "skills" / "chaos-redux-event-assets" / "tools" / "process_report_event_image.py"
+gfx = load("gfx_reports_under_test", TOOLS / "gfx" / "gfx.py")
+PROCESSOR = gfx.REPORT_PROCESSOR
 RUNTIME = "gfx/event_pictures/test_report.dds"
 
 
@@ -44,7 +44,7 @@ class ReportProvenance(unittest.TestCase):
 				image.putpixel((x, y), (x % 256, y, 90))
 		image.save(self.source)
 		processed = self.root / "processed.png"
-		processor = load("chaosx_report_processor_cli", PROCESSOR)
+		processor = load("report_processor_cli", PROCESSOR)
 		with mock.patch.object(sys, "argv", ["process", str(self.source), str(processed), "--runtime", RUNTIME,
 				"--provenance", str(self.registry)]):
 			processor.main()

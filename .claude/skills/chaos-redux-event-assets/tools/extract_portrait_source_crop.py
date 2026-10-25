@@ -26,10 +26,17 @@ from PIL import Image
 from PIL import __version__ as PILLOW_VERSION
 
 
+
+def project_setting(name: str) -> str:
+	"""Return one project value from project_settings.json beside this tool (shared-tool contract)."""
+	settings = json.loads(Path(__file__).with_name("project_settings.json").read_text(encoding="utf-8"))
+	return str(settings[name])
+
+
 TOOL_VERSION = "2.0"
-METADATA_SCHEMA = "chaos-redux-portrait-source-crop-v1"
-PACKAGE_METADATA_SCHEMA = "chaos-redux-portrait-source-package-v1"
-COMMAND_SCHEMA = "chaos-redux-normalized-source-crop-command-v1"
+METADATA_SCHEMA = f"{project_setting('id_prefix')}-portrait-source-crop-v1"
+PACKAGE_METADATA_SCHEMA = f"{project_setting('id_prefix')}-portrait-source-package-v1"
+COMMAND_SCHEMA = f"{project_setting('id_prefix')}-normalized-source-crop-command-v1"
 COMPARISON_MODE = "RGBA"
 PORTRAIT_SIZE = (156, 210)
 PORTRAIT_ASPECT = PORTRAIT_SIZE[0] / PORTRAIT_SIZE[1]
@@ -699,10 +706,10 @@ def _provenance_contract(
 ) -> bytes:
 	"""Build a co-located, human-completable provenance contract."""
 	lines = [
-		"Chaos Redux grounded portrait provenance contract",
-		"=================================================",
+		f"{project_setting('project_label')} grounded portrait provenance contract",
+		"=" * len(f"{project_setting('project_label')} grounded portrait provenance contract"),
 		"",
-		"contract_version: chaos-redux-grounded-portrait-provenance-v1",
+		f"contract_version: {project_setting('id_prefix')}-grounded-portrait-provenance-v1",
 		"status: evidence_generated_pending_identity_source_review",
 		"source_mode: source_placeholder",
 		"styled_final: not_requested",

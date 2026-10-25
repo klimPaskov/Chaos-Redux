@@ -5,6 +5,8 @@ Install dependencies with `python -m pip install -r .tools/gfx/requirements.txt`
 The repair and conversion tools operate only on explicitly selected paths; there is no implicit repository-wide mutation. The conformance checks below read the repository and write nothing.
 All repair and conversion outputs go to a separate directory for review before the asset owner installs them.
 
+Chaos Redux is the upstream of the Agentic HOI4 Modding package's copies of these tools, which are byte-identical (that package's `scripts/shared_tools.json` records them and its CI fails on drift). Keep project values out of the code: `settings.json` names the asset-tool folder and the registry prefix grouped on contact sheets, and `profiles.json` holds this mod's canvas profiles. `gfx.py`, `test_gfx.py`, `requirements.txt` and the tests in `.tools/tests/` that exercise it are shared.
+
 ## Commands
 
 ```powershell
@@ -144,7 +146,7 @@ Do not apply this counter rule to unrelated 18x18 inline texticons or division-t
 
 ## DDS contract and shared-tree installation
 
-The 2D writer imports `.claude/skills/chaos-redux-event-assets/tools/convert_to_dds.py` and calls its canonical `write_bgra_dds` function.
+The 2D writer imports `convert_to_dds.py` from the `asset_tools` folder in `settings.json` (`.claude/skills/chaos-redux-event-assets/tools/`) and calls its canonical `write_bgra_dds` function.
 It writes a legacy 128-byte DDS header, one uncompressed straight-alpha BGRA level, pixel-format block at byte 76 with `RGB | ALPHAPIXELS`, correct BGRA masks and `DDSCAPS_TEXTURE`.
 It then validates every header field, exact `128 + width * height * 4` file length, and pixel equality through both strict parsing and Pillow decoding before atomically replacing the reviewed output file.
 This writer is for mechanical 2D alpha processing, under the asset skill's explicit exception; general source-art conversion still uses the canonical converter's CLI.

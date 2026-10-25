@@ -1,4 +1,4 @@
-"""Unit tests for the bounded Chaos Redux sprite QA helpers."""
+"""Unit tests for the bounded sprite QA helpers."""
 from __future__ import annotations
 
 import importlib.util
@@ -17,7 +17,7 @@ from PIL import Image
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SPEC = importlib.util.spec_from_file_location("chaosx_gfx", Path(__file__).with_name("gfx.py"))
+SPEC = importlib.util.spec_from_file_location("gfx_under_test", Path(__file__).with_name("gfx.py"))
 gfx = importlib.util.module_from_spec(SPEC)
 assert SPEC and SPEC.loader
 SPEC.loader.exec_module(gfx)
@@ -158,13 +158,13 @@ class GfxHelpersTests(unittest.TestCase):
         self.assertEqual(gfx.alpha_stats(normal)["subject_alpha_mean"], 255)
 
     def test_size_profiles_report_wrong_canvas_and_three_pixel_margin(self):
-        wrong = Image.new("RGBA", (93, 86), (0, 0, 0, 0))
-        self.assertTrue(any("canvas" in finding for finding in gfx.size_check(wrong, "focus")))
-        tight = Image.new("RGBA", (34, 34), (0, 0, 0, 0))
-        for y in range(2, 32):
-            for x in range(2, 32):
+        wrong = Image.new("RGBA", (209, 176), (0, 0, 0, 0))
+        self.assertTrue(any("canvas" in finding for finding in gfx.size_check(wrong, "report")))
+        tight = Image.new("RGBA", (52, 40), (0, 0, 0, 0))
+        for y in range(2, 38):
+            for x in range(2, 50):
                 tight.putpixel((x, y), (120, 120, 120, 255))
-        findings = gfx.size_check(tight, "decision", margin=3)
+        findings = gfx.size_check(tight, "category", margin=3)
         self.assertTrue(any("minimum 3" in finding for finding in findings))
         self.assertEqual(gfx.PROFILES["report"][:2], (210, 176))
         self.assertEqual(gfx.PROFILES["news"][:2], (397, 153))

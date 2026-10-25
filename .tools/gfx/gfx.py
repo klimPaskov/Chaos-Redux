@@ -26,8 +26,11 @@ from lib.report import (
     Finding, PathFilter, add_arguments, exit_code, merge_json, print_findings, requested_paths,
     relative as report_relative,
 )
-CONVERTER = ROOT / '.claude/skills/chaos-redux-event-assets/tools/convert_to_dds.py'
-# Canvas profiles and their sources live in profiles.json (plan decisions D1-D3).
+# Repository values (asset-tool folder, shared registry prefix) live in settings.json beside this file.
+SETTINGS: Dict[str, str] = json.loads(Path(__file__).with_name('settings.json').read_text(encoding='utf-8'))
+ASSET_TOOLS = ROOT / SETTINGS['asset_tools']
+CONVERTER = ASSET_TOOLS / 'convert_to_dds.py'
+# Canvas profiles and the source of every number live in profiles.json.
 PROFILE_DATA: Dict[str, Dict[str, Any]] = json.loads(
     Path(__file__).with_name('profiles.json').read_text(encoding='utf-8'))['profiles']
 # (canvas width, canvas height, minimum margin) per profile, for the `size` command.
@@ -74,7 +77,7 @@ def write_dds(image: Image.Image, path: Union[str, Path], overwrite: bool = Fals
     if path.exists() and not overwrite:
         raise FileExistsError(path)
     image = image.convert('RGBA')
-    spec = importlib.util.spec_from_file_location('chaos_dds_converter', CONVERTER)
+    spec = importlib.util.spec_from_file_location('dds_converter', CONVERTER)
     assert spec is not None and spec.loader is not None
     converter = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(converter)
@@ -315,7 +318,7 @@ def sprite_registry(root: Union[str, Path]) -> List[Dict[str, Any]]:
             count = re.search(r'\bnoOfFrames\s*=\s*(\d+)', block, re.I)
             if name and texture:
                 basename = path.stem
-                group = basename[:3] if re.match(r'\d{3}_', basename) else ('shared_' + basename if basename.startswith('chaosx') else basename)
+                group = basename[:3] if re.match(r'\d{3}_', basename) else ('shared_' + basename if SETTINGS['shared_registry_prefix'] and basename.startswith(SETTINGS['shared_registry_prefix']) else basename)
                 entries.append({'group': group, 'sprite': name[1], 'texture': texture[1].replace('//', '/'),
                                 'frames': int(count[1]) if count else 1, 'registry': path.relative_to(root).as_posix(),
                                 'line': line})
@@ -333,7 +336,8 @@ def sprite_registry(root: Union[str, Path]) -> List[Dict[str, Any]]:
 #   rules; 2202 of 2203 vanilla files per folder).
 # - GFX-FLAG-LADDER (warning): the skill requires all three sizes before a flag is complete, but vanilla
 #   ships incomplete ladders (89 normal flags without a small file), so a gap is not an engine failure.
-# - GFX-FLAG-ORIGIN (warning, decision D4): the skill forbids top-origin flag TGAs; vanilla ships 5.
+# - GFX-FLAG-ORIGIN (warning): the skill forbids top-origin flag TGAs; vanilla ships 5 of 2,203, so the
+#   engine loads them and the rule stays a warning.
 # - GFX-ACHIEVEMENT-SIZE (error): achievement art is 64x64 (882 of 882 vanilla files;
 #   `process_achievement_icons.py`). The base, `_grey` and `_not_eligible` files of every defined
 #   achievement are already required by `audit_asset_wiring_static.py` (implicit achievement-art rule).
@@ -533,20 +537,21 @@ def check_achievements(root: Union[str, Path] = ROOT, paths: Optional[Sequence[s
 
 
 # ---------------------------------------------------------------------------
-# Family checks (plan B1-B4) and report-image provenance (plan B7).
+# Family checks and report-image provenance.
 # Consumers come from the asset audit's implicit-lookup extractors: focus `icon =` sprites, decision
 # `icon =` sprites and idea pictures. Only textures stored in the checked tree are measured, so a mod
 # that reuses vanilla art is not judged on vanilla files.
 # - GFX-FOCUS-SIZE (error), GFX-DECISION-SIZE and GFX-IDEA-SIZE (warning): the frame canvas is not one of
-#   the profile's accepted sizes (profiles.json, decisions D1-D3).
+#   the profile's accepted sizes (profiles.json). A family without a profile row is not checked.
 # - GFX-FOCUS-ALTERNATIVE: a 100x88 focus icon; a warning for files under --paths (new or changed art)
-#   and a review item otherwise (D1).
+#   and a review item otherwise, because new focus art uses the profile canvas.
 # - GFX-OPAQUE-CANVAS (error): all four corners of a frame are fully opaque, so the unused canvas has a
 #   background, which the event-assets skill forbids for these families. Calibrated on 25 October 2026:
 #   0 of 4,440 vanilla focus, decision and idea textures match. A partly transparent outer ring is not a
 #   finding, because 56-84% of vanilla icons reach the canvas edge.
 # - GFX-EMPTY-SUBJECT (error): a frame has no visible pixel.
-# - GFX-GHOSTED (warning, focus icons only): visible pixels average below alpha 200 (decision D5). The
+# - GFX-GHOSTED (warning, focus icons only): visible pixels average below alpha 200; vanilla infantry counters
+#   average 162-164, so it is never an error. The
 #   calibration found it on 5.5% of vanilla focus icons but 88% of decision and 48% of idea icons, whose
 #   small antialiased art is normally that faint, so those families are not checked.
 # - GFX-CHROMA-FRINGE (warning): edge pixels in the magenta or green key colours used by `defringe`.
@@ -562,8 +567,8 @@ def check_achievements(root: Union[str, Path] = ROOT, paths: Optional[Sequence[s
 # ---------------------------------------------------------------------------
 
 FAMILY_RULES = {'focus': 'GFX-FOCUS-SIZE', 'decision': 'GFX-DECISION-SIZE', 'idea': 'GFX-IDEA-SIZE'}
-REPORT_PROVENANCE = ROOT / 'docs' / 'systems' / 'event_system' / 'report_image_provenance.json'
-REPORT_PROCESSOR = ROOT / '.claude' / 'skills' / 'chaos-redux-event-assets' / 'tools' / 'process_report_event_image.py'
+REPORT_PROVENANCE = ROOT / json.loads((ASSET_TOOLS / 'project_settings.json').read_text(encoding='utf-8'))['report_provenance']
+REPORT_PROCESSOR = ASSET_TOOLS / 'process_report_event_image.py'
 GFX_LEVELS.update({
     'GFX-FOCUS-SIZE': 'error', 'GFX-DECISION-SIZE': 'warning', 'GFX-IDEA-SIZE': 'warning',
     'GFX-FOCUS-ALTERNATIVE': 'warning', 'GFX-OPAQUE-CANVAS': 'error', 'GFX-EMPTY-SUBJECT': 'error',
@@ -611,7 +616,7 @@ def pixels_sha256(image: Image.Image) -> str:
 
 def family_textures(root: Path, vanilla: Path) -> List[Dict[str, Any]]:
     """Return one entry per texture that a focus, decision or idea consumer in `root` displays."""
-    audit = load_module('chaosx_asset_wiring_audit', ROOT / '.tools' / 'audits' / 'audit_asset_wiring_static.py')
+    audit = load_module('asset_wiring_audit', ROOT / '.tools' / 'audits' / 'audit_asset_wiring_static.py')
     consumers: Dict[str, str] = {}
     for row in audit.expect_focus_shine(root):
         consumers.setdefault(str(row['expected'])[:-len('_shine')], 'focus')
@@ -623,7 +628,7 @@ def family_textures(root: Path, vanilla: Path) -> List[Dict[str, Any]]:
     textures: Dict[Path, Dict[str, Any]] = {}
     for sprite, family in sorted(consumers.items()):
         entry = registry.get(sprite)
-        if entry is None:
+        if entry is None or family not in PROFILE_DATA:
             continue
         texture = resolve_texture(str(entry['texture']), root, vanilla)
         if texture is None or Path(root).resolve() not in texture.resolve().parents:
@@ -652,7 +657,7 @@ def family_findings(item: Dict[str, Any], changed: bool) -> Tuple[List[Finding],
                                 f"{family} art for {item['sprite']} is {width}x{height}; accepted {accepted} (profiles.json)"))
     elif outcome['alternative'] and family == 'focus':
         findings.append(Finding('gfx', 'GFX-FOCUS-ALTERNATIVE', 'warning' if changed else 'review', rel, 0,
-                                f"focus art for {item['sprite']} is {width}x{height}; new focus art uses {canvas[0]}x{canvas[1]} (D1)"))
+                                f"focus art for {item['sprite']} is {width}x{height}; new focus art uses {canvas[0]}x{canvas[1]} (profiles.json)"))
     opaque = empty = ghosted = fringe = False
     for frame in frames(image, count):
         alpha = np.asarray(frame)[..., 3]
@@ -734,7 +739,7 @@ def check_reports(root: Path = ROOT, paths: Optional[List[str]] = None) -> List[
                                         'runtime pixels differ from the recorded processed output'))
         source = Path(root) / str(record['source']['path'])
         if source.is_file() and digest(source) == record['source']['sha256']:
-            processor = load_module('chaosx_report_processor', REPORT_PROCESSOR)
+            processor = load_module('report_processor', REPORT_PROCESSOR)
             with tempfile.TemporaryDirectory() as folder:
                 rerun = Path(folder) / 'rerun.png'
                 processor.process_report_event_image(input_path=source, output_path=rerun, **record_arguments(record))

@@ -1,1 +1,1 @@
-"""Canonical shared helpers for the maintained Chaos Redux repository tools."""
+"""Canonical shared helpers for the maintained repository tools."""
