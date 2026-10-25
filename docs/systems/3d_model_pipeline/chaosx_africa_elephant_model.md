@@ -8,7 +8,7 @@ The implementation and acceptance record is [the elephant model handoff](../../p
 
 - `gfx/models/units/012_africa_elephant/` contains the mesh, six DDS maps, eight animations and animation registry.
 - `gfx/entities/chaosx_africa_elephant.gfx` binds decoded mesh objects `Mesh_0.002` and `Cube`, stream index 0, to their body/howdah maps and `PdxMeshAdvanced` shader.
-- `gfx/entities/chaosx_africa_elephant.asset` defines the sole `elephantry_entity` and an elephant-specific wrapper cloned from installed `infantry_rider_entity`.
+- `gfx/entities/chaosx_africa_elephant.asset` defines the sole `elephantry_entity` and an elephant-specific rider wrapper that copies the mesh, states, attachments and scale of installed `infantry_rider_entity`. It is not a `clone`: entity files load in file-name order, so this file cannot clone an entity from vanilla `units_cavalry.asset`.
 - `gfx/entities/chaosx_vanilla_entity_aliases.asset` no longer contains the horse replacement for elephantry.
 - `sound/chaosx_elephants_sound.asset` and `sound/012_africa/elephant/` provide attributed recorded vocal, footfall, impact and wooden creak sounds.
 

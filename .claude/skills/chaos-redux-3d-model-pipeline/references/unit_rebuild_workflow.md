@@ -160,6 +160,7 @@ A provider vehicle arrives unrigged; build it with `lab_limbs` as for a creature
 
 A variant that shares a unit's mesh and actions (an elite company) gets its own diffuse from `texture_variant.py <spec.json>` (spec format in its docstring; it dyes low-saturation cloth toward a tint and keeps skin and the item cells), converted with `pdx_textures.py` under the variant's stem.
 Register it as a second `pdxmesh` with the same mesh file and animations in a separate `<stem>_variants.gfx` (so rewiring the base unit does not overwrite it), and as an entity `clone` of the base entity that overrides only `pdxmesh`, as vanilla does for artillery variants.
+A `clone` resolves only against entities already loaded: entity files load in file-name order, and vanilla never clones across files (0 of 208 clones), so clone only an entity defined earlier in the same file. To reuse a vanilla entity from another file (a rider, a weapon carrier), copy its `pdxmesh`, states, attachments and `scale` instead; a cross-file clone fails at startup with `Couldn't find parent clone entity`.
 Render the variants side by side before converting; a near-black base needs `value_scale` above 1 for a dye to read at map scale.
 
 ## 7. Export
