@@ -12,11 +12,11 @@ from pathlib import Path
 TOOLS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TOOLS))
 
-import audit_asset_wiring_static as asset_audit  # noqa: E402
-import audit_localisation_static as loc_audit  # noqa: E402
-import audit_script_references_static as ref_audit  # noqa: E402
-import check  # noqa: E402
-from lib.report import Finding, exit_code, select, split_site  # noqa: E402
+import audit_asset_wiring_static as asset_audit
+import audit_localisation_static as loc_audit
+import audit_script_references_static as ref_audit
+import check
+from lib.report import Finding, exit_code, select, split_site
 
 
 class LocalisationLevels(unittest.TestCase):
@@ -89,7 +89,7 @@ class QuickSelection(unittest.TestCase):
 		self.assertEqual(self.names(["localisation/english/x_l_english.yml"]), ["localisation", "asset-wiring", "parchment"])
 
 	def test_skill_change_runs_guidance_and_agent_mirror_checks(self):
-		self.assertEqual(self.names([".claude/skills/x/SKILL.md"]), ["guidance", "generators"])
+		self.assertEqual(self.names([".claude/skills/x/SKILL.md"]), ["guidance", "generators", "quality"])
 
 	def test_unrelated_change_runs_nothing(self):
 		self.assertEqual(self.names(["README.md", "docs/plans/x.md"]), [])

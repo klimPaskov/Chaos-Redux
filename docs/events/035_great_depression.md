@@ -85,7 +85,7 @@ The six recovery doctrines are Emergency Public Works, Rescue Strategic Industry
 Each doctrine has its own mapped actions, AI preference profile, crisis legacy, and recovery tradeoffs.
 
 The decision category contains 68 ordinary decisions and 17 missions.
-Each action shows only in the phases where it can still change the outcome (doctrine choices while the doctrine is unassigned, openers early, working actions in Depression and Stabilization, closers in Stabilization and Recovery), evolution actions replace the general ones, and `.tools/test_event035_visible_actions.py` holds the visible counts to five national, five partner and six selected-center actions in an ordinary phase (six national actions in an emergency, six partner actions in the worldwide depression).
+Each action shows only in the phases where it can still change the outcome (doctrine choices while the doctrine is unassigned, openers early, working actions in Depression and Stabilization, closers in Stabilization and Recovery), evolution actions replace the general ones, and `.tools/tests/test_event035_visible_actions.py` holds the visible counts to five national, five partner and six selected-center actions in an ordinary phase (six national actions in an emergency, six partner actions in the worldwide depression).
 The merged families are Clearing Agreement, Protect the Home Market, Abandon the Distressed Market, Emergency Credit and Coordinated Public Works and Reconstruction.
 Tooltips state effects as "eases faster" or "rises faster" and never print hidden component points.
 
@@ -597,7 +597,7 @@ Delivery consumes the pending batch immediately, so closing a report does not sc
 A rejected human firing receives `chaosx.nr35.22`, explaining why no viable independent country can begin a fresh depression.
 
 The rejected-firing report reuses `GFX_report_event_great_depression`, registered in `interface/chaosx_pictures.gfx`, and needs no new artwork.
-Source tests in `.tools/test_event035_reports.py` cover 28 worldwide conversions, a branching financial chain, deepening replay, repeat national episodes, and exposure aggregation.
+Source tests in `.tools/tests/test_event035_reports.py` cover 28 worldwide conversions, a branching financial chain, deepening replay, repeat national episodes, and exposure aggregation.
 They record native event scheduling and do not emulate the game's delayed delivery or rendering.
 Future review should preserve these limits when another cross-country entry is added.
 

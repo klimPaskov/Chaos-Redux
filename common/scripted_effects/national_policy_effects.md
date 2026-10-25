@@ -134,7 +134,7 @@ The CXT carrier is never applied and needs no icon or player-facing name.
 
 ## Validation limits and future work
 
-The maintained production-source fixture `.tools/test_national_policy_laws.py` executes initialization, exact publishers, reconciliation and CXT helpers while recording external callbacks.
+The maintained production-source fixture `.tools/tests/test_national_policy_laws.py` executes initialization, exact publishers, reconciliation and CXT helpers while recording external callbacks.
 It covers the 18 named bookmark/tag cases and all 132 ordered replacement/callback cases, plus exclusion, release, inherited-law and representative AI scenarios.
 Native engine callback timing, actual AI selection frequency and retaliation receipt authentication remain outside this fixture.
 MCP file-mode results are partial because helper roots have unknown scope and native argument blocks are not fully checked.
@@ -144,5 +144,5 @@ Independent probability review belongs to the parent's bounded AI auditor.
 Future policy expansion should extend the existing owner enums and direct publishers rather than add a second numeric authority or a periodic repair loop.
 Additional historical profiles require explicit accepted design and country-specific evidence.
 
-Run the law regression with `python .tools/test_national_policy_laws.py`.
+Run the law regression with `python .tools/tests/test_national_policy_laws.py`.
 It reads committed production source and writes its result only to `.tmp/national_policy_panels/laws_test_results.json`.

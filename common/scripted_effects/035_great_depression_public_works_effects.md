@@ -74,7 +74,7 @@ Other player-facing numbers remain quoted costs and accepted work dates, not new
 
 ## Validation and remaining work
 
-`.tools/test_event035_public_works.py` executes the actual owner helpers and callback source with explicitly declared native construction, damage, railway and timer fixtures.
+`.tools/tests/test_event035_public_works.py` executes the actual owner helpers and callback source with explicitly declared native construction, damage, railway and timer fixtures.
 It covers named eligibility, all nine work kinds, exact paid binding, local burden, 512 additive stage/treatment combinations, capacity-preserving repair, fractional damage, demolition, bombing, external completion, one-shot output, missing authority, transfer, repeat episode, cleanup and either callback order.
 These models do not establish native repair queues, railway path selection, province port placement, consumer rendering, save/reload or campaign execution.
 The architect and probability-owner handoffs retain precise reference revisions, partial MCP results and current limits.

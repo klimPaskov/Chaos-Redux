@@ -1,0 +1,806 @@
+"""Bounded production-source regressions for the famine takeover.
+
+This executes selected real effect/trigger bodies with conservative temporary
+call frames. It models only scoped engine facts and native primitives reached
+by these paths, including the exact state-to-country achievement recorders.
+Registry, reports, full achievement completion, and live-game behavior remain
+outside the fixture; unsupported reached commands raise SourceContractError.
+"""
+from decimal import Decimal, ROUND_HALF_UP
+from functools import lru_cache
+import importlib.util
+from pathlib import Path
+import re
+import unittest
+
+
+ROOT = Path(__file__).resolve().parents[2]
+_SPEC = importlib.util.spec_from_file_location(
+    "event035_scaffolding", ROOT / ".tools" / "tests" / "test_event035_center_projects.py"
+)
+_PARSER = importlib.util.module_from_spec(_SPEC)
+_SPEC.loader.exec_module(_PARSER)
+Node = _PARSER.Node
+Definition = _PARSER.Definition
+SourceContractError = _PARSER.SourceContractError
+
+EFFECT_FILES = (
+    r"common\scripted_effects\famine_core_effects.txt",
+    r"common\scripted_effects\famine_adapter_effects.txt",
+    r"common\scripted_effects\famine_relief_effects.txt",
+    r"common\scripted_effects\migration_transport_cost_effects.txt",
+)
+TRIGGER_FILES = (
+    r"common\scripted_triggers\famine_core_triggers.txt",
+    r"common\scripted_triggers\humanitarian_validation_triggers.txt",
+    r"common\scripted_triggers\famine_decision_owner_triggers.txt",
+    r"common\scripted_triggers\migration_transport_cost_triggers.txt",
+)
+CONSTANT_GROUPS = {
+    "chaos_meter_deaths", "chaosx_date_units", "civilian_transfer_route_result",
+    "famine_food_component", "famine_food_reserve", "famine_food_score",
+    "famine_food_stage", "famine_food_timing", "famine_food_weight",
+    "famine_mission_contract", "famine_occupation_profile", "famine_profile_context",
+    "famine_profile_id", "famine_profile_mode", "famine_profile_state_id",
+    "famine_relief_result", "famine_relief_route_mode", "famine_relief_runtime",
+    "famine_relief_threshold", "famine_relief_timing", "famine_relief_weight",
+    "famine_surface_context", "humanitarian_legacy_cost", "humanitarian_population",
+    "humanitarian_pressure_source", "humanitarian_runtime", "migration_border_policy",
+    "humanitarian_achievement_value", "famine_national_crisis", "famine_hunger_lines_scenario", "famine_food_shock", "famine_mortality",
+    "triggerable_scenario_intensity",
+    "migration_transport_cost",
+}
+CONSTANT_FILES = (
+    "chaos_meter_constants.txt", "chaosx_date_units_constants.txt", "civilian_transfer_constants.txt",
+    "famine_core_constants.txt", "famine_mission_constants.txt", "famine_relief_constants.txt",
+    "humanitarian_legacy_cost_constants.txt",
+    "humanitarian_achievement_constants.txt",
+    "humanitarian_runtime_constants.txt", "migration_core_constants.txt",
+    "famine_adapter_constants.txt", "chaosx_triggerable_scenarios_constants.txt",
+    "migration_transport_cost_constants.txt",
+)
+SCOPE_NAMES = {"OWNER": "event_target:__famine_owner__", "CONTROLLER": "event_target:__famine_controller__", "FROM": "event_target:__famine_from__"}
+HEADER = re.compile(r"(?m)^([A-Za-z_][A-Za-z0-9_]*)[ \t]*=[ \t]*\{")
+NUMBER = re.compile(r"^-?\d+(?:\.\d+)?$")
+
+
+def read_one(relative_path, name):
+    """Use the shared lexer/parser on one named block, avoiding unrelated syntax."""
+    path = ROOT / relative_path
+    source = _PARSER.uncomment(path.read_text(encoding="utf-8-sig"))
+    tokens = _PARSER.lex(source)
+    for index, token in enumerate(tokens[:-2]):
+        if token.text == name and tokens[index + 1].text == "=" and tokens[index + 2].text == "{":
+            body, cursor = _PARSER.parse_nodes(tokens, index + 3, f"{path.name}:{name}")
+            if cursor >= len(tokens) or tokens[cursor].text != "}":
+                raise SourceContractError(f"{path.name}:{name}: unclosed source block")
+            return Definition(name, path, token.line, adapt_nodes(body))
+    raise SourceContractError(f"missing source definition {name} in {path}")
+
+
+def read_parseable_definitions(relative_path):
+    """Parse each top-level body independently; unrelated list syntax may be skipped."""
+    path = ROOT / relative_path
+    source = _PARSER.uncomment(path.read_text(encoding="utf-8-sig"))
+    tokens = _PARSER.lex(source)
+    token_at = {token.offset: index for index, token in enumerate(tokens)}
+    result = {}
+    for match in HEADER.finditer(source):
+        name = match.group(1)
+        opening = token_at.get(match.end() - 1)
+        if opening is None or tokens[opening].text != "{":
+            continue
+        try:
+            body, cursor = _PARSER.parse_nodes(tokens, opening + 1, f"{path.name}:{name}")
+            if cursor >= len(tokens) or tokens[cursor].text != "}":
+                continue
+        except SourceContractError:
+            continue
+        result[name] = Definition(name, path, tokens[opening].line, adapt_nodes(body))
+    return result
+
+
+def _decimal(value):
+    return value if isinstance(value, Decimal) else Decimal(str(value))
+
+
+def adapt_nodes(nodes):
+    return [Node(SCOPE_NAMES.get(n.key, n.key), n.op,
+                 adapt_nodes(n.value) if isinstance(n.value, list) else SCOPE_NAMES.get(n.value, n.value) if isinstance(n.value, str) else n.value,
+                 n.line) for n in nodes]
+
+
+@lru_cache(maxsize=1)
+def load_constants():
+    values = {}
+    base = ROOT / "common" / "script_constants"
+    for filename in CONSTANT_FILES:
+        path = base / filename
+        for group, definition in read_parseable_definitions(str(path.relative_to(ROOT))).items():
+            if group not in CONSTANT_GROUPS:
+                continue
+            for node in definition.body:
+                if isinstance(node.value, str) and NUMBER.fullmatch(node.value):
+                    values[f"constant:{group}.{node.key}"] = _decimal(node.value)
+    if not values:
+        raise SourceContractError("no famine constants were loaded")
+    return values
+
+
+class FamineRuntime(_PARSER.Event35Runtime):
+    """Reuse Event35Runtime frames, scopes, primitives, and executor."""
+    EXTERNAL_EFFECTS = {
+        "famine_register_active_state", "famine_register_historical_profile_candidate_state",
+        "famine_unregister_historical_profile_candidate_state", "famine_register_initial_incident",
+        "famine_submit_survivor_flight_request", "famine_refresh_dynamic_modifiers",
+        "famine_cleanup_state_registration", "famine_show_report_generic",
+        "famine_show_report_island_blockade", "migration_mark_reception_capacity_dirty_if_candidate",
+        "humanitarian_achievement_process_state",
+        # Management-panel refresh (5a7e65f7b8); it only publishes state to the UI.
+        "national_policy_panel_publish_state",
+    }
+    EXTERNAL_FIXTURES = EXTERNAL_EFFECTS
+    EXTERNAL_FACTS = {"genocide_state_has_active_camps", "genocide_state_has_atrocity_evidence"}
+    OUTPUTS = {"famine_occupation_profile", "famine_local_war_evidence", "famine_profile_mapping_result",
+               "famine_historical_profile_state_proven", "famine_historical_profile_context_proven"}
+
+    def __init__(self):
+        self.helper_returns, self.from_scope = [], None
+        saved = (_PARSER.EFFECT_FILES, _PARSER.TRIGGER_FILES, _PARSER.read_definitions)
+        _PARSER.EFFECT_FILES, _PARSER.TRIGGER_FILES = EFFECT_FILES, TRIGGER_FILES
+        _PARSER.read_definitions = lambda path: read_parseable_definitions(str(path))
+        try:
+            super().__init__()
+        finally:
+            _PARSER.EFFECT_FILES, _PARSER.TRIGGER_FILES, _PARSER.read_definitions = saved
+        self.effect_defs["chaosx_convert_days_to_date_offset"] = read_one(
+            r"common\scripted_effects\chaosx_dynamic_effects.txt", "chaosx_convert_days_to_date_offset")
+        # Surface context calls this real alias predicate. Its only native
+        # dependencies are dynamic-modifier facts already modeled by the fixture.
+        self.trigger_defs["mapmode_state_has_chemical_contamination"] = read_one(
+            r"common\scripted_triggers\cbw_triggers.txt", "mapmode_state_has_chemical_contamination")
+        self.effects, self.triggers = self.effect_defs, self.trigger_defs
+        self.globals["date"] = Decimal(0)
+        self.calendar_date = (1936, 1, 1)
+        self.file_constants = {key: _decimal(value) for key, value in self.file_constants.items()}
+
+    def _read_constants(self):
+        return load_constants()
+
+    def _value(self, token):
+        if token == "id": return self.current.id
+        if token == "event_target:__famine_owner__": return self.current.owner
+        if token == "event_target:__famine_controller__": return self.current.controller
+        if token == "event_target:__famine_from__":
+            if self.from_scope is None: raise SourceContractError("FROM without decision target")
+            return self.from_scope
+        value = super()._value(token)
+        if isinstance(value, str) and token.startswith(("famine_", "humanitarian_", "migration_", "air_", "camp_", "nuclear_", "forced_labor_")):
+            return self._variable(token)
+        return value
+
+    def _variable(self, token):
+        if token == "id": return self.current.id
+        return super()._variable(self._targeted_variable_name(token))
+
+    def _targeted_variable_name(self, token):
+        return re.sub(r"@var:([A-Za-z_][A-Za-z0-9_]*)",
+                      lambda match: str(int(self._value(match.group(1)))), token)
+
+    def _path_container(self, path):
+        return super()._path_container(self._targeted_variable_name(path))
+
+    def _parameterized_transport_call(self, node, scope, effect):
+        """Substitute source macros, then execute the real helper in its usual frame."""
+        definitions = self.effect_defs if effect else self.trigger_defs
+        original = definitions[node.key]
+        parameters = {child.key: child.value for child in node.value}
+
+        def substitute(token):
+            for key, value in parameters.items():
+                token = token.replace("$" + key + "$", value)
+            if re.search(r"\$[A-Za-z_][A-Za-z0-9_]*\$", token):
+                raise SourceContractError(f"unbound transport parameter in {token}")
+            return token
+
+        def expand(nodes):
+            return [Node(substitute(child.key), child.op,
+                         expand(child.value) if isinstance(child.value, list) else substitute(child.value),
+                         child.line) for child in nodes]
+
+        definitions[node.key] = Definition(original.name, original.path, original.line, expand(original.body))
+        try:
+            if effect:
+                return self._call_effect(node.key, scope)
+            return self._run_trigger(node.key, scope)
+        finally:
+            definitions[node.key] = original
+
+    def _condition(self, node, scope):
+        key, op, value = node.key, node.op, node.value
+        if key.startswith("migration_transport_") and key in self.trigger_defs and isinstance(value, list):
+            return self._parameterized_transport_call(node, scope, effect=False)
+        if key == "check_variable" and len(value) == 1 and value[0].op == "=":
+            return self._same(self._variable(value[0].key), self._value(value[0].value))
+        if key == "is_in_home_area":
+            return scope.kind == "state" and scope.values["is_in_home_area"] == (value == "yes")
+        if op in ("<", ">") and key in scope.values:
+            return scope.values[key] < self._value(value) if op == "<" else scope.values[key] > self._value(value)
+        if op in ("<", ">") and key == "gulag_labor_camp_network":
+            fact = _decimal(scope.values.get(key, 0))
+            return fact < self._value(value) if op == "<" else fact > self._value(value)
+        if key == "date":
+            right = tuple(int(part) for part in value.split("."))
+            return self.calendar_date < right if op == "<" else self.calendar_date > right if op == ">" else self.calendar_date == right
+        if key == "scope_exists": return True
+        if key == "state": return scope.kind == "state" and scope.id == self._value(value)
+        if key == "has_event_target": return value in self.targets
+        if key == "tag":
+            target = self._value(value)
+            tag = target.values.get("tag") if isinstance(target, ScopeType) else target
+            return scope.kind == "country" and scope.values.get("tag") == tag
+        if key == "has_war": return scope.kind == "country" and bool(scope.values.get("at_war", False)) == (value == "yes")
+        if key == "has_war_with":
+            target = self._value(value)
+            return scope.kind == "country" and target.values.get("tag") in scope.values.get("wars_with", set())
+        if key == "has_resistance": return bool(scope.values.get("has_resistance", False)) == (value == "yes")
+        if key == "occupation_law": return scope.values.get("occupation_law") == value
+        if key == "is_core_of": return self._value(value).values.get("tag") in scope.values.get("core_tags", set())
+        if key == "is_owned_and_controlled_by": return scope.owner is scope.controller is self._value(value)
+        if key == "has_dynamic_modifier":
+            name = _PARSER.first(value, "modifier") if isinstance(value, list) else value
+            return name in scope.modifiers
+        if key in self.EXTERNAL_FACTS: return bool(scope.values.get(key, False)) == (value == "yes")
+        if key == "any_neighbor_state":
+            for neighbor in scope.values.get("neighbors", []):
+                self.scope_stack.append(neighbor)
+                try:
+                    if self._conditions(value, neighbor): return True
+                finally: self.scope_stack.pop()
+            return False
+        return super()._condition(node, scope)
+
+    def _call_effect(self, name, scope):
+        if name in self.EXTERNAL_EFFECTS:
+            self.external_calls.append(name); return
+        super()._call_effect(name, scope)
+        if self.temp_frames:
+            self.helper_returns.append((name, {k: self.temp_frames[-1][k] for k in self.OUTPUTS if k in self.temp_frames[-1]}))
+
+    def _effects(self, nodes, scope):
+        i = 0
+        while i < len(nodes):
+            node = nodes[i]
+            if node.key in ("if", "else_if", "else"):
+                end = i + 1
+                while end < len(nodes) and nodes[end].key in ("else_if", "else"): end += 1
+                super()._effects(nodes[i:end], scope); i = end; continue
+            if node.key.startswith("migration_transport_") and node.key in self.effect_defs and isinstance(node.value, list):
+                self._parameterized_transport_call(node, scope, effect=True)
+            elif node.key == "force_update_dynamic_modifier":
+                self.native_calls.append((node.key, scope.id))
+            elif node.key in ("add_dynamic_modifier", "remove_dynamic_modifier"):
+                # Modifier names are database tokens, not famine variables.
+                name = _PARSER.first(node.value, "modifier")
+                (scope.modifiers.add if node.key == "add_dynamic_modifier" else scope.modifiers.discard)(name)
+            elif node.key in ("divide_variable", "divide_temp_variable", "clamp_variable", "clamp_temp_variable"):
+                if node.key.startswith("divide"):
+                    name, divisor = node.value[0].key, _decimal(self._value(node.value[0].value))
+                    value = _decimal(self._variable(name)) / divisor
+                else:
+                    args = {c.key: self._value(c.value) for c in node.value}; name = next(c.value for c in node.value if c.key == "var")
+                    value = _decimal(self._variable(name))
+                    if "min" in args: value = max(value, _decimal(args["min"]))
+                    if "max" in args: value = min(value, _decimal(args["max"]))
+                self._set_temp(name, value) if node.key.endswith("temp_variable") else self._write_path(name, value)
+            else:
+                try: super()._effects([node], scope)
+                except TypeError as exc:
+                    raise SourceContractError(f"unsupported arithmetic input {node.key} {node.value}; caller stack={self.call_stack}") from exc
+            i += 1
+
+    def run_trigger(self, name, scope, root=None):
+        return self.test_trigger(name, scope, root=root)
+
+    def run_nodes(self, nodes, scope, root=None, caller_temps=None, from_scope=None):
+        old = (self.root, self.scope_stack, self.temp_frames, self.from_scope)
+        self.root = root if root is not None else (scope if scope.kind == "country" else scope.owner)
+        self.scope_stack, self.temp_frames, self.from_scope = [scope], [dict(caller_temps or {})], from_scope
+        try: return self._effects(nodes, scope) or dict(self.temp_frames[0])
+        finally: self.root, self.scope_stack, self.temp_frames, self.from_scope = old
+
+    def run_effect(self, name, scope, root=None, caller_temps=None):
+        old = (self.root, self.scope_stack, self.temp_frames)
+        self.root = root if root is not None else (scope if scope.kind == "country" else scope.owner)
+        self.scope_stack, self.temp_frames = [scope], [dict(caller_temps or {})]
+        try:
+            self._call_effect(name, scope)
+            return dict(self.temp_frames[0])
+        finally: self.root, self.scope_stack, self.temp_frames = old
+
+    def advance_days(self, days):
+        self.globals["date"] += _decimal(days) * Decimal("0.00024")
+
+ScopeType = _PARSER.Scope
+
+
+def country(tag, at_war=False, wars_with=()):
+    return ScopeType("country", tag, values={"tag": tag, "at_war": at_war, "wars_with": set(wars_with)})
+
+
+def state(state_id, owner, controller=None, population_k=100):
+    return ScopeType("state", state_id, owner=owner, controller=controller or owner, population_k=population_k,
+                     values={"state_population_k": Decimal(population_k)})
+
+
+def _children(node, key):
+    return [child for child in node.value if child.key == key]
+
+
+def _effect_body(runtime, name):
+    body = runtime.effects[name].body
+    outer = next(node for node in body if node.key == "if")
+    return [node for node in outer.value if node.key != "limit"]
+
+
+def component_pipeline_nodes(runtime):
+    body = _effect_body(runtime, "famine_evaluate_food_security")
+    resetters = [node for node in body if node.key == "set_temp_variable" and _PARSER.first(node.value, "famine_external_production") is not None]
+    resets = []
+    for node in body:
+        if node in resetters:
+            start = body.index(node)
+            resets = body[start:start + 8]
+            break
+    collect = next(node for node in body if node.key == "famine_collect_surface_context")
+    rebuild = next(node for node in body if node.key == "famine_rebuild_food_components")
+    score_init = [node for node in body if node.key == "set_temp_variable" and _PARSER.first(node.value, "famine_food_score_raw") is not None]
+    requested_init = [node for node in body if node.key == "set_temp_variable" and _PARSER.first(node.value, "famine_requested_food_stage") is not None]
+    calculate = next(node for node in body if node.key == "famine_calculate_food_score")
+    if len(resets) != 8 or not score_init or not requested_init:
+        raise SourceContractError("evaluator caller output initialization changed")
+    return resets + [collect, rebuild, score_init[0], requested_init[0], calculate]
+
+
+def stage_clock_nodes(runtime):
+    body = _effect_body(runtime, "famine_evaluate_food_security")
+    for index, node in enumerate(body):
+        if node.key not in ("if", "else_if"):
+            continue
+        limit = _PARSER.first(node.value, "limit", [])
+        if any(
+            child.key == "check_variable"
+            and _PARSER.first(child.value, "var") == "famine_requested_food_stage"
+            and _PARSER.first(child.value, "compare") == "greater_than"
+            and _PARSER.first(child.value, "value") == "famine_food_stage"
+            for child in limit
+        ):
+            chain = [node]
+            for sibling in body[index + 1:]:
+                if sibling.key not in ("else_if", "else"):
+                    break
+                chain.append(sibling)
+            return chain
+    raise SourceContractError("candidate/recovery clock block not found in evaluator")
+
+
+def execute_evaluation_slice(runtime, scope):
+    previous = (runtime.root, runtime.scope_stack, runtime.temp_frames)
+    runtime.root, runtime.scope_stack, runtime.temp_frames = scope.owner, [scope], [{}]
+    runtime._call_effect("famine_apply_historical_profile_context", scope)
+    runtime._effects(component_pipeline_nodes(runtime), scope)
+    runtime._effects(stage_clock_nodes(runtime), scope)
+    result = dict(runtime.temp_frames[0])
+    runtime.root, runtime.scope_stack, runtime.temp_frames = previous
+    return result
+
+
+class FamineTakeoverRegressions(unittest.TestCase):
+    def setUp(self):
+        self.runtime = FamineRuntime()
+
+    def test_tracked_achievement_recorders_credit_scoped_country_with_unrelated_root(self):
+        rt = self.runtime
+        cases = (
+            ("blockade_relief", "humanitarian_achievement_blockade_relief_restored"),
+            ("blockade_wasteland", "humanitarian_achievement_blockade_wasteland"),
+            ("blockade_recovery", "humanitarian_achievement_blockade_recovered"),
+            ("extraction_suspended", "humanitarian_achievement_extraction_suspended_before_catastrophic"),
+            ("extraction_recovery", "humanitarian_achievement_extraction_state_recovered"),
+            ("alternative_logistics", "humanitarian_achievement_alternative_logistics_proven"),
+        )
+        for suffix, output in cases:
+            with self.subTest(recorder=suffix):
+                name = "humanitarian_achievement_record_" + suffix
+                rt.effects[name] = read_one(r"common\scripted_effects\humanitarian_achievement_effects.txt", name)
+                actor, ambient = country("BRA"), country("USA")
+                province = state(935, actor)
+                actor.values.update(humanitarian_achievement_blockade_state_id=935,
+                                    humanitarian_achievement_blockade_generation=7,
+                                    humanitarian_achievement_blockade_survivors=100,
+                                    humanitarian_achievement_blockade_survival_target=80,
+                                    humanitarian_achievement_extraction_state_id=935,
+                                    humanitarian_achievement_extraction_generation=7)
+                actor.flags.update({"humanitarian_achievement_extraction_shock_proven",
+                                    "humanitarian_achievement_extraction_suspended_before_catastrophic"})
+                province.values.update(humanitarian_achievement_blockade_generation=7,
+                                       humanitarian_achievement_blockade_earning_country_id=actor.id,
+                                       famine_extraction_generation=7, famine_food_stage=0,
+                                       famine_relief_last_delivery_credit=1,
+                                       famine_relief_corridor_mode=rt.constants["constant:famine_relief_route_mode.sea"])
+                province.flags.update({"humanitarian_achievement_blockade_state",
+                                       "famine_relief_delivery_proven", "famine_extraction_suspended"})
+                wrapper = [Node("event_target:__famine_owner__", "=", [Node(name, "=", "yes", 0)], 0)]
+                # A stale generation must fail even when all other facts hold.
+                province.values["humanitarian_achievement_blockade_generation"] = 6
+                province.values["famine_extraction_generation"] = 6
+                actor.flags.discard(output)
+                rt.run_nodes(wrapper, province, root=ambient)
+                self.assertNotIn(output, actor.flags)
+                province.values["humanitarian_achievement_blockade_generation"] = 7
+                province.values["famine_extraction_generation"] = 7
+                if suffix == "extraction_recovery":
+                    actor.flags.add("humanitarian_achievement_extraction_suspended_before_catastrophic")
+                rt.run_nodes(wrapper, province, root=ambient)
+                self.assertIn(output, actor.flags)
+                self.assertNotIn(output, ambient.flags)
+
+    def test_concealed_mortality_dispatch_requires_positive_loss_and_exact_attempt(self):
+        rt = self.runtime
+        name = "humanitarian_achievement_record_blockade_concealed_mortality"
+        rt.effects[name] = read_one(r"common\scripted_effects\humanitarian_achievement_effects.txt", name)
+
+        def dispatches(nodes):
+            for node in nodes:
+                if isinstance(node.value, list):
+                    limit = _PARSER.first(node.value, "limit", [])
+                    if (node.key == "if" and any(n.key == "has_state_flag" and n.value == "famine_crisis_concealed" for n in limit)
+                            and any(n.key == "check_variable" and _PARSER.first(n.value, "var") == "famine_mortality_result" for n in limit)):
+                        yield node
+                    yield from dispatches(node.value)
+        dispatch = list(dispatches(rt.effects["famine_apply_mortality"].body))
+        self.assertEqual(len(dispatch), 1)
+        owner, controller, ambient = country("BRA"), country("GER"), country("USA")
+        province = state(935, owner, controller)
+        province.flags.update({"famine_crisis_concealed", "humanitarian_achievement_blockade_state"})
+        province.values["humanitarian_achievement_blockade_generation"] = 7
+        flag = "humanitarian_achievement_blockade_concealed_mortality"
+        for actor in (owner, controller):
+            actor.values.update(humanitarian_achievement_blockade_state_id=935,
+                                humanitarian_achievement_blockade_generation=7)
+        rt.run_nodes(dispatch, province, root=ambient, caller_temps={"famine_mortality_result": 0})
+        self.assertNotIn(flag, owner.flags)
+        self.assertNotIn(flag, controller.flags)
+        controller.values["humanitarian_achievement_blockade_generation"] = 6
+        rt.run_nodes(dispatch, province, root=ambient, caller_temps={"famine_mortality_result": 1})
+        self.assertIn(flag, owner.flags)
+        self.assertNotIn(flag, controller.flags)
+        controller.values["humanitarian_achievement_blockade_generation"] = 7
+        rt.run_nodes(dispatch, province, root=ambient, caller_temps={"famine_mortality_result": 1})
+        self.assertIn(flag, controller.flags)
+        self.assertNotIn(flag, ambient.flags)
+
+    def test_selector_local_war_and_profile_proof_cross_real_call_frames(self):
+        owner = country("MAN", at_war=True, wars_with={"JAP"})
+        controller = country("CHI", at_war=True, wars_with={"JAP"})
+        province = state(607, owner, controller)
+        province.values.update(has_resistance=True, occupation_law="no_garrison")
+        self.runtime.calendar_date = (1942, 5, 1)
+        self.runtime.run_effect("famine_select_historical_profile_id", province)
+
+        self.assertEqual(province.values["famine_historical_profile_id"], self.runtime.constants["constant:famine_profile_id.hist_china_henan_1942"])
+        occupation_return = next(values for name, values in self.runtime.helper_returns if name == "famine_resolve_occupation_profile")
+        war_return = next(values for name, values in self.runtime.helper_returns if name == "famine_resolve_local_war_evidence")
+        self.assertEqual(occupation_return["famine_occupation_profile"], self.runtime.constants["constant:famine_occupation_profile.standard"])
+        self.assertEqual(war_return["famine_local_war_evidence"], self.runtime.constants["constant:humanitarian_runtime.one"])
+
+        self.runtime.run_effect("famine_apply_historical_profile_context", province)
+        profile_return = [values for name, values in self.runtime.helper_returns if name == "famine_resolve_historical_profile_context"][-1]
+        self.assertEqual(profile_return["famine_historical_profile_state_proven"], self.runtime.constants["constant:humanitarian_runtime.one"])
+        self.assertEqual(profile_return["famine_historical_profile_context_proven"], self.runtime.constants["constant:humanitarian_runtime.one"])
+        self.assertIn("famine_profile_context_active", province.flags)
+        self.assertEqual(province.values["famine_profile_context_id"], self.runtime.constants["constant:famine_profile_id.hist_china_henan_1942"])
+
+    def test_china_ceara_and_congo_cause_gates(self):
+        rt = self.runtime
+        required = {"famine_china_policy_profile_cause_proven", "famine_ceara_profile_cause_proven", "famine_congo_profile_cause_proven"}
+        if not required.issubset(rt.trigger_defs):
+            self.skipTest("round3 cause-gate source is unpublished on this checkout")
+        chi = country("CHI")
+        henan = state(607, chi)
+        henan.values["famine_food_pressure"] = 5
+        henan.flags.add("famine_extraction_active")
+        self.assertTrue(rt.run_trigger("famine_china_policy_profile_cause_proven", henan))
+        henan.values["famine_food_pressure"] = 0
+        self.assertFalse(rt.run_trigger("famine_china_policy_profile_cause_proven", henan))
+
+        bra = country("BRA")
+        ceara = state(935, bra)
+        ceara.values.update(famine_food_pressure=5, famine_last_pressure_source=rt.constants["constant:humanitarian_pressure_source.natural_disaster"])
+        self.assertTrue(rt.run_trigger("famine_ceara_profile_cause_proven", ceara))
+        ceara.values["famine_last_pressure_source"] = 0
+        self.assertFalse(rt.run_trigger("famine_ceara_profile_cause_proven", ceara))
+
+        bel = country("BEL")
+        congo = state(295, bel)
+        congo.values["famine_food_pressure"] = 5
+        self.assertTrue(rt.run_trigger("famine_congo_profile_cause_proven", congo))
+        congo.values["core_tags"] = {"BEL"}
+        self.assertFalse(rt.run_trigger("famine_congo_profile_cause_proven", congo))
+
+    def test_weighted_surface_score_context_expiry_and_stage_recovery(self):
+        rt = self.runtime
+        required = {"famine_open_outbreak_food_context", "famine_open_disaster_food_context"}
+        if not required.issubset(rt.effect_defs):
+            self.skipTest("round3 outbreak/disaster context source is unpublished on this checkout")
+        peaceful_country = country("BRA")
+        province = state(99, peaceful_country)
+        province.flags.add("famine_blockade_candidate_active")  # retain registry through recovery
+        rt.run_effect("famine_initialize_state", province)
+        score = execute_evaluation_slice(rt, province)
+        self.assertEqual(score["famine_food_score_raw"], Decimal(0))
+        self.assertEqual(province.values["famine_food_security_score"], Decimal(0))
+
+        rt.run_effect("famine_open_outbreak_food_context", province)
+        outbreak_until = province.values["famine_outbreak_context_until_date"]
+        self.assertEqual(outbreak_until - rt.globals["date"], Decimal("0.0072"))
+        score = execute_evaluation_slice(rt, province)
+        self.assertGreater(score["famine_food_score_raw"], Decimal(25))
+        self.assertEqual(province.values["famine_component_production"], Decimal(20))
+        rt.advance_days(7)
+        score = execute_evaluation_slice(rt, province)
+        self.assertEqual(province.values["famine_food_stage"], Decimal(1))
+
+        rt.advance_days(23)
+        score = execute_evaluation_slice(rt, province)
+        self.assertEqual(score["famine_food_score_raw"], Decimal(0))
+        recovery_start = province.values["famine_food_recovery_since_date"]
+        rt.advance_days(13)
+        execute_evaluation_slice(rt, province)
+        self.assertEqual(province.values["famine_food_stage"], Decimal(1))
+        rt.advance_days(1)
+        execute_evaluation_slice(rt, province)
+        self.assertEqual(province.values["famine_food_stage"], Decimal(0))
+        self.assertNotIn("famine_food_recovery_since_date", province.values)
+
+        rt.run_effect("famine_open_disaster_food_context", province)
+        disaster_until = province.values["famine_disaster_context_until_date"]
+        self.assertEqual(disaster_until - rt.globals["date"], Decimal("0.0144"))
+        rt.advance_days(59)
+        active = execute_evaluation_slice(rt, province)
+        self.assertGreater(active["famine_food_score_raw"], Decimal(25))
+        rt.advance_days(1)
+        expired = execute_evaluation_slice(rt, province)
+        self.assertEqual(expired["famine_food_score_raw"], Decimal(0))
+
+        wartime_owner = country("FRA", at_war=True, wars_with={"GER"})
+        wartime_controller = country("GER", at_war=True, wars_with={"FRA"})
+        occupied = state(120, wartime_owner, wartime_controller)
+        occupied.values.update(has_resistance=True, occupation_law="no_garrison")
+        rt.run_effect("famine_initialize_state", occupied)
+        stable = execute_evaluation_slice(rt, occupied)
+        war_return = [values for name, values in rt.helper_returns if name == "famine_resolve_local_war_evidence"][-1]
+        self.assertGreater(war_return["famine_local_war_evidence"], Decimal(0))
+        self.assertGreater(occupied.values["famine_component_transport"], Decimal(0))
+        self.assertLess(stable["famine_food_score_raw"], Decimal(25))
+
+    def test_reserve_consumer_caps_rounds_and_rejects_without_debit(self):
+        rt = self.runtime
+        owner = country("BRA")
+
+        def consume(relief, stock, request_days=10, valid=True):
+            target = state(935, owner, population_k=100)
+            target.values.update(
+                famine_food_reserve_amount=Decimal(stock), famine_food_reserve_relief=Decimal(relief),
+                famine_food_reserve_daily_need=Decimal(100), famine_food_reserve_initialized=Decimal(1),
+                famine_food_reserve_release_amount=Decimal(request_days * 100),
+                famine_food_reserve_release_request_proven=Decimal(1 if valid else 0),
+                famine_food_reserve_release_actor_proven=Decimal(1), infrastructure_level=5,
+            )
+            target.flags.add("famine_food_reserve_initialized")
+            frame = rt.run_effect("famine_release_reserves", target, caller_temps={
+                "famine_food_reserve_consume_result": rt.constants["constant:civilian_transfer_route_result.invalid"],
+                "famine_food_reserve_consumed_output": Decimal(0),
+                "famine_food_reserve_relief_granted_output": Decimal(0),
+                "famine_food_reserve_remaining_output": Decimal(0),
+            })
+            return target, frame
+
+        near_cap, output = consume(32, 1000)
+        self.assertEqual(output["famine_food_reserve_consumed_output"], Decimal(200))
+        self.assertEqual(output["famine_food_reserve_relief_granted_output"], Decimal(3))
+        self.assertEqual(near_cap.values["famine_food_reserve_amount"], Decimal(800))
+
+        full, output = consume(35, 1000)
+        self.assertEqual(output["famine_food_reserve_consumed_output"], Decimal(0))
+        self.assertEqual(full.values["famine_food_reserve_amount"], Decimal(1000))
+
+        low_stock, output = consume(0, 75)
+        self.assertEqual(output["famine_food_reserve_consumed_output"], Decimal(75))
+        self.assertEqual(output["famine_food_reserve_relief_granted_output"], Decimal("1.125"))
+        self.assertEqual(low_stock.values["famine_food_reserve_amount"], Decimal(0))
+
+        rejected, output = consume(0, 1000, valid=False)
+        self.assertEqual(output["famine_food_reserve_consumed_output"], Decimal(0))
+        self.assertEqual(rejected.values["famine_food_reserve_amount"], Decimal(1000))
+        self.assertNotIn("famine_food_reserve_release_request_proven", rejected.values)
+
+    def test_decision_refunds_zero_consumption_only_for_its_receipt(self):
+        # The native decision delegates to the shared production operation.
+        # Reuse its model for real meta receipts, target binding and due work.
+        from test_humanitarian_gui_actions import Runtime, F as bridge_source
+        for home_area in (True, False):
+            with self.subTest(home_area=home_area):
+                rt = Runtime()
+                owner = bridge_source.country("BRA")
+                target = bridge_source.state(935, owner, population_k=100)
+                target.values.update(
+                    famine_food_reserve_amount=Decimal(1000), famine_food_reserve_relief=Decimal(35),
+                    famine_food_reserve_daily_need=Decimal(100), famine_food_reserve_initialized=Decimal(1),
+                    infrastructure_level=5, is_in_home_area=home_area,
+                )
+                target.flags.update({"famine_food_reserve_initialized", "famine_food_security_active", "famine_food_stage_famine"})
+                owner.values.update(famine_panel_selected_state=target, owned_states=[target])
+                mode = "land" if home_area else "sea"
+                fuel = rt.constants[f"constant:migration_transport_cost.standard_fuel_{mode}"]
+                convoys = Decimal(0) if home_area else rt.constants["constant:migration_transport_cost.standard_convoys_sea"]
+                support = rt.constants["constant:humanitarian_legacy_cost.support_light"]
+                owner.resources.update(political_power=Decimal(0), support_equipment=support,
+                                       fuel=fuel, convoy=convoys, convoy_1=convoys)
+                rt.run_effect("famine_gui_start_action", owner, caller_temps={"famine_gui_action": Decimal(1)})
+                self.assertEqual(owner.resources["fuel"], Decimal(0))
+                self.assertEqual(owner.resources["convoy_1"], Decimal(0))
+                self.assertEqual(owner.resources["support_equipment"], Decimal(0))
+                self.assertEqual(owner.values["famine_release_reserves_fuel_paid_935"], fuel)
+                self.assertEqual(owner.values["famine_release_reserves_convoys_paid_935"], convoys)
+                self.assertIn("famine_release_reserves_cost_paid", target.flags)
+                # Refund must use the saved quote even if geography changes.
+                target.values["is_in_home_area"] = not home_area
+                rt.advance_days(100)
+                rt.run_effect("famine_action_process_pending", owner)
+                self.assertEqual(owner.resources["political_power"], Decimal(0))
+                self.assertEqual(owner.resources["support_equipment"], support)
+                self.assertEqual(owner.resources["fuel"], fuel)
+                self.assertEqual(owner.resources["convoy_1"], convoys)
+                self.assertEqual(target.values["famine_food_reserve_amount"], Decimal(1000))
+                self.assertNotIn("famine_release_reserves_cost_paid", target.flags)
+                self.assertNotIn("famine_release_reserves_fuel_paid_935", owner.values)
+                self.assertNotIn("famine_release_reserves_convoys_paid_935", owner.values)
+                refunded = dict(owner.resources)
+                rt.run_effect("famine_action_process_pending", owner)
+                self.assertEqual(owner.resources, refunded)
+
+    def test_relief_delivery_copies_transfer_outputs_across_scopes(self):
+        rt = self.runtime
+        contract = rt.effects["famine_relief_deliver_contract"].body
+        owner_gate = next(n for n in contract if n.key == "if")
+        delivery_gate = next(n for n in owner_gate.value if n.key == "if")
+        delivery_body = [n for n in delivery_gate.value if n.key != "limit"]
+        donor_copy = next(n for n in delivery_body if n.key == "event_target:famine_relief_delivery_donor_state")
+        recipient_gate = next(n for n in delivery_body[delivery_body.index(donor_copy) + 1:] if n.key == "if")
+        publication = []
+        for node in recipient_gate.value:
+            if node.key == "limit":
+                publication.append(node)
+            else:
+                publication.append(node)
+                if node.key == "set_variable" and _PARSER.first(node.value, "famine_relief_corridor_proof_date") is not None:
+                    break
+        recipient_copy = Node(recipient_gate.key, recipient_gate.op, publication, recipient_gate.line)
+        donor_country, recipient_country = country("BEL"), country("CHI")
+        donor, recipient = state(295, donor_country), state(607, recipient_country)
+        for province, stock in ((donor, 1000), (recipient, 200)):
+            province.values.update(famine_food_reserve_amount=Decimal(stock), infrastructure_level=5)
+            province.flags.add("famine_food_reserve_initialized")
+        recipient.values["famine_relief_contract_amount"] = Decimal(250)
+        recipient.values["famine_relief_route_mode"] = rt.constants["constant:famine_relief_route_mode.land"]
+        rt.targets.update({"famine_relief_delivery_donor_state": donor, "famine_relief_delivery_donor_country": donor_country,
+                           "famine_relief_selection_recipient": recipient, "famine_food_reserve_destination": recipient})
+        outputs = {"famine_relief_delivery_result": Decimal(0), "famine_relief_delivery_debit": Decimal(0),
+                   "famine_relief_delivery_credit": Decimal(0), "famine_food_reserve_transfer_result": Decimal(0),
+                   "famine_food_reserve_transfer_source_debit_output": Decimal(0),
+                   "famine_food_reserve_transfer_destination_credit_output": Decimal(0)}
+        frame = rt.run_nodes([donor_copy, recipient_copy], recipient, caller_temps=outputs)
+        self.assertEqual(frame["famine_relief_delivery_result"], rt.constants["constant:civilian_transfer_route_result.valid"])
+        self.assertEqual(frame["famine_relief_delivery_debit"], Decimal(250))
+        self.assertEqual(frame["famine_relief_delivery_credit"], Decimal(250))
+        self.assertEqual(donor.values["famine_food_reserve_amount"] + recipient.values["famine_food_reserve_amount"], Decimal(1200))
+        for name in ("famine_relief_delivery_result", "famine_relief_delivery_debit", "famine_relief_delivery_credit"):
+            self.assertNotIn(name, donor.values)
+        self.assertEqual(recipient.values["famine_relief_last_delivery_debit"], Decimal(250))
+        self.assertEqual(recipient.values["famine_relief_last_delivery_credit"], Decimal(250))
+
+    def test_stage_clock_reversals_and_recovery_step_reset(self):
+        rt = self.runtime
+        owner = country("BRA")
+        now = rt.globals["date"]
+        province = state(99, owner)
+        province.values.update(famine_food_stage=Decimal(1), famine_food_stage_candidate=Decimal(1),
+                               famine_food_recovery_since_date=now - Decimal("0.001"))
+        rt.run_nodes(stage_clock_nodes(rt), province, caller_temps={
+            "famine_requested_food_stage": Decimal(2), "famine_food_score_raw": Decimal(0)})
+        self.assertNotIn("famine_food_recovery_since_date", province.values)
+        self.assertEqual(province.values["famine_food_stage_candidate_since_date"], now)
+
+        province.values["famine_food_stage_candidate_since_date"] = now - Decimal("0.001")
+        province.values["famine_food_stage_candidate"] = Decimal(1)
+        rt.run_nodes(stage_clock_nodes(rt), province, caller_temps={
+            "famine_requested_food_stage": Decimal(0), "famine_food_score_raw": Decimal(0)})
+        self.assertNotIn("famine_food_stage_candidate_since_date", province.values)
+        self.assertEqual(province.values["famine_food_recovery_since_date"], now)
+
+        province.values.update(famine_food_stage=Decimal(2), famine_food_recovery_since_date=now - Decimal("0.00504"))
+        rt.run_nodes(stage_clock_nodes(rt), province, caller_temps={
+            "famine_requested_food_stage": Decimal(1), "famine_food_score_raw": Decimal(0)})
+        self.assertEqual(province.values["famine_food_stage"], Decimal(1))
+        self.assertNotIn("famine_food_recovery_since_date", province.values)
+        rt.run_nodes(stage_clock_nodes(rt), province, caller_temps={
+            "famine_requested_food_stage": Decimal(0), "famine_food_score_raw": Decimal(0)})
+        self.assertEqual(province.values["famine_food_stage"], Decimal(1))
+        self.assertEqual(province.values["famine_food_recovery_since_date"], now)
+
+    def test_national_food_crisis_counts_visible_owned_states_and_clears(self):
+        rt = self.runtime
+        c = rt.constants
+        usa, ger = country("USA"), country("GER")
+        famine, acute = state(1, usa), state(2, usa)
+        famine.flags.add("famine_food_stage_famine")
+        acute.flags.add("famine_food_stage_acute_shortage")
+        concealed = state(3, usa)
+        concealed.flags.update({"famine_food_stage_catastrophic", "famine_crisis_concealed"})
+        foreign = state(4, ger)
+        foreign.flags.add("famine_food_stage_catastrophic")
+        rt.global_arrays["famine_active_states"] = [famine, acute, concealed, foreign]
+        rt.run_effect("famine_refresh_national_food_crisis", usa)
+        self.assertEqual(usa.values["famine_national_stability_penalty"],
+                         c["constant:famine_national_crisis.famine_stability"] + c["constant:famine_national_crisis.acute_stability"])
+        self.assertEqual(usa.values["famine_national_war_support_penalty"], c["constant:famine_national_crisis.famine_war_support"])
+        self.assertIn("famine_national_food_crisis", usa.modifiers)
+        self.assertNotIn("famine_national_food_crisis", ger.modifiers)
+
+        # Exposure ends concealment, and enough catastrophic states reach the caps.
+        concealed.flags.discard("famine_crisis_concealed")
+        many = [state(10 + i, usa) for i in range(6)]
+        for province in many:
+            province.flags.add("famine_food_stage_catastrophic")
+        rt.global_arrays["famine_active_states"] = [famine, acute, concealed] + many
+        rt.run_effect("famine_refresh_national_food_crisis", usa)
+        self.assertEqual(usa.values["famine_national_stability_penalty"], c["constant:famine_national_crisis.stability_cap"])
+        self.assertEqual(usa.values["famine_national_war_support_penalty"], c["constant:famine_national_crisis.war_support_cap"])
+
+        rt.global_arrays["famine_active_states"] = []
+        rt.run_effect("famine_refresh_national_food_crisis", usa)
+        self.assertNotIn("famine_national_food_crisis", usa.modifiers)
+        self.assertNotIn("famine_national_stability_penalty", usa.values)
+
+    def test_hunger_lines_seizes_stores_and_commits_the_starting_stage(self):
+        rt = self.runtime
+        c = rt.constants
+        for intensity, expected in (("low", "acute_shortage"), ("medium", "famine"), ("maximum", "famine")):
+            with self.subTest(intensity=intensity):
+                rt.EXTERNAL_EFFECTS = set(rt.EXTERNAL_EFFECTS) | {"famine_register_active_state"}
+                owner = country("USA")
+                node = state(300, owner, population_k=1000)
+                node.values["infrastructure_level"] = Decimal(5)
+                node.flags.add("cannibalism_active_node")
+                rt.global_arrays["cannibalism_node_states"] = [node]
+                rt.globals["cannibalism_scenario_last_intensity"] = c["constant:triggerable_scenario_intensity." + intensity]
+                frame = rt.run_effect("famine_apply_hunger_lines_scenario_pressure", node,
+                                      caller_temps={"famine_hunger_lines_state_count": Decimal(0)})
+                self.assertEqual(frame["famine_hunger_lines_state_count"], Decimal(1))
+                self.assertEqual(node.values["famine_food_reserve_amount"], Decimal(0))
+                self.assertGreater(node.values["famine_food_reserve_total_depleted"], Decimal(0))
+                self.assertIn("famine_food_reserve_initialized", node.flags)
+                self.assertEqual(node.values["famine_food_stage"], c["constant:famine_food_stage." + expected])
+                self.assertIn("famine_food_stage_" + expected, node.flags)
+                self.assertGreater(node.values["famine_food_pressure"], Decimal(0))
+                # A relaunch inside the context window adds nothing.
+                pressure = node.values["famine_food_pressure"]
+                frame = rt.run_effect("famine_apply_hunger_lines_scenario_pressure", node,
+                                      caller_temps={"famine_hunger_lines_state_count": Decimal(0)})
+                self.assertEqual(frame["famine_hunger_lines_state_count"], Decimal(0))
+                self.assertEqual(node.values["famine_food_pressure"], pressure)
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)

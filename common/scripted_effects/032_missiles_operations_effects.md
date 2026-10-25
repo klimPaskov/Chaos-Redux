@@ -38,7 +38,7 @@ Example: enter the recorded claimant COUNTRY, call `missiles_preflight_country_s
 The caller must retain the same effect chain and exact source target through the split.
 No new helper or call-site migration is required.
 
-Validation: `.tools/test_event021_claimant_missile_scope.py` executes the current preflight, abort/refund, payload release, operation cleanup, split allocation and parent settlement source with distinct country/state/global storage and conservative helper-temporary lifetimes.
+Validation: `.tools/tests/test_event021_claimant_missile_scope.py` executes the current preflight, abort/refund, payload release, operation cleanup, split allocation and parent settlement source with distinct country/state/global storage and conservative helper-temporary lifetimes.
 Its native stockpile and mission operations are explicit model boundaries and its arithmetic residual is source-model evidence only.
 The region lookup `missiles_assign_site_strategic_region` binds the actual controller explicitly, as described in [missile region lookup](032_missiles_effects.md).
 The Event021 adapter has no demonstrated missile-specific rollback after accepted preflight without a child callback, which stays a parent follow-up item with exact evidence in the [Event021 claimant missile scope repair handoff](../../docs/plans/021_random_civil_war_plans/subagent_handoffs/event021_claimant_missile_scope_repair_2026-10-07.md).
@@ -134,7 +134,7 @@ Event 013's state-scope building-damage helper `natural_disaster_apply_family_bu
 `missiles_process_natural_disaster_receipts` (COUNTRY, ROOT is the controller) applies `missiles_apply_natural_disaster_site_damage` to every queued state once and empties the queue, so a second receiver for the same impacts does nothing.
 `missiles_apply_natural_disaster_site_damage` (STATE, ROOT is the controller) revalidates control, settles the percentage reserve loss through `missiles_remove_reserve`, settles a reserving order through `missiles_settle_lost_site_allocation` (refund mode, or loss mode when the hit wrecks the site), applies site damage and capacity loss, settles a wreck once through `missiles_scuttle_site_from_current_controller`, and then applies the controller's readiness, command, guidance-backlog, and false-warning losses, the repair request, a site-damage incident when none is open (its phase offers suspension and repair), network, custody, phase, and achievement updates; the pending severity is always cleared.
 Severity tiers use `natural_disaster_severity` (local 1 to abnormal 5) and the loss table `missiles_natural_disaster`. A disaster never unlocks an evolution, and Event 013 keeps its own history, deaths, and reports.
-`.tools/test_event32_state_scope.py` (`NaturalDisasterBridge`) pins the Event 013 call, the queue-only adapter, the receiver, and the controller-ROOT routing.
+`.tools/tests/test_event32_state_scope.py` (`NaturalDisasterBridge`) pins the Event 013 call, the queue-only adapter, the receiver, and the controller-ROOT routing.
 
 ## Site and command project missions
 
@@ -154,7 +154,7 @@ The mission `available` blocks combine the matching `*_is_due` trigger with the 
 Survey success additionally requires a fully funded current payer/site receipt, and cancellation returns its observed unused payment according to purchased progress.
 Cancel triggers depend on the project and its objective, never on the current program phase, so a war, peace, incident, or warning does not abort unrelated construction or repair.
 A suspended site carries `missiles_site_suspended`, which `missiles_site_can_launch` rejects; routine `missiles_restore_readiness` maintenance leaves a site under an active repair mission to that mission.
-`.tools/test_event32_project_missions.py` pins the producer, due-date, timeout, completion, and cancellation contract for all six missions.
+`.tools/tests/test_event32_project_missions.py` pins the producer, due-date, timeout, completion, and cancellation contract for all six missions.
 
 ## Captured-site resolution
 
@@ -168,7 +168,7 @@ Guard and study set `missiles_site_capture_resolved` and keep the site isolated 
 Every route ends in `missiles_finish_captured_site_resolution`, which refocuses the next awaiting state, clears `missiles_captured_site_unresolved` when none remains, and closes the current incident only when it is the site-capture incident.
 Lifecycle code that runs under another country's ROOT (the former controller in the capture handler, and the controller in `missiles_scuttle_site_from_current_controller`) fires the immediate hidden receiver `chaosx.nr32.7`, whose `missiles_refresh_program_from_receiver` recalculates that country's network, custody, captured-site marker, and requested rogue closure with ROOT bound correctly.
 `missiles_cleanup_operation` matches site allocations against `PREV.missiles_active_operation_id`, so it clears the right markers when another country's ROOT calls it.
-`.tools/test_event32_captured_sites.py` pins the decision, resolution, reserve, budget, and receiver contract.
+`.tools/tests/test_event32_captured_sites.py` pins the decision, resolution, reserve, budget, and receiver contract.
 
 ## Special-payload reservation
 
@@ -183,7 +183,7 @@ Repair, captured-site integration and country-removal hooks settle the same exac
 Reserved chemical stock remains visible to shared stockpile inspections and proportional destruction, and unresolved native measurements cannot earn compliance rewards.
 The API and its evidence limits are documented in [Chemical payload reservations](../../docs/systems/cbrn_warfare/chemical_payload_reservations.md).
 Nuclear and biological escrow still use their separate owners; their physical loss and succession audit remains open and is not established by the chemical receipt tests.
-`.tools/test_event32_special_payload.py` pins the order decisions, event wiring, reservation, release, and consumption contract.
+`.tools/tests/test_event32_special_payload.py` pins the order decisions, event wiring, reservation, release, and consumption contract.
 
 ## Paid site work and loyal recovery
 
@@ -229,7 +229,7 @@ The former owner's repair and recovery missions cancel through `NOT = { missiles
 `missiles_site_suspension_is_offered` also covers the establishment phase (outside a capture shell), because a program whose only sites are isolated or damaged has no working site and falls back to establishment; without it a single-site program could never repair its isolated site.
 `missiles_isolate_retaliation_site` lets a human cut off any working site, while its AI weight is zero for a site that is not compromised.
 `missiles_cleanup_removed_country` releases the removed country's open rogue crisis from `global.missiles_rogue_active_incidents` and clears its rogue site pointer and id.
-`.tools/test_event32_captured_sites.py` (`RogueSiteResolution`) pins these contracts.
+`.tools/tests/test_event32_captured_sites.py` (`RogueSiteResolution`) pins these contracts.
 
 ## Retaliation warning responses
 
@@ -238,4 +238,4 @@ It requires an actionable warning not yet answered, the chain caps, an open reta
 `missiles_accept_retaliation_response` saves the current target choice with `missiles_save_target_choice_for_retaliation` (including `missiles_pending_target_state` and `missiles_requested_target_profile`) before writing the attacker, and clears that pending state and requested profile when the attacker is not the saved enemy, as `missiles_select_target` does; when `missiles_operation_preflight_result` is not accepted it clears the pending parent, root, root-country, and generation values and the retaliation operation type, strike profile, payload, and target-state id, then `missiles_restore_target_choice_after_retaliation` restores the saved enemy, objective, target state, and objective lock or calls `missiles_clear_target` when there was none; the warning is not resolved and no outcome flag is set.
 `missiles_clear_warning_outcome_flags` clears the per-warning outcome flags (`missiles_warning_delayed`, `missiles_warning_false_or_conflicting`, `missiles_warning_expired_without_launch`, `missiles_retaliation_response_accepted`) when a warning opens, when it resolves, and in removed-country cleanup; each route sets its outcome flag after `missiles_resolve_warning_queue_receipt`, so the record describes the last warning only.
 `missiles_false_warning_history` is the long-term record and is never cleared by a new warning.
-`.tools/test_event32_retaliation_warning.py` pins the shared gate, the clearing points, and the outcome ordering.
+`.tools/tests/test_event32_retaliation_warning.py` pins the shared gate, the clearing points, and the outcome ordering.

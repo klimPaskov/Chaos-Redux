@@ -84,7 +84,7 @@ The unchanged native baseline is `E016_MENGELE_COMPUTATION_BASELINE_2026_09_02.s
 No engine acceptance claim is made by this owner-local source implementation.
 
 The 2026-09-08 recovery correction separates four-cost admission from three-payment debit and makes malformed expiry retire recovery remnants without an inferred refund or success.
-The current `.tools/audit_mengele_conventional_incident_contract.mjs` source/API regression passes 165 scenarios across Computation and five conventional incident families, including exact civilian-factory affordability under both modeled reservation orders and missing-payment-component expiry for all six families.
+The retired `.tools/audit_mengele_conventional_incident_contract.mjs` source/API regression last passed 165 scenarios across Computation and five conventional incident families, including exact civilian-factory affordability under both modeled reservation orders and missing-payment-component expiry for all six families.
 Provider validity is stubbed, native timer and factory ordering are modeled rather than executed, and engine resource caps are not modeled.
 These checks do not replace the outstanding MCP lifecycle comparison or establish in-game acceptance.
 

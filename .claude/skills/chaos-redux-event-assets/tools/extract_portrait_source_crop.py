@@ -20,7 +20,7 @@ import platform
 import sys
 import tempfile
 from pathlib import Path
-from typing import Iterable
+from typing import Any, Callable, Iterable, cast
 
 from PIL import Image
 from PIL import __version__ as PILLOW_VERSION
@@ -93,7 +93,7 @@ def validate_crop_box(size: tuple[int, int], crop: Iterable[int]) -> tuple[int, 
 	return left, top, right, bottom
 
 
-def _load_opencv():
+def _load_opencv() -> Any:
 	"""Load OpenCV only for automatic mode so manual recovery stays dependency-light."""
 	try:
 		import cv2
@@ -140,7 +140,7 @@ def _deduplicate_face_candidates(
 		left, top, width, height = candidate
 		if width <= 0 or height <= 0:
 			continue
-		if any(_iou(candidate, existing) >= 0.35 for existing in kept):
+		if any(_iou(cast("tuple[int, int, int, int]", candidate), existing) >= 0.35 for existing in kept):
 			continue
 		kept.append((left, top, width, height))
 	return sorted(kept, key=lambda candidate: (candidate[1], candidate[0], -candidate[2] * candidate[3]))
@@ -305,7 +305,7 @@ def decode_image(path: Path) -> tuple[Image.Image, str, tuple[int, int]]:
 
 
 def rgba_bytes(image: Image.Image) -> bytes:
-	return image.convert(COMPARISON_MODE).tobytes()
+	return cast(bytes, image.convert(COMPARISON_MODE).tobytes())
 
 
 def rgba_sha256(image: Image.Image) -> str:
@@ -395,7 +395,7 @@ def validate_package_paths(
 	return master, output, metadata, processed, source_copy, provenance
 
 
-def prepare_file(target: Path, payload: bytes) -> dict[str, object]:
+def prepare_file(target: Path, payload: bytes) -> dict[str, Any]:
 	"""Write a hidden prepared file and return its expected digest."""
 	target.parent.mkdir(parents=True, exist_ok=True)
 	file_descriptor, temporary_name = tempfile.mkstemp(
@@ -420,14 +420,14 @@ def prepare_file(target: Path, payload: bytes) -> dict[str, object]:
 		raise
 
 
-def discard_prepared(prepared: list[dict[str, object]]) -> None:
+def discard_prepared(prepared: list[dict[str, Any]]) -> None:
 	for record in prepared:
 		temporary = Path(record["temporary"])
 		if temporary.exists():
 			temporary.unlink()
 
 
-def commit_prepared(prepared: list[dict[str, object]], force: bool) -> None:
+def commit_prepared(prepared: list[dict[str, Any]], force: bool) -> None:
 	"""Replace output and evidence as one recoverable transaction."""
 	backups: dict[Path, Path] = {}
 	committed: list[Path] = []
@@ -553,9 +553,9 @@ def crop_source(
 	source_crop = decoded_master.crop(crop_box)
 	payload = encode_lossless_png(source_crop)
 
-	prepared_output: dict[str, object] | None = None
+	prepared_output: dict[str, Any] | None = None
 	prepared_metadata: dict[str, object] | None = None
-	prepared: list[dict[str, object]] = []
+	prepared: list[dict[str, Any]] = []
 	try:
 		prepared_output = prepare_file(output, payload)
 		with Image.open(Path(prepared_output["temporary"])) as reopened:
@@ -751,7 +751,7 @@ def process_portrait_source(
 	source_copy_path: Path | None = None,
 	provenance_path: Path | None = None,
 	force: bool = False,
-	detector: object | None = None,
+	detector: Callable[[Image.Image], list[tuple[int, int, int, int]]] | None = None,
 	model_path: Path | None = None,
 	crop_override: Iterable[int] | None = None,
 ) -> dict[str, object]:
@@ -808,10 +808,10 @@ def process_portrait_source(
 	crop_payload = encode_lossless_png(source_crop)
 	processed_payload = encode_processed_portrait(source_crop)
 
-	prepared: list[dict[str, object]] = []
-	prepared_source: dict[str, object] | None = None
-	prepared_crop: dict[str, object] | None = None
-	prepared_processed: dict[str, object] | None = None
+	prepared: list[dict[str, Any]] = []
+	prepared_source: dict[str, Any] | None = None
+	prepared_crop: dict[str, Any] | None = None
+	prepared_processed: dict[str, Any] | None = None
 	prepared_metadata: dict[str, object] | None = None
 	prepared_provenance: dict[str, object] | None = None
 	try:

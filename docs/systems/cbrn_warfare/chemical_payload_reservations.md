@@ -92,7 +92,7 @@ Unreconciled native observations withhold a completed compliance acknowledgement
 - Receipt owner: `common/scripted_effects/cbrn_payload_reservation_effects.txt` and `common/scripted_triggers/cbrn_payload_reservation_triggers.txt`.
 - Native primitives: `common/scripted_effects/cbrn_payload_reservation_native_effects.txt`.
 - Event adapter: `common/scripted_effects/032_missiles_payload_receipt_effects.txt` and `common/scripted_triggers/032_missiles_payload_receipt_triggers.txt`.
-- Source-driven scenarios: `.tools/test_cbrn_payload_reservations.py`.
+- Source-driven scenarios: `.tools/tests/test_cbrn_payload_reservations.py`.
 
 This extends existing chemical-delivery and missile-operation consumers without a new GUI, equipment model or CXT content grant; the existing chemical payload and Event 032 CXT packages supply their owned content.
 The preparation cost display uses shared chemical/biological payload texticons registered by `interface/cbrn_payload_texticons.gfx`, plus the exact vanilla `GFX_unit_nuclear_missile_icon_small_texticon` for nuclear stock.

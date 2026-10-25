@@ -10,7 +10,7 @@ A working formation popup with placeholder movement is not a completed rework.
 Agents never launch Hearts of Iron IV.
 Each gate below is proved in two layers:
 
-- Agent evidence: source review, offline source replays and fixtures, `.tools/validation/validate_033_acid_rain.py`, HOI4 MCP inspections and renders, probability comparisons, and asset file checks.
+- Agent evidence: source review, offline source replays and fixtures, `.tools/tests/validate_033_acid_rain.py`, HOI4 MCP inspections and renders, probability comparisons, and asset file checks.
 - User live checks: anything that needs the running game, including observed population removal, long campaigns, save and reload, real old saves, multiplayer, performance, hover and tooltip display, animation playback and listening to audio.
 
 An agent completion claim needs every gate's agent evidence and no known defect; it lists the user live checks as pending verification and never reports them as passed.

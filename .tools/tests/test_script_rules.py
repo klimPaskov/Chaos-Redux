@@ -10,7 +10,7 @@ from pathlib import Path
 TOOLS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TOOLS))
 
-import audit_script_rules as rules  # noqa: E402
+import audit_script_rules as rules
 
 FIXTURES = TOOLS / "tests" / "fixtures" / "script_rules"
 

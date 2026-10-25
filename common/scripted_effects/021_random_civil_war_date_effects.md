@@ -17,4 +17,4 @@ Already encoded stored dates, including the recurrence base date and treaty hold
 
 The offline Data structures Game variables section at lines 1467-1470 describes one game hour as 0.00001, revision `62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4`.
 Installed dynamic variables documentation describes `date` at line 977 and `num_days` at lines 996-998, revision `538525747f0c285062c9ce8db14b4e07c3cf6bac1013115fa4f57291cb4ebdda`.
-`.tools/test_event021_date_units.py` runs the wrapper through the shared helper with the shared constants and checks exact whole days, upward rounding, and every Event 021 deadline addition.
+`.tools/tests/test_event021_date_units.py` runs the wrapper through the shared helper with the shared constants and checks exact whole days, upward rounding, and every Event 021 deadline addition.

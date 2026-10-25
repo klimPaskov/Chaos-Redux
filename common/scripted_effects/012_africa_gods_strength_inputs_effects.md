@@ -165,7 +165,7 @@ The parent owns final Event 012 roster teardown, authority gates and callback in
 
 ## Evidence and pending work
 
-The validation file `.tools/validation/test_012_gods_strength_inputs.js` executes parsed production bodies and pure trigger dependencies.
+The validation file `.tools/tests/test_012_gods_strength_inputs.js` executes parsed production bodies and pure trigger dependencies.
 It retains the six parent territorial cases and adds registration, dormant/exile/nonhuman/special/host rows, native-getter fixtures, successor proofs, incomplete/truncated processing, cache corrections, zero armies, stale identity/date, member-core occupation and actual pinned baseline arithmetic.
 The five-decimal truncation model does not prove native arithmetic range, loaded map cardinality, reserved dynamic-object identity reuse or iterator limits.
 `MAX_EFFECT_ITERATION = 1000` is not assumed away.

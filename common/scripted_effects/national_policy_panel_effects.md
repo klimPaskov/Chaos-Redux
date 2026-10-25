@@ -78,7 +78,7 @@ Terminal/release retirement removes batch and identity state synchronously.
 The only event target is the short-lived state-owner pointer, which expires with the effect chain; no global target or registry is introduced.
 The previous observer fields are cleared for migration only and never schedule work.
 
-`.tools/test_national_policy_panel_updates.py` executes the production country/state publishers, nesting guard, projections, selection and retirement at an unchanged date.
+`.tools/tests/test_national_policy_panel_updates.py` executes the production country/state publishers, nesting guard, projections, selection and retirement at an unchanged date.
 Scenarios cover both owner and controller, capture with explicit former-controller notification, nested transactions, idle closed panels, inert obsolete delivery, copied actor identity, and camp projection without work advancement.
 The documented native no-delay event boundary is modeled as an immediate receiving-country context with fresh temporary storage and no date change.
 Inherited quote, date, provenance and capacity scratch remains intact across publication; native meter arithmetic also reads changed progress at the same date without a publication call.

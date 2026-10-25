@@ -89,12 +89,12 @@ Do not expose exact foreign fragment holdings without the Board's intelligence/p
 
 ## Evidence and limits
 
-`.tools/test_event025_custody.py` executes the selected source helpers for all six slots, rejected transfers, consent consumption, retained recipient fragments, destruction, abandonment, projections, and historical separation.
+`.tools/tests/test_event025_custody.py` executes the selected source helpers for all six slots, rejected transfers, consent consumption, retained recipient fragments, destruction, abandonment, projections, and historical separation.
 It is a limited source interpreter, not engine scheduling, rendering, multiplayer, or save/reload evidence.
 Destruction dispatch uses the physical ledger with support-equipment and stability costs, receipt-gated consequences, and a retired-material incident guard.
 Transfer is dispatched by `chaosx_nr25_complete_custody_transfer` in the Event 025 holder effects after the recipient accepts the offer event; it pays, moves Dependence, and records diplomacy only on a positive transaction receipt.
 The reward bridge is covered by source review only; physical-custody tests do not validate it.
-`.tools/test_event025_seizure_restitution.py` executes the production demand, seizure, matched acceptance/refusal and six-slot return helpers with conservative helper-local temporary cleanup.
+`.tools/tests/test_event025_seizure_restitution.py` executes the production demand, seizure, matched acceptance/refusal and six-slot return helpers with conservative helper-local temporary cleanup.
 Its twelve cases cover all six slot roles, multiple claims, partial returns, distinct victims, valid refusal, repeated answers, invalid or expired demands, third-party ownership, exact legacy slot migration and crew conservation.
 Native flag duration, event delivery, opinions and threat effects remain observations in the harness, not engine execution.
 

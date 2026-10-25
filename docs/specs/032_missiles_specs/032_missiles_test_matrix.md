@@ -108,7 +108,7 @@ The same invariant applies to SCN-015 site-plan preflight and package applicatio
 Put a non-host recipient before the current Event 16 host and verify that the host still reaches the existing reaction helper.
 Repeat a receiver delivery within the same receipt and verify that programme setup, adoption evaluation, rogue evaluation, and pressure accounting do not repeat.
 
-The offline scope-path regression is `python -B .tools/test_event32_recipient_scope.py`.
+The offline scope-path regression is `python -B .tools/tests/test_event32_recipient_scope.py`.
 It traces the documented iterator and immediate receiver ROOT boundaries against the real source, but does not claim live-game outcome or probability proof.
 
 ### `SITE-LIVE-01`: Interior site beats capital
@@ -648,7 +648,7 @@ The final report should state the test duration, countries observed, evolutions 
 ## Reserve custody regression cases
 
 These cases refine the existing physical-capacity, capture, cancellation and cleanup requirements; they do not authorize a smaller gameplay contract.
-The production-source ledger model is `.tools/test_event32_reserve_custody.py`; native callback and mission behavior remains a separate live evidence boundary.
+The production-source ledger model is `.tools/tests/test_event32_reserve_custody.py`; native callback and mission behavior remains a separate live evidence boundary.
 
 | ID | Setup | Required result |
 | --- | --- | --- |

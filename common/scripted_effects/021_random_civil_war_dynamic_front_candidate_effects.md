@@ -109,7 +109,7 @@ set_temp_variable = { event021_parent_dynamic_optional_front_count = constant:ra
 event021_parent_collect_dynamic_optional_front_candidates = yes
 ```
 
-The source execution checks live in `.tools/test_event021_candidate_output_lifetime.py`.
+The source execution checks live in `.tools/tests/test_event021_candidate_output_lifetime.py`.
 They execute the actual collector, grower, appenders and route/goal mapper bodies with separate temporary scalar/array storage and conservative cleanup at every helper return.
 They cover four ordinary metadata routes, nested opening forwarding, preservation of prior rows while spending the active state budget, Event 006 metadata forwarding and all candidate-file scorer return boundaries, and an explicitly unowned outer caller.
 Adjacency, eligibility, scores, tag capacity and package admission/identity callbacks are declared fixtures rather than engine proof.

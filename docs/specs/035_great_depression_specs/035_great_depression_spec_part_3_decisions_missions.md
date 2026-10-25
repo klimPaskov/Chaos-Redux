@@ -41,7 +41,7 @@ Phase rules that produce the budget:
 - Social Collapse actions show only while a social incident is open: the early ladder offers Negotiate, Employment Compact and Guarantee Property and Credit, the late ladder offers Security Forces, Councils and Emergency Government.
 - The Second Great Depression actions follow the world stage: Devaluation in Shock and Contraction, Debt Conference in Contraction and Coordination, Coordinated Reconstruction in Coordination and Recovery, Recovery Conference in Recovery, and Withdrawal only once the country has contributed.
 
-Measured peaks from source (`.tools/test_event035_visible_actions.py`, national / partner / center, over every doctrine and center stage, assuming one valid partner):
+Measured peaks from source (`.tools/tests/test_event035_visible_actions.py`, national / partner / center, over every doctrine and center stage, assuming one valid partner):
 
 | Phase | Baseline | Financial Contagion | Social Collapse | The Second Great Depression |
 | --- | --- | --- | --- | --- |

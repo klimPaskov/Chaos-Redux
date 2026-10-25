@@ -12,7 +12,7 @@ from pathlib import Path
 TOOLS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TOOLS))
 
-import validate_scripts_mcp as validator  # noqa: E402
+import validate_scripts_mcp as validator
 
 RESPONSES = json.loads((TOOLS / "tests" / "fixtures" / "script_validate" / "responses.json").read_text(encoding="utf-8"))
 

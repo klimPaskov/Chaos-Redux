@@ -16,7 +16,7 @@ from pathlib import Path
 TOOLS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TOOLS))
 
-import export_event_catalog_csv as exporter  # noqa: E402
+import export_event_catalog_csv as exporter
 
 SPREADSHEETS = TOOLS.parent / "docs" / "spreadsheets"
 

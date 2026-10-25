@@ -19,7 +19,7 @@ import subprocess
 import threading
 import time
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Sequence, Tuple
+from typing import IO, Any, Dict, List, Optional, Sequence, Tuple, cast
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
@@ -42,7 +42,7 @@ class McpSession:
 	def __init__(self, command: Sequence[str], cwd: Optional[Path] = None, env: Optional[Dict[str, str]] = None,
 			timeout_seconds: float = 300) -> None:
 		self.command, self.cwd, self.env, self.timeout = list(command), cwd, env or {}, timeout_seconds
-		self.process: Optional[subprocess.Popen] = None
+		self.process: "Optional[subprocess.Popen[str]]" = None
 		self.responses: "queue.Queue[Optional[Dict[str, Any]]]" = queue.Queue()
 		self.stderr: List[str] = []
 		self.next_id = 1
@@ -55,7 +55,7 @@ class McpSession:
 		except OSError as error:
 			raise McpError(f"cannot start {self.command[0]}: {error}") from error
 		threading.Thread(target=self._read_stdout, daemon=True).start()
-		threading.Thread(target=lambda: self.stderr.extend(self.process.stderr), daemon=True).start()
+		threading.Thread(target=lambda: self.stderr.extend(self._pipe("stderr")), daemon=True).start()
 		self._request("initialize", {"protocolVersion": "2024-11-05", "capabilities": {},
 			"clientInfo": {"name": "chaos-redux-checks", "version": "1.0.0"}})
 		self._send({"jsonrpc": "2.0", "method": "notifications/initialized"})
@@ -65,7 +65,7 @@ class McpSession:
 		if self.process is None:
 			return
 		try:
-			self.process.stdin.close()
+			self._pipe("stdin").close()
 			self.process.wait(timeout=10)
 		except (OSError, subprocess.TimeoutExpired):
 			if os.name == "nt":
@@ -78,10 +78,17 @@ class McpSession:
 		if result.get("isError"):
 			text = " ".join(part.get("text", "") for part in result.get("content", []))
 			raise McpError(f"{tool} failed: {text.strip()}")
-		return result.get("structuredContent", result)
+		return cast(Dict[str, Any], result.get("structuredContent", result))
+
+	def _pipe(self, name: str) -> IO[str]:
+		"""Return one of the running server's text pipes."""
+		assert self.process is not None, "the session is not running"
+		pipe = getattr(self.process, name)
+		assert pipe is not None
+		return cast(IO[str], pipe)
 
 	def _read_stdout(self) -> None:
-		for line in self.process.stdout:
+		for line in self._pipe("stdout"):
 			line = line.strip()
 			if line.startswith("{"):
 				try:
@@ -91,8 +98,9 @@ class McpSession:
 		self.responses.put(None)
 
 	def _send(self, message: Dict[str, Any]) -> None:
-		self.process.stdin.write(json.dumps(message, separators=(",", ":")) + "\n")
-		self.process.stdin.flush()
+		stdin = self._pipe("stdin")
+		stdin.write(json.dumps(message, separators=(",", ":")) + "\n")
+		stdin.flush()
 
 	def _request(self, method: str, params: Dict[str, Any]) -> Dict[str, Any]:
 		identifier, self.next_id = self.next_id, self.next_id + 1
@@ -108,4 +116,4 @@ class McpSession:
 			if message.get("id") == identifier:
 				if "error" in message:
 					raise McpError(json.dumps(message["error"], sort_keys=True))
-				return message.get("result", {})
+				return cast(Dict[str, Any], message.get("result", {}))

@@ -17,7 +17,7 @@ import sys
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, Sequence
+from typing import Any, Iterable, Sequence
 
 from PIL import Image, ImageFile
 
@@ -465,7 +465,7 @@ def _review_paths(output_dir: Path, achievement_id: str) -> tuple[Path, Path, Pa
     )
 
 
-def _load_dds_writer():
+def _load_dds_writer() -> Any:
     converter_path = Path(__file__).with_name("convert_to_dds.py")
     spec = importlib.util.spec_from_file_location("chaos_redux_convert_to_dds", converter_path)
     if spec is None or spec.loader is None:

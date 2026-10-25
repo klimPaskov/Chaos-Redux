@@ -126,10 +126,10 @@ Three famine values and four migration values follow the parent's accepted budge
 Food stages and real action clocks remain their existing owners' constants and receipts.
 No gameplay balance or AI weight is changed.
 
-The maintained production-source fixture `.tools/test_humanitarian_panels.py` checks quiet opening without gameplay writes, mutual exclusion, view/group retention, bounded filtering and ordering, mission retention, stale/spoof target rejection, copied projections, real-versus-stale capacity proof, exact progress and eligibility cleanup.
+The maintained production-source fixture `.tools/tests/test_humanitarian_panels.py` checks quiet opening without gameplay writes, mutual exclusion, view/group retention, bounded filtering and ordering, mission retention, stale/spoof target rejection, copied projections, real-versus-stale capacity proof, exact progress and eligibility cleanup.
 It also imposes a hypothetical 1,000-row foreach limit on a 1,201-row registry and confirms late owned/controlled states remain listed while unrelated zero-filled states stay excluded.
 The numeric while/for loop ceiling is documented, but no foreach ceiling is asserted from that stress assumption.
-Usage is `python .tools/test_humanitarian_panels.py`, with JSON results written only under `.tmp/national_policy_panels/`.
+Usage is `python .tools/tests/test_humanitarian_panels.py`, with JSON results written only under `.tmp/national_policy_panels/`.
 It executes the shared date conversion body and models conservative helper-local temporary lifetimes.
 The owner's action-status presentation call is recorded as an approved external seam, and its internals are covered by the action owner's own checks.
 No render or live game execution is claimed here.

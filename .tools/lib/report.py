@@ -24,7 +24,7 @@ import argparse
 import json
 from collections import Counter
 from pathlib import Path
-from typing import Dict, Iterable, List, NamedTuple, Optional, Sequence
+from typing import Dict, Iterable, List, NamedTuple, Optional, Sequence, Tuple
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 LEVELS = ("error", "warning", "review")
@@ -55,7 +55,7 @@ def relative(path: object) -> str:
 	return text[2:] if text.startswith("./") else text
 
 
-def split_site(site: str) -> tuple:
+def split_site(site: str) -> Tuple[str, int]:
 	"""Split a `path:line` site into (path, line); the line is 0 when absent."""
 	text = str(site)
 	head, separator, tail = text.rpartition(":")

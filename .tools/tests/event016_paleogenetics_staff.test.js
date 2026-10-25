@@ -2,7 +2,7 @@
 // Reuses the shared fixed-point/lifetime interpreter; financial APIs are never stubbed.
 const fs=require('node:fs'), path=require('node:path'), assert=require('node:assert/strict'), crypto=require('node:crypto');
 const root=path.resolve(__dirname,'../..');
-const core=require(path.join(root,'docs/plans/026_black_friday_plans/subagent_handoffs/exact_quote_source_tests.js'));
+const core=require(path.join(__dirname,'lib','universal_cost_source_model.js'));
 const {VM,S,ticks,parse,definitions,constants,helperOutputs,callerOutputs}=core;
 const P='mengele_event016_paleogenetics_staff_', H='brilliant_scientist_mengele_paleogenetics_staff_';
 const paired='brilliant_scientist_mengele_paleogenetics_';

@@ -22,13 +22,14 @@ import argparse
 import json
 import sys
 from pathlib import Path
+from typing import Iterable, Tuple
 
 TOOLS_DIR = Path(__file__).resolve().parent
 MOD_ROOT = TOOLS_DIR.parents[1]
 CONFIG = TOOLS_DIR / "instruction_projection.json"
 
 
-def project(text: str, replacements) -> str:
+def project(text: str, replacements: Iterable[Tuple[str, ...]]) -> str:
     for canonical, replacement in replacements:
         text = text.replace(canonical, replacement)
     return text

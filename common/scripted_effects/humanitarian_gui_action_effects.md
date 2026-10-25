@@ -99,8 +99,8 @@ Existing short-lived transaction targets remain confined to their owner chains.
 
 ## Validation and limits
 
-Production-source contract tests live in `.tools/test_humanitarian_gui_actions.py`.
-The retained `.tools/test_famine_takeover_20261006.py` refund regression follows the same production operation path for connected and disconnected geography.
+Production-source contract tests live in `.tools/tests/test_humanitarian_gui_actions.py`.
+The retained `.tools/tests/test_famine_takeover_20261006.py` refund regression follows the same production operation path for connected and disconnected geography.
 They execute the actual enum mapper, explicit temporary context wrappers, availability and quote gates, native-event bridge bodies, payment, actual native meta replacements and transport receipts, refund, pending row lookup, due/cooldown lifecycle, exact actor/state/generation guards and mission date helpers.
 Native effects and unrelated presentation/initialization consumers are declared fixtures.
 The model treats trigger-side temporary assignments as statements, including inside NOT, and cannot prove the engine's evaluation of those inherited transport predicates.

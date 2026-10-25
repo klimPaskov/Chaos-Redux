@@ -38,7 +38,7 @@ A stored historical controller pointer or the site's legal owner is not substitu
 
 ## Validation and limits
 
-The claimant fixture `.tools/test_event021_claimant_missile_scope.py` executes the probe source, its meta-trigger replacement, the bounded loop and region membership test, with explicit fixture memberships as the native map-query boundary.
+The claimant fixture `.tools/tests/test_event021_claimant_missile_scope.py` executes the probe source, its meta-trigger replacement, the bounded loop and region membership test, with explicit fixture memberships as the native map-query boundary.
 It retains distinct scoped normal storage and conservative helper-return temporary cleanup, tests uncached claimant sites under government ROOT, foreign ownership, foreign-controlled entries, cached bypass and child/donor settlement.
 The probe range, loop, first-match behavior, zero result, and all missile constants remain unchanged.
 This is actual-source accounting evidence and does not establish native strategic-region query behavior or engine conservation.

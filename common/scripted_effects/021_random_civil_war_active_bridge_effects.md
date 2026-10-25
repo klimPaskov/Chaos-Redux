@@ -129,7 +129,7 @@ An absent active owner fails closed instead of falling back to the outer plan.
 These durable row mutations are deliberately not undone by the bridge; routing fixtures cover an outer row with the same ID and the no-owner case.
 Legacy second-secondary activation, cleanup and recursion are guarded by `NOT = { has_global_flag = random_civil_war_dynamic_front_activation_active }` and must remain excluded during an active commit.
 Refreshed source and branch-selection tests establish active-first precedence in `event021_parent_load_planned_secondary_front`, `event021_parent_copy_planned_front_state_span`, `event021_parent_copy_opening_state_receipts` and `event021_parent_validate_secondary_transfer_receipt` with borrowed secondary preplanned/route flags and a ready outer plan present.
-Those four branch checks complement the separate actual-source binding/rejection fixtures in `.tools/test_event021_active_row_routing.py`.
+Those four branch checks complement the separate actual-source binding/rejection fixtures in `.tools/tests/test_event021_active_row_routing.py`.
 
 The current parsed native Event 006 release crosswalk contains 32 carrier branches; the earlier excerpt count of 29 was incomplete.
 Native release transfers every owned carrier core state, including uncontrolled states, and removes source cores, while the current active package receipt freezes one anchor with count one.
@@ -143,7 +143,7 @@ These are separate owner validations, not missing scalar snapshot entries.
 
 ## Evidence and limits
 
-`python -B .tools/test_event021_active_bridge.py` executes the saved/restored source and the current parent cleanup effects against separate global, country, temporary and array stores.
+`python -B .tools/tests/test_event021_active_bridge.py` executes the saved/restored source and the current parent cleanup effects against separate global, country, temporary and array stores.
 The nine-test suite covers 24 ordinary/Event 006 success/rejection fixture combinations, absent/present/zero scalars, mixed flag and target presence, country and state pointers including dormant countries, untouched same-name country variables, durable publication, repeated restore, wrong-country restore, stale private-copy replacement and conservative helper-return cleanup.
 It also executes the parent wrappers and checks their ordering, plus the four active-first helper branches with borrowed legacy flags present.
 It also verifies borrowed-marker preservation and actor cleanup only for matching current owner/package receipts through the actual cleanup source.

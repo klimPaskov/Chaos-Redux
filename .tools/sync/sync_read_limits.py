@@ -9,11 +9,13 @@ Measured with the Claude Code Read tool on repository skill prose: about 3.0 byt
 The guidance check lists skill files and instruction files over the byte ceilings.
 """
 import argparse
+import importlib
 import json
 import os
 from pathlib import Path
 import re
 import tempfile
+from typing import Any, Dict, List, Tuple
 
 try:
     import tomllib
@@ -25,11 +27,11 @@ ROOT = Path(__file__).resolve().parents[2]
 CONFIG = Path(__file__).with_name('read_limits.json')
 
 
-def read(path):
+def read(path: Path) -> str:
     return path.read_text(encoding='utf-8-sig') if path.exists() else ''
 
 
-def write(path, text, check):
+def write(path: Path, text: str, check: bool) -> bool:
     old = path.read_bytes() if path.exists() else b''
     newline = '\r\n' if old.count(b'\r\n') > old.count(b'\n') / 2 else '\n'
     data = text.replace('\r\n', '\n').replace('\n', newline).encode('utf-8')
@@ -49,7 +51,7 @@ def write(path, text, check):
     return True
 
 
-def codex(path, tokens, check):
+def codex(path: Path, tokens: int, check: bool) -> bool:
     text = read(path)
     before = tomllib.loads(text)
     # Only top-level assignment; leave agent/provider table fields alone.
@@ -67,7 +69,7 @@ def codex(path, tokens, check):
     return write(path, updated, check)
 
 
-def json_settings(path, group, values, check):
+def json_settings(path: Path, group: str, values: Dict[str, Any], check: bool) -> bool:
     text = read(path)
     data = json.loads(text) if text.strip() else {}
     current = data.setdefault(group, {})
@@ -77,8 +79,8 @@ def json_settings(path, group, values, check):
     return write(path, json.dumps(data, ensure_ascii=False, indent=2) + '\n', check)
 
 
-def dsh(path, limits, byte_limit, check):
-    import yaml  # Required only when updating an explicitly named DSH profile.
+def dsh(path: Path, limits: Dict[str, int], byte_limit: int, check: bool) -> bool:
+    yaml = importlib.import_module('yaml')  # Required only when updating an explicitly named DSH profile.
     if not path.is_file():
         raise FileNotFoundError('DSH profile patch must already exist: ' + str(path))
     text = read(path)
@@ -107,11 +109,11 @@ def dsh(path, limits, byte_limit, check):
     return write(path, updated, check)
 
 
-def guidance_over_budget(limits):
+def guidance_over_budget(limits: Dict[str, int]) -> List[Tuple[Path, int, int]]:
     """Return (path, bytes, ceiling) for guidance files over their byte ceilings."""
     ceiling = limits['guidance_file_tokens'] * limits['estimated_bytes_per_token']
     root_ceiling = limits['root_skill_max_bytes']
-    found = []
+    found: List[Tuple[Path, int, int]] = []
     for name in ('CLAUDE.md', 'AGENTS.md'):
         path = ROOT / name
         if path.is_file() and path.stat().st_size > ceiling:
@@ -129,7 +131,7 @@ def guidance_over_budget(limits):
     return found
 
 
-def main():
+def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check', action='store_true', help='Report drift without writing; exit 1 for drift')
     parser.add_argument('--user-defaults', action='store_true', help='Also apply supported defaults to this user')

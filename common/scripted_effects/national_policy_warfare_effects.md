@@ -89,7 +89,7 @@ Requirement localisation lives in `localisation/english/national_policy_warfare_
 
 ## Validation limits and future work
 
-The bounded source tests under `.tools/test_national_policy_warfare.py` execute the production permission and evidence helpers against mixed-family, exact-enemy, expiry, duplicate, civil-war, same-day tie, controller attribution, callback exclusion and tightening fixtures.
+The bounded source tests under `.tools/tests/test_national_policy_warfare.py` execute the production permission and evidence helpers against mixed-family, exact-enemy, expiry, duplicate, civil-war, same-day tie, controller attribution, callback exclusion and tightening fixtures.
 Native primitives and the Event 023 confirmation acceptance result are declared fixtures, so these checks do not establish native launch timing, native cancellation refunds or observed game behavior.
 MCP script validation reports no findings on the new effect and trigger files but leaves argument semantics and file root scope unresolved.
 The parent owns final weighted-AI review, localisation review, law/UI integration and current system-document reconciliation.

@@ -69,6 +69,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+from typing import Any, Callable, Dict, List, Optional, Tuple, cast
 
 MOD_ROOT = Path(__file__).resolve().parents[2]
 PROFILES_PATH = Path(__file__).with_name("agent_profiles.json")
@@ -102,26 +103,26 @@ AUTHORITY_CLASSES = {
 # Canonical definitions
 # --------------------------------------------------------------------------
 
-def load_profiles():
+def load_profiles() -> Dict[str, Any]:
     with open(PROFILES_PATH, encoding="utf-8") as handle:
-        return json.load(handle)
+        return cast(Dict[str, Any], json.load(handle))
 
 
-def parse_scalar(raw):
+def parse_scalar(raw: str) -> str:
     raw = raw.strip()
     if raw.startswith('"'):
-        return json.loads(raw)
+        return cast(str, json.loads(raw))
     if raw.startswith("'") and raw.endswith("'"):
         return raw[1:-1].replace("''", "'")
     return raw
 
 
-def parse_agent(path):
+def parse_agent(path: Path) -> Dict[str, Any]:
     text = path.read_text(encoding="utf-8").replace("\r\n", "\n")
     match = re.match(r"---\n(.*?)\n---\n(.*)\Z", text, re.S)
     if not match:
         sys.exit("ERROR: {} has no YAML frontmatter".format(path))
-    fields = {}
+    fields: Dict[str, str] = {}
     for line in match.group(1).split("\n"):
         if not line.strip() or line.lstrip().startswith("#"):
             continue
@@ -153,7 +154,7 @@ def parse_agent(path):
     }
 
 
-def load_agents(profiles):
+def load_agents(profiles: Dict[str, Any]) -> List[Dict[str, Any]]:
     if not CLAUDE_AGENTS.is_dir():
         sys.exit("ERROR: canonical agent folder not found: {}".format(CLAUDE_AGENTS))
     agents = [parse_agent(p) for p in sorted(CLAUDE_AGENTS.glob("*.md"))]
@@ -168,40 +169,40 @@ def load_agents(profiles):
     return agents
 
 
-def policy_effort(profiles, snake):
+def policy_effort(profiles: Dict[str, Any], snake: str) -> str:
     policy = profiles["effort_policy"]
     for level in VALID_EFFORTS:
         if snake in policy.get(level, []):
             return level
-    return policy["default"]
+    return cast(str, policy["default"])
 
 
-def policy_tier(profiles, snake):
+def policy_tier(profiles: Dict[str, Any], snake: str) -> str:
     policy = profiles["tier_policy"]
     for tier in ("opus", "sonnet"):
         if snake in policy[tier]:
             return tier
-    return policy["default"]
+    return cast(str, policy["default"])
 
 
 # --------------------------------------------------------------------------
 # Shared helpers
 # --------------------------------------------------------------------------
 
-def yaml_quote(value):
+def yaml_quote(value: str) -> str:
     return '"{}"'.format(value.replace("\\", "\\\\").replace('"', '\\"'))
 
 
-def toml_quote(value):
+def toml_quote(value: str) -> str:
     return '"{}"'.format(value.replace("\\", "\\\\").replace('"', '\\"'))
 
 
-def toml_multiline(value):
+def toml_multiline(value: str) -> str:
     escaped = value.replace("\\", "\\\\").replace('"""', '\\"\\"\\"')
     return '"""\n{}"""'.format(escaped)
 
 
-def write_if_changed(path, content):
+def write_if_changed(path: Path, content: str) -> bool:
     if path.exists() and not path.is_dir() and path.read_text(encoding="utf-8") == content:
         return False
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -210,7 +211,7 @@ def write_if_changed(path, content):
     return True
 
 
-def label(agent):
+def label(agent: Dict[str, Any]) -> str:
     return AUTHORITY_CLASSES[agent["authority"]][0]
 
 
@@ -218,7 +219,7 @@ def label(agent):
 # Renderers
 # --------------------------------------------------------------------------
 
-def render_codex(agent, profiles):
+def render_codex(agent: Dict[str, Any], profiles: Dict[str, Any]) -> str:
     tier = profiles["tiers"][agent["tier"]]["codex"]
     effort = profiles["codex_effort"][agent["effort"]]
     lines = [
@@ -235,7 +236,7 @@ def render_codex(agent, profiles):
     return "\n".join(lines)
 
 
-def render_qoder(agent, profiles):
+def render_qoder(agent: Dict[str, Any], profiles: Dict[str, Any]) -> str:
     tools = AUTHORITY_CLASSES[agent["authority"]][1]
     return "\n".join(
         [
@@ -251,7 +252,7 @@ def render_qoder(agent, profiles):
     )
 
 
-def render_cursor(agent, profiles):
+def render_cursor(agent: Dict[str, Any], profiles: Dict[str, Any]) -> str:
     model = profiles["tiers"][agent["tier"]]["cursor"]
     return "\n".join(
         [
@@ -267,7 +268,7 @@ def render_cursor(agent, profiles):
     )
 
 
-def render_opencode(agent, profiles):
+def render_opencode(agent: Dict[str, Any], profiles: Dict[str, Any]) -> str:
     model = profiles["tiers"][agent["tier"]]["opencode"]
     return "\n".join(
         [
@@ -289,7 +290,9 @@ MAP_NOTE = (
 )
 
 
-def map_rows(agents, name_key, extra=None):
+def map_rows(
+    agents: List[Dict[str, Any]], name_key: str, extra: Optional[Callable[[Dict[str, Any]], str]] = None
+) -> List[str]:
     rows = []
     for agent in agents:
         cells = ["`{}`".format(agent["snake"]), "`{}`".format(agent[name_key])]
@@ -300,7 +303,7 @@ def map_rows(agents, name_key, extra=None):
     return rows
 
 
-def render_claude_map(agents, profiles):
+def render_claude_map(agents: List[Dict[str, Any]], profiles: Dict[str, Any]) -> str:
     rows = map_rows(agents, "kebab", extra=lambda a: "{} / {}".format(a["tier"], a["effort"]))
     return (
         "<!-- Derived from the .claude/agents frontmatter and .tools/sync/agent_profiles.json by "
@@ -320,7 +323,7 @@ def render_claude_map(agents, profiles):
     )
 
 
-def render_qoder_readme(agents, profiles):
+def render_qoder_readme(agents: List[Dict[str, Any]], profiles: Dict[str, Any]) -> str:
     rows = map_rows(agents, "kebab")
     return (
         "<!-- GENERATED FILE: regenerated by python .tools/sync/sync_agents.py qoder. -->\n"
@@ -334,7 +337,14 @@ def render_qoder_readme(agents, profiles):
     )
 
 
-def render_runtime_map(runtime, agents, profiles, folder, name_key="kebab", with_model=None):
+def render_runtime_map(
+    runtime: str,
+    agents: List[Dict[str, Any]],
+    profiles: Dict[str, Any],
+    folder: str,
+    name_key: str = "kebab",
+    with_model: Optional[Callable[[Dict[str, Any]], str]] = None,
+) -> str:
     if with_model:
         rows = map_rows(agents, name_key, extra=with_model)
         header = "| Identifier | {} | Model | Authority |\n| --- | --- | --- | --- |".format(runtime)
@@ -362,7 +372,19 @@ def render_runtime_map(runtime, agents, profiles, folder, name_key="kebab", with
 # Target runners
 # --------------------------------------------------------------------------
 
-def sync_files(label_text, folder, agents, profiles, renderer, extension, extra_outputs=None, keep=()):
+def sync_files(
+    label_text: str,
+    folder: Path,
+    agents: List[Dict[str, Any]],
+    profiles: Dict[str, Any],
+    renderer: Callable[[Dict[str, Any], Dict[str, Any]], str],
+    extension: str,
+    extra_outputs: Optional[List[Tuple[Path, str]]] = None,
+    keep: Tuple[str, ...] = (),
+) -> None:
+    created: List[str]
+    updated: List[str]
+    unchanged: List[str]
     created, updated, unchanged = [], [], []
     expected = set(keep)
     for agent in agents:
@@ -390,16 +412,16 @@ def sync_files(label_text, folder, agents, profiles, renderer, extension, extra_
         print("  WARNING: stale file(s) without a canonical source (not deleted): {}".format(", ".join(stale)))
 
 
-def run_claude_map(agents, profiles):
+def run_claude_map(agents: List[Dict[str, Any]], profiles: Dict[str, Any]) -> None:
     changed = write_if_changed(CLAUDE_AGENT_MAP, render_claude_map(agents, profiles))
     print("claude-map: {}.".format("updated" if changed else "unchanged"))
 
 
-def run_codex(agents, profiles):
+def run_codex(agents: List[Dict[str, Any]], profiles: Dict[str, Any]) -> None:
     sync_files("codex", CODEX_AGENTS, agents, profiles, render_codex, ".toml")
 
 
-def run_qoder(agents, profiles):
+def run_qoder(agents: List[Dict[str, Any]], profiles: Dict[str, Any]) -> None:
     sync_files(
         "qoder", QODER_AGENTS, agents, profiles, render_qoder, ".md",
         extra_outputs=[(QODER_AGENTS / "README.md", render_qoder_readme(agents, profiles))],
@@ -407,7 +429,7 @@ def run_qoder(agents, profiles):
     )
 
 
-def run_cursor(agents, profiles):
+def run_cursor(agents: List[Dict[str, Any]], profiles: Dict[str, Any]) -> None:
     text = render_runtime_map(
         "Cursor", agents, profiles, ".cursor/agents/", with_model=lambda a: profiles["tiers"][a["tier"]]["cursor"]
     )
@@ -417,7 +439,7 @@ def run_cursor(agents, profiles):
     )
 
 
-def run_opencode(agents, profiles):
+def run_opencode(agents: List[Dict[str, Any]], profiles: Dict[str, Any]) -> None:
     text = render_runtime_map(
         "opencode", agents, profiles, ".opencode/agent/", with_model=lambda a: profiles["tiers"][a["tier"]]["opencode"]
     )
@@ -431,7 +453,7 @@ def run_opencode(agents, profiles):
 # Skill mirror (.agents/skills -> .claude/skills)
 # --------------------------------------------------------------------------
 
-def is_junction(path):
+def is_junction(path: Path) -> bool:
     if not path.is_dir():
         return False
     try:
@@ -443,7 +465,7 @@ def is_junction(path):
     return bool(attrs & 0x400)  # FILE_ATTRIBUTE_REPARSE_POINT
 
 
-def make_junction(link, target):
+def make_junction(link: Path, target: Path) -> bool:
     if os.name == "nt":
         result = subprocess.run(
             ["cmd", "/c", "mklink", "/J", str(link), str(target)], capture_output=True, text=True
@@ -456,7 +478,7 @@ def make_junction(link, target):
         return False
 
 
-def copy_tree(src, dst):
+def copy_tree(src: Path, dst: Path) -> bool:
     changed = False
     if dst.is_symlink() or dst.is_file():
         dst.unlink()
@@ -478,7 +500,7 @@ def copy_tree(src, dst):
     return changed
 
 
-def sync_skill(name, source, mode):
+def sync_skill(name: str, source: Path, mode: str) -> Tuple[str, Optional[str]]:
     link = SHARED_SKILLS / name
     if link.is_symlink() or is_junction(link):
         if mode == "junction":
@@ -502,7 +524,7 @@ def sync_skill(name, source, mode):
     return ("copied" if copy_tree(source, link) else "unchanged-copy", None)
 
 
-def run_skills(mode):
+def run_skills(mode: str) -> None:
     if not CLAUDE_SKILLS.is_dir():
         sys.exit("ERROR: canonical skill folder not found: {}".format(CLAUDE_SKILLS))
     SHARED_SKILLS.mkdir(parents=True, exist_ok=True)
@@ -515,7 +537,7 @@ def run_skills(mode):
         status[skill_dir.name] = result
         if detail:
             notes[skill_dir.name] = detail
-    tally = {}
+    tally: Dict[str, int] = {}
     for value in status.values():
         tally[value] = tally.get(value, 0) + 1
     print(
@@ -534,12 +556,12 @@ def run_skills(mode):
 # Verification
 # --------------------------------------------------------------------------
 
-def field_of(path, pattern):
+def field_of(path: Path, pattern: str) -> Optional[str]:
     match = re.search(pattern, path.read_text(encoding="utf-8"), re.M)
     return match.group(1) if match else None
 
 
-def run_verify(agents, profiles):
+def run_verify(agents: List[Dict[str, Any]], profiles: Dict[str, Any]) -> int:
     problems, rows = [], []
     for agent in agents:
         expected = policy_tier(profiles, agent["snake"])
@@ -593,7 +615,7 @@ def run_verify(agents, profiles):
     return 0
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("targets", nargs="*", metavar="target", help="Targets to generate (default: all): " + ", ".join(TARGETS) + ".")
     parser.add_argument("--mode", choices=("junction", "copy"), default="junction",

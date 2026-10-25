@@ -160,7 +160,7 @@ The integration helpers preserve original industrial report data across material
 
 ## Evidence limits and follow-up
 
-Run `node .tools/validation/test_012_gods_industry_helpers.js` from the mod root for actual-source owner scenarios.
+Run `node .tools/tests/test_012_gods_industry_helpers.js` from the mod root for actual-source owner scenarios.
 The interpreter executes every local helper, scope transition, debit/credit, receipt, removal and rollback branch under conservative helper-temp cleanup.
 Its seven external existing authorization predicates and native primitives are explicit fixtures rather than claims about integrated campaign behavior.
 `SourceNoNativeProof` is the explicit native-evidence model.

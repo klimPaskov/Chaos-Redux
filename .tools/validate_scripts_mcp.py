@@ -29,7 +29,7 @@ from __future__ import annotations
 import argparse
 import sys
 from pathlib import Path
-from typing import Dict, List
+from typing import Any, Dict, List
 
 from lib.mcp_session import McpError, McpSession, server_command
 from lib.report import Finding, add_arguments, exit_code, merge_json, print_findings, relative, requested_paths
@@ -60,7 +60,7 @@ def script_paths(paths: List[str]) -> List[str]:
 	return sorted(set(chosen))
 
 
-def findings_for(path: str, result: Dict) -> List[Finding]:
+def findings_for(path: str, result: Dict[str, Any]) -> List[Finding]:
 	data = result.get("data", {})
 	rows = []
 	for item in data.get("findings", []):

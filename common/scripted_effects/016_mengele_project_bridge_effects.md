@@ -89,11 +89,11 @@ No new asset, localisation, category, event target, scheduler, or migration of p
 Run from the repository root:
 
 ```powershell
-node .tools/audit_mengele_project_adapter_contract.mjs
+python -B .tools/check.py quick --paths common/scripted_effects/016_mengele_project_bridge_effects.txt
 ```
 
-The maintained read-only check uses Node built-ins only and writes nothing.
-It protects the shared provider adapter contract consumed by the Mengele programme and Event 016 neutral native project API.
+The Mengele audit interpreters (`audit_mengele_conventional_incident_contract.mjs` and `audit_mengele_project_adapter_contract.mjs`) were retired on 25 October 2026: their embedded models stopped covering current source (for example the `request_is_deployment` trigger), so the scenario counts below are their last recorded results, not current evidence (decision D12 in `docs/plans/repo_cleanup/deterministic_tooling_plan_2026-10-25.md`; copies in Git history). Current source checks are `python -B .tools/check.py quick --paths <changed files>` and the HOI4 Agent Tools event inspection.
+The retired adapter audit protected the shared provider adapter contract consumed by the Mengele programme and Event 016 neutral native project API.
 Its authoritative inputs include the conventional decision triggers, project-stage effects, bridge effects, native receipt and selection APIs, Cloning receipt gates, and their script constants.
 It prints assertion counts and hashes to standard output, with no generated gameplay or report files.
 It parses the actual bounded source blocks and fails on unsupported test syntax.

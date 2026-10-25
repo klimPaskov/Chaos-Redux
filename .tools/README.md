@@ -42,6 +42,22 @@ The shared contract lives in `lib/report.py`: every finding has a check, a rule 
 The audits listed below accept `--paths` or `--paths-from FILE` to limit reporting to findings in those files or folders (cross-reference audits still read the whole repository to resolve references) and `--fail-on none` to report without failing; by default they exit `1` when they report an error.
 `tests/test_check_contract.py` seeds synthetic findings to prove each audit's levels, the path filter and the exit codes.
 Maintained tests that need arguments are listed in `TEST_ARGUMENTS` in `check.py`; every other file matching its `TEST_PATTERNS` runs bare from the mod root.
+
+### Code quality
+
+`quality.py` runs ruff (rules in the root `ruff.toml`: defect rules only, no formatting) and `mypy --strict` through `uvx`, at the versions pinned in `requirements-dev.txt`; `check.py` runs it as the `quality` check and skips it with a notice when `uv` is not installed.
+Strict files (`STRICT_FILES` in `quality.py`: `lib/`, `check.py`, `quality.py`, the new checks, `gfx/gfx.py`, `sync/`, and the event-assets and save-inspection skill helpers) must have no ruff defect and no type error.
+Other tooling is held by a ratchet: `quality_baseline.json` records each older ruff finding and each function above the complexity limit (McCabe 15, ruff's default, or 50 statements) with its measured value; a new finding or a function that grows past its recorded value is an error.
+`python -B .tools/quality.py --write-baseline` records improvements and refuses while any error remains, so it cannot be used to accept a regression.
+A deliberate exception is a line-level `# noqa: <code> - <reason>`, never a wider ignore list.
+
+### Maintained tests
+
+Every maintained regression test lives in `tests/`: Python `test_*.py` and `validate_*.py`, JavaScript `test_*.js` and `*.test.js`, shared JavaScript helpers in `tests/lib/`, and fixtures in `tests/fixtures/`.
+The folder is flat because the tests import each other by module name across event and system families (the national policy and humanitarian tests reuse the Event 035 parser, for example).
+`python -B .tools/check.py full --only tests` runs every file the way its author ran it; `python -B -m unittest discover -s .tools/tests -p "test_*.py"` runs the Python tests through standard discovery (613 cases on 25 October 2026, including five plain-assert scripts that run their checks on import).
+Tests write evidence only under `.tmp/`, create that folder themselves, and write nothing when imported.
+`gfx/test_gfx.py`, `3d_pipeline/tests/` and `live_testing/test_clausewitz_linux.py` stay beside the packages they test.
 Tools that read the installed game take its folder from `HOI4_GAME_DIR` (default: the Steam path) through `lib/game.py`, and exit `2` naming the variable when the game is not there.
 
 Checks added for the deterministic-tooling plan (`docs/plans/repo_cleanup/deterministic_tooling_plan_2026-10-25.md`):

@@ -47,4 +47,4 @@ The collector and the proof are read-only.
 The reserve helper only edits the plan and reservation arrays and one host flag.
 No Event 006 fired state, weight, cap, evolution, league enrollment, country package or tree is touched.
 The package territory level follows the number of states the carrier receives (one state is the anchor level, two is compact, three or more is extended), and the release helper and the footprint trigger treat a living dynamic country of an original-tag carrier's original tag (AFX, AGX, AJX, ARX, ASX, HBX) as the existing carrier.
-Native release behaviour itself is not modelled by the Python fixtures in `.tools/test_event021_native_release_footprint.py`.
+Native release behaviour itself is not modelled by the Python fixtures in `.tools/tests/test_event021_native_release_footprint.py`.

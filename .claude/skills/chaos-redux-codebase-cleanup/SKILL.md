@@ -68,7 +68,7 @@ Treat a candidate as live until these are ruled out.
 
 ## 7. Committing
 
-Review each subsystem's handoff, re-grep removed names (expect zero live references), run the brace and BOM check, and run any touched `.tools/test_*`. Then commit one subsystem per commit with `chaos-redux-shared-git-commit` (temporary index, fully owned paths only). Add no AI attribution lines.
+Review each subsystem's handoff, re-grep removed names (expect zero live references), run the brace and BOM check, and run any touched `.tools/tests/test_*`. Then commit one subsystem per commit with `chaos-redux-shared-git-commit` (temporary index, fully owned paths only). Add no AI attribution lines.
 
 ## 8. Windows pitfalls
 

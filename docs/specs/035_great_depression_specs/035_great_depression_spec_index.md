@@ -40,7 +40,7 @@ Implementation evidence proves what exists in source; it does not prove live eng
 | Targeting, event-pool availability, rejected-firing report `chaosx.nr35.22` | `implemented` in source | Event doc, Overview and Report and news pacing |
 | Start-or-deepen API, five callers, private receivers `.8` and `.9` | `implemented` in source | [Reusable crisis API](035_great_depression_reusable_crisis_api.md), event doc Reusable crisis API |
 | Severity, bands, trend, phases, relapse, maximum emergency, National Breakdown | `implemented` in source | Part 2; the national pulse is a fixed weekly pulse |
-| Six doctrines, 68 ordinary decisions and 17 missions, merged action families, phase-gated visible-action budget, custom costs, tooltips without hidden points | `implemented` in source | Part 3, decision map; counts from `.tools/test_event035_visible_actions.py` |
+| Six doctrines, 68 ordinary decisions and 17 missions, merged action families, phase-gated visible-action budget, custom costs, tooltips without hidden points | `implemented` in source | Part 3, decision map; counts from `.tools/tests/test_event035_visible_actions.py` |
 | Bank holiday, 21-day audit and 42-day recapitalization | `implemented` in source | Part 3 Doctrine 3 |
 | Depression Centers, condition-scaled project duration, transfer and cleanup | `implemented` in source | Part 4 |
 | Regional Works Program physical results (nine needs) | `implemented` in source | Part 3 Doctrine 1 |
@@ -54,7 +54,7 @@ Implementation evidence proves what exists in source; it does not prove live eng
 | Event 34 inheritance: snapshot, evolution floor, inherited-liability pressure | `implemented` in source | Part 8 |
 | Inherited hidden-row paid paths, corridor outcomes, salvage, multi-region priority | `rejected` | Part 8; hidden corridor states stay national inheritance pressure and recovery runs through the visible centers |
 | Famine and migration center adapters, Event 21 civil-conflict adapter | `implemented` in source | Part 8 Connections |
-| Famine-to-depression feedback and hunger-riot gate, contamination hold on reopening certification, sanction trade stress and Finance and Trade cost | `implemented` in source | Part 8 Connections; `.tools/test_event035_connections.py` |
+| Famine-to-depression feedback and hunger-riot gate, contamination hold on reopening certification, sanction trade stress and Finance and Trade cost | `implemented` in source | Part 8 Connections; `.tools/tests/test_event035_connections.py` |
 | Disaster adapter | pending | Part 8 Connections |
 | Event 35 Chaos receipts | `implemented` in source | Part 8 Chaos accounting; the worldwide wave is 10, contagion pays once per chain, national recovery relief is removed |
 | Six achievements, Event 34 Long Fall assets, 80 runtime DDS files, super-event slot 105 and audio 106 | `implemented` in source | Part 10, Part 11 |

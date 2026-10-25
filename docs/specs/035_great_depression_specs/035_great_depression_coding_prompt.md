@@ -21,7 +21,7 @@ Work only from the README's pending rows, in this order unless the parent decide
 4. Clean up the asset workspace when the event is otherwise complete (part 10).
 
 The inherited hidden-row work is `rejected`; do not implement it.
-Re-run `.tools/test_event035_visible_actions.py` after any change to a decision, its visibility or a phase.
+Re-run `.tools/tests/test_event035_visible_actions.py` after any change to a decision, its visibility or a phase.
 
 ## Rules for this work
 

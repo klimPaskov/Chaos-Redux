@@ -121,7 +121,7 @@ Parent follow-up remains accepted and queued:
 
 ## Validation and limitations
 
-Run `node .tools/audit_mengele_conventional_incident_contract.mjs`.
+The Mengele audit interpreters (`audit_mengele_conventional_incident_contract.mjs` and `audit_mengele_project_adapter_contract.mjs`) were retired on 25 October 2026: their embedded models stopped covering current source (for example the `request_is_deployment` trigger), so the scenario counts below are their last recorded results, not current evidence (decision D12 in `docs/plans/repo_cleanup/deterministic_tooling_plan_2026-10-25.md`; copies in Git history). Current source checks are `python -B .tools/check.py quick --paths <changed files>` and the HOI4 Agent Tools event inspection.
 The interpreter executes the actual source AST for all five family transactions and shared stockpile debit helpers, failing on unsupported commands.
 The current 363 scenarios include 165 transaction scenarios covering exact four-resource equality, each resource one below, duplicate incident/begin/cancel/finish calls, repeat incidents after recovery, original-cost refunds after tuning changes, invalid owner at cleanup and expiry, all five simultaneous recoveries, valid/invalid dispatcher selectors, all four profile colour selectors at equality and each separate resource shortage, and exact-CIC admission under both native reservation orderings for all six families including the parent's updated Computation source.
 They additionally cover each missing receipt component at normal expiry in all six families and each direct-resource race after admission in both reservation orderings for the five conventional families, with no debit or started message when receipt creation fails.

@@ -27,6 +27,8 @@ Checks (rule ids and levels are defined by each tool; see `.tools/lib/report.py`
 - generators       `--check` modes of the generators    catalog CSV, formable puzzles, Event 016 catalog, AGENTS.md, agent mirrors
 - tests            maintained regression tests in `.tools/` (full, or quick when `.tools/` changed)
 - references       `audit_script_references_static.py`  dead code, flags and clones (full only; review)
+- quality          `quality.py`                         ruff defects, complexity ratchet and mypy --strict for the
+                   tooling (skipped with a notice when uv is not installed)
 - script-validate  `validate_scripts_mcp.py`            HOI4 Agent Tools script validation of changed files (quick
                    only; skipped with a notice when the MCP server cannot start)
 
@@ -44,9 +46,9 @@ import sys
 import tempfile
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-from typing import Callable, Dict, List, NamedTuple, Optional, Sequence, Tuple
+from typing import Callable, Dict, List, NamedTuple, Optional, Sequence, Set, Tuple
 
-from lib.report import LEVELS, Finding, PathFilter, format_finding, relative, to_json
+from lib.report import LEVELS, Finding, format_finding, relative, to_json
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 TOOLS = REPO_ROOT / ".tools"
@@ -56,19 +58,19 @@ AUDIT_TIMEOUT_SECONDS = 900
 # Maintained tests that need arguments; every other discovered test runs bare.
 TEST_ARGUMENTS: Dict[str, List[str]] = {
 	".tools/audit_event6_flags.py": ["--strict"],
-	".tools/validation/validate_028_availability.py": [
+	".tools/tests/validate_028_availability.py": [
 		"--fixture", "docs/plans/028_asteroid_incoming_plans/availability_20261003/source_scenarios.json",
 	],
 }
+# Maintained regression tests live in `.tools/tests/` (shared JS helpers in `.tools/tests/lib/` are not tests).
 TEST_PATTERNS = (
-	".tools/test_*.py",
+	".tools/tests/test_*.py",
+	".tools/tests/validate_*.py",
+	".tools/tests/test_*.js",
+	".tools/tests/*.test.js",
 	".tools/gfx/test_*.py",
 	".tools/audit_event6_*.py",
 	".tools/check_planning_identifiers.py",
-	".tools/validation/validate_*.py",
-	".tools/validation/test_*.js",
-	".tools/tests/test_*.py",
-	".tools/tests/*.js",
 )
 
 
@@ -79,7 +81,10 @@ class Check(NamedTuple):
 	run: Callable[[Optional[List[str]]], Tuple[List[Finding], Optional[str]]]
 
 
-def run_report_tool(name: str, script: str, extra: Sequence[str] = (), optional: bool = False) -> Callable:
+Runner = Callable[[Optional[List[str]]], Tuple[List[Finding], Optional[str]]]
+
+
+def run_report_tool(name: str, script: str, extra: Sequence[str] = (), optional: bool = False) -> Runner:
 	"""Run a tool that writes the shared `findings` JSON and return its findings.
 
 	`extra` arguments come first, so a subcommand such as `gfx.py audit` works. An `optional`
@@ -173,14 +178,14 @@ def run_one_generator(generator: Generator) -> List[Finding]:
 def run_generators(paths: Optional[List[str]]) -> Tuple[List[Finding], Optional[str]]:
 	# A changed tool can change any generator's output, so `.tools/` changes rerun them all.
 	everything = not paths or any(p.startswith(".tools/") for p in paths)
-	chosen = [g for g in GENERATORS if everything or any(p.startswith(i) for p in paths for i in g.inputs)]
+	chosen = [g for g in GENERATORS if everything or any(p.startswith(i) for p in paths or () for i in g.inputs)]
 	with ThreadPoolExecutor(max_workers=max(1, len(chosen))) as pool:
 		results = list(pool.map(run_one_generator, chosen))
 	return [finding for found in results for finding in found], None
 
 
 def discover_tests() -> List[str]:
-	found = set()
+	found: Set[str] = set()
 	for pattern in TEST_PATTERNS:
 		found.update(path.relative_to(REPO_ROOT).as_posix() for path in REPO_ROOT.glob(pattern) if path.is_file())
 	return sorted(found)
@@ -223,6 +228,9 @@ CHECKS = (
 	Check("generators", tuple(sorted({i for g in GENERATORS for i in g.inputs} | {".tools/"})), True, run_generators),
 	Check("tests", (".tools/",), True, run_tests),
 	Check("references", (), False, run_report_tool("references", "audit_script_references_static.py")),
+	# Ruff and mypy through uvx; skipped with a notice when uv is not installed.
+	Check("quality", (".tools/", ".claude/skills/", "ruff.toml"), True,
+		run_report_tool("quality", "quality.py", optional=True)),
 	# Changed-file validation through the HOI4 Agent Tools MCP server; quick only, because a
 	# whole-repository pass would validate thousands of files one call at a time.
 	Check("script-validate", ("common/", "events/", "history/"), True,
@@ -290,7 +298,7 @@ def main() -> int:
 	def run_check(check: Check) -> Tuple[List[Finding], Optional[str]]:
 		try:
 			return check.run(None if check.name == "tests" else report_paths)
-		except Exception as error:  # a crashing check is reported as "could not run" (exit 2)
+		except Exception as error:  # noqa: BLE001 - a crashing check is reported as "could not run" (exit 2)
 			return [], f"{type(error).__name__}: {error}"
 
 	with ThreadPoolExecutor(max_workers=len(checks)) as pool:

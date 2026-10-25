@@ -170,7 +170,7 @@ The row-level record of retired prototype art is [prototype presentation retirem
 
 ## Verification scope
 
-`.tools/validation/validate_033_acid_rain.py` checks the source contracts, coverage and movement model, Air caps and the exact-loss helper contract.
+`.tools/tests/validate_033_acid_rain.py` checks the source contracts, coverage and movement model, Air caps and the exact-loss helper contract.
 The behavior described above records source contracts and implementation, with design authority recorded separately in `docs/plans/033_acid_rain_plans/agent_decisions_2026-10-04.md` and the accepted specs.
 For the 2026-10-07 reconciliation, the parent reports current-source exact-helper replay and synthetic movement, Air and lifecycle passes.
 Those fixtures do not execute HOI4, and no live-game evidence or clean error-log proof was furnished for this review.

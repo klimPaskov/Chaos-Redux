@@ -13,6 +13,7 @@ import re
 import struct
 import sys
 import tempfile
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union, cast
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
@@ -20,8 +21,8 @@ from scipy.ndimage import distance_transform_edt, binary_erosion, label
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / '.tools'))
-from lib.game import game_dir  # noqa: E402
-from lib.report import (  # noqa: E402
+from lib.game import game_dir
+from lib.report import (
     Finding, PathFilter, add_arguments, exit_code, merge_json, print_findings, requested_paths,
     relative as report_relative,
 )
@@ -35,11 +36,11 @@ PROFILES = {
 }
 
 
-def digest(path):
+def digest(path: Union[str, Path]) -> str:
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def load(path):
+def load(path: Union[str, Path]) -> Image.Image:
     """Fail closed on LFS stubs, truncated inputs and unsupported DDS formats."""
     path = Path(path)
     with path.open('rb') as stream:
@@ -51,7 +52,7 @@ def load(path):
         return source.convert('RGBA')
 
 
-def strict_dds(path):
+def strict_dds(path: Union[str, Path]) -> Image.Image:
     """Canonical skill converter layout, not merely decoder acceptance."""
     raw = Path(path).read_bytes()
     if len(raw) < 128:
@@ -68,16 +69,18 @@ def strict_dds(path):
     return Image.frombytes('RGBA', (w, h), raw[128:], 'raw', 'BGRA')
 
 
-def write_dds(image, path, overwrite=False):
+def write_dds(image: Image.Image, path: Union[str, Path], overwrite: bool = False) -> None:
     """Call the single canonical writer, then strict-decode and compare pixels."""
     path = Path(path)
     if path.exists() and not overwrite:
         raise FileExistsError(path)
     image = image.convert('RGBA')
     spec = importlib.util.spec_from_file_location('chaos_dds_converter', CONVERTER)
+    assert spec is not None and spec.loader is not None
     converter = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(converter)
     path.parent.mkdir(parents=True, exist_ok=True)
+    scratch: Union[str, Path]
     fd, scratch = tempfile.mkstemp(suffix='.dds', dir=path.parent)
     os.close(fd)
     scratch = Path(scratch)
@@ -91,11 +94,12 @@ def write_dds(image, path, overwrite=False):
         scratch.unlink(missing_ok=True)
 
 
-def write_png(image, path, overwrite=False):
+def write_png(image: Image.Image, path: Union[str, Path], overwrite: bool = False) -> None:
     path = Path(path)
     if path.exists() and not overwrite:
         raise FileExistsError(path)
     path.parent.mkdir(parents=True, exist_ok=True)
+    scratch: Union[str, Path]
     fd, scratch = tempfile.mkstemp(suffix='.png', dir=path.parent)
     os.close(fd)
     scratch = Path(scratch)
@@ -108,7 +112,7 @@ def write_png(image, path, overwrite=False):
         scratch.unlink(missing_ok=True)
 
 
-def install_output(scratch, path, overwrite):
+def install_output(scratch: Path, path: Path, overwrite: bool) -> None:
     if overwrite:
         os.replace(scratch, path)
     else:
@@ -118,20 +122,20 @@ def install_output(scratch, path, overwrite):
         os.link(scratch, path)
 
 
-def frames(image, count):
+def frames(image: Image.Image, count: int) -> List[Image.Image]:
     if count < 1 or image.width % count:
         raise ValueError('Frame count must divide sheet width exactly')
     width = image.width // count
     return [image.crop((i * width, 0, (i + 1) * width, image.height)) for i in range(count)]
 
 
-def chroma(rgb, delta=40):
+def chroma(rgb: Any, delta: int = 40) -> Any:
     rgb = rgb.astype(np.int16)
     r, g, b = rgb[..., 0], rgb[..., 1], rgb[..., 2]
     return ((r > g + delta) & (b > g + delta)) | ((g > r + delta) & (g > b + delta))
 
 
-def alpha_stats(image):
+def alpha_stats(image: Image.Image) -> Dict[str, Any]:
     a = np.asarray(image)[..., 3]
     subject = a[a > 0]
     bbox = image.getchannel('A').getbbox()
@@ -142,7 +146,7 @@ def alpha_stats(image):
             'ghosted': not subject.size or float(subject.mean()) < 200}
 
 
-def edge_stats(image):
+def edge_stats(image: Image.Image) -> Dict[str, int]:
     arr = np.asarray(image)
     a = arr[..., 3]
     # Include opaque boundary pixels as well as the antialiased rim.
@@ -151,7 +155,7 @@ def edge_stats(image):
             'chroma_edge_pixels': int((edge & chroma(arr[..., :3])).sum())}
 
 
-def defringe(image, erosion=1, spill_mask=None):
+def defringe(image: Image.Image, erosion: int = 1, spill_mask: Any = None) -> Image.Image:
     """Erode alpha; extend nearest uncontaminated interior RGB into the rim.
 
     Intentionally does not key opaque backgrounds, unpremultiply colours or
@@ -193,7 +197,13 @@ def defringe(image, erosion=1, spill_mask=None):
     return Image.fromarray(arr, 'RGBA')
 
 
-def size_check(image, profile, count=1, margin=None, canvas=None):
+def size_check(
+    image: Image.Image,
+    profile: str,
+    count: int = 1,
+    margin: Optional[int] = None,
+    canvas: Optional[Sequence[int]] = None,
+) -> List[str]:
     w, h, default_margin = PROFILES[profile]
     if canvas:
         w, h = canvas
@@ -216,7 +226,7 @@ def size_check(image, profile, count=1, margin=None, canvas=None):
     return findings
 
 
-def counter_check(image, surface, reference):
+def counter_check(image: Image.Image, surface: str, reference: Image.Image) -> List[str]:
     """Heuristic triage, always compared to the exact installed vanilla DDS."""
     findings = []
     if image.size != reference.size:
@@ -224,7 +234,7 @@ def counter_check(image, surface, reference):
     expected_count = 2
     art, alternate = frames(image, expected_count)
     ref_art, ref_alt = frames(reference, expected_count)
-    def solid_pixels(frame):
+    def solid_pixels(frame: Image.Image) -> Any:
         a = np.asarray(frame)
         return a[..., :3][a[..., 3] >= 200].astype(float)
     subject = solid_pixels(art)
@@ -257,7 +267,7 @@ def counter_check(image, surface, reference):
     black = opaque & (alt[..., :3].max(axis=2) < 85)
     if white.sum() < 8 or black.sum() < 4:
         findings.append('alternate frame lacks opaque white NATO field or black line glyph')
-    def field_shape(frame):
+    def field_shape(frame: Image.Image) -> Tuple[float, float, int]:
         pixels = np.asarray(frame)
         mask = (pixels[..., 3] >= 200) & ((pixels[..., :3].min(axis=2) > 170)
                                         | (pixels[..., :3].max(axis=2) < 85))
@@ -279,7 +289,7 @@ def counter_check(image, surface, reference):
     return findings
 
 
-def sprite_registry(root):
+def sprite_registry(root: Union[str, Path]) -> List[Dict[str, Any]]:
     """Bounded text registry reader for sheet/inventory tools, never a script rewrite."""
     entries = []
     for path in sorted((Path(root) / 'interface').rglob('*.gfx')):
@@ -345,11 +355,11 @@ DXGI_BLOCK_BYTES = {71: 8, 72: 8, 74: 16, 75: 16, 77: 16, 78: 16, 80: 8, 81: 8, 
 DXGI_PIXEL_BYTES = {28: 4, 29: 4, 87: 4, 91: 4}
 
 
-def gfx_finding(rule, path, line, message, check='gfx'):
+def gfx_finding(rule: str, path: str, line: int, message: str, check: str = 'gfx') -> Finding:
     return Finding(check, rule, GFX_LEVELS[rule], report_relative(path), line, message)
 
 
-def header_size(path):
+def header_size(path: Union[str, Path]) -> Tuple[int, int]:
     """Return (width, height) from the file header without decoding pixels."""
     raw = Path(path).read_bytes()[:64]
     if raw.startswith(LFS_POINTER):
@@ -362,10 +372,10 @@ def header_size(path):
     if Path(path).suffix.lower() == '.tga' and len(raw) >= 18:
         return struct.unpack_from('<2H', raw, 12)
     with Image.open(path) as image:
-        return image.size
+        return cast(Tuple[int, int], image.size)
 
 
-def dds_payload_bytes(header):
+def dds_payload_bytes(header: bytes) -> Optional[int]:
     """Minimum payload length for a DDS header, or None when the format's size is not known here."""
     height, width = struct.unpack_from('<2I', header, 12)
     flags, mips = struct.unpack_from('<I', header, 8)[0], struct.unpack_from('<I', header, 28)[0]
@@ -391,7 +401,7 @@ def dds_payload_bytes(header):
     return total
 
 
-def binary_problem(path):
+def binary_problem(path: Union[str, Path]) -> Optional[Tuple[str, str]]:
     """Return (rule, message) when a runtime binary is not usable data, else None."""
     path = Path(path)
     size = path.stat().st_size
@@ -425,7 +435,7 @@ def binary_problem(path):
     return None
 
 
-def check_binaries(root=ROOT, paths=None):
+def check_binaries(root: Union[str, Path] = ROOT, paths: Optional[Sequence[str]] = None) -> List[Finding]:
     selector, findings = PathFilter(paths), []
     for folder in RUNTIME_BINARY_DIRS:
         base = Path(root) / folder
@@ -443,7 +453,7 @@ def check_binaries(root=ROOT, paths=None):
     return findings
 
 
-def resolve_texture(texture, root, vanilla):
+def resolve_texture(texture: str, root: Union[str, Path], vanilla: Union[str, Path]) -> Optional[Path]:
     """Find a registered texture in the mod, then vanilla; a `.tga` reference also matches a same-stem `.dds`."""
     for base in (Path(root), Path(vanilla)):
         for candidate in (texture, texture[:-4] + '.dds' if texture.lower().endswith('.tga') else None):
@@ -452,7 +462,11 @@ def resolve_texture(texture, root, vanilla):
     return None
 
 
-def check_sprites(root=ROOT, paths=None, vanilla=None):
+def check_sprites(
+    root: Union[str, Path] = ROOT,
+    paths: Optional[Sequence[str]] = None,
+    vanilla: Optional[Union[str, Path]] = None,
+) -> List[Finding]:
     selector, findings = PathFilter(paths), []
     vanilla = vanilla or game_dir()
     for entry in sprite_registry(root):
@@ -465,7 +479,7 @@ def check_sprites(root=ROOT, paths=None, vanilla=None):
             continue  # a missing texture is reported by audit_asset_wiring_static.py
         try:
             width, _ = header_size(texture)
-        except Exception:
+        except (OSError, ValueError, struct.error):
             continue  # unreadable binaries are reported by the binaries check
         if width % entry['frames']:
             findings.append(gfx_finding('GFX-FRAME-WIDTH', entry['registry'], entry['line'],
@@ -474,7 +488,7 @@ def check_sprites(root=ROOT, paths=None, vanilla=None):
     return findings
 
 
-def check_flags(root=ROOT, paths=None):
+def check_flags(root: Union[str, Path] = ROOT, paths: Optional[Sequence[str]] = None) -> List[Finding]:
     selector, findings, stems = PathFilter(paths), [], {}
     for folder in FLAG_LADDER:
         base = Path(root) / 'gfx' / 'flags' / folder
@@ -487,7 +501,7 @@ def check_flags(root=ROOT, paths=None):
             label = folder or 'normal'
             try:
                 width, height = header_size(path)
-            except Exception as error:
+            except (OSError, ValueError, struct.error) as error:
                 findings.append(gfx_finding('GFX-FLAG-SIZE', rel, 0, f'{label} flag {stem} cannot be read: {error}'))
                 continue
             if (width, height) != (want_w, want_h):
@@ -500,7 +514,7 @@ def check_flags(root=ROOT, paths=None):
     return findings
 
 
-def check_achievements(root=ROOT, paths=None):
+def check_achievements(root: Union[str, Path] = ROOT, paths: Optional[Sequence[str]] = None) -> List[Finding]:
     selector, findings = PathFilter(paths), []
     base = Path(root) / 'gfx' / 'achievements'
     files = {p.stem: p for p in base.glob('*.dds')} if base.is_dir() else {}
@@ -510,19 +524,19 @@ def check_achievements(root=ROOT, paths=None):
             continue
         try:
             size = header_size(path)
-        except Exception:
+        except (OSError, ValueError, struct.error):
             continue  # unreadable binaries are reported by the binaries check
         if tuple(size) != ACHIEVEMENT_SIZE:
             findings.append(gfx_finding('GFX-ACHIEVEMENT-SIZE', rel, 0, f'achievement art {stem} is {size[0]}x{size[1]}, not 64x64'))
     return findings
 
 
-CONFORMANCE_CHECKS = {
+CONFORMANCE_CHECKS: Dict[str, Callable[..., List[Finding]]] = {
     'sprites': check_sprites, 'flags': check_flags, 'achievements': check_achievements, 'binaries': check_binaries,
 }
 
 
-def run_conformance(command, args):
+def run_conformance(command: str, args: argparse.Namespace) -> int:
     paths = requested_paths(args)
     chosen = CONFORMANCE_CHECKS if command == 'audit' else {command: CONFORMANCE_CHECKS[command]}
     findings = sorted((f for check in chosen.values() for f in check(ROOT, paths)),
@@ -533,10 +547,10 @@ def run_conformance(command, args):
     return exit_code(findings, args.fail_on)
 
 
-def sheet(entries, root, out, label='review'):
+def sheet(entries: List[Dict[str, Any]], root: Union[str, Path], out: Union[str, Path], label: str = 'review') -> List[str]:
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
-    grouped = {}
+    grouped: Dict[str, List[Dict[str, Any]]] = {}
     for item in entries:
         grouped.setdefault(item['group'], []).append(item)
     artifacts = []
@@ -568,7 +582,7 @@ def sheet(entries, root, out, label='review'):
                     canvas.paste(bg.convert('RGB'), (x + 4, y + 4))
                     stats = alpha_stats(native)
                     caption = f'{source.width}x{source.height}, {entry["frames"]}f, alpha {stats["subject_alpha_mean"]}'
-                except Exception as error:
+                except Exception as error:  # noqa: BLE001 - one unreadable texture must not stop the review sheet
                     caption = f'ERROR: {error}'
                 draw.text((x + 4, y + 178), entry['sprite'].removeprefix('GFX_')[:42], fill='white')
                 draw.text((x + 4, y + 192), caption[:44], fill='#c9b890')
@@ -578,7 +592,7 @@ def sheet(entries, root, out, label='review'):
     return artifacts
 
 
-def input_items(args):
+def input_items(args: argparse.Namespace) -> List[Tuple[Path, int]]:
     items = [(Path(p), args.frames or 1) for p in args.inputs]
     if args.list:
         data = json.loads(Path(args.list).read_text(encoding='utf-8-sig'))
@@ -589,7 +603,7 @@ def input_items(args):
             items.append((path, int(count)))
     if not items:
         raise ValueError('Supply explicit image paths or --list; no implicit whole-repository pass')
-    unique = {}
+    unique: Dict[Path, Tuple[Path, int]] = {}
     for path, count in items:
         key = path.resolve()
         if key in unique and unique[key][1] != count:
@@ -598,7 +612,7 @@ def input_items(args):
     return list(unique.values())
 
 
-def main():
+def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
     for command in ('alpha', 'size', 'defringe', 'dds', 'counter'):
@@ -657,9 +671,10 @@ def main():
                 outputs.add((Path(args.out) / relative).with_suffix('.dds' if args.command == 'dds' else '.png').resolve())
         if report_path in protected | outputs:
             parser.error('--json cannot overwrite an input, input list, or image output')
+    rows: List[Dict[str, Any]]
     rows, failed = [], False
     for path, frame_count in items:
-        row = {'path': str(path)}
+        row: Dict[str, Any] = {'path': str(path)}
         try:
             row['sha256'] = digest(path)
             image = load(path)
@@ -701,7 +716,7 @@ def main():
                 row['findings'] = []
             if row['findings']:
                 failed = True
-        except Exception as error:
+        except Exception as error:  # noqa: BLE001 - every input gets a row; the failure is recorded in it
             row['error'] = str(error)
             failed = True
         rows.append(row)
