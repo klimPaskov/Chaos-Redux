@@ -54,6 +54,15 @@ Usage:
 	python .tools/audit_asset_wiring_static.py
 	python .tools/audit_asset_wiring_static.py --json out.json
 	python .tools/audit_asset_wiring_static.py --calibrate-vanilla
+	python .tools/audit_asset_wiring_static.py --paths interface/x.gfx common/ideas/x.txt
+
+Levels and exit status follow `.tools/lib/report.py`. Unresolved `GFX_` references, missing
+files, missing vanilla backing files and missing implicit lookups are `error`; unverified
+bare event pictures are `warning`; dead registrations, dynamic prefixes and
+documentation-only names are `review`. The command exits 1 when an error is reported,
+unless `--fail-on none` is given. With `--paths` the console lists only the findings located
+in those files or folders; a missing vanilla backing file is located in the vanilla tree and
+therefore appears only in a run without `--paths`.
 """
 
 from __future__ import annotations
@@ -65,6 +74,8 @@ import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Set, Tuple
+
+from lib.report import Finding, add_arguments, exit_code, merge_json, print_findings, relative, requested_paths, select
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 VANILLA_ROOT = Path(
@@ -752,6 +763,46 @@ def audit_implicit(findings: Findings, sprites: Set[str]) -> None:
 		findings.implicit_unverified.append(row)
 
 
+CHECK = "asset-wiring"
+LEVELS = {
+	"GFX-UNRESOLVED": "error",
+	"GFX-MISSING-FILE": "error",
+	"GFX-MISSING-VANILLA-FILE": "error",
+	"GFX-IMPLICIT": "error",
+	"GFX-EVENT-PICTURE-UNVERIFIED": "warning",
+	"GFX-DEAD-REGISTRATION": "review",
+	"GFX-DYNAMIC-PREFIX": "review",
+	"GFX-DOCUMENTATION-NAME": "review",
+}
+
+
+def normalised_findings(findings: Findings) -> List[Finding]:
+	"""Map every finding category onto the shared `lib.report` contract."""
+	rows: List[Finding] = []
+
+	def add(rule: str, path: object, message: str) -> None:
+		rows.append(Finding(CHECK, rule, LEVELS[rule], relative(path), 0, message))
+
+	for row in findings.unresolved_refs:
+		for source in row["sources"]:
+			add("GFX-UNRESOLVED", source, f"{row['name']} is registered in neither the mod nor vanilla")
+	for row in findings.missing_files:
+		add("GFX-MISSING-FILE", row["file"], f"{row['reference']} does not exist on disk")
+	for row in findings.missing_vanilla_files:
+		add("GFX-MISSING-VANILLA-FILE", "vanilla/" + relative(row["file"]), f"{row['name']} points at missing {row['reference']}")
+	for row in findings.implicit_missing:
+		add("GFX-IMPLICIT", row["file"], f"[{row['family']}] {row['expected']} for {row['owner']} is missing in the mod and vanilla")
+	for row in findings.implicit_unverified:
+		add("GFX-EVENT-PICTURE-UNVERIFIED", row["file"], f"bare event picture {row['name']} has no confirmed lookup rule")
+	for row in findings.dead_definitions:
+		add("GFX-DEAD-REGISTRATION", row["definitions"][0] if row["definitions"] else "", f"{row['name']} is referenced nowhere")
+	for row in findings.dynamic_refs:
+		add("GFX-DYNAMIC-PREFIX", row["sources"][0] if row["sources"] else "", f"{row['name']} is a runtime-built prefix")
+	for row in findings.documentation_refs:
+		add("GFX-DOCUMENTATION-NAME", row["sources"][0] if row["sources"] else "", f"{row['name']} appears only in documentation")
+	return rows
+
+
 def main() -> int:
 	parser = argparse.ArgumentParser(description=__doc__)
 	parser.add_argument("--json", type=Path, help="also write the findings as JSON")
@@ -760,6 +811,7 @@ def main() -> int:
 		action="store_true",
 		help="measure each implicit lookup rule against the vanilla install and exit",
 	)
+	add_arguments(parser)
 	arguments = parser.parse_args()
 	if arguments.calibrate_vanilla:
 		return run_calibration()
@@ -825,6 +877,14 @@ def main() -> int:
 	# A vanilla sprite that the mod re-registers is overridden by the mod's own
 	# definition, so its broken vanilla texture no longer reaches the game.
 	audit_referenced_vanilla_definitions(findings, set(references) - set(mod_registered))
+
+	paths = requested_paths(arguments)
+	selected = select(normalised_findings(findings), paths)
+	if paths:
+		print_findings(CHECK, selected)
+		if arguments.json:
+			merge_json(arguments.json, selected, LEVELS)
+		return exit_code(selected, arguments.fail_on)
 
 	print()
 	print("=" * 78)
@@ -914,8 +974,11 @@ def main() -> int:
 		arguments.json.write_text(
 			json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8"
 		)
+		merge_json(arguments.json, selected, LEVELS)
 		print(f"\nwrote {arguments.json}")
-	return 0
+	print()
+	print_findings(CHECK, selected, show_levels=("error",))
+	return exit_code(selected, arguments.fail_on)
 
 
 if __name__ == "__main__":

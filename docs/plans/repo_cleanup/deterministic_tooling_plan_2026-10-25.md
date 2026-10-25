@@ -425,7 +425,7 @@ Steps 1–4 deliver most of the value; steps 5–7 can pause at any boundary wit
 
 ## 11. Acceptance criteria
 
-- **Audits decide:** each of the three audits exits `1` on a seeded exact defect in a fixture and `0` on the current tree; `--paths` limits both scanning and reporting; the full JSON output is unchanged apart from added level fields.
+- **Audits decide:** each of the three audits exits `1` on a seeded exact defect in a fixture and `0` on the current tree; `--paths` limits reporting (cross-reference audits still scan the whole repository, because a reference can only be resolved against every definition); the full JSON output is unchanged apart from added level fields.
 - **`check.py`:** `quick` on a typical single-event change completes in under 30 seconds; output is sorted and stable across two runs; exit codes follow section 5; it never writes outside `--json` and `.tmp/`.
 - **Exact rules (A3, A6–A10):** each has a valid and an invalid fixture that pass and fail respectively; the current tree has no false positives, or every remaining finding has been confirmed as a real defect by its owner.
 - **Generator freshness (A4):** `--check` fails after a one-cell workbook edit without export and passes after export; no tracked file is written in check mode.
@@ -469,6 +469,23 @@ This section is the single current report for the implementation; each step upda
 - **Event 028 validator.** `validate_028_availability.py` failed on two outdated assumptions, both from deliberate event changes. `chaosx.nr28.8` now has an `immediate` block that only calls `asteroid_incoming_refresh_board_ready` (commit `f9cb13c4f8`, 4 October); the assertion now allows exactly that block and still rejects `fire_only_once` and any other setup. The 12 October report pagination (`01a1e2be19`, `docs/systems/event_system/report_event_choice_pages.md`) left four direct options on each board, so the option comparison now reads the complete five-option pool from each board's AI-only companion event (`chaosx.nr28.94699` and `chaosx.nr28.94799`). All 19 source-model cases pass, as do the sibling `validate_028_near_miss.py` and `validate_028_presentation.py`.
 - **Event 033 catalog row.** The workbook was the stale side: the localisation was deliberately restored on 12 October (`a7e7466d3f`) and the workbook kept the earlier wording. `chaosx_spreadsheet_doc_worker` replaced two inline-string cells through the narrow OOXML route, `Events` row ID 33 column C (now "…the inhabited states registered at formation… crossed every eligible state.") and `Clusters` row ID 5 (Natural Disasters) column C, which the same validator also compares with localisation. Only `xl/worksheets/sheet1.xml` and `sheet2.xml` changed (workbook SHA-256 `d9ad04ce…` to `3e0b8dbf…`); the export changed exactly one cell in each of the events and clusters CSVs and none in the scenarios CSV.
 - **Event 033 validator.** With the workbook aligned, `validate_033_acid_rain.py` reached a second outdated block: it asserted the Acid Rain mixed-Major cluster pacing override, which the 13 October historical restore (`1927a7901c`) removed deliberately. That block now asserts the restored contract instead: the effective pacing type comes from `get_event_cluster_type` with no Acid Rain override, the major and minor pacing updates run once each, Acid Rain is registered once as a Major event and never as repeatable, and `acid_rain_cluster_reserved` is still set (it is checked in `033_acid_rain_triggers.txt`). The validator and all 14 `test_033_*.js` tests pass.
+
+### Step 2: make existing checks decide (25 October 2026)
+
+Status: `implemented`. Validation is source and command evidence only; no game run was involved.
+
+- **Shared contract.** `.tools/lib/report.py` defines the finding record (check, rule, level, path, line, message), the three levels, `--paths`/`--paths-from`/`--fail-on`, stable ordering and exit codes. `audit_localisation_static.py`, `audit_asset_wiring_static.py`, `audit_script_references_static.py` and `report_colour_audit.py` map every category onto it, document their rule levels in their docstrings, add `findings` and `levels` to their JSON, and exit `1` on an error unless `--fail-on none` is given. A before/after comparison of the three audits' JSON on the current tree showed every existing field unchanged; all three and the colour audit exit `0`.
+- **`check.py`.** `.tools/check.py quick|full` runs localisation (A1), asset wiring (A2), parchment colour (A10), guidance size (A5) and the 101 maintained tests (A11) in parallel, plus the script-reference audit in `full`. A 038-only `quick` run took 19 s; `full` took 75 s and exits `0`. The full baseline is in `.tmp/tooling_migration/before/` (local, ignored).
+- **Guidance size.** `chaos-redux-event-assets/SKILL.md` was 58,224 bytes against its 58,000-byte ceiling. The complete "Temporary event asset workspaces" section moved verbatim to `references/manifest-and-lineage.md`, leaving a pointer in the root in the same style as the family sections; the root is now 57,920 bytes and `sync_read_limits.py --check` passes.
+- **Fixture evidence.** `.tools/tests/test_check_contract.py` (12 cases) seeds synthetic findings and proves that a missing BOM, an ordinal-suffix key and a missing GFX file exit `1`, that review candidates and reference-audit warnings exit `0`, and that the path filter, ordering and quick-mode check selection behave as documented. It runs as part of A11.
+
+Differences from the plan text, all within the accepted design:
+
+- `--paths` limits reporting, not scanning, for the cross-reference audits; the acceptance criterion now says so.
+- A10 reports at `warning` level until the Event 038 hand-off below is fixed; promoting it is a one-word change in `report_colour_audit.py`.
+- `quick` runs the tests only when `.tools/` changed, and leaves the 78 s script-reference audit to `full`; B5 (flag warnings on changed files) can add it to `quick` later.
+- `--paths-from FILE` was added because the shared working tree's path list exceeded the Windows command-line limit.
+- The shared package is named `lib`, as planned. `.tools/3d_pipeline/lib/` uses the same name for its own scripts, so D6 must merge `mcp_stdio.py` and `paths.py` into `.tools/lib/` rather than add a second `lib` to one `sys.path`.
 
 ### Owner hand-offs
 

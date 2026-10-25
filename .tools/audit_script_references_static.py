@@ -28,6 +28,12 @@ Usage:
 	python .tools/audit_script_references_static.py                 # summary
 	python .tools/audit_script_references_static.py --json out.json # full data
 	python .tools/audit_script_references_static.py --sections dead,flags
+	python .tools/audit_script_references_static.py --paths common/scripted_effects/x.txt
+
+Levels follow `.tools/lib/report.py`. No finding here is exact: flags checked but never set
+are `warning`, and dead, dynamic, set-but-never-checked and clone candidates are `review`, so
+the command exits 0 unless its input fails. With `--paths` the console lists only the
+warnings located in those files or folders.
 """
 
 from __future__ import annotations
@@ -39,6 +45,8 @@ import subprocess
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Dict, List, Tuple
+
+from lib.report import Finding, add_arguments, exit_code, merge_json, print_findings, requested_paths, select
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCAN_DIRS = ["common", "events", "interface", "history", "localisation", "map", "gfx", "music", "sound"]
@@ -262,10 +270,47 @@ def audit_clones(texts, blocks):
 	return {"exact": ex, "param": pa}
 
 
+CHECK = "script-references"
+LEVELS = {
+	"REF-FLAG-NEVER-SET": "warning",
+	"REF-FLAG-NEVER-CHECKED": "review",
+	"REF-DEAD": "review",
+	"REF-DYNAMIC": "review",
+	"REF-CLONE-EXACT": "review",
+	"REF-CLONE-PARAM": "review",
+}
+
+
+def normalised_findings(result) -> List[Finding]:
+	"""Map every finding category onto the shared `lib.report` contract."""
+	rows: List[Finding] = []
+
+	def add(rule, path, line, message):
+		rows.append(Finding(CHECK, rule, LEVELS[rule], path, line, message))
+
+	for kind, value in result.get("dead", {}).items():
+		for row in value["dead"]:
+			add("REF-DEAD", row["file"], row["line"], f"{kind} {row['name']} is referenced nowhere")
+		for row in value["dynamic"]:
+			add("REF-DYNAMIC", row["file"], row["line"], f"{kind} {row['name']} may be built from {', '.join(row['dynamic_stems'])}")
+	for rule, key, text in (("REF-FLAG-NEVER-SET", "checked_never_set", "is checked but never set"),
+			("REF-FLAG-NEVER-CHECKED", "set_never_checked", "is set but never checked")):
+		for row in result.get("flags", {}).get(key, []):
+			for path in row["files"]:
+				add(rule, path, 0, f"flag {row['flag']} {text}")
+	for rule, key in (("REF-CLONE-EXACT", "exact"), ("REF-CLONE-PARAM", "param")):
+		for group in result.get("clones", {}).get(key, []):
+			name, path, line = group["members"][0]
+			others = ", ".join(member[0] for member in group["members"][1:])
+			add(rule, path, line, f"{group['kind']} {name} has the same body as {others}")
+	return rows
+
+
 def main() -> int:
 	ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
 	ap.add_argument("--json", help="write the full findings to this file")
 	ap.add_argument("--sections", default="dead,flags,clones", help="comma list of dead, flags, clones")
+	add_arguments(ap)
 	args = ap.parse_args()
 	sections = set(args.sections.split(","))
 	texts = load_tree()
@@ -278,6 +323,14 @@ def main() -> int:
 		result["flags"] = audit_flags(texts)
 	if "clones" in sections:
 		result["clones"] = audit_clones(texts, blocks)
+
+	paths = requested_paths(args)
+	selected = select(normalised_findings(result), paths)
+	if paths:
+		print_findings(CHECK, selected)
+		if args.json:
+			merge_json(Path(args.json), selected, LEVELS)
+		return exit_code(selected, args.fail_on)
 
 	print("=" * 78)
 	print("Chaos Redux static script reference audit")
@@ -293,8 +346,10 @@ def main() -> int:
 		print(f"param clone groups (3+) : {len(result['clones']['param'])}")
 	if args.json:
 		Path(args.json).write_text(json.dumps(result, indent=1), encoding="utf-8")
+		merge_json(Path(args.json), selected, LEVELS)
 		print(f"wrote {args.json}")
-	return 0
+	print_findings(CHECK, selected, show_levels=())
+	return exit_code(selected, args.fail_on)
 
 
 if __name__ == "__main__":

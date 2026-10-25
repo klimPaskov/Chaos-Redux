@@ -16,7 +16,7 @@ Read the reference that matches the asset family before producing it:
 - [references/portrait-production.md](references/portrait-production.md): every character portrait, portrait icon, source placeholder, and user-supplied final.
 - [references/event-images-and-flags.md](references/event-images-and-flags.md): report, news, and super-event images and every flag.
 - [references/unit-visuals.md](references/unit-visuals.md): equipment and technology art, counters, division-template emblems, and the 3D model package handoff.
-- [references/manifest-and-lineage.md](references/manifest-and-lineage.md): pre-generation inventory reconciliation, asset manifest fields, and generated-candidate lineage and review. Read before declaring a source gap or requesting fresh art.
+- [references/manifest-and-lineage.md](references/manifest-and-lineage.md): the event asset workspace layout, pre-generation inventory reconciliation, asset manifest fields, and generated-candidate lineage and review. Read before declaring a source gap or requesting fresh art.
 
 Skill-local `assets/` holds the reference and component libraries, and `tools/` holds the bundled converters and processors.
 
@@ -147,7 +147,8 @@ For event-specific assets, include the event id or slug where useful. For exampl
 
 ### Temporary event asset workspaces
 
-Use `docs/assets/<event_id>_<event_slug>/` with `manifest.md`, `prompts/`, `source_png/`, `processed_png/`, `contact_sheets/`, `notes/`, and `gfx_handoff.md` as needed. Treat it as a temporary, event-scoped working and evidence folder, not as a shipped asset library. Keep original sources, processed previews, and runtime outputs separate. Use it during active implementation for source files, processed previews, contact sheets, prompts, provenance, manifests, animation plans and previews, source-audio downloads, and handoff notes. Keep it while the event is active, blocked, awaiting review, or undergoing acceptance scenarios.
+Keep event working files and evidence in the temporary `docs/assets/<event_id>_<event_slug>/` workspace, never in a shipped asset folder.
+Read the complete requirements in [Temporary event asset workspaces](references/manifest-and-lineage.md#temporary-event-asset-workspaces) before this work.
 
 ### Git LFS storage budget
 

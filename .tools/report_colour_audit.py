@@ -1,19 +1,26 @@
 """Report and news event text on light parchment must carry no § colour codes.
 
-python report_colour_audit.py [--json out.json] [--event NNN]
+python report_colour_audit.py [--json out.json] [--event NNN] [--paths PATH ...] [--fail-on error|none]
 
 Walks every country_event and news_event (and super-event report windows defined as events) in events/*.txt, collects
 their title/desc localisation keys (plain, triggered desc blocks and option names are excluded: option buttons are
 dark), follows [This.GetX] / [Root.GetX] scripted localisation recursively, and prints every reached key whose text
 contains a § code, grouped by event file.
+
+Findings use the `.tools/lib/report.py` contract. The rule is reported as `warning` until the one known finding
+(`chaosx.nr38.42.d`, recorded in `docs/plans/repo_cleanup/deterministic_tooling_plan_2026-10-25.md`) is fixed;
+then its level becomes `error`. `--paths` keeps a finding when either its event file or its localisation file is
+listed.
 """
+import argparse
 import glob
 import json
 import os
 import re
-import sys
 
 from pathlib import Path
+
+from lib.report import Finding, PathFilter, add_arguments, exit_code, merge_json, print_findings, requested_paths
 
 REPO = str(Path(__file__).resolve().parent.parent)
 
@@ -75,14 +82,17 @@ def strip_options(body):
     return ''.join(out)
 
 
+CHECK = 'parchment-colour'
+LEVELS = {'LOC-PARCHMENT-COLOUR': 'warning'}
+
+
 def main():
-    only = None
-    out_json = None
-    a = sys.argv[1:]
-    if '--event' in a:
-        only = a[a.index('--event') + 1]
-    if '--json' in a:
-        out_json = a[a.index('--json') + 1]
+    parser = argparse.ArgumentParser(description=__doc__.split('\n\n')[0])
+    parser.add_argument('--json', help='also write the findings as JSON')
+    parser.add_argument('--event', help='only check event files whose name starts with this prefix')
+    add_arguments(parser)
+    args = parser.parse_args()
+    only, out_json = args.event, args.json
     loc, dt = load_loc(), load_defined_texts()
     result = {}
     for p in sorted(glob.glob(os.path.join(REPO, 'events', '*.txt'))):
@@ -118,13 +128,28 @@ def main():
         hits = sorted((loc[k][0], loc[k][1], k) for k in seen if '§' in loc[k][2])
         if hits:
             result[base] = [{'file': f, 'line': n, 'key': k} for f, n, k in hits]
-    total = sum(len(v) for v in result.values())
-    for ev, hs in result.items():
-        print(f'{ev}: {len(hs)}')
-    print('total keys with colour:', total)
+    paths = requested_paths(args)
+    selector = PathFilter(paths)
+    findings = sorted(
+        Finding(CHECK, 'LOC-PARCHMENT-COLOUR', LEVELS['LOC-PARCHMENT-COLOUR'], 'localisation/english/' + hit['file'],
+                hit['line'], f"{hit['key']} shown on parchment by events/{ev} contains a colour code")
+        for ev, hits in result.items() for hit in hits
+        if selector.matches('events/' + ev) or selector.matches('localisation/english/' + hit['file'])
+    )
+    if paths:
+        print_findings(CHECK, findings)
+    else:
+        total = sum(len(v) for v in result.values())
+        for ev, hs in result.items():
+            print(f'{ev}: {len(hs)}')
+        print('total keys with colour:', total)
+        print_findings(CHECK, findings, show_levels=('error',))
     if out_json:
-        json.dump(result, open(out_json, 'w', encoding='utf-8'), indent=1)
+        with open(out_json, 'w', encoding='utf-8') as handle:
+            json.dump(result, handle, indent=1)
+        merge_json(Path(out_json), findings, LEVELS)
+    return exit_code(findings, args.fail_on)
 
 
 if __name__ == '__main__':
-    main()
+    raise SystemExit(main())

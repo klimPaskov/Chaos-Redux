@@ -35,6 +35,14 @@ Usage:
 	python .tools/audit_localisation_static.py --json out.json
 	python .tools/audit_localisation_static.py --show-advisory   # also list empty-text gaps
 	python .tools/audit_localisation_static.py --calibrate       # vanilla coverage per rule
+	python .tools/audit_localisation_static.py --paths localisation/english/x.yml events/x.txt
+
+Levels and exit status follow `.tools/lib/report.py`. Parse, BOM, header, encoding,
+duplicate, undefined-binding, event title/description, requirement-tooltip and required
+implicit-key findings are `error`; unmatched dynamic keys are `warning`; dead keys, literal
+names, expanded triggers and advisory implicit keys are `review`. The command exits 1 when
+an error is reported, unless `--fail-on none` is given. With `--paths` the console lists only
+the findings located in those files or folders.
 """
 
 from __future__ import annotations
@@ -47,6 +55,10 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Set, Tuple
+
+from lib.report import (
+	Finding, add_arguments, exit_code, merge_json, print_findings, relative, requested_paths, select, split_site,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 LOCALISATION_DIR = REPO_ROOT / "localisation" / "english"
@@ -1678,6 +1690,74 @@ def write_json(findings: Findings, destination: Path) -> None:
 	print(f"\nwrote {destination}")
 
 
+CHECK = "localisation"
+LEVELS = {
+	"LOC-PARSE": "error",
+	"LOC-BOM": "error",
+	"LOC-HEADER": "error",
+	"LOC-ENCODING": "error",
+	"LOC-DUPLICATE": "error",
+	"LOC-EVENT-ROOT": "error",
+	"LOC-KEY-BINDING": "error",
+	"LOC-EVENT-CONTENT": "error",
+	"LOC-REQUIREMENT-FLAG": "error",
+	"LOC-REQUIREMENT-VARIABLE": "error",
+	"LOC-IMPLICIT": "error",
+	"LOC-DYNAMIC-UNMATCHED": "warning",
+	"LOC-IMPLICIT-ADVISORY": "review",
+	"LOC-DEAD-KEY": "review",
+	"LOC-LITERAL-NAME": "review",
+	"LOC-EXPANDED-TRIGGER": "review",
+}
+
+
+def normalised_findings(findings: Findings) -> List[Finding]:
+	"""Map every finding category onto the shared `lib.report` contract."""
+	rows: List[Finding] = []
+
+	def add(rule: str, path: str, line: int, message: str) -> None:
+		rows.append(Finding(CHECK, rule, LEVELS[rule], relative(path), line, message))
+
+	for entry in findings.parse_errors:
+		site, _, text = entry.partition(": ")
+		path, line = split_site(site)
+		add("LOC-PARSE", path, line, f"line is not `key: \"value\"`: {text}")
+	for path in findings.missing_bom:
+		add("LOC-BOM", path, 0, "localisation file has no UTF-8 BOM")
+	for path in findings.no_header:
+		add("LOC-HEADER", path, 0, "first content line is not `l_english:`")
+	for path, line, detail in findings.encoding_artifacts:
+		add("LOC-ENCODING", path, line, detail)
+	for key, first_file, first_line, path, line in findings.duplicates:
+		add("LOC-DUPLICATE", path, line, f"duplicate key {key}, first defined at {relative(first_file)}:{first_line}")
+	for key, sources in findings.missing_event_roots:
+		add("LOC-EVENT-ROOT", sources[0] if sources else "", 0, f"event-style key {key} is bound but never defined")
+	for key, sources in findings.missing_prefixed:
+		add("LOC-KEY-BINDING", sources[0] if sources else "", 0, f"key {key} is bound but never defined")
+	for key, role, sources in findings.missing_event_content:
+		add("LOC-EVENT-CONTENT", sources[0] if sources else "", 0, f"event {role} key {key} is not defined")
+	for flag, site in findings.exposed_flags:
+		path, line = split_site(site)
+		add("LOC-REQUIREMENT-FLAG", path, line, f"flag {flag} in a displayed requirement has no localisation key")
+	for name, site in findings.exposed_variables:
+		path, line = split_site(site)
+		add("LOC-REQUIREMENT-VARIABLE", path, line, f"variable {name} in a displayed requirement has no localisation key")
+	for (category, level), keys in sorted(findings.implicit_missing.items()):
+		rule = "LOC-IMPLICIT" if level == REQUIRED else "LOC-IMPLICIT-ADVISORY"
+		for key, (path, line, _refs) in sorted(keys.items()):
+			add(rule, path, line, f"{category} key {key} is defined by neither the mod nor vanilla")
+	for category, text, path, line, status in findings.implicit_dynamic:
+		if status == "no matching key":
+			add("LOC-DYNAMIC-UNMATCHED", path, line, f"{category} key {text} matches no defined key by its literal prefix")
+	for key, path in findings.dead_keys:
+		add("LOC-DEAD-KEY", path, 0, f"key {key} is referenced nowhere")
+	for value, sources in findings.literal_names:
+		add("LOC-LITERAL-NAME", sources[0] if sources else "", 0, f"quoted literal {value} is not a localisation key")
+	for name in findings.expanded_triggers:
+		add("LOC-EXPANDED-TRIGGER", "", 0, f"scripted trigger {name} is shown expanded in a displayed requirement")
+	return rows
+
+
 AUDIT_FINDINGS = Findings()
 
 
@@ -1694,6 +1774,7 @@ def main() -> int:
 		action="store_true",
 		help="run the implicit-key extractors on vanilla and print coverage per rule",
 	)
+	add_arguments(parser)
 	arguments = parser.parse_args()
 	if arguments.calibrate:
 		return calibrate_against_vanilla()
@@ -1741,10 +1822,18 @@ def main() -> int:
 	findings.implicit_missing, findings.implicit_totals = summarise_expected(sink, known)
 	findings.implicit_dynamic = resolve_dynamic(sink, known)
 
-	emit_report(findings, arguments.show_advisory)
+	paths = requested_paths(arguments)
+	selected = select(normalised_findings(findings), paths)
+	if paths:
+		print_findings(CHECK, selected)
+	else:
+		emit_report(findings, arguments.show_advisory)
+		print()
+		print_findings(CHECK, selected, show_levels=("error",))
 	if arguments.json:
 		write_json(findings, arguments.json)
-	return 0
+		merge_json(arguments.json, selected, LEVELS)
+	return exit_code(selected, arguments.fail_on)
 
 
 if __name__ == "__main__":

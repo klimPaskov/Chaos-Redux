@@ -1,6 +1,10 @@
 # Asset manifest and candidate lineage
 
-Read this reference before declaring an asset source gap or requesting fresh art, when creating or updating an event asset workspace manifest, and whenever generated candidates are produced, edited, reviewed, or selected. The main skill keeps contact sheets, the requirement-to-runtime coverage audit, and completion rules.
+Read this reference before declaring an asset source gap or requesting fresh art, when creating or updating an event asset workspace or its manifest, and whenever generated candidates are produced, edited, reviewed, or selected. The main skill keeps contact sheets, the requirement-to-runtime coverage audit, and completion rules.
+
+## Temporary event asset workspaces
+
+Use `docs/assets/<event_id>_<event_slug>/` with `manifest.md`, `prompts/`, `source_png/`, `processed_png/`, `contact_sheets/`, `notes/`, and `gfx_handoff.md` as needed. Treat it as a temporary, event-scoped working and evidence folder, not as a shipped asset library. Keep original sources, processed previews, and runtime outputs separate. Use it during active implementation for source files, processed previews, contact sheets, prompts, provenance, manifests, animation plans and previews, source-audio downloads, and handoff notes. Keep it while the event is active, blocked, awaiting review, or undergoing acceptance scenarios.
 
 ## Pre-generation inventory reconciliation
 
