@@ -27,13 +27,12 @@ from lib.report import (
     relative as report_relative,
 )
 CONVERTER = ROOT / '.claude/skills/chaos-redux-event-assets/tools/convert_to_dds.py'
-PROFILES = {
-    'focus': (94, 86, 2), 'decision': (34, 34, 2),
-    'category': (52, 40, 3), 'idea': (64, 64, 2),
-    'report': (210, 176, 0), 'news': (397, 153, 0),
-    'counter-large': (76, 42, 1), 'counter-small': (30, 12, 0),
-    'texticon': (18, 18, 1),
-}
+# Canvas profiles and their sources live in profiles.json (plan decisions D1-D3).
+PROFILE_DATA: Dict[str, Dict[str, Any]] = json.loads(
+    Path(__file__).with_name('profiles.json').read_text(encoding='utf-8'))['profiles']
+# (canvas width, canvas height, minimum margin) per profile, for the `size` command.
+PROFILES: Dict[str, Tuple[int, int, int]] = {
+    name: (int(p['canvas'][0]), int(p['canvas'][1]), int(p['margin'])) for name, p in PROFILE_DATA.items()}
 
 
 def digest(path: Union[str, Path]) -> str:
@@ -209,8 +208,10 @@ def size_check(
         w, h = canvas
     minimum = default_margin if margin is None else margin
     findings = []
-    if image.size != (w * count, h):
-        findings.append(f'canvas {image.size}, expected {(w * count, h)}')
+    accepted = [(w, h)] if canvas else [(int(a[0]), int(a[1])) for a in PROFILE_DATA[profile]['accepted']]
+    if image.size not in [(aw * count, ah) for aw, ah in accepted]:
+        findings.append(f'canvas {image.size}, expected {(w * count, h)}'
+                        + (f' or one of {accepted[1:]}' if len(accepted) > 1 else ''))
     for i, frame in enumerate(frames(image, count)):
         bbox = frame.getchannel('A').point(lambda x: 255 if x >= 16 else 0).getbbox()
         if not bbox:
@@ -531,12 +532,238 @@ def check_achievements(root: Union[str, Path] = ROOT, paths: Optional[Sequence[s
     return findings
 
 
+# ---------------------------------------------------------------------------
+# Family checks (plan B1-B4) and report-image provenance (plan B7).
+# Consumers come from the asset audit's implicit-lookup extractors: focus `icon =` sprites, decision
+# `icon =` sprites and idea pictures. Only textures stored in the checked tree are measured, so a mod
+# that reuses vanilla art is not judged on vanilla files.
+# - GFX-FOCUS-SIZE (error), GFX-DECISION-SIZE and GFX-IDEA-SIZE (warning): the frame canvas is not one of
+#   the profile's accepted sizes (profiles.json, decisions D1-D3).
+# - GFX-FOCUS-ALTERNATIVE: a 100x88 focus icon; a warning for files under --paths (new or changed art)
+#   and a review item otherwise (D1).
+# - GFX-OPAQUE-CANVAS (error): all four corners of a frame are fully opaque, so the unused canvas has a
+#   background, which the event-assets skill forbids for these families. Calibrated on 25 October 2026:
+#   0 of 4,440 vanilla focus, decision and idea textures match. A partly transparent outer ring is not a
+#   finding, because 56-84% of vanilla icons reach the canvas edge.
+# - GFX-EMPTY-SUBJECT (error): a frame has no visible pixel.
+# - GFX-GHOSTED (warning, focus icons only): visible pixels average below alpha 200 (decision D5). The
+#   calibration found it on 5.5% of vanilla focus icons but 88% of decision and 48% of idea icons, whose
+#   small antialiased art is normally that faint, so those families are not checked.
+# - GFX-CHROMA-FRINGE (warning): edge pixels in the magenta or green key colours used by `defringe`.
+# Report images (210x176 files under gfx/event_pictures):
+# - GFX-REPORT-PROVENANCE-MISMATCH (error): the runtime pixels differ from the recorded processed output.
+# - GFX-REPORT-RECIPE-MISMATCH (error): rerunning the recorded recipe on the recorded source, which still
+#   exists with its recorded hash, gives different pixels.
+# - GFX-REPORT-NO-PROVENANCE (warning): no record in the provenance registry, so only size and corners
+#   can be checked.
+# - GFX-REPORT-OPAQUE-CORNERS (warning): a corner is opaque, so the report-card treatment (tilt and
+#   transparent edge space) is missing.
+# - GFX-REPORT-STALE-PROVENANCE (warning): a record names a runtime file that no longer exists.
+# ---------------------------------------------------------------------------
+
+FAMILY_RULES = {'focus': 'GFX-FOCUS-SIZE', 'decision': 'GFX-DECISION-SIZE', 'idea': 'GFX-IDEA-SIZE'}
+REPORT_PROVENANCE = ROOT / 'docs' / 'systems' / 'event_system' / 'report_image_provenance.json'
+REPORT_PROCESSOR = ROOT / '.claude' / 'skills' / 'chaos-redux-event-assets' / 'tools' / 'process_report_event_image.py'
+GFX_LEVELS.update({
+    'GFX-FOCUS-SIZE': 'error', 'GFX-DECISION-SIZE': 'warning', 'GFX-IDEA-SIZE': 'warning',
+    'GFX-FOCUS-ALTERNATIVE': 'warning', 'GFX-OPAQUE-CANVAS': 'error', 'GFX-EMPTY-SUBJECT': 'error',
+    'GFX-GHOSTED': 'warning', 'GFX-CHROMA-FRINGE': 'warning',
+    'GFX-REPORT-PROVENANCE-MISMATCH': 'error', 'GFX-REPORT-RECIPE-MISMATCH': 'error',
+    'GFX-REPORT-NO-PROVENANCE': 'warning', 'GFX-REPORT-OPAQUE-CORNERS': 'warning',
+    'GFX-REPORT-STALE-PROVENANCE': 'warning',
+})
+
+
+def load_module(name: str, path: Path) -> Any:
+    spec = importlib.util.spec_from_file_location(name, path)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def dx10_uncompressed(path: Path) -> Image.Image:
+    """Decode the top level of an uncompressed DX10 DDS (BGRA or RGBA, sRGB or not), which Pillow refuses."""
+    raw = Path(path).read_bytes()
+    if raw[:4] != b'DDS ' or raw[84:88] != b'DX10' or len(raw) < 148:
+        raise ValueError('not a DX10 DDS')
+    height, width = struct.unpack_from('<2I', raw, 12)
+    dxgi = struct.unpack_from('<I', raw, 128)[0]
+    modes = {87: 'BGRA', 91: 'BGRA', 28: 'RGBA', 29: 'RGBA'}
+    if dxgi not in modes or len(raw) < 148 + width * height * 4:
+        raise ValueError(f'unsupported DX10 format {dxgi}')
+    return Image.frombytes('RGBA', (width, height), raw[148:148 + width * height * 4], 'raw', modes[dxgi])
+
+
+def decode_any(path: Path) -> Optional[Image.Image]:
+    """Decode a texture with Pillow, the strict BGRA reader or the DX10 reader; None when none can."""
+    for reader in (load, lambda p: strict_dds(p).convert('RGBA'), dx10_uncompressed):
+        try:
+            return reader(path)
+        except (OSError, ValueError, struct.error, NotImplementedError):
+            continue
+    return None
+
+
+def pixels_sha256(image: Image.Image) -> str:
+    return hashlib.sha256(image.convert('RGBA').tobytes()).hexdigest()
+
+
+def family_textures(root: Path, vanilla: Path) -> List[Dict[str, Any]]:
+    """Return one entry per texture that a focus, decision or idea consumer in `root` displays."""
+    audit = load_module('chaosx_asset_wiring_audit', ROOT / '.tools' / 'audits' / 'audit_asset_wiring_static.py')
+    consumers: Dict[str, str] = {}
+    for row in audit.expect_focus_shine(root):
+        consumers.setdefault(str(row['expected'])[:-len('_shine')], 'focus')
+    for row in audit.expect_decisions(root):
+        consumers.setdefault(str(row['expected']), 'decision')
+    for row in audit.expect_ideas(root):
+        consumers.setdefault(str(row['expected']), 'idea')
+    registry = {str(entry['sprite']): entry for entry in sprite_registry(root)}
+    textures: Dict[Path, Dict[str, Any]] = {}
+    for sprite, family in sorted(consumers.items()):
+        entry = registry.get(sprite)
+        if entry is None:
+            continue
+        texture = resolve_texture(str(entry['texture']), root, vanilla)
+        if texture is None or Path(root).resolve() not in texture.resolve().parents:
+            continue
+        textures.setdefault(texture, {'family': family, 'sprite': sprite, 'texture': texture,
+                                      'path': texture.relative_to(root).as_posix(), 'frames': int(entry['frames'])})
+    return list(textures.values())
+
+
+def family_findings(item: Dict[str, Any], changed: bool) -> Tuple[List[Finding], Dict[str, bool]]:
+    """Return the findings for one family texture and the per-rule outcome used by calibration."""
+    family, rel = str(item['family']), str(item['path'])
+    image = decode_any(Path(item['texture']))
+    if image is None:
+        return [], {'unreadable': True}
+    count = int(item['frames']) if int(item['frames']) > 0 and image.width % int(item['frames']) == 0 else 1
+    width, height = image.width // count, image.height
+    profile = PROFILE_DATA[family]
+    accepted = [(int(a[0]), int(a[1])) for a in profile['accepted']]
+    canvas = (int(profile['canvas'][0]), int(profile['canvas'][1]))
+    findings: List[Finding] = []
+    outcome = {'size_ok': (width, height) in accepted, 'alternative': (width, height) in accepted and (width, height) != canvas}
+    if not outcome['size_ok']:
+        rule = FAMILY_RULES[family]
+        findings.append(Finding('gfx', rule, str(profile['off_size_level']), rel, 0,
+                                f"{family} art for {item['sprite']} is {width}x{height}; accepted {accepted} (profiles.json)"))
+    elif outcome['alternative'] and family == 'focus':
+        findings.append(Finding('gfx', 'GFX-FOCUS-ALTERNATIVE', 'warning' if changed else 'review', rel, 0,
+                                f"focus art for {item['sprite']} is {width}x{height}; new focus art uses {canvas[0]}x{canvas[1]} (D1)"))
+    opaque = empty = ghosted = fringe = False
+    for frame in frames(image, count):
+        alpha = np.asarray(frame)[..., 3]
+        if int(alpha.max()) == 0:
+            empty = True
+            continue
+        corners = (alpha[0, 0], alpha[0, -1], alpha[-1, 0], alpha[-1, -1])
+        opaque = opaque or min(int(c) for c in corners) == 255
+        ghosted = ghosted or (family == 'focus' and bool(alpha_stats(frame)['ghosted']))
+        fringe = fringe or edge_stats(frame)['chroma_edge_pixels'] > 0
+    outcome.update({'opaque_canvas': opaque, 'empty': empty, 'ghosted': ghosted, 'fringe': fringe})
+    for flag, rule, message in (
+            (empty, 'GFX-EMPTY-SUBJECT', 'a frame has no visible pixel'),
+            (opaque, 'GFX-OPAQUE-CANVAS', 'all four corners are fully opaque, so the unused canvas has a background'),
+            (ghosted, 'GFX-GHOSTED', 'visible pixels average below alpha 200'),
+            (fringe, 'GFX-CHROMA-FRINGE', 'edge pixels carry magenta or green key colour')):
+        if flag:
+            findings.append(gfx_finding(rule, rel, 0, f"{family} art for {item['sprite']}: {message}"))
+    return findings, outcome
+
+
+def check_families(root: Path = ROOT, paths: Optional[List[str]] = None, vanilla: Optional[Path] = None) -> List[Finding]:
+    selector, findings = PathFilter(paths), []
+    for item in family_textures(root, vanilla or game_dir()):
+        if paths and not selector.matches(str(item['path'])):
+            continue
+        findings += family_findings(item, bool(paths))[0]
+    return findings
+
+
+def calibrate_families(vanilla: Path) -> int:
+    """Measure every family rule against the installed vanilla tree (positive control for each rule)."""
+    totals: Dict[str, Dict[str, int]] = {}
+    for item in family_textures(vanilla, vanilla):
+        _, outcome = family_findings(item, False)
+        bucket = totals.setdefault(str(item['family']), {})
+        bucket['files'] = bucket.get('files', 0) + 1
+        for key, value in outcome.items():
+            bucket[key] = bucket.get(key, 0) + int(bool(value))
+    for family, bucket in sorted(totals.items()):
+        files = bucket['files']
+        readable = files - bucket.get('unreadable', 0)
+        print(f"{family}: {files} vanilla textures, {readable} readable")
+        for key in ('size_ok', 'alternative', 'opaque_canvas', 'empty', 'ghosted', 'fringe'):
+            print(f"  {key:12s} {bucket.get(key, 0):5d}  ({bucket.get(key, 0) / max(readable, 1):.1%})")
+    return 0
+
+
+def check_reports(root: Path = ROOT, paths: Optional[List[str]] = None) -> List[Finding]:
+    selector, findings = PathFilter(paths), []
+    records: Dict[str, Dict[str, Any]] = json.loads(REPORT_PROVENANCE.read_text(encoding='utf-8'))['records'] \
+        if REPORT_PROVENANCE.is_file() else {}
+    base = Path(root) / 'gfx' / 'event_pictures'
+    candidates = sorted(p for p in base.rglob('*') if p.suffix.lower() in ('.dds', '.tga', '.png') and p.is_file()) \
+        if base.is_dir() else []
+    for path in candidates:
+        rel = path.relative_to(root).as_posix()
+        if not selector.matches(rel):
+            continue
+        try:
+            if tuple(header_size(path)) != (210, 176):
+                continue
+        except (OSError, ValueError, struct.error):
+            continue
+        image = decode_any(path)
+        if image is None:
+            continue
+        record = records.get(rel)
+        if record is None:
+            findings.append(gfx_finding('GFX-REPORT-NO-PROVENANCE', rel, 0,
+                                        'no processing record; only size and transparent corners can be checked'))
+            alpha = image.getchannel('A')
+            if any(alpha.getpixel(xy) for xy in ((0, 0), (209, 0), (0, 175), (209, 175))):
+                findings.append(gfx_finding('GFX-REPORT-OPAQUE-CORNERS', rel, 0,
+                                            'a corner is opaque, so the report-card tilt and transparent edge space are missing'))
+            continue
+        if pixels_sha256(image) != record['pixels_sha256']:
+            findings.append(gfx_finding('GFX-REPORT-PROVENANCE-MISMATCH', rel, 0,
+                                        'runtime pixels differ from the recorded processed output'))
+        source = Path(root) / str(record['source']['path'])
+        if source.is_file() and digest(source) == record['source']['sha256']:
+            processor = load_module('chaosx_report_processor', REPORT_PROCESSOR)
+            with tempfile.TemporaryDirectory() as folder:
+                rerun = Path(folder) / 'rerun.png'
+                processor.process_report_event_image(input_path=source, output_path=rerun, **record_arguments(record))
+                if pixels_sha256(load(rerun)) != record['pixels_sha256']:
+                    findings.append(gfx_finding('GFX-REPORT-RECIPE-MISMATCH', rel, 0,
+                                                'rerunning the recorded recipe on the recorded source gives different pixels'))
+    for rel in sorted(records):
+        if not (Path(root) / rel).is_file() and selector.matches(rel):
+            findings.append(gfx_finding('GFX-REPORT-STALE-PROVENANCE', rel, 0, 'the provenance record names a missing runtime file'))
+    return findings
+
+
+def record_arguments(record: Dict[str, Any]) -> Dict[str, Any]:
+    """Recorded processor arguments with tuple-typed values restored."""
+    arguments = dict(record['arguments'])
+    for key in ('canvas_size', 'card_size', 'shadow_offset'):
+        arguments[key] = tuple(arguments[key])
+    return arguments
+
+
 CONFORMANCE_CHECKS: Dict[str, Callable[..., List[Finding]]] = {
     'sprites': check_sprites, 'flags': check_flags, 'achievements': check_achievements, 'binaries': check_binaries,
+    'families': check_families, 'reports': check_reports,
 }
 
 
 def run_conformance(command: str, args: argparse.Namespace) -> int:
+    if getattr(args, 'calibrate_vanilla', False):
+        return calibrate_families(game_dir())
     paths = requested_paths(args)
     chosen = CONFORMANCE_CHECKS if command == 'audit' else {command: CONFORMANCE_CHECKS[command]}
     findings = sorted((f for check in chosen.values() for f in check(ROOT, paths)),
@@ -612,6 +839,16 @@ def input_items(args: argparse.Namespace) -> List[Tuple[Path, int]]:
     return list(unique.values())
 
 
+def add_conformance_parsers(sub: Any) -> None:
+    """Add one subcommand per read-only conformance check, plus `audit` for all of them."""
+    for command in (*CONFORMANCE_CHECKS, 'audit'):
+        p = sub.add_parser(command, help='read-only repository conformance check (see the module comments)')
+        p.add_argument('--json', help='also write the findings as JSON')
+        add_arguments(p)
+        if command == 'families':
+            p.add_argument('--calibrate-vanilla', action='store_true', help='measure each family rule against the installed game')
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
@@ -641,10 +878,7 @@ def main() -> int:
     p.add_argument('--groups', nargs='+', required=True)
     p.add_argument('--out', required=True)
     p.add_argument('--label', default='review')
-    for command in (*CONFORMANCE_CHECKS, 'audit'):
-        p = sub.add_parser(command, help='read-only repository conformance check (see the module comments)')
-        p.add_argument('--json', help='also write the findings as JSON')
-        add_arguments(p)
+    add_conformance_parsers(sub)
     args = parser.parse_args()
     if args.command in CONFORMANCE_CHECKS or args.command == 'audit':
         return run_conformance(args.command, args)

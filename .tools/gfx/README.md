@@ -36,11 +36,14 @@ python -B .tools/gfx/gfx.py sheet --groups 015 shared_chaosx_texticons --out doc
 Read-only repository conformance checks follow the `.tools/lib/report.py` contract (`--paths`, `--paths-from`, `--json`, `--fail-on`), so `.tools/check.py` can run them:
 
 ```powershell
-python -B .tools/gfx/gfx.py audit                       # all four checks below
+python -B .tools/gfx/gfx.py audit                       # every check below
 python -B .tools/gfx/gfx.py sprites --paths interface/countrystateview.gfx
 python -B .tools/gfx/gfx.py flags
 python -B .tools/gfx/gfx.py achievements
 python -B .tools/gfx/gfx.py binaries --paths gfx/interface/goals
+python -B .tools/gfx/gfx.py families --paths gfx/interface/goals/x.dds
+python -B .tools/gfx/gfx.py families --calibrate-vanilla   # per-rule rates on the installed game
+python -B .tools/gfx/gfx.py reports
 ```
 
 | Rule | Level | What it checks and why |
@@ -52,8 +55,20 @@ python -B .tools/gfx/gfx.py binaries --paths gfx/interface/goals
 | `GFX-ACHIEVEMENT-SIZE` | error | Achievement art is 64x64 (882 of 882 vanilla files). Triplet presence for defined achievements is checked by `audit_asset_wiring_static.py`. |
 | `GFX-LFS-POINTER`, `GFX-TRUNCATED` | error | Runtime binaries under `gfx/`, `sound/` and `music/` hold real data: no LFS pointer, a complete header, and at least the payload their DDS or TGA header declares. DX10, compressed and mipmapped DDS are accepted. |
 
-These checks establish geometry and file integrity only, never visual quality.
-The size profiles of the `size` command are separate and still come from the October repair task; the plan's decisions D1–D3 settle the focus, decision and idea targets.
+| `GFX-FOCUS-SIZE` | error | A focus icon's frame is 94x86 or 100x88 (`profiles.json`, decision D1). |
+| `GFX-FOCUS-ALTERNATIVE` | warning for `--paths`, review otherwise | A focus icon is 100x88; new focus art uses 94x86 (D1). |
+| `GFX-DECISION-SIZE`, `GFX-IDEA-SIZE` | warning | A decision icon is 32x32, 33x32 or 34x34, and an idea picture 64x64, 60x68 or 65x67 (D2, D3). |
+| `GFX-OPAQUE-CANVAS` | error | All four corners of a focus, decision or idea frame are fully opaque, so the unused canvas has a background. No vanilla texture of those families matches. |
+| `GFX-EMPTY-SUBJECT` | error | A focus, decision or idea frame has no visible pixel. |
+| `GFX-GHOSTED` | warning | A focus icon's visible pixels average below alpha 200 (D5); decision and idea icons are exempt because vanilla's are normally that faint. |
+| `GFX-CHROMA-FRINGE` | warning | Edge pixels of a family texture carry the magenta or green key colour that `defringe` repairs; legitimate green or purple art also triggers it. |
+| `GFX-REPORT-PROVENANCE-MISMATCH`, `GFX-REPORT-RECIPE-MISMATCH` | error | A 210x176 report picture with a record in `docs/systems/event_system/report_image_provenance.json` has the recorded pixels, and rerunning the recorded recipe on the recorded source (when it still exists) reproduces them. |
+| `GFX-REPORT-NO-PROVENANCE`, `GFX-REPORT-OPAQUE-CORNERS`, `GFX-REPORT-STALE-PROVENANCE` | warning | A report picture has no record (then only its size and transparent corners can be checked), a corner is opaque (the report-card tilt is missing), or a record names a missing file. |
+
+Family checks take their consumers from the asset audit's implicit-lookup extractors (focus `icon =`, decision `icon =`, idea `picture` or default), resolve each sprite through the `.gfx` registry, and measure only textures stored in the mod.
+`families --calibrate-vanilla` runs the same rules on the installed game and prints each rule's rate; on 25 October 2026 vanilla matched `GFX-OPAQUE-CANVAS` and `GFX-EMPTY-SUBJECT` 0 times in 4,440 textures, `GFX-GHOSTED` on 5.5% of focus icons, and `GFX-CHROMA-FRINGE` on 4–7%.
+The report recipe is recorded by `process_report_event_image.py --runtime gfx/event_pictures/<file>.dds` (see the event-assets skill); `pixels_sha256` is preserved by the uncompressed BGRA DDS conversion, so the runtime file stays verifiable after its temporary workspace is deleted.
+These checks establish geometry, transparency and file integrity only, never visual quality or style.
 
 Use the actual vanilla texture path from its `.gfx` definition; the counter command requires this explicit reference and does not guess it from a unit name.
 Exit status is `0` when every requested operation/check succeeds, and `1` for findings or input errors.
@@ -93,22 +108,22 @@ The contact sheet shows the first frame plus the declared frame count; inspect e
 
 ## Slots and counter conventions
 
-Profiles use the explicit October GFX repair plan's slot contract:
+Profiles live in `profiles.json`, one row per family with its canvas for new art, its accepted sizes, its minimum margin, its frame count and the source of each number (the plan's decisions D1–D3, vanilla counts, or the October 2026 repair task):
 
-| Profile | Per-frame canvas | Minimum margin |
-|---|---|---|
-| focus | 94x86 | 2 px |
-| decision | 34x34 | 2 px |
-| category (small icon) | 52x40 | 3 px |
-| idea | 64x64 | 2 px |
-| report | 210x176 | none |
-| news | 397x153 | none |
-| counter-large | 76x42 | 1 px |
-| counter-small | 30x12 | none (vanilla fills the top/bottom) |
-| texticon | 18x18 | 1 px |
+| Profile | Canvas for new art | Also accepted | Minimum margin |
+|---|---|---|---|
+| focus | 94x86 | 100x88 | 2 px |
+| decision | 32x32 | 33x32, 34x34 | 2 px |
+| category (small icon) | 52x40 | | 3 px |
+| idea | 64x64 | 60x68, 65x67 | 2 px |
+| report | 210x176 | | none |
+| news | 397x153 | | none |
+| counter-large | 76x42 per frame, 2 frames | | 1 px |
+| counter-small | 30x12 per frame, 2 frames | | none (vanilla fills the top/bottom) |
+| texticon | 18x18 | | 1 px (not calibrated against vanilla) |
 
+`size --profile` accepts any listed size unless `--canvas` overrides it.
 `category` means the small category icon, not the separate 114x101 category illustration.
-The task's 34x34 decision target takes precedence over the skill's older 32x32 default.
 Always inspect the actual consumer; use `--canvas W H` and `--margin N` for a verified exception.
 Horizontal strips require `--frames N`; canvas width is checked against the per-frame width multiplied by N.
 Margins use alpha at least 16 to disregard negligible shadow tails.

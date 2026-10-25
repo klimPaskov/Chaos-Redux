@@ -105,23 +105,13 @@ Before processing a large asset set, classify paths by role: `.gfx` files are te
 
 ### Standard HOI4 asset sizes
 
-Confirm canvas and frame behavior before requesting art. Use these defaults unless the accepted spec, active consumer, or established repo pattern requires another size:
+Confirm canvas and frame behavior before requesting art. Focus, decision, idea, category, report, news and counter canvases, and sizes still accepted for existing art, are in `.tools/gfx/profiles.json`; check a file with `.tools/gfx/gfx.py size --profile <name>` and wired art with `gfx.py families`. News images are black and white. For the other families use these defaults unless the accepted spec, active consumer, or established repo pattern requires another size:
 
-- report event images: 210x176
-- news event images: 397x153, black and white
-- country-leader portraits: 156x210
-- commander portraits: 156x210 full portrait textures, never a fabricated 50x67 source texture
-- operative portraits: 156x210 full portrait textures, still follow the cataloged owning sprite
-- flags small: 10x7
-- flags medium: 41x26
-- flags normal: 82x52
-- tech icons small: 64x64
-- tech icons medium: 132x52
+- country-leader, commander and operative portraits: 156x210 full textures; commanders never use a fabricated 50x67 source texture, and operatives still follow the cataloged owning sprite
+- flags: 82x52 normal, 41x26 medium, 10x7 small
+- tech icons: 64x64 small, 132x52 medium
 - achievements: 64x64
 - super-event images: 457x328
-- decision icons: 32x32
-- idea and national spirit icons: 64x64
-- focus icons: 94x86
 
 For every icon, counter, emblem, strip, or model material not listed above, take the canvas and frame behavior from the matching canonical catalog entry and owning vanilla definition. Do not infer a universal size from the folder name or from a visually similar asset family.
 

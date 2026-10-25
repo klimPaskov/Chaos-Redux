@@ -15,9 +15,11 @@ Report-event images use a finished `210x176` RGBA canvas. The source photograph 
 Do not ask image generation to create the tilted card. Generate or source the documentary photograph first, then apply the card treatment locally. This keeps the tilt, shadow, and margins consistent.
 
 ```powershell
-python -B .claude/skills/chaos-redux-event-assets/tools/process_report_event_image.py source.png processed_report_event.png
+python -B .claude/skills/chaos-redux-event-assets/tools/process_report_event_image.py source.png processed_report_event.png --runtime gfx/event_pictures/<event>/<file>.dds
 python -B .claude/skills/chaos-redux-event-assets/tools/process_report_event_image.py source_folder processed_folder
 ```
+
+`--runtime` names the DDS the card becomes and records its source hash, settings and output pixel hash in `docs/systems/event_system/report_image_provenance.json`; commit that record with the DDS. Use it for every final card (process cards one file at a time). `python -B .tools/gfx/gfx.py reports` then confirms the runtime pixels match the record and, while the source still exists, that rerunning the recipe reproduces them; a card without a record only gets the size and corner checks.
 
 The script performs cover crop, black-and-white conversion, sepia application, grain, paper border, deterministic tilt, transparent canvas margin, and soft shadow. It writes RGBA PNG output. Convert the processed PNG to DDS through the normal repo workflow.
 
@@ -25,7 +27,8 @@ Validation:
 
 - processed PNG is exactly `210x176`
 - final DDS is exactly `210x176`
-- corner pixels are transparent
+- corner pixels are transparent (`gfx.py reports` flags opaque corners)
+- `gfx.py reports` reports no provenance or recipe mismatch for the card
 - no hard photo pixels are clipped
 - tilt is visible but subtle
 - shadow is soft and not a thick border

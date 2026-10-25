@@ -6,10 +6,13 @@ minimal DDS and TGA headers in a temporary folder. Run from the mod root:
 """
 
 import importlib.util
+import io
 import struct
 import tempfile
 import unittest
 from pathlib import Path
+
+from PIL import Image
 
 TOOLS = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("chaosx_gfx_conformance", TOOLS / "gfx" / "gfx.py")
@@ -94,6 +97,53 @@ class Achievements(unittest.TestCase):
 		tree.add("gfx/achievements/good.dds", dds(64, 64))
 		tree.add("gfx/achievements/small.dds", dds(32, 32))
 		self.assertEqual(tree.rules(gfx.check_achievements), [("GFX-ACHIEVEMENT-SIZE", "gfx/achievements/small.dds")])
+
+
+def png(width, height, background=(0, 0, 0, 0), subject=(200, 160, 90, 255), empty=False):
+	"""A PNG with a centred opaque subject on the given background colour."""
+	image = Image.new("RGBA", (width, height), background)
+	if not empty:
+		for x in range(width // 4, width * 3 // 4):
+			for y in range(height // 4, height * 3 // 4):
+				image.putpixel((x, y), subject)
+	buffer = io.BytesIO()
+	image.save(buffer, format="PNG")
+	return buffer.getvalue()
+
+
+class FamilyChecks(unittest.TestCase):
+	"""B1-B4 on a tiny mod: consumers come from focus, decision and idea script, textures from the .gfx file."""
+
+	def test_family_levels(self):
+		tree = Tree(self)
+		tree.add("common/national_focus/tree.txt", """focus_tree = {
+	focus = { id = good icon = GFX_focus_good }
+	focus = { id = vanilla_size icon = GFX_focus_vanilla_size }
+	focus = { id = odd icon = GFX_focus_odd }
+}
+""")
+		tree.add("common/decisions/test.txt", "category = {\n\tbig_decision = { icon = big }\n\tempty_decision = { icon = empty }\n}\n")
+		tree.add("common/ideas/test.txt", "ideas = {\n\tcountry = {\n\t\tboxed_idea = { picture = boxed }\n\t}\n}\n")
+		sprites = {"GFX_focus_good": "goals/good", "GFX_focus_vanilla_size": "goals/vanilla_size", "GFX_focus_odd": "goals/odd",
+			"GFX_decision_big": "decisions/big", "GFX_decision_empty": "decisions/empty", "GFX_idea_boxed": "ideas/boxed"}
+		tree.add("interface/test.gfx", "spriteTypes = {\n" + "".join(
+			f'\tspriteType = {{ name = "{name}" texturefile = "gfx/interface/{path}.png" }}\n' for name, path in sprites.items()) + "}\n")
+		tree.add("gfx/interface/goals/good.png", png(94, 86))
+		tree.add("gfx/interface/goals/vanilla_size.png", png(100, 88))
+		tree.add("gfx/interface/goals/odd.png", png(90, 80))
+		tree.add("gfx/interface/decisions/big.png", png(40, 40))
+		tree.add("gfx/interface/decisions/empty.png", png(32, 32, empty=True))
+		tree.add("gfx/interface/ideas/boxed.png", png(64, 64, background=(30, 30, 30, 255)))
+		found = gfx.check_families(tree.root, None, tree.root / "no_vanilla")
+		self.assertEqual(sorted((f.rule, f.level, f.path.split("/")[-1]) for f in found), [
+			("GFX-DECISION-SIZE", "warning", "big.png"),
+			("GFX-EMPTY-SUBJECT", "error", "empty.png"),
+			("GFX-FOCUS-ALTERNATIVE", "review", "vanilla_size.png"),
+			("GFX-FOCUS-SIZE", "error", "odd.png"),
+			("GFX-OPAQUE-CANVAS", "error", "boxed.png"),
+		])
+		changed = gfx.check_families(tree.root, ["gfx/interface/goals/vanilla_size.png"], tree.root / "no_vanilla")
+		self.assertEqual([(f.rule, f.level) for f in changed], [("GFX-FOCUS-ALTERNATIVE", "warning")])
 
 
 class RuntimeBinaries(unittest.TestCase):
