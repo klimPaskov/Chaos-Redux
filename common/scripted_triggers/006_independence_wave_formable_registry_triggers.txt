@@ -159,14 +159,20 @@ has_independence_wave_form07_consent_compatibility = {
 	OR = {
 		AND = {
 			check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.negotiated_federation }
-			OR = {
-				check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.voluntary_membership }
-				check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.unanimous_compact }
+			custom_trigger_tooltip = {
+				tooltip = independence_wave_formable_voluntary_or_unanimous_rule_tt
+				OR = {
+					check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.voluntary_membership }
+					check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.unanimous_compact }
+				}
 			}
 		}
 		AND = {
 			check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.revolutionary_union }
-			check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.voluntary_membership }
+			custom_trigger_tooltip = {
+				tooltip = independence_wave_formable_voluntary_rule_tt
+				check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.voluntary_membership }
+			}
 		}
 	}
 }
@@ -521,7 +527,10 @@ has_independence_wave_form11_diplomatic_connection_to_inviting_carrier = {
 		is_neighbor_of = var:independence_wave_formable_inviting_carrier
 		# Both hosts belong to the same Event 006 region; Rostov usually lies
 		# between them, so a shared region stands in for a land border.
-		check_variable = { var = independence_wave_region value = var:independence_wave_formable_inviting_carrier.independence_wave_region compare = equals }
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_same_region_as_inviting_carrier_tt
+			check_variable = { var = independence_wave_region value = var:independence_wave_formable_inviting_carrier.independence_wave_region compare = equals }
+		}
 	}
 }
 
@@ -728,7 +737,10 @@ has_independence_wave_form09_connection_to_inviting_carrier = {
 		gives_military_access_to = var:independence_wave_formable_inviting_carrier
 		has_guaranteed = var:independence_wave_formable_inviting_carrier
 		is_guaranteed_by = var:independence_wave_formable_inviting_carrier
-		check_variable = { var = independence_wave_region value = var:independence_wave_formable_inviting_carrier.independence_wave_region compare = equals }
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_same_region_as_inviting_carrier_tt
+			check_variable = { var = independence_wave_region value = var:independence_wave_formable_inviting_carrier.independence_wave_region compare = equals }
+		}
 	}
 }
 
@@ -882,7 +894,10 @@ has_independence_wave_form16_member_policy = {
 		check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.negotiated_federation }
 		check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.league_transformation }
 	}
-	check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.voluntary_membership }
+	custom_trigger_tooltip = {
+		tooltip = independence_wave_formable_voluntary_rule_tt
+		check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.voluntary_membership }
+	}
 	ARM = { has_independence_wave_form16_member_candidate = yes }
 	GEO = { has_independence_wave_form16_member_candidate = yes }
 	AZR = { has_independence_wave_form16_member_candidate = yes }
@@ -1318,7 +1333,10 @@ has_accepted_independence_wave_formable_invitation_from_root = {
 	check_variable = { var = independence_wave_formable_inviting_carrier_generation value = ROOT.independence_wave_generation_id compare = equals }
 	check_variable = { var = independence_wave_formable_invitation_family value = ROOT.independence_wave_formable_profile_family compare = equals }
 	check_variable = { var = independence_wave_formable_invitation_sequence value = ROOT.independence_wave_formable_proposal_sequence compare = equals }
-	check_variable = { var = independence_wave_formable_consent_family value = ROOT.independence_wave_formable_profile_family compare = equals }
+	custom_trigger_tooltip = {
+		tooltip = independence_wave_formable_consent_for_this_union_tt
+		check_variable = { var = independence_wave_formable_consent_family value = ROOT.independence_wave_formable_profile_family compare = equals }
+	}
 	var:independence_wave_formable_inviting_carrier = { tag = ROOT }
 	ROOT = {
 		has_country_flag = independence_wave_formable_founding_proposal_active
@@ -1526,38 +1544,41 @@ can_independence_wave_prepare_selected_formable_transaction = {
 }
 
 can_independence_wave_formable_pass_congress_vote = {
-	independence_wave_formable_member_arrays_are_aligned = yes
-	check_variable = {
-		var = independence_wave_formable_member_count
-		value = independence_wave_formable_minimum_members
-		compare = greater_than_or_equals
-	}
-	check_variable = {
-		var = independence_wave_formable_anchor_count
-		value = independence_wave_formable_minimum_anchors
-		compare = greater_than_or_equals
-	}
-	OR = {
-		AND = {
-			check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.voluntary_membership }
-			check_variable = { var = independence_wave_formable_consent_count value = independence_wave_formable_minimum_consents compare = greater_than_or_equals }
-			check_variable = { independence_wave_formable_opposed_count = constant:independence_wave_formable_tuning.no_entries }
+	custom_trigger_tooltip = {
+		tooltip = independence_wave_formable_congress_vote_ready_tt
+		independence_wave_formable_member_arrays_are_aligned = yes
+		check_variable = {
+			var = independence_wave_formable_member_count
+			value = independence_wave_formable_minimum_members
+			compare = greater_than_or_equals
 		}
-		AND = {
-			check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.unanimous_compact }
-			check_variable = { var = independence_wave_formable_consent_count value = independence_wave_formable_member_count compare = greater_than_or_equals }
+		check_variable = {
+			var = independence_wave_formable_anchor_count
+			value = independence_wave_formable_minimum_anchors
+			compare = greater_than_or_equals
 		}
-		AND = {
-			check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.controlled_settlement }
-			check_variable = {
-				var = independence_wave_formable_controlled_anchor_count
-				value = constant:independence_wave_formable_tuning.minimum_military_controlled_anchors
-				compare = greater_than_or_equals
+		OR = {
+			AND = {
+				check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.voluntary_membership }
+				check_variable = { var = independence_wave_formable_consent_count value = independence_wave_formable_minimum_consents compare = greater_than_or_equals }
+				check_variable = { independence_wave_formable_opposed_count = constant:independence_wave_formable_tuning.no_entries }
 			}
-			check_variable = {
-				var = independence_wave_formable_consent_count
-				value = constant:independence_wave_formable_tuning.loop_increment
-				compare = greater_than_or_equals
+			AND = {
+				check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.unanimous_compact }
+				check_variable = { var = independence_wave_formable_consent_count value = independence_wave_formable_member_count compare = greater_than_or_equals }
+			}
+			AND = {
+				check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.controlled_settlement }
+				check_variable = {
+					var = independence_wave_formable_controlled_anchor_count
+					value = constant:independence_wave_formable_tuning.minimum_military_controlled_anchors
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = independence_wave_formable_consent_count
+					value = constant:independence_wave_formable_tuning.loop_increment
+					compare = greater_than_or_equals
+				}
 			}
 		}
 	}
@@ -1940,9 +1961,12 @@ has_independence_wave_form39_strict_mutation_preconditions = {
 	has_independence_wave_form39_researched_member_packages = yes
 	has_valid_independence_wave_formable_founding_proposal = yes
 	check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.negotiated_federation }
-	OR = {
-		check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.voluntary_membership }
-		check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.unanimous_compact }
+	custom_trigger_tooltip = {
+		tooltip = independence_wave_formable_voluntary_or_unanimous_rule_tt
+		OR = {
+			check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.voluntary_membership }
+			check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.unanimous_compact }
+		}
 	}
 	has_independence_wave_form39_exact_founding_ledger = yes
 }

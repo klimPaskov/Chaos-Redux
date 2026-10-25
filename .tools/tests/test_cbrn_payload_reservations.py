@@ -65,6 +65,9 @@ CONSTANT_FILES = ("cbrn_payload_reservation_constants.txt", "cbrn_system_constan
                   "032_missiles_constants.txt", "biological_lifecycle_constants.txt")
 
 
+CONTAINER_MODES = {"AND": "AND", "OR": "OR", "NOT": "NOT", "hidden_trigger": "AND", "custom_trigger_tooltip": "AND"}
+
+
 @dataclass(frozen=True)
 class Node:
     key: str
@@ -381,8 +384,9 @@ class Machine:
 
     def predicate(self, n):
         k, v = n.key, n.value
-        if k in ("AND", "OR", "NOT", "hidden_trigger"):
-            return self.condition(v, "AND" if k == "hidden_trigger" else k)
+        if k in CONTAINER_MODES:
+            # `tooltip` inside custom_trigger_tooltip is only the shown text; its triggers evaluate as AND.
+            return self.condition([c for c in v if c.key != "tooltip"], CONTAINER_MODES[k])
         if k == "check_variable":
             return self.compare(v)
         if k == "has_variable":

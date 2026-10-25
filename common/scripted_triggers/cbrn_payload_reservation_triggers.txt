@@ -37,12 +37,15 @@ cbrn_payload_receipt_identity_matches = {
 }
 
 cbrn_payload_receipt_has_full_hold = {
-	cbrn_payload_receipt_identity_matches = yes
-	has_variable = cbrn_payload_receipt_required_@var:cbrn_payload_lookup_handle
-	has_variable = cbrn_payload_receipt_held_@var:cbrn_payload_lookup_handle
-	check_variable = { var = cbrn_payload_receipt_phase_@var:cbrn_payload_lookup_handle value = constant:cbrn_payload_receipt_phase.held compare = equals }
-	check_variable = { cbrn_payload_receipt_required_@var:cbrn_payload_lookup_handle > constant:cbrn_math.zero }
-	check_variable = { var = cbrn_payload_receipt_held_@var:cbrn_payload_lookup_handle value = cbrn_payload_receipt_required_@var:cbrn_payload_lookup_handle compare = equals }
+	custom_trigger_tooltip = {
+		tooltip = cbrn_payload_receipt_has_full_hold_tt
+		cbrn_payload_receipt_identity_matches = yes
+		has_variable = cbrn_payload_receipt_required_@var:cbrn_payload_lookup_handle
+		has_variable = cbrn_payload_receipt_held_@var:cbrn_payload_lookup_handle
+		check_variable = { var = cbrn_payload_receipt_phase_@var:cbrn_payload_lookup_handle value = constant:cbrn_payload_receipt_phase.held compare = equals }
+		check_variable = { cbrn_payload_receipt_required_@var:cbrn_payload_lookup_handle > constant:cbrn_math.zero }
+		check_variable = { var = cbrn_payload_receipt_held_@var:cbrn_payload_lookup_handle value = cbrn_payload_receipt_required_@var:cbrn_payload_lookup_handle compare = equals }
+	}
 }
 
 cbrn_payload_receipt_matches_requested_binding = {
@@ -80,19 +83,25 @@ cbrn_payload_receipt_can_return = {
 # This checks current technology/project and profile readiness, not a second
 # free-stock payment. The action's policy/target checks remain a separate gate.
 cbrn_payload_receipt_technology_and_profile_are_ready = {
-	set_temp_variable = { cbrn_action_agent = cbrn_payload_receipt_agent_@var:cbrn_payload_lookup_handle }
-	set_temp_variable = { cbrn_action_agent_class = cbrn_payload_receipt_class_@var:cbrn_payload_lookup_handle }
-	set_temp_variable = { cbrn_action_delivery_route = cbrn_payload_receipt_route_@var:cbrn_payload_lookup_handle }
-	cbrn_action_agent_is_unlocked = yes
-	cbrn_action_payload_profile_is_ready = yes
+	custom_trigger_tooltip = {
+		tooltip = cbrn_payload_receipt_technology_and_profile_are_ready_tt
+		set_temp_variable = { cbrn_action_agent = cbrn_payload_receipt_agent_@var:cbrn_payload_lookup_handle }
+		set_temp_variable = { cbrn_action_agent_class = cbrn_payload_receipt_class_@var:cbrn_payload_lookup_handle }
+		set_temp_variable = { cbrn_action_delivery_route = cbrn_payload_receipt_route_@var:cbrn_payload_lookup_handle }
+		cbrn_action_agent_is_unlocked = yes
+		cbrn_action_payload_profile_is_ready = yes
+	}
 }
 
 cbrn_payload_receipt_source_is_controlled = {
-	has_variable = cbrn_payload_receipt_site_@var:cbrn_payload_lookup_handle
-	has_variable = cbrn_payload_receipt_site_id_@var:cbrn_payload_lookup_handle
-	var:cbrn_payload_receipt_site_@var:cbrn_payload_lookup_handle = {
-		is_controlled_by = PREV
-		check_variable = { var = id value = PREV.cbrn_payload_receipt_site_id_@var:cbrn_payload_lookup_handle compare = equals }
+	custom_trigger_tooltip = {
+		tooltip = cbrn_payload_receipt_source_is_controlled_tt
+		has_variable = cbrn_payload_receipt_site_@var:cbrn_payload_lookup_handle
+		has_variable = cbrn_payload_receipt_site_id_@var:cbrn_payload_lookup_handle
+		var:cbrn_payload_receipt_site_@var:cbrn_payload_lookup_handle = {
+			is_controlled_by = PREV
+			check_variable = { var = id value = PREV.cbrn_payload_receipt_site_id_@var:cbrn_payload_lookup_handle compare = equals }
+		}
 	}
 }
 
@@ -106,9 +115,12 @@ cbrn_air_payload_profile_has_no_reserved_stock = {
 }
 
 cbrn_country_has_reserved_chemical_payload = {
-	OR = {
-		check_variable = { cbrn_payload_held_total > constant:cbrn_math.zero }
-		check_variable = { cbrn_payload_quarantined_count > constant:cbrn_math.zero }
+	custom_trigger_tooltip = {
+		tooltip = cbrn_country_has_reserved_chemical_payload_tt
+		OR = {
+			check_variable = { cbrn_payload_held_total > constant:cbrn_math.zero }
+			check_variable = { cbrn_payload_quarantined_count > constant:cbrn_math.zero }
+		}
 	}
 }
 

@@ -569,6 +569,29 @@ Status: `implemented` in the Agentic HOI4 Modding package on its local branch `f
 - **Run.** In the package, every command of the CI workflow passed locally on Windows with Python 3.9; the Linux Python 3.13 run happens on push. `check.py full` there ends with ten `LOC-PARSE` errors, the template's `[MOD_PREFIX]` localisation keys, which HOI4 Mod Setup fills on install; they are why CI does not run the game-dependent audits on the source package.
 - **Not covered.** The 3D pipeline divergence named in P9 is outside section 8 and was not reconciled.
 
+### Step 9: out-of-the-box setup and hand-off closure (25 October 2026)
+
+Status: `implemented`. Requested by the user after step 8 ("everything must be fixed and working smoothly ... ready for full chaos redux or other mod work ... everything should come working out of the box").
+
+- **Setup.** `check.py doctor` (shared `lib/doctor.py`) reports Python, the packages in the new `.tools/requirements.txt`, the game folder, git, uv, the HOI4 Agent Tools command and the machine-local ignores, with the fix for each, and exits 0 when a `full` run has what it needs. `lib/game.py` resolves the game folder from `HOI4_GAME_DIR`, then the gitignored `.tools/local_settings.json` (`doctor --save-game-dir`), then the Steam libraries (default folders, the Windows registry, `libraryfolders.vdf`). `quality.py --adopt` records files the baseline has never seen, so a mod's pre-existing tools start clean while recorded files stay ratcheted. A check that cannot run points at `doctor`. `test_game_dir.py` covers the lookup order and `doctor --save-game-dir`.
+- **Fresh install.** A disposable mod received exactly the files of the package components `runtime.agent_sync`, `core.skills`, `core.subagents`, `core.claude.instructions`, `core.agents` and `runtime.claude.mcp`, plus sample content and a tool file of its own. After the installer's normal steps (synchronizers, `quality.py --adopt`), `doctor` and `check.py full` exited 0. The run found two package defects, both fixed: the generators check failed for a mod without `.claude/agents`, and nothing installed the check dependencies. On this machine the global npm `hoi4-agent-tools` 3.9.0 fails at startup, so `script-validate` is skipped there; the pinned private runtimes work, and the HOI4 Mod Setup worker was told.
+- **Generic package.** [klimPaskov/Agentic-HOI4-Modding#29](https://github.com/klimPaskov/Agentic-HOI4-Modding/pull/29) carries the setup work; the shared-tool lock now holds 30 files. The HOI4 Mod Setup session was asked to install the dependencies, write `.tools/local_settings.json`, run `quality.py --adopt`, ensure the ignores, merge section 4a into existing instructions, fill `project_settings.json` and `gfx/settings.json` from the mod name and prefix, and verify with a disposable install.
+- **Hand-offs closed.**
+  - The 13 focus sizes are now 94x86 by transparent padding, with one wider icon downscaled once.
+  - The 11 opaque idea, focus and decision canvases now have alpha. Ten painted scenes turn their dark vignette into an edge fade; the glow icon is unmultiplied from black. The interior pixels are unchanged and the dark composites match the originals.
+  - The Event 025 medallion is cut out from its backdrop.
+  - The four Event 038 report cards carry the card treatment and provenance records. No source photographs existed, so the runtime pictures were the sources.
+  - The DHR flags are stored bottom-origin with identical pixels.
+  - `countrystateview.gfx` agrees with the 36-frame override in `zz_chaosx_building_strip.gfx`; which duplicate the engine uses is not established, so both now say 36.
+  - The 33 unused Event 081 achievement candidates moved to the gitignored asset workspace.
+  - The Event 038 parchment colour code is gone, and so are the dead Acid Rain pacing lines.
+  - The Blender probe reads the adapter version from its verified configuration.
+  - The four misfiled untracked route flags moved into their size folders. They are local files, unreferenced since 10 October.
+  - The HOI4 Agent Tools false positive went to its worker.
+- **Formable generator.** Grouped manifests may share a decision category (root cause: the guard from `91c0104cdc` predates grouping in `a48e000bf9`), and the generator emits the localisation that `c42829541c` had edited by hand. The regenerated outputs match the generator again. The FORM-27, 29 and 31 window wording now matches the other twenty, as `c42829541c` intended.
+- **Requirement variables.** `LOC-REQUIREMENT-VARIABLE` never saw `check_variable` blocks, because the generic block alternative matched first. With the fix it found 252 variables that displayed requirements print as raw identifiers. Three localisation workers fixed every one. 156 player-meaningful variables got short names, and the rest, ids, enums, row and batch codes, moved inside custom_trigger_tooltip blocks that state the real requirement; the logic, thresholds and constants are unchanged. The audit reports 0 errors. Single-line checks only: multi-line check_variable blocks and ^num array-size checks remain outside the rule, and a few were covered by hand where they sat inside wrapped blocks. The Event 032 and CBRN source-model tests now evaluate custom_trigger_tooltip as AND.
+- **Launch.** The Linux launch of the 25 October push found the elephant rider clone error, fixed in `841814f5bd`. The one remaining mod line, the Event 014 "Scavenged Elephant Column" with vanilla support-type `elephantry` in a regiment slot, comes from the deliberate restore `e3c1774990` and awaits the user's decision.
+
 ### Owner hand-offs
 
 These findings came from the audit; per the plan they are reported to their owners rather than fixed inside the tooling change.

@@ -9,7 +9,10 @@
 is_independence_wave_active_country = {
 	exists = yes
 	has_country_flag = independence_wave_active_origin
-	check_variable = { liberation_origin = constant:liberation_origin.independence_wave }
+	custom_trigger_tooltip = {
+		tooltip = independence_wave_active_origin
+		check_variable = { liberation_origin = constant:liberation_origin.independence_wave }
+	}
 	NOT = { has_country_flag = independence_wave_origin_ended }
 }
 
@@ -59,7 +62,10 @@ is_independence_wave_package_content_active = {
 # origin or publishing an Event 006 player surface.
 is_independence_wave_package_origin_compatible = {
 	OR = {
-		check_variable = { liberation_origin = constant:liberation_origin.independence_wave }
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_active_origin
+			check_variable = { liberation_origin = constant:liberation_origin.independence_wave }
+		}
 		AND = {
 			random_civil_war_is_normal_human_country = yes
 			OR = {
@@ -317,11 +323,14 @@ can_independence_wave_enter_regional_power_phase = {
 }
 
 has_independence_wave_settled_host_relation = {
-	OR = {
-		check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.recognized_separation }
-		check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.guarded_coexistence }
-		check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.client_settlement }
-		check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.host_collapse }
+	custom_trigger_tooltip = {
+		tooltip = independence_wave_host_relation_settled_tt
+		OR = {
+			check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.recognized_separation }
+			check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.guarded_coexistence }
+			check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.client_settlement }
+			check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.host_collapse }
+		}
 	}
 }
 
@@ -373,20 +382,23 @@ has_valid_independence_wave_setup_input = {
 		# event and may be the former host.
 		is_owned_by = PREV
 	}
-	check_variable = { var = independence_wave_setup_package_id value = constant:independence_wave_plan.first_package_id compare = greater_than_or_equals }
-	check_variable = { var = independence_wave_setup_package_id value = constant:independence_wave_registry.package_count compare = less_than_or_equals }
-	check_variable = { var = independence_wave_setup_region value = constant:independence_wave_region.northern_western_europe compare = greater_than_or_equals }
-	check_variable = { var = independence_wave_setup_region value = constant:independence_wave_region.americas_caribbean compare = less_than_or_equals }
-	check_variable = { var = independence_wave_setup_depth value = constant:independence_wave_package_depth.standard compare = greater_than_or_equals }
-	check_variable = { var = independence_wave_setup_depth value = constant:independence_wave_package_depth.signature compare = less_than_or_equals }
-	check_variable = { var = independence_wave_setup_territory_level value = constant:liberation_territory_level.anchor compare = greater_than_or_equals }
-	check_variable = { var = independence_wave_setup_territory_level value = constant:liberation_territory_level.extended compare = less_than_or_equals }
-	check_variable = { var = independence_wave_setup_force_level value = constant:liberation_force_level.fragile compare = greater_than_or_equals }
-	check_variable = { var = independence_wave_setup_force_level value = constant:liberation_force_level.high_chaos compare = less_than_or_equals }
-	check_variable = { var = independence_wave_setup_chaos_band value = constant:independence_wave_chaos_band.calm_world compare = greater_than_or_equals }
-	check_variable = { var = independence_wave_setup_chaos_band value = constant:independence_wave_chaos_band.world_collapse compare = less_than_or_equals }
-	check_variable = { var = independence_wave_setup_archetype value = constant:independence_wave_package_archetype.urban_administrative compare = greater_than_or_equals }
-	check_variable = { var = independence_wave_setup_archetype value = constant:independence_wave_package_archetype.nomadic_or_dispersed compare = less_than_or_equals }
+	custom_trigger_tooltip = {
+		tooltip = independence_wave_setup_input_valid_tt
+		check_variable = { var = independence_wave_setup_package_id value = constant:independence_wave_plan.first_package_id compare = greater_than_or_equals }
+		check_variable = { var = independence_wave_setup_package_id value = constant:independence_wave_registry.package_count compare = less_than_or_equals }
+		check_variable = { var = independence_wave_setup_region value = constant:independence_wave_region.northern_western_europe compare = greater_than_or_equals }
+		check_variable = { var = independence_wave_setup_region value = constant:independence_wave_region.americas_caribbean compare = less_than_or_equals }
+		check_variable = { var = independence_wave_setup_depth value = constant:independence_wave_package_depth.standard compare = greater_than_or_equals }
+		check_variable = { var = independence_wave_setup_depth value = constant:independence_wave_package_depth.signature compare = less_than_or_equals }
+		check_variable = { var = independence_wave_setup_territory_level value = constant:liberation_territory_level.anchor compare = greater_than_or_equals }
+		check_variable = { var = independence_wave_setup_territory_level value = constant:liberation_territory_level.extended compare = less_than_or_equals }
+		check_variable = { var = independence_wave_setup_force_level value = constant:liberation_force_level.fragile compare = greater_than_or_equals }
+		check_variable = { var = independence_wave_setup_force_level value = constant:liberation_force_level.high_chaos compare = less_than_or_equals }
+		check_variable = { var = independence_wave_setup_chaos_band value = constant:independence_wave_chaos_band.calm_world compare = greater_than_or_equals }
+		check_variable = { var = independence_wave_setup_chaos_band value = constant:independence_wave_chaos_band.world_collapse compare = less_than_or_equals }
+		check_variable = { var = independence_wave_setup_archetype value = constant:independence_wave_package_archetype.urban_administrative compare = greater_than_or_equals }
+		check_variable = { var = independence_wave_setup_archetype value = constant:independence_wave_package_archetype.nomadic_or_dispersed compare = less_than_or_equals }
+	}
 }
 
 has_independence_wave_patron_warning = {

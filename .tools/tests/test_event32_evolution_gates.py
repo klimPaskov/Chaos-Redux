@@ -35,6 +35,9 @@ def evaluate(name, disabled, flags, variables=None):
     def term(key, body):
         if key in ('hidden_trigger', 'AND'):
             return all(term(k, v) for k, v in body)
+        if key == 'custom_trigger_tooltip':
+            # The engine evaluates the block's triggers as AND; `tooltip` is only the shown text.
+            return all(term(k, v) for k, v in body if k != 'tooltip')
         if key == 'OR':
             return any(term(k, v) for k, v in body)
         if key == 'NOT':

@@ -282,7 +282,7 @@ missiles_target_state_is_valid = {
 				OR = {
 					has_country_flag = missiles_rogue_operation_bypass_active
 					has_country_flag = missiles_operation_rogue_origin
-					check_variable = { var = missiles_operation_type value = constant:missiles_operation.retaliation compare = equals }
+					custom_trigger_tooltip = { tooltip = missiles_operation_retaliation_tt check_variable = { var = missiles_operation_type value = constant:missiles_operation.retaliation compare = equals } }
 				}
 			}
 		}
@@ -348,13 +348,13 @@ missiles_special_payload_policy_allows_operation = {
 			check_variable = { var = missiles_special_payload_policy value = constant:missiles_special_payload_policy.retaliatory_only compare = equals }
 			OR = {
 				has_country_flag = missiles_warning_verified
-				check_variable = { var = missiles_operation_type value = constant:missiles_operation.retaliation compare = equals }
+				custom_trigger_tooltip = { tooltip = missiles_operation_retaliation_tt check_variable = { var = missiles_operation_type value = constant:missiles_operation.retaliation compare = equals } }
 			}
 		}
 		AND = {
 			check_variable = { var = missiles_special_payload_policy value = constant:missiles_special_payload_policy.military_targets_only compare = equals }
-			NOT = { check_variable = { var = missiles_operation_target_profile value = constant:missiles_target_profile.command compare = equals } }
-			NOT = { check_variable = { var = missiles_operation_target_profile value = constant:missiles_target_profile.broad_strategic compare = equals } }
+			custom_trigger_tooltip = { tooltip = missiles_target_profile_not_command_tt NOT = { check_variable = { var = missiles_operation_target_profile value = constant:missiles_target_profile.command compare = equals } } }
+			custom_trigger_tooltip = { tooltip = missiles_target_profile_not_broad_strategic_tt NOT = { check_variable = { var = missiles_operation_target_profile value = constant:missiles_target_profile.broad_strategic compare = equals } } }
 		}
 		AND = {
 			check_variable = { var = missiles_special_payload_policy value = constant:missiles_special_payload_policy.unrestricted_war compare = equals }

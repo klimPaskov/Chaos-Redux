@@ -494,7 +494,7 @@ missiles_program_management_category = {
 	missiles_target_selection_next_page = {
 		icon = GFX_decision_032_missiles_select_missile_target
 		visible = { missiles_target_selection_page_is_open = yes }
-		available = { check_variable = { var = missiles_target_selection_page_end value = missiles_target_selection_count compare = less_than } }
+		available = { custom_trigger_tooltip = { tooltip = missiles_target_list_next_page_tt check_variable = { var = missiles_target_selection_page_end value = missiles_target_selection_count compare = less_than } } }
 		complete_effect = { hidden_effect = { missiles_target_selection_next_page = yes } }
 		ai_will_do = { base = 0 }
 	}
@@ -502,7 +502,7 @@ missiles_program_management_category = {
 	missiles_target_selection_previous_page = {
 		icon = GFX_decision_032_missiles_select_missile_target
 		visible = { missiles_target_selection_page_is_open = yes }
-		available = { check_variable = { var = missiles_target_selection_offset value = constant:missiles_program_value.zero compare = greater_than } }
+		available = { custom_trigger_tooltip = { tooltip = missiles_target_list_previous_page_tt check_variable = { var = missiles_target_selection_offset value = constant:missiles_program_value.zero compare = greater_than } } }
 		complete_effect = { hidden_effect = { missiles_target_selection_previous_page = yes } }
 		ai_will_do = { base = 0 }
 	}
@@ -744,7 +744,7 @@ missiles_program_management_category = {
 			OR = {
 				AND = {
 					NOT = { is_ai = yes }
-					check_variable = { var = missiles_requested_target_profile value = constant:missiles_target_profile.counterforce compare = equals }
+					custom_trigger_tooltip = { tooltip = missiles_target_profile_counterforce_tt check_variable = { var = missiles_requested_target_profile value = constant:missiles_target_profile.counterforce compare = equals } }
 					var:missiles_pending_target_state = { missiles_counterforce_target_is_proven = yes }
 				}
 				AND = {

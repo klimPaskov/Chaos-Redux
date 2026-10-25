@@ -16,7 +16,7 @@ missiles_selected_target_is_valid = {
 				OR = {
 					has_country_flag = missiles_rogue_operation_bypass_active
 					has_country_flag = missiles_operation_rogue_origin
-					check_variable = { var = missiles_operation_type value = constant:missiles_operation.retaliation compare = equals }
+					custom_trigger_tooltip = { tooltip = missiles_operation_retaliation_tt check_variable = { var = missiles_operation_type value = constant:missiles_operation.retaliation compare = equals } }
 				}
 			}
 		}
@@ -204,7 +204,7 @@ missiles_operation_command_is_operational = {
 	check_variable = { var = missiles_launch_readiness value = constant:missiles_tuning.operation_minimum_readiness compare = greater_than_or_equals }
 	check_variable = { var = missiles_command_control value = constant:missiles_tuning.operation_minimum_control compare = greater_than_or_equals }
 	OR = {
-		NOT = { check_variable = { var = missiles_operation_type value = constant:missiles_operation.precision compare = equals } }
+		custom_trigger_tooltip = { tooltip = missiles_operation_not_precision_tt NOT = { check_variable = { var = missiles_operation_type value = constant:missiles_operation.precision compare = equals } } }
 		check_variable = { var = missiles_launch_readiness value = constant:missiles_program_value.precision_readiness_gate compare = greater_than_or_equals }
 	}
 }
@@ -213,7 +213,7 @@ missiles_operation_reserve_receipt_is_sufficient = {
 	has_country_flag = missiles_operation_reserve_receipt_active
 	has_variable = missiles_reserved_reserve
 	check_variable = { var = missiles_reserved_reserve value = constant:missiles_program_value.zero compare = greater_than }
-	check_variable = { var = missiles_operation_missile_cost value = missiles_reserved_reserve compare = less_than_or_equals }
+	custom_trigger_tooltip = { tooltip = missiles_reserve_covers_cost_tt check_variable = { var = missiles_operation_missile_cost value = missiles_reserved_reserve compare = less_than_or_equals } }
 }
 
 missiles_operation_sites_remain_valid = {
@@ -226,7 +226,7 @@ missiles_operation_sites_remain_valid = {
 				AND = {
 					is_controlled_by = ROOT
 					missiles_site_can_launch = yes
-					check_variable = { var = missiles_site_operation_id value = ROOT.missiles_active_operation_id compare = equals }
+					custom_trigger_tooltip = { tooltip = missiles_site_assigned_to_operation_tt check_variable = { var = missiles_site_operation_id value = ROOT.missiles_active_operation_id compare = equals } }
 					has_variable = missiles_site_operation_allocation
 					check_variable = { var = missiles_site_operation_allocation value = constant:missiles_program_value.zero compare = greater_than }
 					check_variable = { var = missiles_site_operation_allocation value = missiles_site_capacity compare = less_than_or_equals }
@@ -268,7 +268,7 @@ missiles_operation_preparation_remains_valid = {
 	missiles_operation_command_is_operational = yes
 	missiles_operation_reserve_receipt_is_sufficient = yes
 	OR = {
-		NOT = { check_variable = { missiles_operation_payload = constant:missiles_payload.chemical } }
+		custom_trigger_tooltip = { tooltip = missiles_payload_not_chemical_tt NOT = { check_variable = { missiles_operation_payload = constant:missiles_payload.chemical } } }
 		missiles_operation_has_paid_chemical_receipt = yes
 	}
 }
@@ -276,7 +276,7 @@ missiles_operation_preparation_remains_valid = {
 missiles_operation_preparation_is_due = {
 	missiles_operation_preparation_remains_valid = yes
 	has_variable = missiles_operation_ready_date
-	check_variable = { var = global.date value = missiles_operation_ready_date compare = greater_than_or_equals }
+	custom_trigger_tooltip = { tooltip = missiles_operation_ready_date_reached_tt check_variable = { var = global.date value = missiles_operation_ready_date compare = greater_than_or_equals } }
 }
 
 missiles_operation_can_be_committed = {
@@ -324,10 +324,10 @@ missiles_operation_tracks_are_enabled = {
 
 missiles_operation_has_special_payload = {
 	OR = {
-		check_variable = { var = missiles_operation_payload value = constant:missiles_payload.chemical compare = equals }
-		check_variable = { var = missiles_operation_payload value = constant:missiles_payload.biological compare = equals }
-		check_variable = { var = missiles_operation_payload value = constant:missiles_payload.nuclear compare = equals }
-		check_variable = { var = missiles_operation_payload value = constant:missiles_payload.thermonuclear compare = equals }
+		custom_trigger_tooltip = { tooltip = missiles_payload_chemical_tt check_variable = { var = missiles_operation_payload value = constant:missiles_payload.chemical compare = equals } }
+		custom_trigger_tooltip = { tooltip = missiles_payload_biological_tt check_variable = { var = missiles_operation_payload value = constant:missiles_payload.biological compare = equals } }
+		custom_trigger_tooltip = { tooltip = missiles_payload_nuclear_tt check_variable = { var = missiles_operation_payload value = constant:missiles_payload.nuclear compare = equals } }
+		custom_trigger_tooltip = { tooltip = missiles_payload_thermonuclear_tt check_variable = { var = missiles_operation_payload value = constant:missiles_payload.thermonuclear compare = equals } }
 	}
 }
 
@@ -409,27 +409,27 @@ missiles_selected_enemy_has_broad_strategic_target = {
 missiles_operation_target_has_profile_value = {
 	OR = {
 		AND = {
-			check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.logistics compare = equals }
+			custom_trigger_tooltip = { tooltip = missiles_target_profile_logistics_tt check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.logistics compare = equals } }
 			missiles_state_has_logistics_target = yes
 		}
 		AND = {
-			check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.industrial compare = equals }
+			custom_trigger_tooltip = { tooltip = missiles_target_profile_industrial_tt check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.industrial compare = equals } }
 			missiles_state_has_industrial_target = yes
 		}
 		AND = {
-			check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.air_coastal compare = equals }
+			custom_trigger_tooltip = { tooltip = missiles_target_profile_air_coastal_tt check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.air_coastal compare = equals } }
 			missiles_state_has_air_coastal_target = yes
 		}
 		AND = {
-			check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.command compare = equals }
+			custom_trigger_tooltip = { tooltip = missiles_target_profile_command_tt check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.command compare = equals } }
 			missiles_state_has_command_target = yes
 		}
 		AND = {
-			check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.counterforce compare = equals }
+			custom_trigger_tooltip = { tooltip = missiles_target_profile_counterforce_tt check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.counterforce compare = equals } }
 			missiles_counterforce_target_is_proven = yes
 		}
 		AND = {
-			check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.broad_strategic compare = equals }
+			custom_trigger_tooltip = { tooltip = missiles_target_profile_broad_strategic_tt check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.broad_strategic compare = equals } }
 			missiles_operation_target_has_strategic_value = yes
 		}
 	}
@@ -441,13 +441,13 @@ missiles_operation_has_reliable_payload_custody = {
 		missiles_special_warheads_active = yes
 	}
 	OR = {
-		check_variable = { var = missiles_operation_payload value = constant:missiles_payload.conventional compare = equals }
+		custom_trigger_tooltip = { tooltip = missiles_payload_conventional_tt check_variable = { var = missiles_operation_payload value = constant:missiles_payload.conventional compare = equals } }
 		AND = {
 			missiles_operation_has_special_payload = yes
 			has_country_flag = missiles_special_payload_selected
 			missiles_special_payload_policy_allows_operation = yes
 			NOT = { has_country_flag = missiles_site_compromise_active }
-			check_variable = { var = missiles_operation_payload value = constant:missiles_payload.chemical compare = equals }
+			custom_trigger_tooltip = { tooltip = missiles_payload_chemical_tt check_variable = { var = missiles_operation_payload value = constant:missiles_payload.chemical compare = equals } }
 			has_country_flag = missiles_chemical_integration_operational
 			has_variable = missiles_operation_launch_site
 			var:missiles_operation_launch_site = {
@@ -460,7 +460,7 @@ missiles_operation_has_reliable_payload_custody = {
 			has_country_flag = missiles_special_payload_selected
 			missiles_special_payload_policy_allows_operation = yes
 			NOT = { has_country_flag = missiles_site_compromise_active }
-			check_variable = { var = missiles_operation_payload value = constant:missiles_payload.biological compare = equals }
+			custom_trigger_tooltip = { tooltip = missiles_payload_biological_tt check_variable = { var = missiles_operation_payload value = constant:missiles_payload.biological compare = equals } }
 			has_country_flag = missiles_biological_integration_operational
 			has_variable = missiles_operation_launch_site
 			var:missiles_operation_launch_site = {
@@ -473,7 +473,7 @@ missiles_operation_has_reliable_payload_custody = {
 			has_country_flag = missiles_special_payload_selected
 			missiles_special_payload_policy_allows_operation = yes
 			NOT = { has_country_flag = missiles_site_compromise_active }
-			check_variable = { var = missiles_operation_payload value = constant:missiles_payload.nuclear compare = equals }
+			custom_trigger_tooltip = { tooltip = missiles_payload_nuclear_tt check_variable = { var = missiles_operation_payload value = constant:missiles_payload.nuclear compare = equals } }
 			has_country_flag = missiles_nuclear_integration_operational
 			has_variable = missiles_operation_launch_site
 			var:missiles_operation_launch_site = {
@@ -486,7 +486,7 @@ missiles_operation_has_reliable_payload_custody = {
 			has_country_flag = missiles_special_payload_selected
 			missiles_special_payload_policy_allows_operation = yes
 			NOT = { has_country_flag = missiles_site_compromise_active }
-			check_variable = { var = missiles_operation_payload value = constant:missiles_payload.thermonuclear compare = equals }
+			custom_trigger_tooltip = { tooltip = missiles_payload_thermonuclear_tt check_variable = { var = missiles_operation_payload value = constant:missiles_payload.thermonuclear compare = equals } }
 			has_country_flag = missiles_thermonuclear_integration_operational
 			has_variable = missiles_operation_launch_site
 			var:missiles_operation_launch_site = {

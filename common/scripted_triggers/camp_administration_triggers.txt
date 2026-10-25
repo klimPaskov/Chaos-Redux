@@ -140,28 +140,31 @@ camp_admin_known_site_reformable = {
 	}
 }
 camp_admin_country_sites_ready_for_reform = {
-	all_of_scopes = {
-		array = camp_admin_known_site_states
-		camp_admin_known_site_reformable = yes
-	}
-	all_of_scopes = {
-		array = camp_occ_states
-		OR = {
-			camp_origin_occupation_host_ready_for_reform = yes
-			camp_origin_host_records_incomplete = yes
+	custom_trigger_tooltip = {
+		tooltip = camp_admin_country_sites_ready_for_reform_tt
+		all_of_scopes = {
+			array = camp_admin_known_site_states
+			camp_admin_known_site_reformable = yes
 		}
-	}
-	all_of_scopes = {
-		array = camp_active_site_states
-		if = {
-			limit = {
-				has_state_flag = camp_admin_initialized
-				NOT = { has_state_flag = camp_admin_closed }
-				camp_admin_site_authority_is_valid = yes
-			}
+		all_of_scopes = {
+			array = camp_occ_states
 			OR = {
-				camp_admin_site_rows_reconciled = yes
+				camp_origin_occupation_host_ready_for_reform = yes
 				camp_origin_host_records_incomplete = yes
+			}
+		}
+		all_of_scopes = {
+			array = camp_active_site_states
+			if = {
+				limit = {
+					has_state_flag = camp_admin_initialized
+					NOT = { has_state_flag = camp_admin_closed }
+					camp_admin_site_authority_is_valid = yes
+				}
+				OR = {
+					camp_admin_site_rows_reconciled = yes
+					camp_origin_host_records_incomplete = yes
+				}
 			}
 		}
 	}
