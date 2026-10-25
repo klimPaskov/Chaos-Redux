@@ -226,5 +226,5 @@ Update the owner package and this ledger together; preserve original archive rec
 A retired or unresolved held ID must be explicitly released before reuse.
 Country tags additionally require the installed vanilla, local-mod and Workshop collision check required by the event-planning skill.
 
-Run `python .tools/check_planning_identifiers.py` to check this ledger against live numeric constants, its declared package evidence, top-level event definitions, runtime country tags, and canonical workbook cluster identities.
+Run `python .tools/audits/check_planning_identifiers.py` to check this ledger against live numeric constants, its declared package evidence, top-level event definitions, runtime country tags, and canonical workbook cluster identities.
 The check does not infer definitions from historical prose or certify every undeclared future helper, sprite, or entity name.

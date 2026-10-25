@@ -8,7 +8,7 @@ import argparse
 import hashlib
 import json
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 INPUT = ROOT / 'docs/testing/event016_transit_catalog_20261008/state_membership.json'
 OUTPUTS = {
     'constants': ROOT / 'common/script_constants/016_transit_catalog_constants.txt',

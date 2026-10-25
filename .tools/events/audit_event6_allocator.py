@@ -13,10 +13,11 @@ import sys
 import csv
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # .tools, for the shared lib package
 from lib.game import game_dir
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 PUBLISHER_GLOB = "006_independence_wave_package_region_effects_registry.txt"
 OVERLAY_ONLY_IDS = {5, 22, 25, 35, 59, 85, 101, 102, 105, 156, 196, 197, 204}
 STATIC_20_WITNESS_IDS = {

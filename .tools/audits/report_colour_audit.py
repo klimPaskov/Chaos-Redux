@@ -12,6 +12,7 @@ Findings use the `.tools/lib/report.py` contract. The rule is reported as `warni
 then its level becomes `error`. `--paths` keeps a finding when either its event file or its localisation file is
 listed.
 """
+import sys
 import argparse
 import glob
 import json
@@ -20,26 +21,26 @@ import re
 
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # .tools, for the shared lib package
+from lib.clausewitz import strip_comments
+from lib.localisation import entries, read_text
 from lib.report import Finding, PathFilter, add_arguments, exit_code, merge_json, print_findings, requested_paths
 
-REPO = str(Path(__file__).resolve().parent.parent)
+REPO = str(Path(__file__).resolve().parents[2])
 
 
 def load_loc():
     loc = {}
     for p in glob.glob(os.path.join(REPO, 'localisation', 'english', '*.yml')):
-        for n, l in enumerate(open(p, encoding='utf-8-sig', errors='replace'), 1):
-            m = re.match(r'\s*([\w.\-]+):\d*\s*"(.*)"\s*$', l.rstrip('\r\n'))
-            if m:
-                loc[m.group(1)] = (os.path.basename(p), n, m.group(2))
+        for entry in entries(read_text(Path(p))):
+            loc[entry.key] = (os.path.basename(p), entry.line, entry.value)
     return loc
 
 
 def load_defined_texts():
     blocks = {}
     for p in glob.glob(os.path.join(REPO, 'common', 'scripted_localisation', '*.txt')):
-        s = open(p, encoding='utf-8-sig', errors='replace').read()
-        s = re.sub(r'#[^\n]*', '', s)
+        s = strip_comments(read_text(Path(p)))
         for m in re.finditer(r'defined_text\s*=\s*\{\s*name\s*=\s*([\w.]+)', s):
             i, d = s.index('{', m.start()) + 1, 1
             while d and i < len(s):
@@ -99,7 +100,7 @@ def main():
         base = os.path.basename(p)
         if only and not base.startswith(only):
             continue
-        s = re.sub(r'#[^\n]*', '', open(p, encoding='utf-8-sig', errors='replace').read())
+        s = strip_comments(read_text(Path(p)))
         roots = set()
         for kind, body in event_blocks(s):
             if re.search(r'\bhidden\s*=\s*yes', body):

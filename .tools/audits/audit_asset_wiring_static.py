@@ -51,10 +51,10 @@ install before reporting a name as unresolved.
    that question 1 already covers.
 
 Usage:
-	python .tools/audit_asset_wiring_static.py
-	python .tools/audit_asset_wiring_static.py --json out.json
-	python .tools/audit_asset_wiring_static.py --calibrate-vanilla
-	python .tools/audit_asset_wiring_static.py --paths interface/x.gfx common/ideas/x.txt
+	python .tools/audits/audit_asset_wiring_static.py
+	python .tools/audits/audit_asset_wiring_static.py --json out.json
+	python .tools/audits/audit_asset_wiring_static.py --calibrate-vanilla
+	python .tools/audits/audit_asset_wiring_static.py --paths interface/x.gfx common/ideas/x.txt
 
 Levels and exit status follow `.tools/lib/report.py`. Unresolved `GFX_` references, missing
 files, missing vanilla backing files and missing implicit lookups are `error`; unverified
@@ -75,10 +75,12 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Set, Tuple
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # .tools, for the shared lib package
 from lib.game import game_dir, require_game_dir
+from lib.clausewitz import pairs, parse
 from lib.report import Finding, add_arguments, exit_code, merge_json, print_findings, relative, requested_paths, select
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+REPO_ROOT = Path(__file__).resolve().parents[2]
 VANILLA_ROOT = game_dir()
 
 EXCLUDED_TOP_LEVEL = {
@@ -336,7 +338,6 @@ def audit_referenced_vanilla_definitions(
 # installed vanilla tree before the mod's expectations are trusted.
 # ---------------------------------------------------------------------------
 
-CLZ_TOKEN = re.compile(r'"[^"]*"|\{|\}|=|[^\s{}="#]+|#[^\n]*')
 UPPER_KEY = re.compile(r"^[A-Z][A-Z0-9_]*$")
 PORTRAIT_FILE = re.compile(r"\.(?:dds|tga)$", re.IGNORECASE)
 BARE_EVENT_PICTURE = re.compile(r"\bpicture\s*=\s*([A-Za-z][A-Za-z0-9_]*)\b")
@@ -352,58 +353,8 @@ Expectation = Dict[str, object]
 
 
 def parse_clausewitz(text: str) -> List[Tuple[Optional[str], object]]:
-	"""Parse Clausewitz text into (key, value) pairs.
-
-	A value is a string for `key = scalar` and a nested list for `key = { ... }`.
-	A bare block or bare word has key None. Comments are dropped. Stray closing
-	braces at the top level are skipped rather than ending the parse.
-	"""
-	tokens: List[Tuple[bool, str]] = []
-	for match in CLZ_TOKEN.finditer(text):
-		raw = match.group(0)
-		if raw.startswith("#"):
-			continue
-		if raw.startswith('"'):
-			tokens.append((True, raw[1:-1]))
-		else:
-			tokens.append((False, raw))
-	items: List[Tuple[Optional[str], object]] = []
-	index = 0
-	while index < len(tokens):
-		block, index = _parse_items(tokens, index)
-		items.extend(block)
-	return items
-
-
-def _parse_items(tokens: List[Tuple[bool, str]], index: int):
-	items: List[Tuple[Optional[str], object]] = []
-	count = len(tokens)
-	while index < count:
-		quoted, text = tokens[index]
-		if not quoted and text == "}":
-			return items, index + 1
-		if not quoted and text == "{":
-			sub, index = _parse_items(tokens, index + 1)
-			items.append((None, sub))
-			continue
-		if not quoted and text == "=":
-			index += 1
-			continue
-		if index + 1 < count and tokens[index + 1] == (False, "=") and not quoted:
-			if index + 2 < count:
-				value_quoted, value = tokens[index + 2]
-				if not value_quoted and value == "{":
-					sub, index = _parse_items(tokens, index + 3)
-					items.append((text, sub))
-					continue
-				items.append((text, value))
-				index += 3
-				continue
-			index += 2
-			continue
-		items.append((None, text))
-		index += 1
-	return items, index
+	"""Parse Clausewitz text into `(key, value)` pairs through the shared reader (`lib/clausewitz.py`)."""
+	return list(pairs(parse(text)))
 
 
 def _children(block: object) -> List[Tuple[Optional[str], object]]:

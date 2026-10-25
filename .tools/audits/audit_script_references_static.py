@@ -25,10 +25,10 @@ say whether they may be edited. Every candidate must be verified with a search
 before anything is removed. See `.claude/skills/chaos-redux-codebase-cleanup/`.
 
 Usage:
-	python .tools/audit_script_references_static.py                 # summary
-	python .tools/audit_script_references_static.py --json out.json # full data
-	python .tools/audit_script_references_static.py --sections dead,flags
-	python .tools/audit_script_references_static.py --paths common/scripted_effects/x.txt
+	python .tools/audits/audit_script_references_static.py                 # summary
+	python .tools/audits/audit_script_references_static.py --json out.json # full data
+	python .tools/audits/audit_script_references_static.py --sections dead,flags
+	python .tools/audits/audit_script_references_static.py --paths common/scripted_effects/x.txt
 
 Levels follow `.tools/lib/report.py`. No finding here is exact: flags checked but never set
 are `warning`, and dead, dynamic, set-but-never-checked and clone candidates are `review`, so
@@ -38,6 +38,7 @@ warnings located in those files or folders.
 
 from __future__ import annotations
 
+import sys
 import argparse
 import json
 import re
@@ -46,9 +47,11 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Dict, List, Tuple
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # .tools, for the shared lib package
+from lib.clausewitz import strip_comments
 from lib.report import Finding, add_arguments, exit_code, merge_json, print_findings, requested_paths, select
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+REPO_ROOT = Path(__file__).resolve().parents[2]
 SCAN_DIRS = ["common", "events", "interface", "history", "localisation", "map", "gfx", "music", "sound"]
 SCAN_SUFFIXES = (".txt", ".gui", ".gfx", ".yml", ".asset", ".lua")
 FLAG_SCOPES = ["country", "global", "state", "character", "unit_leader", "mio"]
@@ -64,23 +67,6 @@ FLAG_USE = re.compile(
 	r"\b(set|has)_(?:%s)_flag\s*=\s*(?:\{[^}]*?\bflag\s*=\s*)?([A-Za-z_][A-Za-z0-9_]*)(?![A-Za-z0-9_@\[\$])" % "|".join(FLAG_SCOPES)
 )
 TOP_KEY = re.compile(r"([A-Za-z0-9_@.:\-]+)\s*=\s*\{")
-
-
-def strip_comments(text: str) -> str:
-	out = []
-	for line in text.split("\n"):
-		if "#" not in line:
-			out.append(line)
-			continue
-		quoted = False
-		for i, c in enumerate(line):
-			if c == '"':
-				quoted = not quoted
-			elif c == "#" and not quoted:
-				line = line[:i]
-				break
-		out.append(line)
-	return "\n".join(out)
 
 
 def keys_at_depth(text: str, want: int) -> List[Tuple[str, int, int, int]]:

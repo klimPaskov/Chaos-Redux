@@ -155,7 +155,7 @@ Main historical evolution rows, related rows in a selected historical occurrence
 
 The inspected English event-localisation path begins with an underscore: `localisation/english/_chaosx_events_l_english.yml`. Also inspect `chaosx_event_names_l_english.yml` and the current established event-specific split before adding keys. Resolve actual paths from source, not a remembered near-match.
 
-Normal parchment event/report text must use the current readable plain-text policy, including dynamic inserts, without `§` colour codes. Dark shared GUI variants remain separately formatted where the current owner needs them. Run `.tools/report_colour_audit.py` against the completed event changes and inspect its relevant findings. Review full facts at native resolution, long country names, translated text, low resolution and actual UI scale. No clue may depend on a cropped line, a colour distinction or a generated picture. The art and achievement prompts define the accepted consumer coverage.
+Normal parchment event/report text must use the current readable plain-text policy, including dynamic inserts, without `§` colour codes. Dark shared GUI variants remain separately formatted where the current owner needs them. Run `.tools/audits/report_colour_audit.py` against the completed event changes and inspect its relevant findings. Review full facts at native resolution, long country names, translated text, low resolution and actual UI scale. No clue may depend on a cropped line, a colour distinction or a generated picture. The art and achievement prompts define the accepted consumer coverage.
 
 ## Cross-event owner contracts
 

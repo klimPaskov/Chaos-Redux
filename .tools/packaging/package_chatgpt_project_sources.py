@@ -32,7 +32,7 @@ STATIC_FILES = {
 
 
 def repository_root() -> Path:
-	return Path(__file__).resolve().parent.parent
+	return Path(__file__).resolve().parents[2]
 
 
 def default_output() -> Path:

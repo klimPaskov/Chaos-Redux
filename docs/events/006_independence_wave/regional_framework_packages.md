@@ -50,7 +50,7 @@ A reserved X-ending tag has no historical cores, so `release` cannot create it. 
 2. Add the id and tag to `is_independence_wave_regional_framework_exact_carrier` and an `is_independence_wave_exact_package_iw_NNN_tag_available` trigger.
 3. Add its identity block. Decide the leadership on the record: a vanilla roster, a sourced character, or the appointed leader of an institutional government.
 4. For an X-tag, add the release branch and the baseline-law entry.
-5. Add the id to the adapter list, the content attestation, both preflights, the runtime-ready and capacity triggers, the planner gate, the Join probe order and the contact registry, and update `.tools/audit_event6_allocator.py`.
+5. Add the id to the adapter list, the content attestation, both preflights, the runtime-ready and capacity triggers, the planner gate, the Join probe order and the contact registry, and update `.tools/events/audit_event6_allocator.py`.
 6. For a Level 2 row, add its layer, decision category, ideas, two incidents, country-specific focus group, inverse project locks and localisation.
 
 ## Interaction with other systems

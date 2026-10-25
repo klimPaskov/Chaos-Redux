@@ -17,7 +17,7 @@ The consumer contract is `docs/formables/state_registry/consumer_spec.schema.jso
 The shipped consumer manifests, projected PNG/DDS pairs, previews, and helper hooks are reviewed build artifacts. The former compiler is retained locally at `.tmp/archive/build_formable_state_puzzle_consumer.py` for provenance, but it is not a supported routine command. A map revision or new consumer requires a deliberate restoration and fresh review of the archived geometry/registry/consumer toolchain, or an approved replacement, before any generated artifacts are changed.
 These temporary copies are local only; recover missing retired tools from Git history and review them before reuse.
 
-The runtime generator is `.tools/generate_formable_state_puzzle_runtime.mjs`. It discovers every `manifest.json` directly below `docs/formables/state_puzzles/*/` whose `status` is `complete`, validates each manifest and runtime DDS pair, rejects duplicate category or formable identifiers after runtime normalisation (including `a-b` versus `a_b`), and emits the shared GFX, GUI, scripted-GUI, scripted-localisation, and localisation surfaces. It has no hardcoded category allow-list.
+The runtime generator is `.tools/formables/generate_formable_state_puzzle_runtime.mjs`. It discovers every `manifest.json` directly below `docs/formables/state_puzzles/*/` whose `status` is `complete`, validates each manifest and runtime DDS pair, rejects duplicate category or formable identifiers after runtime normalisation (including `a-b` versus `a_b`), and emits the shared GFX, GUI, scripted-GUI, scripted-localisation, and localisation surfaces. It has no hardcoded category allow-list.
 
 Runtime textures are converted with `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`. Preserve the processed PNG, final DDS, dimensions, and decoded round-trip evidence with the owning consumer package.
 
@@ -62,7 +62,7 @@ There is no runtime fallback for an unknown candidate. If a future event needs a
 Run the runtime generator only after complete manifests and runtime DDS files are present:
 
 ```powershell
-node .tools/generate_formable_state_puzzle_runtime.mjs
+node .tools/formables/generate_formable_state_puzzle_runtime.mjs
 ```
 
 The generator skips manifests explicitly marked `draft`, `assets_pending`, or another non-complete status, fails when the root is missing or no complete manifest exists, and fails on duplicate normalised category/formable IDs, invalid scripted-helper identifiers, unsafe runtime paths, or missing runtime data. Do not restore a selected-category allow-list or hand-add generated GUI nodes.

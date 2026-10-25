@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Optional
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 BROAD = ROOT / "common/script_constants/chaosx_country_registry_constants.txt"
 EVENT6 = ROOT / "common/script_constants/006_independence_wave_constants_registry.txt"
 CANDIDATES = ROOT / "docs/specs/006_independence_wave_specs/matrices/006_candidate_country_registry.csv"

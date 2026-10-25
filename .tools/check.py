@@ -18,18 +18,19 @@ The command never edits tracked files; the checks it starts write only to `.tmp/
 
 Checks (rule ids and levels are defined by each tool; see `.tools/lib/report.py`):
 
-- localisation     `audit_localisation_static.py`       localisation integrity and key wiring
-- asset-wiring     `audit_asset_wiring_static.py`       sprite, texture and implicit GFX lookups
-- parchment        `report_colour_audit.py`             colour codes in parchment report text
-- script-rules     `audit_script_rules.py`              `<=`/`>=`, unary minus, scripted-localisation format codes
+- localisation     `audits/audit_localisation_static.py`       localisation integrity and key wiring
+- asset-wiring     `audits/audit_asset_wiring_static.py`       sprite, texture and implicit GFX lookups
+- parchment        `audits/report_colour_audit.py`      colour codes in parchment report text
+- script-rules     `audits/audit_script_rules.py`       `<=`/`>=`, unary minus, scripted-localisation format codes
+- indentation      `audits/indentation.py`              spaces for tabs and brace-depth drift (warnings)
 - gfx              `gfx/gfx.py audit`                   frame strips, flag ladder, achievement size, runtime binaries
 - guidance         `sync/sync_read_limits.py --check`   guidance size ceilings and read-limit drift
 - generators       `--check` modes of the generators    catalog CSV, formable puzzles, Event 016 catalog, AGENTS.md, agent mirrors
 - tests            maintained regression tests in `.tools/` (full, or quick when `.tools/` changed)
-- references       `audit_script_references_static.py`  dead code, flags and clones (full only; review)
+- references       `audits/audit_script_references_static.py`  dead code, flags and clones (full only; review)
 - quality          `quality.py`                         ruff defects, complexity ratchet and mypy --strict for the
                    tooling (skipped with a notice when uv is not installed)
-- script-validate  `validate_scripts_mcp.py`            HOI4 Agent Tools script validation of changed files (quick
+- script-validate  `audits/validate_scripts_mcp.py`     HOI4 Agent Tools script validation of changed files (quick
                    only; skipped with a notice when the MCP server cannot start)
 
 Set `HOI4_GAME_DIR` when the game is not installed at the default Steam path (`.tools/lib/game.py`).
@@ -57,7 +58,7 @@ AUDIT_TIMEOUT_SECONDS = 900
 
 # Maintained tests that need arguments; every other discovered test runs bare.
 TEST_ARGUMENTS: Dict[str, List[str]] = {
-	".tools/audit_event6_flags.py": ["--strict"],
+	".tools/events/audit_event6_flags.py": ["--strict"],
 	".tools/tests/validate_028_availability.py": [
 		"--fixture", "docs/plans/028_asteroid_incoming_plans/availability_20261003/source_scenarios.json",
 	],
@@ -69,8 +70,8 @@ TEST_PATTERNS = (
 	".tools/tests/test_*.js",
 	".tools/tests/*.test.js",
 	".tools/gfx/test_*.py",
-	".tools/audit_event6_*.py",
-	".tools/check_planning_identifiers.py",
+	".tools/events/audit_event6_*.py",
+	".tools/audits/check_planning_identifiers.py",
 )
 
 
@@ -147,10 +148,10 @@ class Generator(NamedTuple):
 GENERATORS = (
 	Generator("event catalog CSV", ("python", ".tools/export_event_catalog_csv.py", "--check"),
 		("docs/spreadsheets/chaos_redux_events_catalog.xlsx", "docs/spreadsheets/")),
-	Generator("formable state puzzles", ("node", ".tools/generate_formable_state_puzzle_runtime.mjs", "--check"),
+	Generator("formable state puzzles", ("node", ".tools/formables/generate_formable_state_puzzle_runtime.mjs", "--check"),
 		("docs/formables/state_puzzles/", "interface/chaosx_formable_state_puzzle", "common/scripted_guis/chaosx_formable_state_puzzles.txt",
 		"common/scripted_localisation/chaosx_formable_state_puzzles.txt", "localisation/english/chaosx_formable_state_puzzles_l_english.yml")),
-	Generator("Event 016 transit catalog", ("python", ".tools/build_event016_transit_state_catalog.py", "--check"),
+	Generator("Event 016 transit catalog", ("python", ".tools/events/build_event016_transit_state_catalog.py", "--check"),
 		("docs/testing/event016_transit_catalog_20261008/state_membership.json", "common/script_constants/016_transit_catalog_constants.txt",
 		"common/scripted_triggers/016_transit_state_province_catalog_")),
 	Generator("AGENTS.md instruction", ("python", ".tools/sync/sync_instructions.py", "--check"),
@@ -214,27 +215,29 @@ def run_tests(paths: Optional[List[str]]) -> Tuple[List[Finding], Optional[str]]
 
 CHECKS = (
 	Check("localisation", ("localisation/", "events/", "common/", "interface/", "history/", "map/"), True,
-		run_report_tool("localisation", "audit_localisation_static.py")),
+		run_report_tool("localisation", "audits/audit_localisation_static.py")),
 	Check("asset-wiring", ("gfx/", "interface/", "common/", "events/", "history/", "localisation/"), True,
-		run_report_tool("asset-wiring", "audit_asset_wiring_static.py")),
+		run_report_tool("asset-wiring", "audits/audit_asset_wiring_static.py")),
 	Check("parchment", ("events/", "localisation/", "common/scripted_localisation/"), True,
-		run_report_tool("parchment", "report_colour_audit.py")),
+		run_report_tool("parchment", "audits/report_colour_audit.py")),
 	Check("script-rules", ("common/", "events/", "history/"), True,
-		run_report_tool("script-rules", "audit_script_rules.py")),
+		run_report_tool("script-rules", "audits/audit_script_rules.py")),
+	Check("indentation", ("common/", "events/", "history/", "interface/", "map/"), True,
+		run_report_tool("indentation", "audits/indentation.py")),
 	Check("gfx", ("gfx/", "interface/", "sound/", "music/"), True,
 		run_report_tool("gfx", "gfx/gfx.py", ("audit",))),
 	Check("guidance", ("CLAUDE.md", "AGENTS.md", ".claude/", ".codex/", ".opencode/", ".tools/sync/"), True,
 		run_guidance),
 	Check("generators", tuple(sorted({i for g in GENERATORS for i in g.inputs} | {".tools/"})), True, run_generators),
 	Check("tests", (".tools/",), True, run_tests),
-	Check("references", (), False, run_report_tool("references", "audit_script_references_static.py")),
+	Check("references", (), False, run_report_tool("references", "audits/audit_script_references_static.py")),
 	# Ruff and mypy through uvx; skipped with a notice when uv is not installed.
 	Check("quality", (".tools/", ".claude/skills/", "ruff.toml"), True,
 		run_report_tool("quality", "quality.py", optional=True)),
 	# Changed-file validation through the HOI4 Agent Tools MCP server; quick only, because a
 	# whole-repository pass would validate thousands of files one call at a time.
 	Check("script-validate", ("common/", "events/", "history/"), True,
-		run_report_tool("script-validate", "validate_scripts_mcp.py", optional=True)),
+		run_report_tool("script-validate", "audits/validate_scripts_mcp.py", optional=True)),
 )
 QUICK_ONLY = {"script-validate"}
 

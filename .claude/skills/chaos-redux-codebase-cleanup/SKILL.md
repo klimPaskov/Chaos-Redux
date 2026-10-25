@@ -12,12 +12,12 @@ Use this workflow for repository-wide or subsystem-wide dead-code, duplication, 
 Run from the mod root, writing outputs to a task folder under ignored `.tmp/`:
 
 ```
-python .tools/audit_script_references_static.py --json .tmp/<task>/script_reference_audit.json
+python .tools/audits/audit_script_references_static.py --json .tmp/<task>/script_reference_audit.json
 ```
 
 It compares definitions against references for scripted effects, scripted triggers, scripted localisation, constant categories, ideas, dynamic and opinion modifiers, and events. It splits `dead` from `dynamic` candidates (names matching a `prefix_[`, `prefix_@`, or `prefix_$` builder, or an event-id `ns.[` stem), lists flags that are checked but never set and set but never checked, and groups exact and parametric clones. Read the tool docstring and `.tools/README.md` before relying on a column.
 
-Companion audits: `.tools/audit_localisation_static.py` (missing or unbound keys, unlocalised requirement flags) and `.tools/audit_asset_wiring_static.py` (GFX wiring). A candidate list is a worklist, not a deletion list.
+Companion audits: `.tools/audits/audit_localisation_static.py` (missing or unbound keys, unlocalised requirement flags) and `.tools/audits/audit_asset_wiring_static.py` (GFX wiring). A candidate list is a worklist, not a deletion list.
 `python -B .tools/check.py full --json .tmp/<task>/check.json` runs every audit at once; its `review` findings are the candidate worklist, and its `error` findings must stay at zero after each removal. Rerun `check.py quick` on each subsystem's changed files before its commit.
 
 ## 2. False-positive patterns

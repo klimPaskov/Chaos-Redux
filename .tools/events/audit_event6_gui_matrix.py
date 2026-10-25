@@ -11,7 +11,7 @@ import re
 import sys
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 EFFECTS = ROOT / "common" / "scripted_effects" / "006_independence_wave_effects.txt"
 SCRIPTED_GUI = ROOT / "common" / "scripted_guis" / "006_independence_wave_scripted_gui.txt"
 WINDOW = ROOT / "interface" / "006_independence_wave.gui"

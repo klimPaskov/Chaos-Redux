@@ -25,7 +25,7 @@ No icon, sprite, texture or gameplay window is added; the existing debug action 
 
 ## Evidence and future implementation
 
-`python .tools/build_event016_transit_state_catalog.py --check` verifies byte-exact generated source against the retained membership input.
+`python .tools/events/build_event016_transit_state_catalog.py --check` verifies byte-exact generated source against the retained membership input.
 `python .tools/tests/test_event016_transit_state_catalog.py` executes the actual generated query/dispatcher and compares every state to the independent MCP membership oracle.
 Its 1,114 source cases include all known states, invalid/fractional keys, sequential queries, partial temporary initialization, CXT guard/capital/observation execution and generator refusal boundaries.
 Native GetID expansion, scope behavior and runtime performance remain separate engine evidence.

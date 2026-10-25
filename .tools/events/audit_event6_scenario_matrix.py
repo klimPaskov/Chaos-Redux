@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 MATRIX = ROOT / "docs/plans/006_independence_wave_plans/subagent_handoffs/006_scn008_32_cell_static_acceptance_2026_08_02.md"
 EDGE_MATRIX = ROOT / "docs/plans/006_independence_wave_plans/006_event6_scn008_edge_case_source_matrix_current_2026-09-25.md"
 

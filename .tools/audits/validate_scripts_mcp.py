@@ -18,8 +18,8 @@ A passing file is evidence only for the tool's `checksPerformed`; parameter sema
 behaviour stay unverified. The server is the `hoi4_agent_tools` entry of `.mcp.json`.
 
 Usage (the tool needs explicit files; it never scans the whole repository):
-	python -B .tools/validate_scripts_mcp.py --paths events/x.txt common/scripted_effects/y.txt
-	python -B .tools/validate_scripts_mcp.py --paths-from changed.txt --json .tmp/script_validate.json
+	python -B .tools/audits/validate_scripts_mcp.py --paths events/x.txt common/scripted_effects/y.txt
+	python -B .tools/audits/validate_scripts_mcp.py --paths-from changed.txt --json .tmp/script_validate.json
 
 Exit status: 0 no errors, 1 errors, 2 when the server cannot run or no path was given.
 """
@@ -31,10 +31,11 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # .tools, for the shared lib package
 from lib.mcp_session import McpError, McpSession, server_command
 from lib.report import Finding, add_arguments, exit_code, merge_json, print_findings, relative, requested_paths
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+REPO_ROOT = Path(__file__).resolve().parents[2]
 CHECK = "script-validate"
 SERVER = "hoi4_agent_tools"
 TOOL = "hoi4.script_validate"

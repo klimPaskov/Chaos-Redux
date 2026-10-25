@@ -11,6 +11,7 @@ from pathlib import Path
 
 TOOLS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TOOLS))
+sys.path.insert(0, str(TOOLS / "audits"))
 
 import audit_asset_wiring_static as asset_audit
 import audit_localisation_static as loc_audit

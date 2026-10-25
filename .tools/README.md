@@ -20,6 +20,27 @@ A maintained regression test can cover one event when it protects a current, non
 
 Before retiring a tool, search its filename, module name, output signatures, and generated-file headers across `AGENTS.md`, `CLAUDE.md`, `.claude/`, docs, configuration, runtime source, and Git history. An old audit mention alone does not make a helper maintained; check whether a current command, import, test, or workflow still needs it. Preserve a genuinely active dependency until its callers have been updated.
 
+## Layout
+
+| Path | Purpose |
+|---|---|
+| `check.py` | Single read-only entry point for every check (see Repository checks) |
+| `quality.py`, `quality_baseline.json`, `requirements-dev.txt` | Ruff and mypy for the tooling, with the ratchet baseline and pinned versions (see Code quality) |
+| `export_event_catalog_csv.py` | Catalog CSV exporter; it stays at the top level because `CLAUDE.md`, the xlsx skill and over a hundred specs cite this exact command |
+| `lib/` | Canonical shared code: `report.py` (finding contract), `clausewitz.py` (script reader), `localisation.py` (localisation reader), `game.py` (`HOI4_GAME_DIR`), `mcp_session.py` (MCP client) |
+| `audits/` | Repository-wide read-only audits and the indentation tool |
+| `events/` | Event-scoped static validators and generators that are still maintained (Event 006 and Event 016) |
+| `formables/` | Formable state-puzzle runtime generator |
+| `gfx/` | Sprite QA, alpha repair and GFX conformance checks |
+| `packaging/` | ChatGPT project-source packager |
+| `sync/` | Agent, skill-link, instruction and read-limit synchronizers |
+| `wiki/` | Offline wiki snapshot refresh and verification |
+| `live_testing/` | Linux Clausewitz MCP bridge |
+| `3d_pipeline/` | Shared 3D model infrastructure, with its own tests and README |
+| `tests/` | Every maintained regression test, their shared JS helpers (`tests/lib/`) and fixtures |
+
+Tools in a subfolder import `lib` by adding `.tools` to `sys.path` at the top of the file; run every tool from the mod root.
+
 ## Supported tools
 
 ### Repository checks
@@ -33,7 +54,7 @@ python -B .tools/check.py full                          # whole repository
 python -B .tools/check.py full --json .tmp/checks/full.json --verbose
 ```
 
-It runs the localisation, asset-wiring and parchment-colour audits, the script-syntax rules, the GFX conformance checks, the guidance size check (`sync/sync_read_limits.py --check`), the generator freshness checks, the maintained regression tests, and, in `full` only, the script-reference audit. `quick` also validates changed script files through HOI4 Agent Tools, and skips that step with a notice when the MCP server cannot start. `quick` starts only the checks whose inputs the changed paths can affect, reports only findings located in those paths, and runs the tests only when `.tools/` changed; `--only <check>` narrows either mode. The module docstring of `check.py` lists every check and its tool.
+It runs the localisation, asset-wiring and parchment-colour audits, the script-syntax rules, the indentation warnings, the GFX conformance checks, the guidance size check (`sync/sync_read_limits.py --check`), the generator freshness checks, the maintained regression tests, and, in `full` only, the script-reference audit. `quick` also validates changed script files through HOI4 Agent Tools, and skips that step with a notice when the MCP server cannot start. `quick` starts only the checks whose inputs the changed paths can affect, reports only findings located in those paths, and runs the tests only when `.tools/` changed; `--only <check>` narrows either mode. The module docstring of `check.py` lists every check and its tool.
 Errors print one per line as `path:line: level RULE message`, followed by one summary line per check; `quick` and `--verbose` also print warnings, and review candidates appear only in the `--json` report.
 Exit status is `0` with no errors, `1` with errors, and `2` when a check could not run.
 On 25 October 2026 a typical single-event `quick` run took about 20 s, and `full` took about 75 s.
@@ -62,10 +83,11 @@ Tools that read the installed game take its folder from `HOI4_GAME_DIR` (default
 
 Checks added for the deterministic-tooling plan (`docs/plans/repo_cleanup/deterministic_tooling_plan_2026-10-25.md`):
 
-- `audit_script_rules.py` reports `<=`/`>=`, unary minus on a variable token and `§`/`£` written in scripted localisation (`CLAUDE.md` sections 1 and 2) as errors. It is comment- and string-aware and lexical only; ordinal localisation keys are reported by the localisation audit. Fixtures: `tests/fixtures/script_rules/`.
-- `validate_scripts_mcp.py --paths <files>` runs `hoi4.script_validate` for changed script files in one MCP session (`lib/mcp_session.py`, server from `.mcp.json`). Syntax, command-kind and scope errors are errors; known-mistake matches and unresolved commands are warnings, because the tool's own rules can misfire; unchecked argument blocks are review items. It never scans the whole repository.
+- `audits/audit_script_rules.py` reports `<=`/`>=`, unary minus on a variable token and `§`/`£` written in scripted localisation (`CLAUDE.md` sections 1 and 2) as errors. It is comment- and string-aware and lexical only; ordinal localisation keys are reported by the localisation audit. Fixtures: `tests/fixtures/script_rules/`.
+- `audits/validate_scripts_mcp.py --paths <files>` runs `hoi4.script_validate` for changed script files in one MCP session (`lib/mcp_session.py`, server from `.mcp.json`). Syntax, command-kind and scope errors are errors; known-mistake matches and unresolved commands are warnings, because the tool's own rules can misfire; unchecked argument blocks are review items. It never scans the whole repository.
 - `gfx/gfx.py audit` (or `sprites`, `flags`, `achievements`, `binaries`) checks frame-strip widths, the flag size ladder and TGA origin, achievement art size, and runtime binaries for LFS pointers and truncation; see `gfx/README.md`.
-- `export_event_catalog_csv.py --check`, `generate_formable_state_puzzle_runtime.mjs --check` and `build_event016_transit_state_catalog.py --check` compare their generated files with a fresh render without writing; `sync/sync_agents.py --verify` covers the agent mirrors.
+- `export_event_catalog_csv.py --check`, `formables/generate_formable_state_puzzle_runtime.mjs --check` and `events/build_event016_transit_state_catalog.py --check` compare their generated files with a fresh render without writing; `sync/sync_instructions.py --check` covers `AGENTS.md` and `sync/sync_agents.py --verify` the agent mirrors.
+- `audits/indentation.py` warns, one finding per file, about lines indented with spaces (`INDENT-SPACES`) and lines whose tabs differ from their brace depth (`INDENT-DEPTH`); its `--apply-tabs` and `--apply-depth` fixers need explicit `--paths`.
 
 `lib/mcp_session.py` is separate from `3d_pipeline/lib/mcp_stdio.py` because that client is hash-pinned in `3d_pipeline/config/dependencies.lock.json` and changes only with an adapter release.
 
@@ -89,8 +111,8 @@ python .tools/export_event_catalog_csv.py
 Preview or build the ChatGPT source package:
 
 ```powershell
-python .tools/package_chatgpt_project_sources.py --dry-run
-.tools/package_chatgpt_project_sources.bat
+python .tools/packaging/package_chatgpt_project_sources.py --dry-run
+.tools/packaging/package_chatgpt_project_sources.bat
 ```
 
 The default package output is outside the repository under the current user's Downloads folder. The repository-local `.chatgpt_project_sources/` path remains ignored for explicit local overrides.
@@ -113,7 +135,7 @@ Do not hand-edit generated Codex, Qoder, Cursor, or opencode agent files.
 
 ### Universal formable-state tooling
 
-- `generate_formable_state_puzzle_runtime.mjs` discovers complete manifests and emits the shared runtime surfaces.
+- `formables/generate_formable_state_puzzle_runtime.mjs` discovers complete manifests and emits the shared runtime surfaces; `--check` compares without writing.
 
 This is the sole supported formable-state tool in `.tools`. It rebuilds the shared GFX, GUI, scripted-GUI, scripted-localisation, and localisation outputs from complete manifests under `docs/formables/state_puzzles/`.
 
@@ -135,22 +157,23 @@ The sync never launches Hearts of Iron IV and never claims engine evidence. Its 
 
 ### Repository-wide static audits
 
-These audits answer source-only questions across the whole mod. They never launch Hearts of Iron IV and never claim live, engine, or render evidence. Each one is read-only; only `reindent_script_files.py` writes, and only with `--apply`.
-The localisation, asset-wiring, script-reference and parchment-colour audits follow the `lib/report.py` contract described under Repository checks; each documents its rule levels in its module docstring.
+These audits live in `audits/`. They answer source-only questions across the whole mod, never launch Hearts of Iron IV and never claim live, engine, or render evidence. Each one is read-only; only `audits/indentation.py` writes, and only with `--apply-tabs` or `--apply-depth` on explicit paths.
+They follow the `lib/report.py` contract described under Repository checks, each documents its rule levels in its module docstring, and they read script and localisation files through `lib/clausewitz.py` and `lib/localisation.py`.
 The localisation and asset audits exclude Git, tooling, and documentation directories before descending into them, so concurrent Git maintenance cannot invalidate a scan of those excluded trees.
 
 - `audit_localisation_static.py` checks every English localisation file for parse errors, BOM and header damage, duplicate keys, keys that no script binds, and events whose title or description key is missing. It reads each event's actual `title =` / `desc =` binding, so it does not assume the `<id>.t` convention, and it exempts `hidden = yes` events. It also lists flags and variables checked in a displayed decision, mission, or focus requirement, directly or through the scripted triggers those requirements call, that have no localisation key and would show their raw identifier in the tooltip. A scripted trigger whose own name is a localisation key replaces its expansion, so the audit does not follow its body. The event-key check has a positive control: deleting a known key must make it appear.
 - The same tool reports the keys the engine looks up implicitly that neither this mod's English localisation (including `localisation/english/replace`) nor the installed vanilla English localisation defines. Each rule comes from a wiki or vanilla convention: decision, mission, category, idea, focus, technology, equipment, sub-unit and trait ids with their `_desc`; `TAG`, `TAG_ADJ` and `TAG_DEF` for country tags and cosmetic tags; achievement `_NAME` and `_DESC`; dynamic and opinion modifier ids; doctrine and reward names; event titles, descriptions and option names; GUI `text`, `buttonText` and tooltip fields; and every key named by `custom_effect_tooltip`, the `tooltip` of `custom_trigger_tooltip`, `custom_cost_text`, `custom_modifier_tooltip` and scripted-localisation `localization_key`. It also lists `[GetX]` commands in localisation and `.gui` files that no scripted localisation defines. A key is `required` when the engine shows the raw key without it, and `advisory` when vanilla routinely ships the definition without the key and the text renders empty (idea and decision descriptions, equipment short names, advisor tokens, unused cosmetic tags, settings and debug export strings). Keys assembled at runtime (`$VAR$`, `[command]`, `@ROOT`) are matched against the known keys by literal prefix and reported only when nothing matches. `--show-advisory` lists the advisory gaps, and `--calibrate` runs every rule against the installed game and prints its vanilla coverage, which is the positive control for the rules: a required rule should sit near 100%.
-- `audit_asset_wiring_static.py` checks sprite registration against use. It reports `GFX_` names referenced but registered nowhere here or in vanilla, sprite registrations with no reference outside their own definition file, and texture or mesh references with no backing file. Asset references are resolved by filename, because Clausewitz searches the model folders recursively, and a `.tga` reference also resolves to a same-stem `.dds`, which vanilla relies on. Whole-line comments are ignored, so a commented-out registration is neither a sprite nor a use. It also reports implicit engine lookups that no quoted `GFX_` token names: idea pictures (`picture = x` gives `GFX_idea_x`, a visible idea without a picture gives `GFX_idea_<id>`), decision icons (`GFX_decision_x`), decision-category pictures (`GFX_decision_category_x`), focus shine sprites (`<icon>_shine`), subunit icons (`GFX_unit_<sprite>_icon_medium`), `£name` text icons (`GFX_name`), country flags (`gfx/flags/TAG*.tga` plus `medium/` and `small/`), cosmetic-tag flags, achievement art (`<id>`, `_grey`, `_not_eligible` `.dds`), and portrait texture paths. Dynamic prefixes (names ending in `_`) and documentation-only names are reported separately and never counted as missing; sprites suppressed as implicitly used are removed from the dead-registration list. Run `python -B .tools/audit_asset_wiring_static.py --calibrate-vanilla` to measure each implicit rule against the installed vanilla tree before trusting its missing count; the calibrated hit rates are the evidence for each rule. Technology pictures, equipment icons, MIO, scientist-trait and special-project icons have no confirmed implicit rule, and their icons are explicit `icon =` tokens already covered by the literal scan.
+- `audit_asset_wiring_static.py` checks sprite registration against use. It reports `GFX_` names referenced but registered nowhere here or in vanilla, sprite registrations with no reference outside their own definition file, and texture or mesh references with no backing file. Asset references are resolved by filename, because Clausewitz searches the model folders recursively, and a `.tga` reference also resolves to a same-stem `.dds`, which vanilla relies on. Whole-line comments are ignored, so a commented-out registration is neither a sprite nor a use. It also reports implicit engine lookups that no quoted `GFX_` token names: idea pictures (`picture = x` gives `GFX_idea_x`, a visible idea without a picture gives `GFX_idea_<id>`), decision icons (`GFX_decision_x`), decision-category pictures (`GFX_decision_category_x`), focus shine sprites (`<icon>_shine`), subunit icons (`GFX_unit_<sprite>_icon_medium`), `£name` text icons (`GFX_name`), country flags (`gfx/flags/TAG*.tga` plus `medium/` and `small/`), cosmetic-tag flags, achievement art (`<id>`, `_grey`, `_not_eligible` `.dds`), and portrait texture paths. Dynamic prefixes (names ending in `_`) and documentation-only names are reported separately and never counted as missing; sprites suppressed as implicitly used are removed from the dead-registration list. Run `python -B .tools/audits/audit_asset_wiring_static.py --calibrate-vanilla` to measure each implicit rule against the installed vanilla tree before trusting its missing count; the calibrated hit rates are the evidence for each rule. Technology pictures, equipment icons, MIO, scientist-trait and special-project icons have no confirmed implicit rule, and their icons are explicit `icon =` tokens already covered by the literal scan.
 - `audit_script_references_static.py` checks script definitions against use. It reports scripted effects, scripted triggers, scripted-localisation entries, script-constant categories, ideas, dynamic and opinion modifiers, and events whose name is referenced nowhere outside its own definition, splitting them into `dead` and `dynamic` (a `prefix_[`, `prefix_@`, `prefix_$` or event-id `ns.[` stem could build the name). It also lists flags checked but never set (a bug-triage list) and set but never checked, and effect and trigger bodies that are byte-identical or identical apart from numbers, constants, macros and tags. The `chaos-redux-codebase-cleanup` skill owns the verification and removal workflow for its output.
 - `report_colour_audit.py` lists localisation keys shown on light parchment report and news text that carry a `§` colour code, following scripted localisation recursively. The `chaos-redux-events` skill requires it after report or news text edits; it reports a `warning` until the one known finding is fixed, then an `error`.
-- `reindent_script_files.py` enforces the repository's tab-indentation rule ("Indent script blocks with tabs"). It converts only the leading whitespace run of a line, preserves line endings and the UTF-8 BOM, and leaves already-tabbed lines alone. Run it with `--check` before `--apply`.
+- `audits/indentation.py` enforces the tab-indentation rule ("Indent script blocks with tabs"). `--apply-tabs` converts only the leading space run of a line and leaves already-tabbed lines alone; `--apply-depth` re-indents drifted lines to their brace depth but never a line that mixes spaces after tabs. Both preserve line endings and the UTF-8 BOM, and both need explicit `--paths`.
+- `audits/check_planning_identifiers.py` checks the declared planning reservations (event ids, country tags, workbook cluster ids and super-event slots) against runtime definitions and the catalog workbook, as described in `docs/specs/shared_identifier_registry.md`. It exits `1` on a conflict.
 
 ```powershell
-python .tools/audit_localisation_static.py --json .tmp/loc_audit.json
-python .tools/audit_asset_wiring_static.py --json .tmp/asset_audit.json
-python .tools/audit_script_references_static.py --json .tmp/script_reference_audit.json
-python .tools/reindent_script_files.py --check
+python .tools/audits/audit_localisation_static.py --json .tmp/loc_audit.json
+python .tools/audits/audit_asset_wiring_static.py --json .tmp/asset_audit.json
+python .tools/audits/audit_script_references_static.py --json .tmp/script_reference_audit.json
+python .tools/audits/indentation.py --paths events/x.txt
 ```
 
 Interpretation limits, which matter when reading the output:
@@ -160,9 +183,11 @@ Interpretation limits, which matter when reading the output:
 - A script definition reported as `dead` is a candidate until a search of script, interface, localisation, docs, skills and tools confirms no reference; a `dynamic` one needs its builder traced. Generated registries and catalogs are reported too and keep their generated-file rules.
 - A missing localisation key and a missing asset file are exact findings and can be acted on directly.
 
-### Event 006 static validators
+### Event-scoped validators and generators
 
-The maintained Event 006 validators protect the current source contracts without launching Hearts of Iron IV or claiming live execution:
+`events/build_event016_transit_state_catalog.py` builds the Event 016 state/province catalog triggers and constants from the verified MCP membership data in `docs/testing/event016_transit_catalog_20261008/`; `--check` compares without writing and `--write` regenerates (see `docs/events/016_brilliant_scientist/systems/transit_state_catalog.md`).
+
+The maintained Event 006 validators in `events/` protect the current source contracts without launching Hearts of Iron IV or claiming live execution:
 
 - `audit_event6_allocator.py` checks the anchor-first allocator, package publishers, admission/attestation boundary, reservation groups, exact automatic ladder, SCN-008 ranking, joint ordering, dormant-anchor safety, and retired pre-event surface.
 - `audit_event6_country_api.py` checks the broad country API against Event 006, Soviet Collapse, and Africa carrier projections.
@@ -174,12 +199,12 @@ The maintained Event 006 validators protect the current source contracts without
 Run the bounded source checks from the mod root with `python -B`:
 
 ```powershell
-python -B .tools/audit_event6_allocator.py
-python -B .tools/audit_event6_country_api.py
-python -B .tools/audit_event6_flags.py --strict
-python -B .tools/audit_event6_scenario_matrix.py
-python -B .tools/audit_event6_form16.py
-python -B .tools/audit_event6_gui_matrix.py
+python -B .tools/events/audit_event6_allocator.py
+python -B .tools/events/audit_event6_country_api.py
+python -B .tools/events/audit_event6_flags.py --strict
+python -B .tools/events/audit_event6_scenario_matrix.py
+python -B .tools/events/audit_event6_form16.py
+python -B .tools/events/audit_event6_gui_matrix.py
 ```
 
 The validators read the consolidated Event 006 constant, regional publisher, regional trigger, and support-event registries directly. They are source/static checks only; MCP event, focus, map, probability, GUI-render, and live terminal evidence remain separate acceptance boundaries.

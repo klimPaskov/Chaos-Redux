@@ -12,7 +12,7 @@ import xml.etree.ElementTree as ET
 import zipfile
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 TOKEN = re.compile(r'#[^\r\n]*|"(?:\\.|[^"\\])*"|[A-Za-z0-9_:.@-]+|[{}=]')
 NS = {"m": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
 

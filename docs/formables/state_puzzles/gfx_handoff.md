@@ -32,4 +32,4 @@ The external native-size and 4x nearest-neighbour sheets are C:/Users/klimp/Vide
 
 Verification confirms exact source-to-processed pixel deltas limited to the described outline pixels, identical nonzero-alpha support, exact decoded DDS/processed PNG equality, matching native dimensions, and valid DDS headers for all 260 pieces. The form03 state 36 top fragments were checked against its exact province-derived row runs; they are genuine Frisian islets and remain unchanged per the review-plan fallback.
 
-The shared .tools/generate_formable_state_puzzle_runtime.mjs was left unchanged. Its pre-existing uncommitted two-line visibility-helper edits remain intact. No .gfx, GUI, or gameplay files changed.
+The shared .tools/formables/generate_formable_state_puzzle_runtime.mjs was left unchanged. Its pre-existing uncommitted two-line visibility-helper edits remain intact. No .gfx, GUI, or gameplay files changed.

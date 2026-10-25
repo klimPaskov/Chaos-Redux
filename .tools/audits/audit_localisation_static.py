@@ -31,11 +31,11 @@ that is only built dynamically still survives the sweep and is reported as
 `dynamic_candidate` instead of dead.
 
 Usage:
-	python .tools/audit_localisation_static.py                # report to stdout
-	python .tools/audit_localisation_static.py --json out.json
-	python .tools/audit_localisation_static.py --show-advisory   # also list empty-text gaps
-	python .tools/audit_localisation_static.py --calibrate       # vanilla coverage per rule
-	python .tools/audit_localisation_static.py --paths localisation/english/x.yml events/x.txt
+	python .tools/audits/audit_localisation_static.py                # report to stdout
+	python .tools/audits/audit_localisation_static.py --json out.json
+	python .tools/audits/audit_localisation_static.py --show-advisory   # also list empty-text gaps
+	python .tools/audits/audit_localisation_static.py --calibrate       # vanilla coverage per rule
+	python .tools/audits/audit_localisation_static.py --paths localisation/english/x.yml events/x.txt
 
 Levels and exit status follow `.tools/lib/report.py`. Parse, BOM, header, encoding,
 duplicate, undefined-binding, event title/description, requirement-tooltip and required
@@ -56,12 +56,16 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Set, Tuple
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # .tools, for the shared lib package
 from lib.game import game_dir, require_game_dir
+from lib.clausewitz import parse
+from lib.localisation import BOM, HEADER_LINE, LOC_LINE, read_text
+from lib.report import relative as report_relative
 from lib.report import (
-	Finding, add_arguments, exit_code, merge_json, print_findings, relative, requested_paths, select, split_site,
+	Finding, add_arguments, exit_code, merge_json, print_findings, requested_paths, select, split_site,
 )
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+REPO_ROOT = Path(__file__).resolve().parents[2]
 LOCALISATION_DIR = REPO_ROOT / "localisation" / "english"
 
 # Directories that are documentation, archived history, or tooling rather than
@@ -84,21 +88,12 @@ EXCLUDED_TOP_LEVEL = {
 
 SCRIPT_SUFFIXES = {".txt", ".gui", ".gfx", ".asset", ".json", ".md", ".yml"}
 
-# `key: "value"`, optionally followed by an inline comment. The value is
-# greedy up to the last quote on the line so that a `#` inside a quoted string
-# (for example a `§Y...§!` colour span) is never mistaken for a comment.
-LOC_LINE = re.compile(
-	r'^(?P<key>[A-Za-z0-9_.\-]+)\s*:\s*(?P<ordinal>\d+)?\s*"(?P<value>.*)"\s*(?:#.*)?$'
-)
-HEADER_LINE = re.compile(r"^l_english\s*:\s*(?:#.*)?$")
-
 # Tokens we treat as script references. Keeps letters, digits, underscore, dot.
 TOKEN = re.compile(r"[A-Za-z_][A-Za-z0-9_.\-]*")
 
 # `[Some.Getter]` and `[?var]` references inside localisation values.
 BRACKET_REF = re.compile(r"\[([^\]]+)\]")
 
-BOM = b"\xef\xbb\xbf"
 
 
 class Findings:
@@ -133,14 +128,6 @@ def iter_script_files() -> Iterable[Path]:
 		for path in paths:
 			if path.is_file() and path.suffix.lower() in SCRIPT_SUFFIXES:
 				yield path
-
-
-def read_text(path: Path) -> str:
-	"""Decode a file as UTF-8, tolerating a BOM and stray legacy bytes."""
-	raw = path.read_bytes()
-	if raw.startswith(BOM):
-		raw = raw[3:]
-	return raw.decode("utf-8", errors="replace")
 
 
 COMMENT_TAIL = re.compile(r"(?m)(?:^|(?<=\s))#.*$")
@@ -784,8 +771,6 @@ REQUIRED = "required"
 ADVISORY = "advisory"
 VANILLA_ROOT = game_dir()
 
-CW_TOKEN = re.compile(r'"(?:[^"\\\n]|\\.)*"|#[^\n]*|[{}]|<=|>=|!=|[=<>]|[^\s{}=<>"#]+|\n')
-COMPARATORS = {"=", "<", ">", "<=", ">=", "!="}
 KEY_SHAPE = re.compile(r"^[A-Za-z0-9_][A-Za-z0-9_.\-']*$")
 DYNAMIC_MARK = re.compile(r"[\[\]@$^%{}]")
 NUMBER = re.compile(r"^-?\d+(?:\.\d+)?$")
@@ -794,51 +779,8 @@ LOC_KEY_LINE = re.compile(r"^\s*([^\s:#]+):\d*\s*\"")
 
 
 def parse_script(path: Path) -> list:
-	"""Parse a Clausewitz file into `(key, operator, value, line)` tuples.
-
-	A value is the raw token text (quotes kept) or a nested list for a block. A
-	bare token inside a block has `key` and `operator` set to None. The parser is
-	tolerant: it never raises on unbalanced braces, because audits read files
-	that other people are editing.
-	"""
-	tokens: List[Tuple[str, int]] = []
-	line = 1
-	for match in CW_TOKEN.finditer(read_text(path)):
-		token = match.group(0)
-		if token == "\n":
-			line += 1
-		elif token[0] != "#":
-			tokens.append((token, line))
-	position = 0
-	count = len(tokens)
-
-	def block() -> list:
-		nonlocal position
-		items: list = []
-		while position < count:
-			token, token_line = tokens[position]
-			position += 1
-			if token == "}":
-				return items
-			if token == "{":
-				items.append((None, None, block(), token_line))
-				continue
-			if position < count and tokens[position][0] in COMPARATORS:
-				operator = tokens[position][0]
-				position += 1
-				if position >= count:
-					break
-				value, _ = tokens[position]
-				position += 1
-				if value == "{":
-					items.append((token, operator, block(), token_line))
-				else:
-					items.append((token, operator, value, token_line))
-			else:
-				items.append((None, None, token, token_line))
-		return items
-
-	return block()
+	"""Parse a Clausewitz file into `(key, operator, value, line)` nodes (`lib/clausewitz.py`)."""
+	return list(parse(read_text(path)))
 
 
 def unquote(raw: str) -> Tuple[str, bool]:
@@ -1715,7 +1657,7 @@ def normalised_findings(findings: Findings) -> List[Finding]:
 	rows: List[Finding] = []
 
 	def add(rule: str, path: str, line: int, message: str) -> None:
-		rows.append(Finding(CHECK, rule, LEVELS[rule], relative(path), line, message))
+		rows.append(Finding(CHECK, rule, LEVELS[rule], report_relative(path), line, message))
 
 	for entry in findings.parse_errors:
 		site, _, text = entry.partition(": ")
@@ -1728,7 +1670,7 @@ def normalised_findings(findings: Findings) -> List[Finding]:
 	for path, line, detail in findings.encoding_artifacts:
 		add("LOC-ENCODING", path, line, detail)
 	for key, first_file, first_line, path, line in findings.duplicates:
-		add("LOC-DUPLICATE", path, line, f"duplicate key {key}, first defined at {relative(first_file)}:{first_line}")
+		add("LOC-DUPLICATE", path, line, f"duplicate key {key}, first defined at {report_relative(first_file)}:{first_line}")
 	for key, sources in findings.missing_event_roots:
 		add("LOC-EVENT-ROOT", sources[0] if sources else "", 0, f"event-style key {key} is bound but never defined")
 	for key, sources in findings.missing_prefixed:

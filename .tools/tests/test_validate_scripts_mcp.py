@@ -1,4 +1,4 @@
-"""Fixture tests for the finding levels of `.tools/validate_scripts_mcp.py`.
+"""Fixture tests for the finding levels of `.tools/audits/validate_scripts_mcp.py`.
 
 The fixtures are real `hoi4.script_validate` responses, so the tests need no MCP server.
 Run from the mod root: `python -B .tools/tests/test_validate_scripts_mcp.py`.
@@ -10,7 +10,7 @@ import unittest
 from pathlib import Path
 
 TOOLS = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(TOOLS))
+sys.path.insert(0, str(TOOLS / "audits"))
 
 import validate_scripts_mcp as validator
 

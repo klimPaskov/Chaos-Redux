@@ -279,7 +279,7 @@ for kwargs in [{'tag':'GER'},{'exists':False},{'initialized':False}]:
     assert (v.regular,v.flags) == before
     cases += 1
 
-spec = importlib.util.spec_from_file_location('catalog_builder', ROOT/'.tools/build_event016_transit_state_catalog.py')
+spec = importlib.util.spec_from_file_location('catalog_builder', ROOT/'.tools/events/build_event016_transit_state_catalog.py')
 builder = importlib.util.module_from_spec(spec);spec.loader.exec_module(builder)
 for mutate in ['duplicate_state','duplicate_province','empty_membership','fractional_state','boolean_state','fractional_province','boolean_province']:
     bad = json.loads(json.dumps(data))

@@ -45,13 +45,13 @@ RUFF = "ruff@0.8.4"
 MYPY = "mypy==1.14.1"
 RATCHET_CODES = {"C901", "PLR0915"}
 STRICT_FILES = (
-	".tools/lib/", ".tools/check.py", ".tools/quality.py", ".tools/audit_script_rules.py", ".tools/validate_scripts_mcp.py",
+	".tools/lib/", ".tools/check.py", ".tools/quality.py", ".tools/audits/audit_script_rules.py", ".tools/audits/validate_scripts_mcp.py", ".tools/audits/indentation.py",
 	".tools/gfx/gfx.py", ".tools/sync/", ".claude/skills/chaos-redux-event-assets/tools/",
 	".claude/skills/chaos-redux-save-inspection/scripts/",
 )
 # mypy runs from each folder so that local imports (such as `.tools/lib`) resolve.
 MYPY_GROUPS: Tuple[Tuple[str, Tuple[str, ...]], ...] = (
-	(".tools", ("lib", "check.py", "quality.py", "audit_script_rules.py", "validate_scripts_mcp.py", "gfx/gfx.py",
+	(".tools", ("lib", "check.py", "quality.py", "audits/audit_script_rules.py", "audits/validate_scripts_mcp.py", "audits/indentation.py", "gfx/gfx.py",
 		"sync/sync_agents.py", "sync/sync_read_limits.py", "sync/sync_instructions.py")),
 	(".claude/skills/chaos-redux-event-assets/tools", ("convert_to_dds.py", "create_advisor_icon.py",
 		"extract_portrait_source_crop.py", "process_achievement_icons.py", "process_report_event_image.py")),
@@ -60,6 +60,8 @@ MYPY_GROUPS: Tuple[Tuple[str, Tuple[str, ...]], ...] = (
 MYPY_FLAGS = ("--strict", "--python-version", "3.9", "--ignore-missing-imports", "--no-error-summary", "--no-color-output")
 LEVELS = {"QUALITY-RUFF": "error", "QUALITY-COMPLEXITY": "error", "QUALITY-TYPE": "error", "QUALITY-BASELINE": "review"}
 MEASURE = re.compile(r"\((\d+) > \d+\)")
+# Ruff messages can name a line ("from line 61"); keys drop those numbers so moving code keeps its entry.
+LINE_NUMBER = re.compile(r"\bline \d+")
 DEF_NAME = re.compile(r"^\s*(?:async\s+)?def\s+([A-Za-z_][A-Za-z0-9_]*)")
 
 
@@ -89,11 +91,15 @@ def ruff_findings(paths: Optional[List[str]]) -> List[Dict[str, Any]]:
 	return rows
 
 
+def normalise_key(key: str) -> str:
+	return LINE_NUMBER.sub("line N", key)
+
+
 def ruff_key(row: Dict[str, Any], path: str) -> Tuple[str, int]:
 	"""Return (baseline key, measured value) for one ruff finding."""
 	code = str(row["code"])
 	if code not in RATCHET_CODES:
-		return f"{code} {row['message']}", 1
+		return normalise_key(f"{code} {row['message']}"), 1
 	match = MEASURE.search(str(row["message"]))
 	value = int(match.group(1)) if match else 0
 	lines = (REPO_ROOT / path).read_text(encoding="utf-8", errors="replace").splitlines()
@@ -157,6 +163,7 @@ def main() -> int:
 	if arguments.write_baseline and paths:
 		parser.error("--write-baseline needs the whole tree; omit --paths")
 	baseline: Dict[str, Dict[str, int]] = json.loads(BASELINE.read_text(encoding="utf-8"))["entries"] if BASELINE.is_file() else {}
+	baseline = {path: {normalise_key(key): value for key, value in entries.items()} for path, entries in baseline.items()}
 	try:
 		rows = ruff_findings(paths)
 		findings, measured = evaluate(rows, baseline)

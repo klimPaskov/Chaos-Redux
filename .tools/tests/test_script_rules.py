@@ -1,4 +1,4 @@
-"""Fixture tests for `.tools/audit_script_rules.py`.
+"""Fixture tests for `.tools/audits/audit_script_rules.py`.
 
 Run from the mod root: `python -B .tools/tests/test_script_rules.py`.
 """
@@ -8,7 +8,7 @@ import unittest
 from pathlib import Path
 
 TOOLS = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(TOOLS))
+sys.path.insert(0, str(TOOLS / "audits"))
 
 import audit_script_rules as rules
 

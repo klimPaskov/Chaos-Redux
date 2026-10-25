@@ -13,7 +13,7 @@ import re
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 TAG_FILE = ROOT / "common/country_tags/006_independence_wave_countries.txt"
 FLAG_DIRS = (ROOT / "gfx/flags", ROOT / "gfx/flags/medium", ROOT / "gfx/flags/small")
 IDEOLOGIES = ("communism", "democratic", "fascism", "neutrality")

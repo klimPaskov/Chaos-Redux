@@ -19,23 +19,26 @@ rules ignore quoted text. It reads `.txt` files under `common/`, `events/` and `
 lexical only: it cannot judge scopes, semantics or whether a construct runs.
 
 Usage:
-	python -B .tools/audit_script_rules.py
-	python -B .tools/audit_script_rules.py --paths events/x.txt common/scripted_effects/
-	python -B .tools/audit_script_rules.py --json .tmp/script_rules.json
+	python -B .tools/audits/audit_script_rules.py
+	python -B .tools/audits/audit_script_rules.py --paths events/x.txt common/scripted_effects/
+	python -B .tools/audits/audit_script_rules.py --json .tmp/script_rules.json
 
 With `--paths`, only those files or folders are scanned. Exit status: 0 no errors, 1 errors.
 """
 
 from __future__ import annotations
 
+import sys
 import argparse
 import re
 from pathlib import Path
 from typing import Iterable, List
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # .tools, for the shared lib package
+from lib.clausewitz import strip_comment
 from lib.report import Finding, PathFilter, add_arguments, exit_code, merge_json, print_findings, relative, requested_paths
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+REPO_ROOT = Path(__file__).resolve().parents[2]
 SCAN_DIRS = ("common", "events", "history")
 CHECK = "script-rules"
 LEVELS = {
@@ -50,17 +53,6 @@ COMPARISON = re.compile(r"<=|>=")
 UNARY_MINUS = re.compile(r"=\s*-(?!constant:)([A-Za-z_][A-Za-z0-9_.:@^]*)")
 FORMAT_CHARACTER = re.compile("[§£]")
 QUOTED = re.compile(r'"[^"\n]*"')
-
-
-def strip_comment(line: str) -> str:
-	"""Remove a `#` comment that is not inside a quoted string."""
-	quoted = False
-	for index, character in enumerate(line):
-		if character == '"':
-			quoted = not quoted
-		elif character == "#" and not quoted:
-			return line[:index]
-	return line
 
 
 def scan_text(path: str, text: str) -> List[Finding]:

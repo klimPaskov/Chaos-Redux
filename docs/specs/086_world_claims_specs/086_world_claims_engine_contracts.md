@@ -68,7 +68,7 @@ The selected dynamic ambition stores an immutable envelope, anchors, scale, thre
 
 The canonical geometry input is `docs/formables/state_registry/generated/state_geometry_registry.json`. Consumers declare finite state candidate sets, exact projection and wrap handling, live visibility, shared qualification, and outputs. Prepared regional pages cover the active installed state universe needed for arbitrary World Claims envelopes.
 
-The repository guidance says the former registry builder and consumer compiler are archived. Restore and review that chain deliberately, or approve a replacement. Do not invoke archived producers as normal maintenance. The current reviewed runtime generator is `.tools/generate_formable_state_puzzle_runtime.mjs` and discovers complete manifests. A draft or `assets_pending` manifest is not runtime-ready.
+The repository guidance says the former registry builder and consumer compiler are archived. Restore and review that chain deliberately, or approve a replacement. Do not invoke archived producers as normal maintenance. The current reviewed runtime generator is `.tools/formables/generate_formable_state_puzzle_runtime.mjs` and discovers complete manifests. A draft or `assets_pending` manifest is not runtime-ready.
 
 Each category in this family needs its own proven attachment. Informational state icons have tight hover regions and no state-changing click action. Page selection does not mutate the ambition. Scripted GUI must not consume event targets. Scope-sensitive dynamic entries require an installed-engine proof or generated explicit-state wrappers.
 
