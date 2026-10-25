@@ -592,6 +592,24 @@ Status: `implemented`. Requested by the user after step 8 ("everything must be f
 - **Requirement variables.** `LOC-REQUIREMENT-VARIABLE` never saw `check_variable` blocks, because the generic block alternative matched first. With the fix it found 252 variables that displayed requirements print as raw identifiers. Three localisation workers fixed every one. 156 player-meaningful variables got short names, and the rest, ids, enums, row and batch codes, moved inside custom_trigger_tooltip blocks that state the real requirement; the logic, thresholds and constants are unchanged. The audit reports 0 errors. Single-line checks only: multi-line check_variable blocks and ^num array-size checks remain outside the rule, and a few were covered by hand where they sat inside wrapped blocks. The Event 032 and CBRN source-model tests now evaluate custom_trigger_tooltip as AND.
 - **Launch.** The Linux launch of the 25 October push found the elephant rider clone error, fixed in `841814f5bd`. The one remaining mod line, the Event 014 "Scavenged Elephant Column" with vanilla support-type `elephantry` in a regiment slot, comes from the deliberate restore `e3c1774990` and awaits the user's decision.
 
+### Step 10: one-command setup, Linux and multi-line variables (25 October 2026)
+
+Status: `implemented`. Requested by the user: fix the remaining gaps, push the generic package, then have the HOI4 Mod Setup worker confirm the app installs everything.
+
+- **`check.py setup`** (shared `lib/setup.py`) prepares a mod in one idempotent command, then prints the `doctor` report. HOI4 Mod Setup can run it as its single post-install action. The steps:
+  - install the packages in `.tools/requirements.txt`;
+  - record `--save-game-dir`;
+  - add the machine-local `.gitignore` entries;
+  - run the installed synchronizers;
+  - run `quality.py --adopt` (when `uv` exists).
+
+  It never edits a canonical file. When the system Python is externally managed (PEP 668, as on Ubuntu), the packages go into `.tools/.venv`, and `check.py` relaunches itself inside that environment. The relaunch compares `sys.prefix`, because a venv interpreter is often a symlink to the system one. A check that cannot run now points at `setup`.
+- **`doctor`** also checks that the HOI4 Agent Tools server can select the mod. With no server configuration, the server picks the mod from its folder. With one, the mod must sit under `modRoots` or be a listed workspace. The fix names the configuration file.
+- **Linux.** The package branch was cloned into WSL Ubuntu 24.04 (Python 3.12, no packages, externally managed). There, `check.py setup` created `.tools/.venv`, installed the packages and reported ready. `check.py full --only script-rules gfx guidance generators quality tests` exited 0, and the `.tools/tests`, `.tools/gfx` and asset-tool test suites passed. The full run's only errors were the source template's `[MOD_PREFIX]` placeholder keys. `uv` was absent there, so `quality` was skipped with its notice.
+- **Multi-line `check_variable` blocks.** `LOC-REQUIREMENT-VARIABLE` now reads the `var = name` or `name <op> value` line inside an open block. That exposed 146 more variables, all fixed by three workers: 128 got names, and 18 moved inside `custom_trigger_tooltip` blocks. The 18 include the engine variables `global.date`, `global.num_days` and `id`, which now state their requirement in plain words. The audit reports 0 errors. `^num` array-size checks remain excluded by the rule's design.
+- **Global HOI4 Agent Tools.** The global npm install is 4.6.0, the newest published version; no running server used it. 4.6.1, with the false-positive fix, was not yet published.
+- **Event 014.** The Scavenged Elephant Column fields Bone Riders with the vanilla `elephantry` support company, by the user's decision (`f4e9d45b52`). A clean launch afterwards showed no mod-caused log line.
+
 ### Owner hand-offs
 
 These findings came from the audit; per the plan they are reported to their owners rather than fixed inside the tooling change.
