@@ -554,6 +554,8 @@ Do not make every leader animated. Animation should signal a special route, a hi
 
 ## 16. Documentation and audit
 
+Before the focus audit, run `python -B .tools/check.py quick` on the changed files and fix every error it lists; it checks localisation keys, icon and sprite wiring, script syntax and MCP script validation, not route logic or layout, which stay with `hoi4.focus_inspect` and the auditor.
+
 Update documentation for large focus-tree work.
 
 Include:

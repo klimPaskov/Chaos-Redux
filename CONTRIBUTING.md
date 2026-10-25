@@ -26,6 +26,19 @@ git lfs checkout 'gfx/**' '*.png' '*.wav' '*.ogg' '*.flac' '*.mp3' '*.opus'
 Do not classify an asset as broken from file size alone.
 Small flags and interface glyphs can legitimately remain under 1 KB; the LFS pointer signature and image or audio decoding are the reliable checks.
 
+### Run the repository checks
+
+Before opening a pull request or pushing, run the read-only repository checks from the mod root:
+
+```powershell
+python -B .tools/check.py full
+```
+
+It needs Python 3.9 or newer with Pillow, NumPy, SciPy and openpyxl, Node.js, and the installed game; set `HOI4_GAME_DIR` if Hearts of Iron IV is not in the default Steam folder.
+It must exit `0`, or every remaining error must be explained in the pull request or push notes.
+During work, `python -B .tools/check.py quick` checks only what your changed files can affect; [`.tools/README.md`](.tools/README.md) explains every check and its limits.
+These checks cover file integrity, references and syntax; they do not replace testing the mod in game.
+
 ## AGENTS.md, Skills and Subagents
 
 This repo intentionally leaves the coding agent resources visible, so if you want to, you can fork the repo and contribute directly.

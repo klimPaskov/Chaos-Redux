@@ -259,6 +259,7 @@ Clausewitz script is picky. Follow these rules strictly.
 12. If an effect or trigger does not accept dynamic values, use `meta_effect` or `meta_trigger` with `text = { ... }` to inject computed variables/localisation into otherwise static fields.
     - meta effects can be used in all sorts of creative ways, for example: `my_scripted_effect_[ID] = yes`, so you can even choose a scripted effect dynamically. Meta effects are very powerful and useful, use them often.
     - When only one part of a flag or variable name is dynamic, prefer targeting over a meta effect: `set_country_flag = my_flag_@PREV` appends that country's tag (only `@ROOT`, `@PREV`, `@FROM`, and `@THIS`, one per name), and `my_var_@var:id` or `my_var_@PREV` keys a variable by a stored value or scope. The wiki's Data structures page describes targeting as faster and more readable than meta-effect token pasting.
+    - A worked `meta_effect` example, including its scripted localisation, is in [`common/scripted_effects/chaosx_dynamic_effects.md`](common/scripted_effects/chaosx_dynamic_effects.md#meta_effect_example).
 13. Prefer reusable dynamic scripted effects/triggers for complex/dynamic logic.
     - First check existing dynamic effects (in `common/scripted_effects/chaosx_dynamic_effects.txt`) and use them instead of duplicating logic.
     - If no existing effect fits, create a new dynamic effect and document it in the markdown file of the same name (`common/scripted_effects/chaosx_dynamic_effects.md`) in the same change.
@@ -269,75 +270,6 @@ Clausewitz script is picky. Follow these rules strictly.
     - `collection_size` comparisons are inclusive, so `value > 3` means at least 3.
     - `scope_exists` is always true on a variable scope. Validate a stored target with an object-specific check such as `exists = yes` or `country_exists` instead.
     - `while_loop_effect` and `for_loop_effect` stop after 1,000 iterations (`MAX_EFFECT_ITERATION` in vanilla defines), so a loop over a larger set, such as every state, needs a scope iterator or bounded batches.
-
-### Meta effect example
-
-Meta effects allow you to use non-dynamic effects (the ones that do not accept modifiers and can only use static tokens or constant values) as if they were accepting variables.
-
-```
-add_equipment_to_stockpile = {
-    type = infantry_equipment_2
-    amount = eq_amount
-}
-```
-
-In the effect shown above, amount of equipment added is dynamic and can be set using the variable `eq_amount`. However, this effect does not let you use a variable as equipment type. You can not store `infantry_equipment_2` in a variable and use it here.
-
-However, meta effects will let you use variables and scripted localisation within them to build effects as if they were texts and run them. Let's make the previous effect accept equipment type and equipment level as variables stored in `eq_type` and `eq_level`.
-
-```
-set_variable = { eq_type = 1 }
-set_variable = { eq_amount = 10 }
-set_variable = { eq_level = 2 }
-
-meta_effect = {
-    text = {
-        add_equipment_to_stockpile = {
-            type = [EQ_TYPE]_[EQ_LEVEL]
-            amount = eq_amount
-        }
-    }
-    EQ_LEVEL = "[?eq_level|.0]"
-    EQ_TYPE = "[This.GetEquipmentName]"
-}
-```
-
-The scripted localisation for the `eq_type` variable goes in a scripted localisation file.
-
-```
-defined_text = {
-    name = GetEquipmentName
-    text = {
-        trigger = {
-            check_variable = { eq_type = 0 }
-        }
-        localisation_key = "infantry_equipment"
-    }
-    text = {
-        trigger = {
-            check_variable = { eq_type = 1 }
-        }
-        localisation_key = "artillery_equipment"
-    }
-}
-```
-
-This meta effect takes two arguments.
-
-`[EQ_LEVEL]` is replaced by the integer value of `eq_level`.
-
-`[EQ_TYPE]` is replaced by the result of scripted localisation based on `eq_type`.
-
-The final built effect becomes:
-
-```
-add_equipment_to_stockpile = {
-    type = artillery_equipment_2
-    amount = eq_amount
-}
-```
-
-This gives 10 units of `artillery_equipment_2`.
 
 ## 2. Localisation and UI
 
@@ -393,16 +325,23 @@ When implementing any new mechanic, follow this checklist:
 20. When updating content (for example reworking an event), write as if the feature has always existed. Do not use meta wording like “now it is,” “now it has been reworked,” “newly added,” or similar update-history phrasing.
 21. Respect the player-facing writing style found in `chaos-redux-events`.
 22. Markdown prose must not be hard-wrapped in the middle of a sentence. Keep each sentence on one physical line and place line breaks only between sentences or paragraphs.
-23. Keep maintained, reusable tooling in `.tools/`; put one-off repairs, migrations, job-specific scripts, temporary checks, and their outputs in ignored `.tmp/`, grouping related files by task.
-    `.tools/3d_pipeline/` is shared infrastructure, not storage for unit-specific runners or fixed model jobs.
-    Retain meaningful maintained regression tests even when they cover one event; a filename or date alone does not decide whether a tool is temporary.
-    Promote a helper into `.tools/` only for demonstrated recurring use or a required shared entry point, with documented inputs, outputs, callers, and appropriate checks; adding command-line arguments alone does not make a one-off tool reusable.
-24. Before adding a skill, document, report, wrapper, or helper, check its existing owner and extend that source where it fits.
-    Keep one current task report, avoid duplicate instruction copies outside the established generators, and review new files for unnecessary scaffolding before completion.
-    Control bloat by removing duplication and keeping temporary work out of maintained paths, not by deleting specific requirements or shortening them into generic advice.
-
 If an indispensable design choice or input is missing, finish independent work and ask a focused question.
 An unavailable check alone calls for source review and useful local checks, not another design request.
+
+## 4a. Deterministic Tools and Checks
+
+Mechanical questions get mechanical answers. Before reasoning through a question that a file can answer (does this key, sprite, texture or flag exist, is this size or frame count right, is this output stale), run the existing check.
+
+1. Look first. `.tools/README.md` indexes every maintained tool and the question it answers, and skills name the checks for their workflows. Run `python -B .tools/check.py quick` on the files you changed before review, and `python -B .tools/check.py full` at the end of a large task. Read a check's documented limits before relying on its result.
+2. Add or improve a tool only for a recurring task with an explicit rule, known inputs and an independently checkable result. Extend the owning tool before creating a new one, and give each new rule one valid and one invalid fixture.
+3. Document every maintained tool in `.tools/README.md` or its package README: purpose, command, inputs, outputs, dependencies, callers, the rule or reference it enforces, and its limits. Checks are read-only by default; fixers are separate and explicit.
+4. Place shared tools under `.tools/` with one canonical implementation in `.tools/lib/`, and helpers used by one skill in that skill's `tools/` or `scripts/` folder. Never copy a tool between `.tools/`, `.claude/`, `.agents/` or another runtime folder.
+5. When a reusable workflow gains or changes a tool, update the skill that owns the workflow in the same change.
+6. Keep one-off repairs, migrations, job-specific scripts, temporary checks and their outputs in ignored `.tmp/<task>/`. `.tools/3d_pipeline/` is shared infrastructure, not storage for unit-specific runners or fixed model jobs. Retain maintained regression tests that protect a current contract, even for one event; a filename or date does not make a test disposable. Promote a helper only for demonstrated recurring use or a required shared entry point; command-line arguments alone do not make a one-off tool reusable.
+7. Before adding a skill, document, report, wrapper or helper, check its existing owner and extend that source. Keep one current task report, avoid duplicate instruction copies outside the established generators (`AGENTS.md` is generated from this file by `python .tools/sync/sync_instructions.py`), review new files for unnecessary scaffolding before completion, and control bloat by removing duplication and keeping temporary work out of maintained paths, not by deleting specific requirements or shortening them into generic advice.
+8. Tools never replace design, gameplay reasoning, writing, art direction or review. Do not generate focus trees, events, decisions, ideas, localisation prose or lore with scripts, do not spend a goal on scripts, report generators or bulk-generation helpers while the content stays shallow or incomplete, and do not count generated volume as progress.
+9. A passing check proves only the properties it checks. A size or alpha check does not establish visual quality, and a reference check does not establish gameplay behaviour; report it that way.
+10. Never weaken a check, add a suppression, lower a threshold, edit a baseline or change a requirement to make validation pass. Fix the finding, or report it with its reason and get the rule owner's decision.
 
 ## 5. Completion and Simplification Reporting
 
@@ -434,8 +373,6 @@ Do not claim completion when:
 
 Balance checks are implementation work, not optional polish. If the spec or user asks for balance validation, the agent must inspect the relevant variables, scripted effects, decisions, mission outcomes, trigger conditions, AI weights, and scenario behavior. A vague statement that balance was adjusted is not enough.
 When a tool cannot analyze the mechanic, calculate representative cases from the actual scripted values and conditions, distinguish AI scores from probabilities, and state important assumptions.
-
-Do not replace real implementation work with tooling work. Do not spend the goal creating Python scripts, report generators, or bulk-generation helpers while leaving the actual content shallow or incomplete. Small scripts may be used for mechanical audits such as checking duplicate ids, or finding missing localisation keys, but they are not a substitute for implementing and validating the content.
 
 Do not bulk-generate large focus trees, country packages, decisions, localisation, or validation reports and call them complete. Generated or scripted drafts are acceptable only when every result is manually reviewed, customized to the country or route, wired into the mod, localized, given AI behavior, documented, and checked against the spec.
 

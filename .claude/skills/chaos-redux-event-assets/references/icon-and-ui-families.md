@@ -24,7 +24,7 @@ Shared visual themes are allowed only when every icon is still designed for its 
 - achievement icons should follow achievement presentation rules and variant rules
 - intelligence-agency and intelligence-operation icons must follow their own agency or operation UI precedent rather than a generic decision treatment
 - commander traits, medals, military raids, state modifiers, MIOs, factions, buildings, and modifier icons must follow the matching canonical folder and owning vanilla definition; do not force these families onto a blanket 32x32 or 64x64 canvas
-- frame strips, indexed building sprites, and multi-state modifier art must retain their frame order and frame count rather than being treated as a single standalone icon
+- frame strips, indexed building sprites, and multi-state modifier art must retain their frame order and frame count rather than being treated as a single standalone icon; `python -B .tools/gfx/gfx.py sprites --paths <the .gfx file>` warns when a strip's width does not divide by its `noOfFrames`
 
 If a mechanic needs matching focus, idea, and decision visuals, build them as a coordinated icon family. A coordinated family can share subjects, symbols, colors, and lore cues, but each member still needs separate source art or a separate generated output designed for its target size and UI role.
 

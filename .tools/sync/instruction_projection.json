@@ -1,0 +1,34 @@
+{
+  "pairs": [
+    {
+      "source": "CLAUDE.md",
+      "target": "AGENTS.md"
+    }
+  ],
+  "replacements": [
+    [
+      "Skills are authored in `.claude/skills/<name>/SKILL.md`, which is canonical. `.agents/skills/<name>` is a generated mirror for the other runtimes, refreshed by `python .tools/sync/sync_agents.py`; never author a skill there.",
+      "Skills are authored in `.claude/skills/<name>/SKILL.md`, which is canonical. `.agents/skills/<name>` is the generated mirror this runtime reads, refreshed by `python .tools/sync/sync_agents.py`; never author a skill there."
+    ],
+    [
+      "- Use `chaos-redux-event-assets` and `chaosx_portrait_creator` for every character portrait. The portrait worker researches and archives grounded sources, creates placeholders, generates fictional or impossible portraits through the image-generation MCP workflow, processes PNG/DDS variants, installs portrait wiring, and writes manifests and handoffs. The user alone runs RunPod for grounded HOI4-style finals; the agent never operates it.",
+      "- Use `chaos-redux-event-assets` and `chaosx_portrait_creator` for every character portrait. The portrait worker researches and archives grounded sources, creates placeholders, generates fictional or impossible portraits with native ImageGen, processes PNG/DDS variants, installs portrait wiring, and writes manifests and handoffs. The user alone runs RunPod for grounded HOI4-style finals; the agent never operates it."
+    ],
+    [
+      "- Use `chaos-redux-debug-playtest` only when the user explicitly invokes live testing. It plays the game through the HOI4 Live Tools MCP (`hoi4-live`: launch, load a save, advance time, inspect state, diff saves with `chaos-redux-save-inspection`) instead of raw desktop control, and reuses the running game and loaded save.",
+      "- Use `chaos-redux-debug-playtest` only when the user explicitly invokes live testing. Windows runs use the HOI4 Live Tools MCP (`hoi4-live`: launch, load a save, advance time, inspect state, diff saves with `chaos-redux-save-inspection`). Linux runs prefer Clausewitz-MCP when the exact ELF build has a reviewed table and the matching WSL lease is held; use only tools marked verified, and use HOI4 Live Tools as a fallback only when it reaches that same Linux process. Reuse a matching running game and loaded save where available; do not use raw desktop control."
+    ],
+    [
+      "- Use `chaosx_portrait_creator` for complete portrait production: grounded source research and placeholders, fictional generated portraits, user-supplied final validation, processing, DDS conversion, portrait-specific wiring, manifests, and handoffs. It never operates RunPod.",
+      "- Use `chaosx_portrait_creator` for complete portrait production: grounded source research and placeholders, fictional native ImageGen portraits, user-supplied final validation, processing, DDS conversion, portrait-specific wiring, manifests, and handoffs. It never operates RunPod."
+    ],
+    [
+      "Image generation runs through the `gptimage` MCP server: `mcp__gptimage__generate_image` with its `reference_images` parameter and `mcp__gptimage__image_auth_status` when a call fails authentication. The `gptimage` skill and the Image-generation route section of `chaos-redux-event-assets` hold the workflow. Transparent output is the default for every asset family whose unused canvas is transparent in the inspected HOI4 consumer, including icons, counters, emblems, overlays, decorative UI pieces, and transparent animation frames. Request a real transparent background in the initial prompt, verify the alpha channel of the saved PNG because the tool has no alpha parameter, and preserve it through processing, frame assembly, resizing, and DDS conversion. Background removal is a fallback only for output without usable alpha or an inherited, sourced, or user-provided image with an unwanted opaque backdrop; record the fallback and validate the repaired edges. Full-canvas scene art, flags, portraits, and painted panels keep the background treatment required by their actual consumer and reference family.",
+      "Native ImageGen transparency is the default for every asset family whose unused canvas is transparent in the inspected HOI4 consumer, including icons, counters, emblems, overlays, decorative UI pieces, and transparent animation frames. Request a real transparent background in the initial ImageGen call and preserve the alpha channel through processing, frame assembly, resizing, and DDS conversion. Background removal is a fallback only for failed native-alpha output or an inherited, sourced, or user-provided image with an unwanted opaque backdrop; record the fallback and validate the repaired edges. Full-canvas scene art, flags, portraits, and painted panels keep the background treatment required by their actual consumer and reference family."
+    ],
+    [
+      "Route every character portrait to `chaosx_portrait_creator`. It finds and archives attributed sources for grounded subjects, creates and wires source placeholders, and validates and installs the HOI4-style final supplied by the user; agents never operate RunPod. For fictional or impossible subjects, it generates the portrait through the image-generation MCP workflow and completes processing, DDS conversion, portrait-specific wiring, manifest evidence, and handoff itself.",
+      "Route every character portrait to `chaosx_portrait_creator`. It finds and archives attributed sources for grounded subjects, creates and wires source placeholders, and validates and installs the HOI4-style final supplied by the user; agents never operate RunPod. For fictional or impossible subjects, it invokes native ImageGen and completes processing, DDS conversion, portrait-specific wiring, manifest evidence, and handoff itself."
+    ]
+  ]
+}

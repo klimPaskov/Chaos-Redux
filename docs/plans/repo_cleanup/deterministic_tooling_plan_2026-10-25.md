@@ -506,6 +506,17 @@ Differences from the plan text, each forced by measured evidence:
 - **D6 uses a new session client.** `3d_pipeline/lib/mcp_stdio.py` is hash-pinned in `3d_pipeline/config/dependencies.lock.json`, starts one server per call (about 19 s of indexing each), and closes stdin before a Node server answers. Changing it requires an adapter release, so `.tools/lib/mcp_session.py` (about 100 lines) runs one session for many calls; the D6 merge of the two clients belongs with that release.
 - **Known-mistake matches are warnings.** On `chaosx_event_cluster_effects.txt`, `KNOWN_MISTAKE_TEMP_VARIABLE_SCOPE_PREFIX` reported eight false positives on script constants such as `constant:tensions_rising_event_log.event_id`.
 
+### Step 4: policy (25 October 2026)
+
+Status: `implemented`.
+
+- **Generated `AGENTS.md` (D10).** `.tools/sync/sync_instructions.py`, adopted from the generic package with an added check for replacement pairs whose source line no longer exists, regenerates `AGENTS.md` from `CLAUDE.md`. `instruction_projection.json` holds the six intentional runtime lines as whole-line pairs; before any `CLAUDE.md` edit the projection reproduced the existing `AGENTS.md` byte for byte. `check.py` runs `--check` as part of `generators`, and a deliberately appended line was reported as `GEN-STALE` and then restored. `.tools/sync/README.md`, `.tools/README.md` and `.codex/README.md` now describe `CLAUDE.md` as the only hand-edited instruction file.
+- **Section 4a and D7.** `CLAUDE.md` gained section 4a in place of rules 23–24 and the section 5 tooling paragraph. Compared with the draft in section 9.1, rule 3 also names callers, rule 7 keeps rule 24's generator, scaffolding and bloat clauses, and rule 8 keeps the section 5 sentence about scripts and report generators, so every removed requirement survives. The complete "Meta effect example" moved verbatim to `common/scripted_effects/chaosx_dynamic_effects.md#meta_effect_example` (with a table-of-contents entry and CRLF endings preserved), and rule 12 links to it. `CLAUDE.md` is 59,920 bytes and `AGENTS.md` 59,741 bytes, both under the 60,000-byte ceiling.
+- **Skills.** One pointer each, without repeating the policy: `chaos-redux-events` (final checklist), `chaos-redux-focus-trees` (section 16), `chaos-redux-decisions-missions` (section 20), `chaos-redux-subagents` (audit roles report `check.py quick` findings by rule id), `chaos-redux-scripted-gui` (handoff), `chaos-redux-codebase-cleanup` (`check.py full --json` as the worklist), and `chaos-redux-event-assets`: the flag checklist in `references/event-images-and-flags.md` uses `gfx.py flags` instead of `file`, the frame-strip rule in `references/icon-and-ui-families.md` names `gfx.py sprites`, and the root flag summary names `gfx.py flags`. The root skill is 57,937 bytes against its 58,000-byte ceiling, so its wiring section gained no further text; the size list keeps its numbers until step 7 introduces `profiles.json`.
+- **Push routine (D11).** `CONTRIBUTING.md` asks for `python -B .tools/check.py full` before a pull request or push, with its dependencies and `HOI4_GAME_DIR`. The agent memory for the filtered push route lists it as the first step.
+
+Observation for the owner of the relocated example: its `defined_text` sample writes `localisation_key`, while scripted localisation uses `localization_key`; it was moved verbatim, as D7 requires, and not corrected.
+
 ### Owner hand-offs
 
 These findings came from the audit; per the plan they are reported to their owners rather than fixed inside the tooling change.

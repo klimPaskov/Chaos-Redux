@@ -93,7 +93,7 @@ python .tools/sync/sync_agents.py --verify
 ```
 
 Do not hand-edit generated Codex, Qoder, Cursor, or opencode agent files.
-`CLAUDE.md` is edited directly, and `AGENTS.md` carries the same rules for the other runtimes.
+`CLAUDE.md` is edited directly; `python .tools/sync/sync_instructions.py` regenerates `AGENTS.md` from it for the other runtimes, and `--check` reports drift (see `sync/README.md`).
 
 ### Universal formable-state tooling
 

@@ -1,6 +1,6 @@
 # Agent synchronizers
 
-This directory holds the maintained one-way generator that projects the canonical Claude Code definitions into the other runtimes, plus the shared read-limit applier.
+This directory holds the maintained one-way generators that project the canonical Claude Code definitions and instructions into the other runtimes, plus the shared read-limit applier.
 
 Claude Code is the primary development environment.
 The canonical sources are:
@@ -57,9 +57,15 @@ The generator stops on a definition without an entry or with a model outside `ha
 
 ## Instruction files
 
-`CLAUDE.md` is canonical for Claude Code and is edited directly.
-`AGENTS.md` serves Codex, Cursor, Qoder, opencode, and DSH, and keeps the Codex wording for image generation.
-The two files share their structure, so apply a rule change to both and keep only the runtime-specific image-generation wording different.
+`CLAUDE.md` is canonical and is the only instruction file edited by hand.
+`AGENTS.md` serves Codex, Cursor, Qoder, opencode, and DSH; `sync_instructions.py` generates it from `CLAUDE.md`, replacing each runtime-specific line listed in `instruction_projection.json` (the Codex wording for image generation and portraits, the `.agents/skills` mirror sentence, and the Linux live-testing route).
+
+```powershell
+python .tools/sync/sync_instructions.py           # regenerate AGENTS.md after editing CLAUDE.md
+python .tools/sync/sync_instructions.py --check   # exit 1 on drift or on a replacement whose source line no longer exists
+```
+
+When a replaced line in `CLAUDE.md` is reworded, update its pair in `instruction_projection.json` in the same change; `--check` reports the stale pair. `.tools/check.py` runs the check whenever `CLAUDE.md`, `AGENTS.md` or this folder changes.
 
 ## Write rules
 

@@ -313,7 +313,7 @@ Read the complete requirements in [Decision category pictures](references/icon-a
 
 ### Flags
 
-Flags are flat identity assets on the `82x52`, `41x26`, and `10x7` TGA ladder. Every new flag comes from image generation after cited historical research, is never replaced by locally drawn geometry, and must pass the orientation, TGA-header, and ladder-consistency checks before completion.
+Flags are flat identity assets on the `82x52`, `41x26`, and `10x7` TGA ladder. Every new flag comes from image generation after cited historical research, is never replaced by locally drawn geometry, and must pass the orientation, TGA-header, and ladder-consistency checks (`gfx.py flags`) before completion.
 Read the complete requirements in [Flags](references/event-images-and-flags.md#flags) before this work.
 
 ### Country-leader, commander, operative, and named-officeholder portraits

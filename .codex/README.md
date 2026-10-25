@@ -81,6 +81,6 @@ The `gptimage` MCP server is a Claude Code user-level server that supplies image
 During a Codex, Qoder, Cursor, opencode, or DSH session, treat `.claude/agents/**` and `.claude/skills/**` as the canonical definitions: change them only when the user's request covers that content.
 During a Claude Code session, leave the generated `.codex/agents/**`, `.qoder/**`, `.cursor/agents/**`, and `.opencode/agent/**` files untouched and regenerate them with the sync script instead.
 Any subagent instruction change lands in `.claude/agents/` first, then propagates through the sync script.
-A rule change in `CLAUDE.md` is applied to `AGENTS.md` as well, keeping only the runtime-specific wording different.
+A rule change lands in `CLAUDE.md`; `python .tools/sync/sync_instructions.py` regenerates `AGENTS.md` from it, applying the runtime-specific wording in `.tools/sync/instruction_projection.json`. Never edit `AGENTS.md` directly.
 The same rule applies to skill changes: edit `.claude/skills/<name>/SKILL.md`, and the `.agents/skills/<name>` link shows the same file.
 New settings may require a new runtime session; writing them does not change every already-running reader.

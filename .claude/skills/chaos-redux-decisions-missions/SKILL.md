@@ -794,6 +794,8 @@ Read the complete requirements in [Subagent patches for decision systems](refere
 
 ## 20. Completion report
 
+Before the completion audit, run `python -B .tools/check.py quick` on the changed files and fix every error it lists; it checks localisation keys, decision icons and sprite wiring, script syntax and MCP script validation, not costs, balance or AI behaviour.
+
 A decision or mission task is complete only when:
 
 - decisions and categories exist

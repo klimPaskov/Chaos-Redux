@@ -153,5 +153,7 @@ Reference-capture bindings must default to `visible = { always = no }` in engine
 
 ## Handoff and completion
 
+Run `python -B .tools/check.py quick` on the changed `.gui`, `.gfx`, scripted-GUI and texture files; it reports missing textures and sprites, uneven frame strips (`gfx.py sprites`) and broken runtime binaries, not layout, which stays with `hoi4.gui_render` and visual review.
+
 Return exact changed files/identifiers, source precedents, reference images and acceptance basis, image-to-element/background mapping, justified native adaptations, asset/state coverage, and matched MCP before/after artifacts with scenario/source identities. Include the intermediate MCP preview evidence and corrections, completed visual-review findings, content/action budget assessment, and the decision owner's action-integrity evidence where gameplay controls exist. List blockers, unresolved diagnostics, missing assets, unavailable states, remaining parent integration, and every simplification explicitly. If none, say so with the evidence. Do not claim a visually verified GUI from source checks, a successful rewrite, or a single normal-state screenshot. The parent reviews final integration. Live-game validation belongs to the user under `AGENTS.md` and is not replaced by MCP evidence.
  Unavailable renders limit visual claims rather than preventing completion of the implementation; never await user testing. Update the current handoff instead of repeating unchanged reports.

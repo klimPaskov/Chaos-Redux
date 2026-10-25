@@ -24,7 +24,7 @@ Checks (rule ids and levels are defined by each tool; see `.tools/lib/report.py`
 - script-rules     `audit_script_rules.py`              `<=`/`>=`, unary minus, scripted-localisation format codes
 - gfx              `gfx/gfx.py audit`                   frame strips, flag ladder, achievement size, runtime binaries
 - guidance         `sync/sync_read_limits.py --check`   guidance size ceilings and read-limit drift
-- generators       `--check` modes of the generators    catalog CSV, formable puzzles, Event 016 catalog, agent mirrors
+- generators       `--check` modes of the generators    catalog CSV, formable puzzles, Event 016 catalog, AGENTS.md, agent mirrors
 - tests            maintained regression tests in `.tools/` (full, or quick when `.tools/` changed)
 - references       `audit_script_references_static.py`  dead code, flags and clones (full only; review)
 - script-validate  `validate_scripts_mcp.py`            HOI4 Agent Tools script validation of changed files (quick
@@ -148,6 +148,8 @@ GENERATORS = (
 	Generator("Event 016 transit catalog", ("python", ".tools/build_event016_transit_state_catalog.py", "--check"),
 		("docs/testing/event016_transit_catalog_20261008/state_membership.json", "common/script_constants/016_transit_catalog_constants.txt",
 		"common/scripted_triggers/016_transit_state_province_catalog_")),
+	Generator("AGENTS.md instruction", ("python", ".tools/sync/sync_instructions.py", "--check"),
+		("CLAUDE.md", "AGENTS.md", ".tools/sync/")),
 	Generator("agent mirrors", ("python", ".tools/sync/sync_agents.py", "--verify"),
 		(".claude/agents/", ".claude/skills/", ".tools/sync/", ".codex/", ".cursor/", ".qoder/", ".opencode/", ".agents/")),
 )

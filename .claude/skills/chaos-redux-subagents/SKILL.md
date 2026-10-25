@@ -166,6 +166,7 @@ These agents do not patch gameplay files:
 They may write reports only when a report path is provided or obvious from the task.
 
 Some runtimes refuse report-file writes from subagents. Ask every read-only or audit subagent to return its complete findings inline as well, and keep scratch helpers and intermediate data such as scan outputs or range lists under `.tmp/<task>/`, where the parent can read them afterwards. Do not install one-off audit/report scripts in `.tools/`.
+Audit and patch-capable roles run `python -B .tools/check.py quick --paths <their changed or audited files>` before reporting, list its errors and warnings by rule id, and state that a passing run covers only the properties its checks name (CLAUDE.md section 4a); delegation prompts name this step.
 
 ### Plan-only agents
 

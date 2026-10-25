@@ -74,9 +74,9 @@ Keep the full image-generation source master and create a comparison sheet conta
 
 Before marking any flag complete, verify normal, medium, and small TGA files:
 
-- correct dimensions across the required size ladder
+- correct dimensions across the required size ladder and a file in every size: `python -B .tools/gfx/gfx.py flags --paths gfx/flags` reports wrong sizes as errors and missing ladder sizes as warnings
 - correct visual orientation in a contact sheet
-- TGA origin/header convention consistent with vanilla HOI4 flags, `file` output must not show `- top`
+- TGA origin/header convention consistent with vanilla HOI4 flags: the same `flags` check reports a top-origin file
 - no byte-identical ideology variants unless the design is intentionally shared and documented
 - no upside-down copies
 - no accidental no-suffix base-flag replacement for countries that were only meant to receive ideology variants

@@ -519,6 +519,7 @@ Rules:
 ## Final event checklist
 
 After editing report or news text, run `python .tools/report_colour_audit.py` and resolve every colour-bearing parchment key, including scripted localisation output.
+Before review, run `python -B .tools/check.py quick` on the changed files and fix every error it lists; it covers the colour audit, localisation and GFX wiring, the script syntax rules and MCP script validation, and proves only those properties (CLAUDE.md section 4a).
 
 Before closing an event task, verify:
 
