@@ -30,6 +30,9 @@ Checks (rule ids and levels are defined by each tool; see `.tools/lib/report.py`
 - generators       `sync/generators.py --check`         every generated file listed in `sync/generators.json`
 - tests            maintained regression tests in `.tools/` (full, or quick when `.tools/` changed)
 - references       `audits/audit_script_references_static.py`  dead code, flags and clones (full only; review)
+- engine           `hoi4-engine check`                  reference closure, lints and override audit of the shared
+                   HOI4 engine; only findings missing from `engine_baseline.json` count (full only; skipped
+                   with a notice when hoi4-engine is not installed)
 - quality          `quality.py`                         ruff defects, complexity ratchet and mypy --strict for the
                    tooling (skipped with a notice when uv is not installed)
 - script-validate  `audits/validate_scripts_mcp.py`     HOI4 Agent Tools script validation of changed files (quick
@@ -46,6 +49,7 @@ import importlib.util
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -54,7 +58,7 @@ from pathlib import Path
 from types import ModuleType
 from typing import Callable, Dict, List, NamedTuple, Optional, Sequence, Set, Tuple
 
-from lib import doctor, setup
+from lib import doctor, game, setup
 from lib.report import LEVELS, Finding, format_finding, relative, to_json
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -186,6 +190,42 @@ def run_generators(paths: Optional[List[str]]) -> Tuple[List[Finding], Optional[
 	return findings, "; ".join(failures) or None
 
 
+ENGINE_BASELINE = TOOLS / "engine_baseline.json"
+ENGINE_LEVELS = {"error": "error", "warning": "warning", "info": "review"}
+
+
+def run_engine(paths: Optional[List[str]]) -> Tuple[List[Finding], Optional[str]]:
+	"""Reference closure, lints and the override audit of the shared HOI4 engine (hoi4-agent-tools).
+
+	Only findings missing from `engine_baseline.json` count, so existing debt never fails a run while every new
+	finding does. Shrink the baseline after fixes with
+	`hoi4-engine baseline update --mod . --baseline .tools/engine_baseline.json`.
+	"""
+	configured = os.environ.get("HOI4_ENGINE")
+	binary = configured if configured and Path(configured).is_file() else shutil.which("hoi4-engine")
+	if binary is None:
+		print("engine: skipped: hoi4-engine is not installed (put it on PATH or set HOI4_ENGINE to its path)")
+		return [], None
+	with tempfile.TemporaryDirectory(prefix="hoi4_engine_") as folder:
+		report = Path(folder) / "report.json"
+		command = [binary, "check", "--mod", str(REPO_ROOT), "--fail-on", "never", "--format", "json", "--output", str(report)]
+		if game.is_game_dir(game.game_dir()):
+			command += ["--game", str(game.game_dir())]
+		if ENGINE_BASELINE.is_file():
+			command += ["--baseline", str(ENGINE_BASELINE)]
+		try:
+			completed = subprocess.run(command, cwd=REPO_ROOT, capture_output=True, text=True, encoding="utf-8",
+				errors="replace", timeout=AUDIT_TIMEOUT_SECONDS)
+		except subprocess.TimeoutExpired:
+			return [], f"hoi4-engine did not finish within {AUDIT_TIMEOUT_SECONDS} s"
+		if completed.returncode != 0 or not report.is_file():
+			tail = (completed.stderr or completed.stdout).strip().splitlines()[-3:]
+			return [], f"hoi4-engine exited {completed.returncode}: {' | '.join(tail)}"
+		payload = json.loads(report.read_text(encoding="utf-8"))
+	return [Finding("engine", row["code"], ENGINE_LEVELS.get(row["severity"], "review"), relative(row["path"]),
+		row.get("line", 0), row["message"]) for row in payload.get("findings", []) if row.get("status") == "new"], None
+
+
 def discover_tests() -> List[str]:
 	found: Set[str] = set()
 	for pattern in TEST_PATTERNS:
@@ -232,6 +272,8 @@ CHECKS = (
 	Check("generators", generator_prefixes(), True, run_generators),
 	Check("tests", (".tools/",), True, run_tests),
 	Check("references", (), False, run_report_tool("references", "audits/audit_script_references_static.py")),
+	# The shared HOI4 engine; full only, skipped with a notice when hoi4-engine is not installed.
+	Check("engine", (), False, run_engine),
 	# Ruff and mypy through uvx; skipped with a notice when uv is not installed.
 	Check("quality", (".tools/", ".claude/skills/", "ruff.toml"), True,
 		run_report_tool("quality", "quality.py", optional=True)),
