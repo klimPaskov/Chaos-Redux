@@ -284,6 +284,15 @@ def render_codex_registry(existing: str, agents: List[Dict[str, Any]]) -> str:
     return "\n".join(kept[:insert_at] + rows + kept[insert_at:])
 
 
+def check_skill_mirrors() -> None:
+    """In --check mode: every canonical skill needs its entry in the shared .agents/skills root."""
+    for skill in sorted(path for path in CLAUDE_SKILLS.iterdir() if (path / "SKILL.md").is_file()):
+        if not (SHARED_SKILLS / skill.name / "SKILL.md").is_file():
+            relative = (SHARED_SKILLS / skill.name).relative_to(MOD_ROOT).as_posix()
+            MODE["stale"].append(relative)
+            print("Would update {}".format(relative))
+
+
 def codex_registry_problems(agents: List[Dict[str, Any]]) -> List[str]:
     """Report `.codex/config.toml` agent rows that differ from the canonical agents."""
     if not CODEX_CONFIG.exists():
@@ -702,6 +711,8 @@ def main() -> None:
         for target in args.targets or list(runners):
             if target in runners:
                 runners[target](agents, profiles)
+        if not args.targets or "skills" in args.targets:
+            check_skill_mirrors()
         status = 1 if MODE["stale"] else 0
         if args.verify:
             status = max(status, run_verify(agents, profiles))
