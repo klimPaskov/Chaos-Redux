@@ -84,9 +84,9 @@ A copycat has its own origin date and first actual incident. Similarity is not i
 
 Independent archetypes are varied deliberately. A Gourmet can inspire a Hunter who follows the public travel pattern or a Ritualist who turns publicity into a sequence. Such an offender is not a supernatural conversion of the original. The game should not force every global campaign into seven indistinguishable versions of the initial family.
 
-A cell is more than a modifier attached to a killer. It has a currently responsible leader, an actual support purpose and available members. Members can include a named internal killer record and a small finite cohort of other participants. Those participants have recorded functions such as courier, recruiter or safehouse keeper. A cohort's size can change through documented recruitment, arrest, withdrawal or loss. It cannot regenerate from an empty record.
+A cell is more than a modifier attached to a killer. It has a currently responsible leader, an actual support purpose, named support roles (recruiter, courier route and refuge keeper) and a finite count of operatives. Members can include an affiliated independent killer, who keeps their own record. The count changes through documented recruitment, arrest, withdrawal or loss. It cannot regenerate from zero.
 
-A new cell ordinarily starts with three to six actual participants. Its proposed maximum is twelve, including any affiliated independently tracked killer. A person has one primary membership and one participation schedule. References from other cells describe contacts or shared evidence, not another copy of that person. A transfer ends the old membership before the new one becomes active. These small finite cohorts justify the operation scale and make complete containment a real accounting of surviving people.
+A new cell ordinarily starts with three to six operatives, including the leader. Its proposed maximum is twelve, including any affiliated independently tracked killer. The leader, each support role holder and each affiliated killer belongs to one cell and has one participation schedule, and plain operatives are a count. References from other cells describe contacts or shared evidence, not another copy of that person. A transfer ends the old membership before the new one becomes active. A count instead of a roster limits stored records to the leader, the three roles and the affiliated killers, and still makes complete containment a real accounting of surviving people.
 
 ### Growth with a cause
 
@@ -102,7 +102,7 @@ Failed infiltration can alert a current cell and cause it to move a real safehou
 
 ### Operational capacity and player attention
 
-The proposed active-world envelope is eight independently mobile killer records including the original and four active cult cell records. New recruitment and travel normally admit no more than two locally operating violent threats into one country. A cell's participating cohort is finite and belongs to that cell. The cell and an affiliated killer cannot both schedule an independent attack using the same person's same opportunity.
+The proposed active-world envelope is eight independently mobile killer records including the original and four active cult cell records. New recruitment and travel normally admit no more than two locally operating violent threats into one country. A cell's operatives are finite and belong to that cell. The cell and an affiliated killer cannot both schedule an independent attack using the same person's same opportunity.
 
 These are performance and attention ceilings, not recruitment rewards or player-visible meters. A proposed downward tuning change requires recorded acceptance if it reduces the requested capacity. It must preserve multiple independent offenders, organized cells, international breadth and independent closure.
 
@@ -246,9 +246,22 @@ A second route examines an abandoned facility. The source event explains its clo
 
 A third route follows recruitment among displaced people. Evidence identifies a real recruiter, a specific fraudulent promise and the resulting support relationship. Protecting those civilians and removing that recruiter reduces the cell's actual available participation. It does not stigmatize all refugees or all recipients of relief.
 
+Where the Migration system has registered the displaced people, the evidence reads Migration's published cohort and reception projection, so the people are a real hosted group in a real host state. Migration keeps its cohorts, reception load and every integration receipt, and Event 102 adds none of them.
+
+A fourth route follows diverted relief where the Famine system has an active relief delivery. The Famine owner's departure and arrival records show a shipment that never reached its state, a witnessed diversion links a cell courier to a warehouse, and the correct inquiry follows the diversion rather than blaming the donor or the receiving administration. Securing the warehouse asks the Famine owner to accept a relief release through its own action. The owner keeps stocks, stages and mortality, and a rejected release is reported as rejected.
+
 Success closes the Event 102 concealment or recruitment opportunity and can offer a bounded source-approved relief or evidence result. The source retains its mortality, spread, disaster damage and recovery. Failure does not independently amplify a plague or trigger another disaster without a separate accepted source operation.
 
 The outbreak and disaster adapter must be inspected with its own owner before implementation. This package specifies the required gameplay and ownership boundary. The targeted repository pass did not establish a universal external adapter for those owners.
+
+### Systems Event 102 does not touch
+
+These boundaries keep the serial inquiry from borrowing other systems' consequences.
+
+- Camp populations, institutional deaths and camp administration belong to the camp system. A camp is never an Event 102 crime scene or cell refuge, and a camp death is never an Event 102 victim.
+- Condemnation belongs to its owner. Event 102 creates no condemnation, a refusal to share a record is not condemned, and a country's condemnation tier does not change a case's difficulty.
+- A state the air-contamination owner treats as uninhabitable, and any state that owner's shared loss exceptions exclude, is not a valid scene state.
+- Chemical, biological and nuclear delivery never appear in a serial case. A Death or outbreak source keeps its own mortality, as the crossover sections above require.
 
 ### Hidden Wendigo connection
 

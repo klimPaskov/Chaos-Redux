@@ -43,6 +43,8 @@ It never rewrites a fact from the failed case.
 Known identity information, past crimes, travel history and the actor's permanent status survive.
 The new case can change a communication rule, the direction of a transfer, a civilian routine or an observed symbolic transformation.
 It cannot silently exchange the original culprit for a different suspect.
+A casebook version is used once per original actor and investigating country.
+When every compatible version has been played, the inquiry closes as a trail gone cold, as Part 4 describes.
 
 Every crime scene used in a comparison belongs to an actual dated Event 102 incident.
 The routes that compare three scenes require three such records.

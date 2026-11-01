@@ -93,19 +93,19 @@ A more concentrated response can add a modest dynamically quoted PP cost and a s
 
 A correct place prediction can deny that specific opportunity entirely. A wrong place prediction still protects those civilians, but it does not move the murderer there or cause a punishment death there. It leaves the actor's actual opportunity elsewhere subject to the normal schedule.
 
-Protection cannot be stacked indefinitely to purchase permanent safety everywhere. An existing covered place is extended only within the stated action's limit, and a country chooses between its real current demands. Identifying and stopping the actor remains the durable solution.
+Protection cannot be stacked indefinitely to purchase permanent safety everywhere. An existing covered place is extended only within the stated action's limit, and a country chooses between its real current demands. Identifying and stopping the actor remains the durable solution. Concentrated protection is the event's only optional spend, so the choice between safety now and attention elsewhere stays legible.
 
 ### Compare or transmit a specific record
 
 Ordinary comparison and evidence transmission are administrative and available without a paid requirement. They take the time needed for the current channel. The packet contains a fact, its origin and its reliability. It does not contain a hidden answer key.
 
-An expedited response can spend a small current quote to shorten a real delivery delay. If no relevant delay or authenticated packet exists, the paid option is unavailable. A rejected or stale receipt does not spend resources. The sender cannot pay to force another human government to cooperate or expose information it has not authorized in the event flow.
+Delivery time depends on the channel and the relationship, never on payment. A rejected or stale receipt changes nothing. The sender cannot force another human government to cooperate or expose information it has not authorized in the event flow.
 
-### Reassess a failed inquiry
+### Learning from a failed inquiry
 
-After repeated failed attempts, the country can assign an independent review of the contradictions already established. This costs a report interval, not money required for access. The review emphasizes the decisive comparison and preserves previous exonerations. It makes the next evidence presentation clearer and improves the AI's use of known reliability, without naming the correct option or changing the offender's truth.
+After a failed attempt, the next case's recap lists every established contradiction and exoneration first, with no action or cost. The recap emphasizes the decisive comparison and preserves previous exonerations without naming the correct option or changing the offender's truth.
 
-AI governments adopt this review after sustained failure. A weak country therefore has a plausible route to improved performance instead of an indefinitely worsening competence penalty. The review is not a timer that closes the case.
+AI governments gain the same clarity after sustained failure, which improves their use of known reliability. A weak country therefore has a plausible route to improved performance instead of an indefinitely worsening competence penalty. The recap is not a timer that closes the case.
 
 ## Cooperation between actual investigators
 
@@ -163,23 +163,23 @@ The impact map uses restrained context-dependent anchors. The event is a crimina
 
 | Actual outcome | Direct direction and proposed band | Reason and dynamic factors | Repeat guard and reversal |
 |---|---|---|---|
-| First substantiated abnormal series | +1 to +2 | Public recognition of an ongoing deliberate series, scaled by demonstrated local disruption | Once per campaign episode, never on mere target selection. Durable original containment can reduce this active significance. |
-| First evidenced foreign spillover by the original | +2 to +3 | A domestic pursuit becomes a real cross-border threat | Once for the first foreign manifestation. Repeated crossings of the same trail earn zero. Regional containment can reverse its active significance. |
+| First substantiated abnormal series | +1 to +2 | Public recognition of an ongoing deliberate series, scaled by demonstrated local disruption | Once per campaign episode, never on mere target selection. Stopping the original reverses part of it through the original-stop row. |
+| First evidenced foreign spillover by the original | +2 to +3 | A domestic pursuit becomes a real cross-border threat | Once for the first foreign manifestation. Repeated crossings of the same trail earn zero. Stopping the original reverses part of it through the original-stop row. |
 | Further genuinely new regional reach | Up to +1 for a new affected jurisdiction, within a small episode regional ceiling | A new local population and administration are exposed | Only after an actual new incident, never after a queued destination or returning visit. The regional direct contribution is capped around +5 overall. |
 | A consequential failed containment | 0 to +1 | A publicly credible operation fails and an actual offender or support relationship gains a new opening | At most one increment for the same material opening, with a small local failure ceiling. An ordinary wrong answer without a new consequence gives zero. |
 | First proven global coordination | +5 to +8 | Actual independent offenders, multiple continents and functional organized support become established | Once for the episode's first proven global structure. The evolution flag and later publication of the same news add zero. |
-| New operational cell capability | +1 to +2, within a bounded global growth allowance | A real cell gains a new support relationship or capacity with an actual new consequence | Once per distinct achieved capability. Replacing a lost safehouse or cycling membership cannot farm it. Dismantling that real capability can reduce its active significance. |
+| New operational cell capability | +1 to +2, within a bounded global growth allowance | A real cell gains a new support relationship or capacity with an actual new consequence | Once per distinct achieved capability. Replacing a lost safehouse or cycling membership cannot farm it. Dismantling that capability returns part of it through the cell-closure row. |
 | Source-connected worsening | 0 to +2 only when the source has not already charged for the same consequence | A proven connection produces a distinct abnormal interference beyond ordinary source losses | One accepted incident and source receipt. When the source owns the full Chaos effect, Event 102 adds zero. |
-| Permanently stopping the original | -1 to -3 | A demonstrated source of active fear and future danger ends | Once for that actor, bounded by the active direct significance it actually generated. It does not refund civilian deaths. |
-| Dismantling a functioning cell | -1 to -2 | Its real coordinated capability and surviving dangerous participation are contained | Once per real cell closure, bounded by the significance of the removed capability. A renamed or briefly suspended cell does not qualify again. |
-| Final worldwide closure | Up to -3 for the remaining unretired global coordination significance | Every established threat has ended and the shared crisis is no longer active | Once after true closure. Subtract only the remaining portion after earlier durable reversals. |
+| Permanently stopping the original | -1 to -3 | A demonstrated source of active fear and future danger ends | Once for that actor, bounded by what the opening, spread and failure rows paid for that actor. It does not refund civilian deaths. |
+| Dismantling a functioning cell | -1 to -2 | Its real coordinated capability and surviving dangerous participation are contained | Once per real cell closure, bounded by what the capability rows paid for that cell. A renamed or briefly suspended cell does not qualify again. |
+| Final worldwide closure | Up to -3, limited to what the global coordination row paid and earlier reversals have not returned | Every established threat has ended and the shared crisis is no longer active | Once after true closure. Return only the portion that earlier reversals have not already returned. |
 | Evolution eligibility, activation, log, ordinary clue progress, administrative transfer, duplicate news | 0 | These are state changes or reports rather than new destabilizing consequences | Never award Chaos merely for reaching 200, 400 or 600. |
 
-Reversals share one diminishing record of active event-specific significance. A capture, cell closure and global ending cannot each refund the same earlier contribution. Prevented murders are successful protection, not a negative Deaths transaction. Past victims stay in history and population is not restored.
+Each row pays once, and a reversal returns at most what its own row paid, once. A capture, cell closure and global ending therefore cannot each refund the same earlier contribution, and a reversal never refills a row that has already paid. Prevented murders are successful protection, not a negative Deaths transaction. Past victims stay in history and population is not restored.
 
-The lifetime positive direct-contribution envelope is at most +2 for the opening, +5 for regional spread including the first foreign spillover, +3 for consequential failed containment, +8 for the first global coordination, +8 for later distinct cell capabilities and +4 for source-connected worsening. The combined ceiling is therefore +30 for the episode. The first global cell is included in the global manifestation contribution. Later capability charges require a genuinely new achieved relationship or capacity.
+The positive rows are limited to +2 for the opening, +5 for regional spread including the first foreign spillover, +3 for consequential failed containment, +8 for the first global coordination, +8 for later distinct cell capabilities and +4 for source-connected worsening. The combined ceiling is therefore +30 for the episode. The first global cell is included in the global manifestation row. Later capability rows require a genuinely new achieved relationship or capacity.
 
-Lifetime positive-budget usage and remaining active significance are separate internal histories. A reversal reduces only the latter and never refills the positive budget. Replacing a refuge, cycling an organizer, returning to a country or renaming a cell cannot bypass either guard. Any unretired significance left after the bounded final reversal becomes historical at closure and cannot fund later repeated rewards. These are private accounting facts, not additional public meters.
+Replacing a refuge, cycling an organizer, returning to a country or renaming a cell cannot create a new row or a second reversal. A reversal not yet claimed at final closure lapses. These are private flags and fixed values, not additional public meters.
 
 The later coding handoff must implement the complete map, including real spread and meaningful failed containment, rather than limiting Chaos to the opening popup. The shared Deaths contribution remains outside this direct envelope and is never duplicated by it.
 
@@ -192,6 +192,10 @@ The full original case is correctly completed. The actor is permanently containe
 ### Original stopped during a global crisis
 
 The original receives the same permanent ending, but the report identifies any independently active threats as separate. Those threats retain their own cases, membership and opportunities. The arrest can provide authentic historical evidence or weaken a cell that depended on that person. It does not disband unrelated organizations.
+
+### A trail gone cold
+
+Each casebook version is used once per original and investigating country, so a country that has played or lost every compatible version has no fair puzzle left. The inquiry closes as unsolved. The original is recorded at large with unknown whereabouts, local pressure caused only by that person's presence is withdrawn, and the person's next opportunity falls in a feasible country chosen through the ordinary travel and spread rules, which can include this one. A country selected again starts from the versions it has not used. The outcome is historical only: it grants no stopping credit, no achievement progress and no Chaos reversal, and it never repeats a version under a new label.
 
 ### A locally concluded traveling case
 
