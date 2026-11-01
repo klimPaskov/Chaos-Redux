@@ -65,6 +65,7 @@ python -B .tools/gfx/gfx.py reports
 | `GFX-GHOSTED` | warning | A focus icon's visible pixels average below alpha 200 (D5); decision and idea icons are exempt because vanilla's are normally that faint. |
 | `GFX-CHROMA-FRINGE` | warning | Edge pixels of a family texture carry the magenta or green key colour that `defringe` repairs; legitimate green or purple art also triggers it. |
 | `GFX-REPORT-PROVENANCE-MISMATCH`, `GFX-REPORT-RECIPE-MISMATCH` | error | A 210x176 report picture with a record in `docs/systems/event_system/report_image_provenance.json` has the recorded pixels, and rerunning the recorded recipe on the recorded source (when it still exists) reproduces them. |
+| `GFX-REPORT-OLD-RECIPE` | review | A record was made by an older `RECIPE_VERSION` of `process_report_event_image.py` (no `recipe_version` means 1), so the recipe rerun is skipped and the card is listed for a later reprocessing decision. The runtime pixel hash is still checked. The console shows the count; `--json` lists every card. |
 | `GFX-REPORT-NO-PROVENANCE`, `GFX-REPORT-OPAQUE-CORNERS`, `GFX-REPORT-STALE-PROVENANCE` | warning | A report picture has no record (then only its size and transparent corners can be checked), a corner is opaque (the report-card tilt is missing), or a record names a missing file. |
 
 Family checks take their consumers from the asset audit's implicit-lookup extractors (focus `icon =`, decision `icon =`, idea `picture` or default), resolve each sprite through the `.gfx` registry, and measure only textures stored in the mod.

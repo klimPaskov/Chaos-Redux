@@ -21,7 +21,7 @@ python -B .claude/skills/chaos-redux-event-assets/tools/process_report_event_ima
 
 `--runtime` names the DDS the card becomes and records its source hash, settings and output pixel hash in `docs/systems/event_system/report_image_provenance.json`; commit that record with the DDS. Use it for every final card (process cards one file at a time). `python -B .tools/gfx/gfx.py reports` then confirms the runtime pixels match the record and, while the source still exists, that rerunning the recipe reproduces them; a card without a record only gets the size and corner checks.
 
-The script performs cover crop, black-and-white conversion, sepia application, grain, paper border, deterministic tilt, transparent canvas margin, and soft shadow. It writes RGBA PNG output. Convert the processed PNG to DDS through the normal repo workflow.
+The script performs cover crop, black-and-white conversion, sepia application, grain, paper border, deterministic tilt, transparent canvas margin, and a tight near-black contact shadow. The defaults (card 192x154, tilt 4 degrees counter-clockwise, shadow offset 0 1, blur 2.5, opacity 0.96) are fitted to the four alpha masks that all 532 vanilla 210x176 report cards use, so the shadow shows on all four sides and fades out before the canvas edge; `tools/tests/test_report_event_shadow.py` compares the output alpha with those masks from the installed game. It writes RGBA PNG output. Convert the processed PNG to DDS through the normal repo workflow.
 
 Validation:
 
