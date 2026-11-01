@@ -97,6 +97,15 @@ python .tools/sync/refresh_kit_skills.py --kit <kit repository> --commit <revisi
 - A generated `SKILL.md` must stay at or below `root_skill_max_bytes` of `read_limits.json`. When it would not, the generator exits 2 without writing: move a complete overlay topic into an overlay reference file and link it from `overlay.md`.
 - Exit codes: 0 in sync, 1 drift, 2 the generator cannot run (invalid mapping, overlay or snapshot, unknown `--skill`, oversized `SKILL.md`). Only files under the generated skill folders that no source produces are deleted.
 
+## Wiki snapshot
+
+`paradox_wiki/` is the kit's snapshot, copied whole from one kit commit. `.tools/kit_wiki.json` records the commit and the SHA-256 of every file (text with LF endings), and the `kit_wiki` check in the registry reports a changed, missing or extra file as `DRIFT`. Wiki corrections are made in the kit; then take its newer snapshot here.
+
+```powershell
+python .tools/sync/kit_wiki.py                                                    # check; exit 1 on drift
+python .tools/sync/kit_wiki.py --refresh --kit <kit repository> --commit <revision>   # copy paradox_wiki/ from the kit commit and record it
+```
+
 ## Write rules
 
 Before running a generator, check the active runtime's destination-write rules in [`.codex/README.md`](../../.codex/README.md#anti-interference-and-instruction-changes).

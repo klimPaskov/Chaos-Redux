@@ -35,7 +35,7 @@ Before retiring a tool, search its filename, module name, output signatures, and
 | `packaging/` | ChatGPT project-source packager |
 | `sync/` | Agent, skill-link, instruction and read-limit synchronizers, the engine-skill generator and the generator registry (`sync/README.md`) |
 | `kit_skills/` | Pinned snapshot of the Agentic HOI4 Modding Kit skills that the engine-system skills are generated from; changed only by `sync/refresh_kit_skills.py` |
-| `wiki/` | Offline wiki snapshot refresh and verification |
+| `wiki/` | Offline wiki snapshot tools, copied from the kit; the snapshot is pinned by `kit_wiki.json` and checked by `sync/kit_wiki.py` |
 | `live_testing/` | Linux Clausewitz MCP bridge |
 | `3d_pipeline/` | Shared 3D model infrastructure, with its own tests and README |
 | `tests/` | Every maintained regression test, their shared JS helpers (`tests/lib/`) and fixtures |
@@ -148,20 +148,21 @@ The former geometry, registry, and consumer compilers are retained locally under
 
 ### Offline Paradox wiki snapshot
 
-- `wiki/sync_wiki_snapshot.py` regenerates `paradox_wiki/` from the live Hearts of Iron IV wiki. It is the only supported way to refresh that reference. Local corrections and additions live in kit blocks and kit pages, which every refresh keeps; any other hand edit of a page is lost on the next refresh. Page files use lowercase snake_case names (`event_modding.md`).
-- `wiki/verify_wiki_snapshot.py` is the read-only acceptance check for the result.
+The snapshot is the Agentic HOI4 Modding Kit's, copied whole from one kit commit. `.tools/kit_wiki.json` records that commit and the hash of every file, and `sync/kit_wiki.py` (a check in the generator registry) reports any file that differs as drift. Wiki corrections and refreshes from the live wiki are made in the kit, never here. Page files use lowercase snake_case names (`event_modding.md`).
+
+- `sync/kit_wiki.py --refresh --kit <kit repository> --commit <revision>` takes a newer snapshot and records it, so the check passes again.
+- `wiki/verify_wiki_snapshot.py` is the read-only check that the snapshot is self-contained and readable.
 - `wiki/wiki_status.py` compares the installed game's documentation with the recorded index and lists the pages to re-check after a game update.
+- `wiki/sync_wiki_snapshot.py` regenerates the snapshot from the live wiki. It runs in the kit; its contract, options and page set are in `wiki/README.md`.
 
-The snapshot is the Agentic HOI4 Modding Kit's, taken as-is at each sync. Generic wiki corrections are made in the kit, not here.
-
-`AGENTS.md` names `paradox_wiki/` as the required modding reference, so the two commands run as a pair whenever the wiki moves:
+`AGENTS.md` names `paradox_wiki/` as the required modding reference, so take a newer snapshot and verify it as a pair:
 
 ```powershell
-python -B .tools/wiki/sync_wiki_snapshot.py
+python -B .tools/sync/kit_wiki.py --refresh --kit <kit repository> --commit <revision>
 python -B .tools/wiki/verify_wiki_snapshot.py
 ```
 
-The sync never launches Hearts of Iron IV and never claims engine evidence. Its contract, options, page set, and downstream mirror step are in `wiki/README.md`. Commit the refreshed snapshot and any wiki-file references it changes together.
+Commit the refreshed snapshot and any wiki-file references it changes together.
 
 ### Repository-wide static audits
 
