@@ -1,7 +1,7 @@
 # Doctrine authoring
 
 Read this file when you add or change a doctrine folder, grand doctrine, track, or sub-doctrine.
-`GAME` is `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV`.
+`GAME` is the installed Hearts of Iron IV folder named in `CLAUDE.md`.
 The syntax comes from the four `_documentation.md` files under `GAME/common/doctrines/` and the vanilla files named below.
 
 ## Object model and file layout

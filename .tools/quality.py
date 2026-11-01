@@ -58,6 +58,7 @@ STRICT_FILES = (
 MYPY_GROUPS: Tuple[Tuple[str, Tuple[str, ...]], ...] = (
 	(".tools", ("lib", "check.py", "quality.py", "audits/audit_script_rules.py", "audits/validate_scripts_mcp.py", "audits/indentation.py", "gfx/gfx.py",
 		"sync/sync_agents.py", "sync/sync_read_limits.py", "sync/sync_instructions.py", "sync/generators.py",
+		"sync/sync_engine_skills.py", "sync/refresh_kit_skills.py",
 		"audits/audit_spec_ids.py")),
 	(".claude/skills/chaos-redux-event-assets/tools", ("convert_to_dds.py", "create_advisor_icon.py",
 		"extract_portrait_source_crop.py", "process_achievement_icons.py", "process_report_event_image.py")),

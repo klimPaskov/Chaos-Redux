@@ -1,7 +1,7 @@
 # AI strategy token catalog
 
 Read this file when you need the exact parameters or value meaning of one `ai_strategy` type.
-Primary source: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/ai_strategy/_documentation.md` (updated 2024-11), cross-checked against `paradox_wiki/ai_modding.md` and the usage counts in vanilla `common/ai_strategy/*.txt`.
+Primary source: the installed game's `common/ai_strategy/_documentation.md` (updated 2024-11), cross-checked against `paradox_wiki/ai_modding.md` and the usage counts in vanilla `common/ai_strategy/*.txt`.
 The token list there is the authority; if a token is missing here, read the installed file.
 Tokens seen in vanilla but absent from the documentation list are marked "vanilla only".
 
@@ -79,7 +79,7 @@ Vanilla-observed values: `improve_relation`, `military_access`, `docking_rights`
 | `spare_unit_factor` | value | Spare more units to defend allies. |
 | `theatre_distribution_demand_increase` | id = state id, value | Raise unit demand (value 10 means 10 units) in the theatre containing the state. |
 | `scorched_earth_prio` | id = owner country, states = { ... }, value | Use scorched earth in those states. |
-| `force_concentration_factor` | value | Added to the base share of "non-essential" units used for concentrated pushes (`FORCE_CONCENTRATION_UNIT_RATIO_BASE`); 20 means plus 20 points. A large negative value disables force concentration. |
+| `force_concentration_factor` | value | Added to the base share of "non-essential" units used for concentrated pushes (`NAI.AIFC_UNIT_RATIO_BASE`, 0.15 in vanilla; the documentation's `FORCE_CONCENTRATION_UNIT_RATIO_BASE` does not exist [vanilla-confirmed 1.19.3]); 20 means plus 20 points. A large negative value disables force concentration. |
 | `force_concentration_front_factor` | selectors, ratio, value | Percent factor for concentration priority on matching fronts. |
 | `force_concentration_target_weight` | selectors, value | Percent factor for offensive target score. |
 

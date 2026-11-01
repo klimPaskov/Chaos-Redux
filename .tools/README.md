@@ -33,7 +33,8 @@ Before retiring a tool, search its filename, module name, output signatures, and
 | `formables/` | Formable state-puzzle runtime generator |
 | `gfx/` | Sprite QA, alpha repair and GFX conformance checks |
 | `packaging/` | ChatGPT project-source packager |
-| `sync/` | Agent, skill-link, instruction and read-limit synchronizers |
+| `sync/` | Agent, skill-link, instruction and read-limit synchronizers, the engine-skill generator and the generator registry (`sync/README.md`) |
+| `kit_skills/` | Pinned snapshot of the Agentic HOI4 Modding Kit skills that the engine-system skills are generated from; changed only by `sync/refresh_kit_skills.py` |
 | `wiki/` | Offline wiki snapshot refresh and verification |
 | `live_testing/` | Linux Clausewitz MCP bridge |
 | `3d_pipeline/` | Shared 3D model infrastructure, with its own tests and README |

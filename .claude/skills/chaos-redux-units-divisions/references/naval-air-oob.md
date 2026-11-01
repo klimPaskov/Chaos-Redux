@@ -1,7 +1,7 @@
 # Naval and Air Orders of Battle
 
 Read this when writing or auditing fleets, task forces, ships, air wings, carrier wings, aces, ship name lists, or the DLC splits for navy and air.
-Primary sources: `paradox_wiki/division_modding.md` (Adding Air Wings, Adding Navies, List of Units), `paradox_wiki/country_creation.md` (Order of battle, Variants), `paradox_wiki/namelist_modding.md` (Naval Names), installed `documentation/effects_documentation.md` (`create_ship`, `create_equipment_variant`, `set_naval_oob`, `set_air_oob`, `transfer_ship`, `transfer_navy`, `destroy_ships`, `add_equipment_production`), and the vanilla files named below under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`.
+Primary sources: `paradox_wiki/division_modding.md` (Adding Air Wings, Adding Navies, List of Units), `paradox_wiki/country_creation.md` (Order of battle, Variants), `paradox_wiki/namelist_modding.md` (Naval Names), installed `documentation/effects_documentation.md` (`create_ship`, `create_equipment_variant`, `set_naval_oob`, `set_air_oob`, `transfer_ship`, `transfer_navy`, `destroy_ships`, `add_equipment_production`), and the vanilla files named below under the installed game's ``.
 
 ## The DLC split
 
@@ -88,6 +88,7 @@ TAG_DD_HISTORICAL = {
 ```
 
 - `ship_types` pairs the MTG archetype with the legacy category (first is MTG, second is legacy). Names are space-separated quoted strings without commas.
+- Write `fallback_name` in lower case, and a ship name file has no size limit near 1,500 lines. [vanilla-confirmed 1.19.3]
 - Variants bind to a group through `name_group` in `create_equipment_variant`.
 - Generic names for equipment without a country list: `common/units/names/*.txt` (wiki Generic Names). Vanilla country files such as `common/units/names/00_ENG_names.txt` use `<TAG> = { <equipment> = { prefix generic unique } }`.
 - `NAME_THEME_*` keys are localised in the usual yml files.

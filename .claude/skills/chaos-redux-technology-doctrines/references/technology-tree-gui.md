@@ -1,7 +1,7 @@
 # Technology tree interface authoring
 
 Read this file when a technology folder, branch, tile, or tab must be added or changed.
-`GAME` is `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV` and `WIKI` is the repository folder `paradox_wiki`.
+`GAME` is the installed Hearts of Iron IV folder named in `CLAUDE.md` and `WIKI` is the repository folder `paradox_wiki`.
 Source: `WIKI/technology_modding.md` (Brief user interface, Position, Folders, Graphical user interface), checked against `GAME/interface/countrytechtreeview.gui` and `.gfx`.
 Also read `WIKI/interface_modding.md` for the control types.
 
@@ -104,7 +104,7 @@ Vanilla also adds a hidden (`hide = yes`) `iconType` named `highlight_<folder>` 
 - `GFX_<tech>_medium` in an `interface/*.gfx` file, texture usually under `gfx/interface/technologies/`; vanilla `GAME/interface/Technologies.gfx` and DLC `*_technologies.gfx` files.
 - Country override: `GFX_<TAG>_<tech>_medium`.
 - Name `<tech>`, description `<tech>_desc`; omitted keys borrow from the unlocked equipment.
-- The repository includes its own `chaosx_techtree.gfx` for local tiles.
+- Register tiles the mod adds in its own `.gfx` file under `interface/` rather than editing a vanilla file.
 
 ## Doctrine interface for legacy technology doctrines
 

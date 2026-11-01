@@ -33,6 +33,27 @@
       ]
     },
     {
+      "id": "engine_skills",
+      "label": "engine-system skills (kit snapshot plus Chaos Redux overlays)",
+      "script": ".tools/sync/sync_engine_skills.py",
+      "item_args": ["--skill", "{item}"],
+      "stale_markers": ["Would update"],
+      "sources": [".tools/kit_skills"],
+      "inputs": [".tools/kit_skills/**", ".claude/skill-overlays/{item}/**", ".tools/sync/sync_engine_skills.py"],
+      "outputs": [
+        ".claude/skills/chaos-redux-ai-strategies/**",
+        ".claude/skills/chaos-redux-characters-leaders/**",
+        ".claude/skills/chaos-redux-diplomacy-war/**",
+        ".claude/skills/chaos-redux-equipment/**",
+        ".claude/skills/chaos-redux-ideas-modifiers/**",
+        ".claude/skills/chaos-redux-investigate/**",
+        ".claude/skills/chaos-redux-map-states/**",
+        ".claude/skills/chaos-redux-mtth/**",
+        ".claude/skills/chaos-redux-technology-doctrines/**",
+        ".claude/skills/chaos-redux-units-divisions/**"
+      ]
+    },
+    {
       "id": "read_limits",
       "label": "runtime read limits",
       "script": ".tools/sync/sync_read_limits.py",
@@ -51,7 +72,7 @@
       "stale_markers": ["Over budget", "Would update"],
       "sources": ["CLAUDE.md", ".claude/skills", ".claude/agents"],
       "inputs": ["CLAUDE.md", "AGENTS.md", ".claude/skills/*/SKILL.md", ".claude/agents/*.md", ".tools/sync/read_limits.json"],
-      "needs": ["instructions"]
+      "needs": ["instructions", "engine_skills"]
     },
     {
       "id": "event_catalog",

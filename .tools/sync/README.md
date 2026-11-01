@@ -78,6 +78,25 @@ python .tools/sync/sync_instructions.py --check   # exit 1 on drift or on a repl
 
 When a replaced line in `CLAUDE.md` is reworded, update its pair in `instruction_projection.json` in the same change; `--check` reports the stale pair. `.tools/check.py` runs the check whenever `CLAUDE.md`, `AGENTS.md` or this folder changes.
 
+## Engine-system skills
+
+`chaos-redux-ai-strategies`, `chaos-redux-characters-leaders`, `chaos-redux-diplomacy-war`, `chaos-redux-equipment`, `chaos-redux-ideas-modifiers`, `chaos-redux-investigate`, `chaos-redux-map-states`, `chaos-redux-mtth`, `chaos-redux-technology-doctrines` and `chaos-redux-units-divisions` are generated, so `.claude/skills/<name>/` is not an authoring location for them.
+Each is the Agentic HOI4 Modding Kit's skill text, pinned in `.tools/kit_skills/<kit-name>/`, with the names in `.tools/kit_skills/mapping.json` replaced (kit skill names, `hoi4_*` agent routing names), plus the Chaos Redux overlay in `.claude/skill-overlays/<name>/`.
+`.tools/kit_skills/manifest.json` records the kit commit and the SHA-256 of every snapshot file, and the generator refuses a snapshot that differs from it.
+
+```powershell
+python .tools/sync/sync_engine_skills.py                              # write every generated skill
+python .tools/sync/sync_engine_skills.py --check                      # print "Would update <path>" for each stale or extra file, write nothing
+python .tools/sync/sync_engine_skills.py --skill chaos-redux-mtth     # one skill (repeatable)
+python .tools/sync/refresh_kit_skills.py --kit <kit repository> --commit <revision>   # pin a new kit commit, then run the generator
+```
+
+- A generated `SKILL.md` is the Chaos Redux frontmatter (`name`, and the `description` from `overlay.md`), a provenance comment, the mapped kit body and a `## Chaos Redux` section holding the body of `overlay.md`. Every other file of the folder is the mapped kit file or a file of the overlay folder (`references/...`), which is where a Chaos Redux-only reference file lives.
+- Edit the overlay, never the generated folder: a hand edit fails `--check` and the generators hook, and the next run overwrites it. Group overlay lines under `### In <original section>` headings, and mark a line that restates a kit line in other words with `(Chaos Redux wording differs from the kit)` until the maintainer settles which wording stays.
+- A rule that every mod needs belongs in the kit. Remove its overlay line after the snapshot is refreshed from the kit commit that carries it.
+- A generated `SKILL.md` must stay at or below `root_skill_max_bytes` of `read_limits.json`. When it would not, the generator exits 2 without writing: move a complete overlay topic into an overlay reference file and link it from `overlay.md`.
+- Exit codes: 0 in sync, 1 drift, 2 the generator cannot run (invalid mapping, overlay or snapshot, unknown `--skill`, oversized `SKILL.md`). Only files under the generated skill folders that no source produces are deleted.
+
 ## Write rules
 
 Before running a generator, check the active runtime's destination-write rules in [`.codex/README.md`](../../.codex/README.md#anti-interference-and-instruction-changes).

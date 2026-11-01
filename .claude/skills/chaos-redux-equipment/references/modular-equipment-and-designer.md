@@ -1,7 +1,7 @@
 # Modules, the designer, graphics, and AI designs
 
 Read this file when you add or change modules, slots, a designer window, an icon or model pool, or an AI design group.
-`GAME` is `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV`.
+`GAME` is the installed Hearts of Iron IV folder named in `CLAUDE.md`.
 Vanilla precedents named here were read for this skill; open the cited file before copying a field.
 
 ## Module files
