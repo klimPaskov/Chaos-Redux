@@ -93,7 +93,10 @@ class QuickSelection(unittest.TestCase):
 		self.assertEqual(self.names([".claude/skills/x/SKILL.md"]), ["guidance", "generators", "quality"])
 
 	def test_unrelated_change_runs_nothing(self):
-		self.assertEqual(self.names(["README.md", "docs/plans/x.md"]), [])
+		self.assertEqual(self.names(["README.md", "docs/events/x.md"]), [])
+
+	def test_plan_change_runs_the_spec_id_audit(self):
+		self.assertEqual(self.names(["docs/plans/x.md"]), ["spec-ids"])
 
 	def test_sound_change_runs_runtime_binary_checks(self):
 		self.assertEqual(self.names(["sound/x.wav"]), ["gfx"])

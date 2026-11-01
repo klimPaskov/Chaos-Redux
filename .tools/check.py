@@ -33,6 +33,7 @@ Checks (rule ids and levels are defined by each tool; see `.tools/lib/report.py`
 - engine           `hoi4-engine check`                  reference closure, lints and override audit of the shared
                    HOI4 engine; only findings missing from `engine_baseline.json` count (full only; skipped
                    with a notice when hoi4-engine is not installed)
+- spec-ids         `audits/audit_spec_ids.py`           spec item IDs: unknown citations (errors) and uncited items (review)
 - quality          `quality.py`                         ruff defects, complexity ratchet and mypy --strict for the
                    tooling (skipped with a notice when uv is not installed)
 - script-validate  `audits/validate_scripts_mcp.py`     HOI4 Agent Tools script validation of changed files (quick
@@ -274,6 +275,8 @@ CHECKS = (
 	Check("references", (), False, run_report_tool("references", "audits/audit_script_references_static.py")),
 	# The shared HOI4 engine; full only, skipped with a notice when hoi4-engine is not installed.
 	Check("engine", (), False, run_engine),
+	Check("spec-ids", ("docs/specs/", "docs/plans/", ".tools/audits/audit_spec_ids.py"), True,
+		run_report_tool("spec-ids", "audits/audit_spec_ids.py")),
 	# Ruff and mypy through uvx; skipped with a notice when uv is not installed.
 	Check("quality", (".tools/", ".claude/skills/", "ruff.toml"), True,
 		run_report_tool("quality", "quality.py", optional=True)),

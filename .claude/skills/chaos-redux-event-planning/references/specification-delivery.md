@@ -14,6 +14,27 @@ For major events, split the spec into parts if needed. Do not compress deep desi
 
 Only include sections for surfaces that exist or that need design. If a world-end scenario, manual triggerable scenario, super-event, focus tree, custom country, achievement set, or asset family is absent, omit that section instead of writing that it is absent, because negative notes create noise and can mislead later agents into thinking the absence is a designed feature.
 
+### Spec item IDs and origin tags
+
+A new spec package gives every spec item a stable ID and an origin tag. Existing packages are not retrofitted: a package without IDs stays as it is, and IDs are added to it only when the maintainer asks.
+
+- Item: one commitment that an implementer can honor and a reviewer can check, such as a rule, cost, threshold, route, action, outcome, asset, or acceptance condition. Framing prose and rationale carry no ID.
+- ID: `E<event number, three digits>-S<sequence, three digits>`, so `E102-S014` is spec item 14 of event 102. The event number is the number in the package folder name. Number the items from `S001` in one sequence across all the parts of the package. Never renumber or reuse an ID. A dropped or merged item keeps its line with the text `superseded by E102-S031`, so old citations still resolve.
+- Origin tag, in square brackets right after the ID:
+  - `[locked]`: the maintainer or an accepted spec decided it. Name the basis in the item, either the decision with its date or the accepted spec part. Change a locked item only with the maintainer.
+  - `[derived]`: the planning agent decided it, and an implementer may override it. Record an override and its reason in the handoff and in the spec item.
+  - `[open]`: pending, and not implemented until decided. Deciding it changes its tag to `locked` or `derived` and its text, never its ID.
+- Placement: define each ID once, as the first thing on a bullet, numbered item, heading, or first table cell of a spec part. Prompt files, the acceptance matrix, and the goal prompt cite IDs and never define them.
+
+```text
+- E102-S014 [locked] The first response costs manpower from the affected state. Basis: maintainer decision, 2026-11-01.
+- E102-S015 [derived] The cost grows with the population of the state.
+- E102-S016 [open] Whether subjects may refuse the response.
+```
+
+- Citations: implementation handoffs and plans write out the IDs they implement or change, for example `Implements: E102-S014, E102-S015`. The audit does not expand ranges.
+- Gap audit: `python -B .tools/audits/audit_spec_ids.py` checks both directions. It reports spec items that no file under `docs/plans/` cites (`review`), and it reports IDs that a spec or plan mentions without any spec defining them, duplicate IDs, missing or unknown origin tags, and an event number that differs from the package (`error`). While planning, only its errors matter. After implementation, resolve each uncited item by implementing it, queuing it with a reason, or citing it in the handoff that covers it.
+
 ## Depth, file splitting, and continuation prompts
 
 Do not compress the spec so much that important ideas become shallow.
@@ -222,6 +243,7 @@ The prompt must tell the coding agent to:
 - keep all Chaos Redux systems aligned
 - report anything that cannot be implemented cleanly
 - keep iterating until the full spec is implemented to its fullest extent
+- when the package defines spec item IDs, cite the IDs it implements or changes in every handoff and plan, keep `locked` items as written, and report the `open` items it meets instead of implementing them
 - perform one bounded depth review where useful, through `chaosx_improvement_loop_planner` or the parent, and resolve actual design findings without repeated closure reports
 - avoid fallbacks, simplifications, temporary versions, and good-enough approximations
 - not claim completion until the implemented files satisfy the spec

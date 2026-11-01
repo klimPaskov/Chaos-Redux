@@ -613,7 +613,8 @@ Read the complete requirements in [Writing style](references/player-facing-text-
 ## 11. Specification shape
 
 Keep the specification navigable and organized around the event and its implementation needs.
-Read the complete requirements in [Specification shape](references/specification-delivery.md#specification-shape) before this work.
+A new package gives every spec item a stable ID such as `E102-S014` and an origin tag (`locked`, `derived` or `open`); existing packages are not retrofitted.
+Read the complete requirements in [Specification shape](references/specification-delivery.md#specification-shape) and [Spec item IDs and origin tags](references/specification-delivery.md#spec-item-ids-and-origin-tags) before this work.
 
 ## 12. Depth, file splitting, and continuation prompts
 
@@ -690,6 +691,7 @@ The final response should include:
 - decisions, rare variants, evolutions, achievements, route identities, leader changes, flags, and unit-generation systems mapped when they exist
 - varied costs, risks, requirements, and sacrifices instead of default political power or command power purchases
 - a public-facing value budget for every main special mechanic, with one or two values preferred, three acceptable when needed, four as the hard maximum, and hidden internal values separated from player-facing state
+- stable spec item IDs and origin tags on every item of a new package, and `python -B .tools/audits/audit_spec_ids.py` free of errors
 - uncertainties and blockers stated clearly
 - strong enough effects for the intended role
 - useful depth review completed and actual findings resolved or explicitly scoped/queued, without a tool or closure-report completion gate

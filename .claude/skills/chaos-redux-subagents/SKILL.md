@@ -329,6 +329,8 @@ Do not fill handoffs with passing boilerplate checks that only restate AGENTS.md
 
 If a patch touches localisation, list the keys changed. If it touches decisions or focuses, list affected ids. If it touches scripted helpers, list helper names and call sites. If it touches country setup, list tags and state ids or state groups.
 
+When the spec package defines spec item IDs (new packages do, existing ones do not), every handoff and plan cites the IDs it implements or changes, written out as `Implements: E102-S014, E102-S015`, and names any `open` item it met without implementing it. `python -B .tools/audits/audit_spec_ids.py` reports uncited items and unknown IDs.
+
 ### MCP evidence in handoffs
 
 For a handoff involving supported MCP surfaces, include the relevant source revision, scenario, coverage, and useful results. Apply AGENTS.md retry limits; unavailable verification is not missing implementation.

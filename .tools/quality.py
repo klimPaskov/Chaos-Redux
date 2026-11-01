@@ -50,13 +50,15 @@ MYPY = "mypy==1.14.1"
 RATCHET_CODES = {"C901", "PLR0915"}
 STRICT_FILES = (
 	".tools/lib/", ".tools/check.py", ".tools/quality.py", ".tools/audits/audit_script_rules.py", ".tools/audits/validate_scripts_mcp.py", ".tools/audits/indentation.py",
+	".tools/audits/audit_spec_ids.py",
 	".tools/gfx/gfx.py", ".tools/sync/", ".claude/skills/chaos-redux-event-assets/tools/",
 	".claude/skills/chaos-redux-save-inspection/scripts/",
 )
 # mypy runs from each folder so that local imports (such as `.tools/lib`) resolve.
 MYPY_GROUPS: Tuple[Tuple[str, Tuple[str, ...]], ...] = (
 	(".tools", ("lib", "check.py", "quality.py", "audits/audit_script_rules.py", "audits/validate_scripts_mcp.py", "audits/indentation.py", "gfx/gfx.py",
-		"sync/sync_agents.py", "sync/sync_read_limits.py", "sync/sync_instructions.py")),
+		"sync/sync_agents.py", "sync/sync_read_limits.py", "sync/sync_instructions.py", "sync/generators.py",
+		"audits/audit_spec_ids.py")),
 	(".claude/skills/chaos-redux-event-assets/tools", ("convert_to_dds.py", "create_advisor_icon.py",
 		"extract_portrait_source_crop.py", "process_achievement_icons.py", "process_report_event_image.py")),
 	(".claude/skills/chaos-redux-save-inspection/scripts", ("save_inspect.py",)),

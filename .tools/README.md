@@ -176,6 +176,8 @@ The localisation and asset audits exclude Git, tooling, and documentation direct
 - `audits/indentation.py` enforces the tab-indentation rule ("Indent script blocks with tabs"). `--apply-tabs` converts only the leading space run of a line and leaves already-tabbed lines alone; `--apply-depth` re-indents drifted lines to their brace depth but never a line that mixes spaces after tabs. Both preserve line endings and the UTF-8 BOM, and both need explicit `--paths`.
 - `audits/check_planning_identifiers.py` checks the declared planning reservations (event ids, country tags, workbook cluster ids and super-event slots) against runtime definitions and the catalog workbook, as described in `docs/specs/shared_identifier_registry.md`. It exits `1` on a conflict.
 
+- `audits/audit_spec_ids.py` checks the spec item IDs of spec packages that use them (`E102-S014`, with a `locked`, `derived` or `open` tag): IDs that plans or handoffs cite but no spec defines are errors, as are duplicate IDs, missing tags and IDs whose event number differs from the package; items no plan cites are review candidates. Packages without IDs are skipped.
+
 ```powershell
 python .tools/audits/audit_localisation_static.py --json .tmp/loc_audit.json
 python .tools/audits/audit_asset_wiring_static.py --json .tmp/asset_audit.json
