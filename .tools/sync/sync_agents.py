@@ -78,6 +78,7 @@ CLAUDE_AGENTS = CLAUDE_DIR / "agents"
 CLAUDE_SKILLS = CLAUDE_DIR / "skills"
 CLAUDE_AGENT_MAP = CLAUDE_DIR / "agent-map.md"
 CODEX_AGENTS = MOD_ROOT / ".codex" / "agents"
+CODEX_CONFIG = MOD_ROOT / ".codex" / "config.toml"
 QODER_AGENTS = MOD_ROOT / ".qoder" / "agents"
 CURSOR_DIR = MOD_ROOT / ".cursor"
 CURSOR_AGENTS = CURSOR_DIR / "agents"
@@ -202,9 +203,18 @@ def toml_multiline(value: str) -> str:
     return '"""\n{}"""'.format(escaped)
 
 
+# `--check` renders every output in memory and reports the stale ones instead of writing them.
+MODE: Dict[str, Any] = {"check": False, "stale": []}
+
+
 def write_if_changed(path: Path, content: str) -> bool:
     if path.exists() and not path.is_dir() and path.read_text(encoding="utf-8") == content:
         return False
+    if MODE["check"]:
+        relative = path.relative_to(MOD_ROOT).as_posix()
+        MODE["stale"].append(relative)
+        print("Would update {}".format(relative))
+        return True
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w", encoding="utf-8", newline="") as handle:
         handle.write(content)
@@ -234,6 +244,44 @@ def render_codex(agent: Dict[str, Any], profiles: Dict[str, Any]) -> str:
         "",
     ]
     return "\n".join(lines)
+
+
+AGENT_TABLE = re.compile(r"^\[agents\.([A-Za-z0-9_]+)\]\s*$")
+
+
+def render_codex_registry(existing: str, agents: List[Dict[str, Any]]) -> str:
+    """Rewrite the `[agents.<name>]` tables of config.toml that point at generated TOML files, in place.
+
+    Codex finds a custom agent through its registry row, so a missing row hides the agent. Rows that point
+    elsewhere and every other setting are kept as they are.
+    """
+    lines = existing.replace("\r\n", "\n").split("\n")
+    kept: List[str] = []
+    insert_at: Optional[int] = None
+    index = 0
+    while index < len(lines):
+        match = AGENT_TABLE.match(lines[index].strip())
+        if not match:
+            kept.append(lines[index])
+            index += 1
+            continue
+        block = [lines[index]]
+        index += 1
+        while index < len(lines) and not lines[index].lstrip().startswith(("[", "#")):
+            block.append(lines[index])
+            index += 1
+        if any(line.strip() == 'config_file = "agents/{}.toml"'.format(match.group(1)) for line in block):
+            insert_at = len(kept) if insert_at is None else insert_at
+            continue
+        kept.extend(block)
+    rows: List[str] = []
+    for agent in agents:
+        rows += ["[agents.{}]".format(agent["snake"]), "description = {}".format(toml_quote(agent["description"])),
+                 'config_file = "agents/{}.toml"'.format(agent["snake"]), ""]
+    if insert_at is None:
+        insert_at = len(kept)
+        rows = [""] + rows
+    return "\n".join(kept[:insert_at] + rows + kept[insert_at:])
 
 
 def render_qoder(agent: Dict[str, Any], profiles: Dict[str, Any]) -> str:
@@ -419,6 +467,9 @@ def run_claude_map(agents: List[Dict[str, Any]], profiles: Dict[str, Any]) -> No
 
 def run_codex(agents: List[Dict[str, Any]], profiles: Dict[str, Any]) -> None:
     sync_files("codex", CODEX_AGENTS, agents, profiles, render_codex, ".toml")
+    if CODEX_CONFIG.exists():
+        changed = write_if_changed(CODEX_CONFIG, render_codex_registry(CODEX_CONFIG.read_text(encoding="utf-8"), agents))
+        print("codex: config.toml agent rows {}.".format("updated" if changed else "unchanged"))
 
 
 def run_qoder(agents: List[Dict[str, Any]], profiles: Dict[str, Any]) -> None:
@@ -603,6 +654,11 @@ def run_verify(agents: List[Dict[str, Any]], profiles: Dict[str, Any]) -> int:
         for path in folder.glob("*"):
             if path.is_file() and re.search(r"fable", path.read_text(encoding="utf-8", errors="ignore"), re.I):
                 problems.append("{}: mentions a forbidden model name".format(path.relative_to(MOD_ROOT)))
+    if CODEX_CONFIG.exists():
+        config = CODEX_CONFIG.read_text(encoding="utf-8")
+        if render_codex_registry(config, agents) != config.replace("\r\n", "\n"):
+            problems.append(".codex/config.toml: the [agents.*] rows differ from the canonical agents; "
+                            "run python .tools/sync/sync_agents.py codex")
     print("{:<40} {:<8} {:<8} {:<14} {:<8} {}".format("agent", "claude", "effort", "codex", "cursor", "opencode"))
     for row in rows:
         print("{:<40} {:<8} {:<8} {:<14} {:<8} {}".format(*[str(c) for c in row]))
@@ -622,6 +678,9 @@ def main() -> None:
                         help="How to mirror skills into .agents/skills (default: junction, copy fallback).")
     parser.add_argument("--verify", action="store_true",
                         help="Read the generated outputs back and compare them with the routing policy.")
+    parser.add_argument("--check", action="store_true",
+                        help="Render every output in memory and print `Would update <path>` for each stale one; "
+                        "write nothing and exit 1 on drift. The skills mirror is not checked. Combine with --verify.")
     args = parser.parse_args()
     unknown = [name for name in args.targets if name not in TARGETS]
     if unknown:
@@ -629,6 +688,17 @@ def main() -> None:
 
     profiles = load_profiles()
     agents = load_agents(profiles)
+    if args.check:
+        MODE["check"] = True
+        runners = {"claude-map": run_claude_map, "codex": run_codex, "qoder": run_qoder, "cursor": run_cursor,
+                   "opencode": run_opencode}
+        for target in args.targets or list(runners):
+            if target in runners:
+                runners[target](agents, profiles)
+        status = 1 if MODE["stale"] else 0
+        if args.verify:
+            status = max(status, run_verify(agents, profiles))
+        sys.exit(status)
     if args.verify:
         sys.exit(run_verify(agents, profiles))
     selected = args.targets or list(TARGETS)

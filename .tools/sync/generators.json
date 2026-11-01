@@ -1,0 +1,101 @@
+{
+  "_about": "Every generator and generated-file check in Chaos Redux, read by .tools/sync/generators.py (a byte-identical copy of the Agentic HOI4 Modding Kit's runner), check.py and the Claude Code hook. Paths are relative to the repository root. `inputs` are the files whose change reruns an entry, `outputs` the files it writes, `sources` the canonical files that must exist for it to run. The Chaos Redux generators keep their own command lines through `interpreter`, `check_args`, `root_args` and `stale_markers`. Add a generator here, never in a script.",
+  "version": 1,
+  "generators": [
+    {
+      "id": "instructions",
+      "label": "AGENTS.md instruction projection",
+      "script": ".tools/sync/sync_instructions.py",
+      "root_args": [],
+      "stale_markers": ["Would update", "UNUSED"],
+      "sources": ["CLAUDE.md"],
+      "inputs": ["CLAUDE.md", ".tools/sync/instruction_projection.json", ".tools/sync/sync_instructions.py"],
+      "outputs": ["AGENTS.md"]
+    },
+    {
+      "id": "agents",
+      "label": "agent definitions and the shared skill root",
+      "script": ".tools/sync/sync_agents.py",
+      "root_args": [],
+      "check_args": ["--check", "--verify"],
+      "stale_markers": ["Would update", "VERIFY FAILED"],
+      "sources": [".claude/agents"],
+      "inputs": [".claude/agents/*.md", ".tools/sync/agent_profiles.json", ".tools/sync/sync_agents.py"],
+      "outputs": [
+        ".claude/agent-map.md",
+        ".codex/agents/*.toml",
+        ".codex/config.toml",
+        ".qoder/agents/*.md",
+        ".cursor/agents/*.md",
+        ".cursor/agent-map.md",
+        ".opencode/agent/*.md",
+        ".opencode/agent-map.md"
+      ]
+    },
+    {
+      "id": "read_limits",
+      "label": "runtime read limits",
+      "script": ".tools/sync/sync_read_limits.py",
+      "root_args": [],
+      "stale_markers": ["Would update"],
+      "sources": [".tools/sync/read_limits.json"],
+      "inputs": [".tools/sync/read_limits.json", ".tools/sync/sync_read_limits.py"],
+      "outputs": [".claude/settings.json", ".opencode/opencode.json"]
+    },
+    {
+      "id": "guidance",
+      "label": "single-read size limit",
+      "kind": "check",
+      "script": ".tools/sync/sync_read_limits.py",
+      "root_args": [],
+      "stale_markers": ["Over budget", "Would update"],
+      "sources": ["CLAUDE.md", ".claude/skills", ".claude/agents"],
+      "inputs": ["CLAUDE.md", "AGENTS.md", ".claude/skills/*/SKILL.md", ".claude/agents/*.md", ".tools/sync/read_limits.json"],
+      "needs": ["instructions"]
+    },
+    {
+      "id": "event_catalog",
+      "label": "event catalog CSV exports",
+      "script": ".tools/export_event_catalog_csv.py",
+      "root_args": [],
+      "stale_markers": ["Would update"],
+      "sources": ["docs/spreadsheets/chaos_redux_events_catalog.xlsx"],
+      "inputs": ["docs/spreadsheets/chaos_redux_events_catalog.xlsx", ".tools/export_event_catalog_csv.py"],
+      "outputs": [
+        "docs/spreadsheets/chaos_redux_events_catalog.csv",
+        "docs/spreadsheets/chaos_redux_clusters_catalog.csv",
+        "docs/spreadsheets/chaos_redux_scenarios_catalog.csv"
+      ]
+    },
+    {
+      "id": "formable_puzzles",
+      "label": "formable state puzzle runtime",
+      "script": ".tools/formables/generate_formable_state_puzzle_runtime.mjs",
+      "interpreter": ["node"],
+      "root_args": [],
+      "stale_markers": ["Would update"],
+      "sources": ["docs/formables/state_puzzles"],
+      "inputs": ["docs/formables/state_puzzles/**", ".tools/formables/generate_formable_state_puzzle_runtime.mjs"],
+      "outputs": [
+        "interface/chaosx_formable_state_puzzles.*",
+        "common/scripted_guis/chaosx_formable_state_puzzles.txt",
+        "common/scripted_localisation/chaosx_formable_state_puzzles.txt",
+        "localisation/english/chaosx_formable_state_puzzles_l_english.yml"
+      ]
+    },
+    {
+      "id": "event016_catalog",
+      "label": "Event 016 transit state catalog",
+      "script": ".tools/events/build_event016_transit_state_catalog.py",
+      "root_args": [],
+      "stale_markers": ["AssertionError: Generated source differs"],
+      "sources": ["docs/testing/event016_transit_catalog_20261008/state_membership.json"],
+      "inputs": ["docs/testing/event016_transit_catalog_20261008/state_membership.json", ".tools/events/build_event016_transit_state_catalog.py"],
+      "outputs": [
+        "common/script_constants/016_transit_catalog_constants.txt",
+        "common/scripted_triggers/016_transit_state_province_catalog_triggers.txt",
+        "common/scripted_triggers/016_transit_state_province_catalog_data.txt"
+      ]
+    }
+  ]
+}

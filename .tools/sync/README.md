@@ -15,8 +15,19 @@ Everything else is generated or maintained per runtime, and none of it is a seco
 python .tools/sync/sync_agents.py                 # every target
 python .tools/sync/sync_agents.py codex skills    # selected targets
 python .tools/sync/sync_agents.py --verify        # read the outputs back and compare with the routing policy
+python .tools/sync/sync_agents.py --check         # render every output in memory and report the stale ones
 python .tools/sync/sync_read_limits.py --check    # reader and output budgets
+python .tools/sync/generators.py                  # run every registered generator
+python .tools/sync/generators.py --check          # report stale outputs, write nothing
 ```
+
+## Registry and hook
+
+`generators.json` lists every generator and generated-file check in the repository: the AGENTS.md projection, the agent definitions, the read limits and the size check, the event catalog CSV exports, the formable state puzzle runtime and the Event 016 transit catalog. `generators.py` is a byte-identical copy of the Agentic HOI4 Modding Kit's runner. It runs the entries a change affects, and `check.py` uses it for the `generators` check.
+
+The `PostToolUse` hook in `.claude/settings.json` runs it after every Edit or Write. An edit to a canonical file regenerates its outputs and names them, so they are committed with it. An edit to a generated file is reported with the canonical file to edit instead, and any other edit starts nothing. Deny rules in the same file stop the edit tools from writing the tracked generated files. `.tools/py.sh` finds a working Python for the hook. Add a new generator as a `generators.json` entry, not as a hard-coded list.
+
+The `codex` target also keeps the `[agents.*]` rows of `.codex/config.toml` in step with `.claude/agents/`, because Codex finds a custom agent through its row. `--verify` reports a missing or stale row.
 
 ## What each target writes
 

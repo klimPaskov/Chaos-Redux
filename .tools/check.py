@@ -27,7 +27,7 @@ Checks (rule ids and levels are defined by each tool; see `.tools/lib/report.py`
 - indentation      `audits/indentation.py`              spaces for tabs and brace-depth drift (warnings)
 - gfx              `gfx/gfx.py audit`                   frame strips, flag ladder, achievement size, runtime binaries
 - guidance         `sync/sync_read_limits.py --check`   guidance size ceilings and read-limit drift
-- generators       `--check` modes of the generators    catalog CSV, formable puzzles, Event 016 catalog, AGENTS.md, agent mirrors
+- generators       `sync/generators.py --check`         every generated file listed in `sync/generators.json`
 - tests            maintained regression tests in `.tools/` (full, or quick when `.tools/` changed)
 - references       `audits/audit_script_references_static.py`  dead code, flags and clones (full only; review)
 - quality          `quality.py`                         ruff defects, complexity ratchet and mypy --strict for the
@@ -42,6 +42,7 @@ The game folder comes from `HOI4_GAME_DIR`, `.tools/local_settings.json` or the 
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 import os
 import re
@@ -50,6 +51,7 @@ import sys
 import tempfile
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from types import ModuleType
 from typing import Callable, Dict, List, NamedTuple, Optional, Sequence, Set, Tuple
 
 from lib import doctor, setup
@@ -142,51 +144,46 @@ def run_guidance(paths: Optional[List[str]]) -> Tuple[List[Finding], Optional[st
 	return findings, None
 
 
-class Generator(NamedTuple):
-	name: str
-	command: Tuple[str, ...]
-	inputs: Tuple[str, ...]  # sources and generated outputs; also the finding location when the check fails
+def load_runner() -> ModuleType:
+	"""Load `.tools/sync/generators.py`, the one runner for every generator listed in `generators.json`."""
+	script = TOOLS / "sync" / "generators.py"
+	spec = importlib.util.spec_from_file_location("chaos_redux_generators", script)
+	if spec is None or spec.loader is None or not script.is_file():
+		raise FileNotFoundError(".tools/sync/generators.py is missing")
+	module = importlib.util.module_from_spec(spec)
+	sys.modules[spec.name] = module
+	spec.loader.exec_module(module)
+	return module
 
 
-# Generated files must equal what their generator writes from the current sources (plan check A4).
-GENERATORS = (
-	Generator("event catalog CSV", ("python", ".tools/export_event_catalog_csv.py", "--check"),
-		("docs/spreadsheets/chaos_redux_events_catalog.xlsx", "docs/spreadsheets/")),
-	Generator("formable state puzzles", ("node", ".tools/formables/generate_formable_state_puzzle_runtime.mjs", "--check"),
-		("docs/formables/state_puzzles/", "interface/chaosx_formable_state_puzzle", "common/scripted_guis/chaosx_formable_state_puzzles.txt",
-		"common/scripted_localisation/chaosx_formable_state_puzzles.txt", "localisation/english/chaosx_formable_state_puzzles_l_english.yml")),
-	Generator("Event 016 transit catalog", ("python", ".tools/events/build_event016_transit_state_catalog.py", "--check"),
-		("docs/testing/event016_transit_catalog_20261008/state_membership.json", "common/script_constants/016_transit_catalog_constants.txt",
-		"common/scripted_triggers/016_transit_state_province_catalog_")),
-	Generator("AGENTS.md instruction", ("python", ".tools/sync/sync_instructions.py", "--check"),
-		("CLAUDE.md", "AGENTS.md", ".tools/sync/")),
-	Generator("agent mirrors", ("python", ".tools/sync/sync_agents.py", "--verify"),
-		(".claude/agents/", ".claude/skills/", ".tools/sync/", ".codex/", ".cursor/", ".qoder/", ".opencode/", ".agents/")),
-)
-
-
-def run_one_generator(generator: Generator) -> List[Finding]:
-	program = [sys.executable, "-B"] if generator.command[0] == "python" else [generator.command[0]]
-	completed = subprocess.run([*program, *generator.command[1:]], cwd=REPO_ROOT, capture_output=True, text=True,
-		encoding="utf-8", errors="replace", timeout=AUDIT_TIMEOUT_SECONDS)
-	stale = [line[len("Would update "):].strip() for line in completed.stdout.splitlines() if line.startswith("Would update ")]
-	findings = [Finding("generators", "GEN-STALE", "error", relative(path), 0,
-		f"differs from what the {generator.name} generator writes; rerun `{' '.join(generator.command[:2])}`") for path in stale]
-	if completed.returncode != 0 and not findings:
-		lines = [line.strip() for line in (completed.stderr + completed.stdout).splitlines() if line.strip()]
-		detail = next((line for line in reversed(lines) if "Error" in line), lines[-1] if lines else "no output")
-		findings.append(Finding("generators", "GEN-FAILED", "error", generator.inputs[0], 0,
-			f"the {generator.name} generator could not reproduce its outputs: {detail}"))
-	return findings
+def generator_prefixes() -> Tuple[str, ...]:
+	"""Path prefixes of every generator input and output, so `quick` knows when to run the generators check."""
+	try:
+		data = json.loads((TOOLS / "sync" / "generators.json").read_text(encoding="utf-8"))
+		patterns = [pattern for row in data["generators"] if row.get("kind", "generate") == "generate"
+			for key in ("inputs", "outputs") for pattern in row.get(key, ())]
+	except (OSError, ValueError, KeyError, TypeError, AttributeError):
+		patterns = []  # the check itself then reports the broken registry
+	return tuple(sorted({re.split(r"[*?{]", pattern, maxsplit=1)[0] for pattern in patterns} | {".tools/"}))
 
 
 def run_generators(paths: Optional[List[str]]) -> Tuple[List[Finding], Optional[str]]:
-	# A changed tool can change any generator's output, so `.tools/` changes rerun them all.
-	everything = not paths or any(p.startswith(".tools/") for p in paths)
-	chosen = [g for g in GENERATORS if everything or any(p.startswith(i) for p in paths or () for i in g.inputs)]
-	with ThreadPoolExecutor(max_workers=max(1, len(chosen))) as pool:
-		results = list(pool.map(run_one_generator, chosen))
-	return [finding for found in results for finding in found], None
+	"""Check that every generated file equals what its generator writes from the current sources (plan check A4)."""
+	runner = load_runner()
+	entries = [entry for entry in runner.load_registry(REPO_ROOT) if entry.kind == "generate"]
+	outcomes = runner.run(REPO_ROOT, paths or None, check=True, entries=entries)
+	findings: List[Finding] = []
+	failures: List[str] = []
+	for outcome in outcomes:
+		entry = outcome.entry
+		if outcome.status == 1:
+			findings += [Finding("generators", "GEN-STALE", "error", (entry.sources or (entry.script,))[0], 0,
+				f"{entry.label}: out of date ({detail}); rerun `python .tools/sync/generators.py`") for detail in outcome.problems]
+		elif outcome.status != 0:
+			failures.append(f"{entry.script} exited {outcome.code}: {' | '.join(outcome.problems)}")
+	if not paths and not outcomes:
+		failures.append("no generator in .tools/sync/generators.json has its canonical sources in this folder")
+	return findings, "; ".join(failures) or None
 
 
 def discover_tests() -> List[str]:
@@ -232,7 +229,7 @@ CHECKS = (
 		run_report_tool("gfx", "gfx/gfx.py", ("audit",))),
 	Check("guidance", ("CLAUDE.md", "AGENTS.md", ".claude/", ".codex/", ".opencode/", ".tools/sync/"), True,
 		run_guidance),
-	Check("generators", tuple(sorted({i for g in GENERATORS for i in g.inputs} | {".tools/"})), True, run_generators),
+	Check("generators", generator_prefixes(), True, run_generators),
 	Check("tests", (".tools/",), True, run_tests),
 	Check("references", (), False, run_report_tool("references", "audits/audit_script_references_static.py")),
 	# Ruff and mypy through uvx; skipped with a notice when uv is not installed.
