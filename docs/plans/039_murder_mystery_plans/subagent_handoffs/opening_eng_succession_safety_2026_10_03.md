@@ -87,7 +87,7 @@ The mandatory `hoi4.event_inspect`, `hoi4.event_render`, `hoi4.event_compare`, f
 
 Local fallback references read: offline `Character modding`, `Effects`, and `Triggers` wiki sections, plus installed `effects_documentation.md` and `triggers_documentation.md`. The installed effects documentation describes `recruit_character` as a COUNTRY-scope attach effect and `promote_character` as promotion to the head of the political party; the wiki describes character recruitment and succession semantics. Those references support the source interpretation but do not prove live ENG roster state or runtime execution.
 
-The read fallback spans were `Character modding - Hearts of Iron 4 Wiki.md:48-50,417-503`, `Effects - Hearts of Iron 4 Wiki.md:137,2736,2930,3252`, `Triggers - Hearts of Iron 4 Wiki.md:1757-1763,2033-2036`, installed `effects_documentation.md:3010-3029,5149-5170,5343-5348,5696-5705,6436-6453`, and installed `triggers_documentation.md:3640-3652,5408-5414`. MCP reference paths and live revisions were unavailable.
+The read fallback spans were `character_modding.md:48-50,417-503`, `effects.md:137,2736,2930,3252`, `triggers.md:1757-1763,2033-2036`, installed `effects_documentation.md:3010-3029,5149-5170,5343-5348,5696-5705,6436-6453`, and installed `triggers_documentation.md:3640-3652,5408-5414`. MCP reference paths and live revisions were unavailable.
 
 ## Parent follow-up
 

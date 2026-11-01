@@ -62,7 +62,7 @@ No MCP artifact URI or source revision was returned.
 MCP render and compare were skipped because inspection returned no usable result, so overflow and final event-render coverage remain unresolved and source review is not equivalent evidence.
 No focus, GUI, map, or technology surface was edited.
 A separate tool-list search found no standalone Technology Tree Viewer route, recorded as a package gap unrelated to this bounded text patch.
-Local offline reference: `paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md`, snapshot 2026-09-19, lines 59-93 for encoding and syntax, 534-536 for scope namespaces, and 564-573 for names.
+Local offline reference: `paradox_wiki/localisation.md`, snapshot 2026-09-19, lines 59-93 for encoding and syntax, 534-536 for scope namespaces, and 564-573 for names.
 Installed reference: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`, lines 126-141 for contextual object access.
 Vanilla precedent: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/scripted_localisation/00_scripted_localisation.txt`, lines 1-33 for scoped defined_text and fallback localisation keys.
 Reference file SHA-256 revisions are listed below.

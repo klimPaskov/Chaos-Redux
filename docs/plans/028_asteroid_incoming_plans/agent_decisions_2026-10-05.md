@@ -82,10 +82,10 @@ These differences are recorded as design dispositions, not hidden behind a claim
 Installed `documentation/effects_documentation.md`: country events 2943-2967, damage units 3417-3436, news events 5053-5077, building removal 5838-5873, building setter 6621-6629.
 Installed `documentation/triggers_documentation.md`: `any_of_scopes` 1531-1543 and `check_variable` 2110 onward.
 Installed `documentation/script_concept_documentation.md`: Script Constants 215-244; `common/script_constants/documentation.md`: first-entry schema 12-31.
-Offline `Event modding - Hearts of Iron 4 Wiki.md`: Triggering 117-150; `Effects - Hearts of Iron 4 Wiki.md`: news effect 901, provincial selector 3614-3616 and setter example 3669-3677.
-Offline `Scopes - Hearts of Iron 4 Wiki.md`: ROOT/PREV/FROM 255-260; `Data structures - Hearts of Iron 4 Wiki.md`: variables 425-449 and arrays 1076-1105.
-Offline `Decision modding - Hearts of Iron 4 Wiki.md`: native cost triplets 308-329; `Localisation - Hearts of Iron 4 Wiki.md`: recursive context 353 and namespaces 531 onward.
-Offline `Building modding - Hearts of Iron 4 Wiki.md`: network exception 362; installed `00_buildings.txt` declares the ordinary province caps and `01_landmark_buildings.txt` declares landmark caps.
+Offline `event_modding.md`: Triggering 117-150; `effects.md`: news effect 901, provincial selector 3614-3616 and setter example 3669-3677.
+Offline `scopes.md`: ROOT/PREV/FROM 255-260; `data_structures.md`: variables 425-449 and arrays 1076-1105.
+Offline `decision_modding.md`: native cost triplets 308-329; `localisation.md`: recursive context 353 and namespaces 531 onward.
+Offline `building_modding.md`: network exception 362; installed `00_buildings.txt` declares the ordinary province caps and `01_landmark_buildings.txt` declares landmark caps.
 Vanilla precedents include `events/NewsEvents.txt:1542-1560` for `show_major`, `common/scripted_effects/SOV_scripted_effects.txt:8286-8294` for a state-owned province selector, and the existing project camp-selector zeroing pattern.
 The ordinary-variable 2.147-million overflow claim from the second review is rejected: offline Data structures 427 documents approximately 2.147 billion; the smaller limit belongs to deprecated manpower readers.
 

@@ -74,7 +74,7 @@ Before 3D work, read the applicable inputs below. Retrieve wiki and installed do
 - `.claude/skills/chaos-redux-subagents/SKILL.md` when a subagent is used.
 - `.tools/3d_pipeline/README.md`, `.tools/3d_pipeline/config/blender_hoi4_adapter.json`, and the operation array in `.tools/3d_pipeline/config/dependencies.lock.json` for the adapter surface and job-root rules.
 - The parent brief, accepted spec, plan, manifest, job, dependency lock, and handoff.
-- The offline Paradox wiki pages relevant to the target surface, especially `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md` and `paradox_wiki/Entity modding - Hearts of Iron 4 Wiki.md`.
+- The offline Paradox wiki pages relevant to the target surface, especially `paradox_wiki/graphical_asset_modding.md` and `paradox_wiki/entity_modding.md`.
 - Relevant character or interface pages when the target consumes those systems.
 - Relevant documentation under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation`.
 - Local vanilla `.mesh`, `.anim`, `.asset`, entity, material, texture, and model precedents for the exact domain, plus existing Chaos Redux model precedents.

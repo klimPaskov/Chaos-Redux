@@ -67,10 +67,10 @@ The current source also has a separate hostage lock described below; it is not c
 
 ### High — Mission setup `ROOT` is not always the mission receiver
 
-Direct targeted government decisions have country ROOT and state FROM per the offline decision documentation (`Decision modding - Hearts of Iron 4 Wiki.md:578–581`); for these callers the initiating country is also the mission receiver.
+Direct targeted government decisions have country ROOT and state FROM per the offline decision documentation (`decision_modding.md:578–581`); for these callers the initiating country is also the mission receiver.
 The ordinary helper call does not reroot: the current helper is still executing within the decision's original scope contract.
 
-The offline scope table documents ROOT as the block root and THIS as the current scope (`paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md:260–263`).
+The offline scope table documents ROOT as the block root and THIS as the current scope (`paradox_wiki/scopes.md:260–263`).
 Therefore helper calls do not by themselves make a nested controller the decision ROOT; nested receiver identity must be carried explicitly.
 
 Two paths deliberately change the receiver:

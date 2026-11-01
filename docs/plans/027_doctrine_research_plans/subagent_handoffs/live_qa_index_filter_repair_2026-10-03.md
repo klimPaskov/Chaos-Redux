@@ -11,7 +11,7 @@ The supplied evidence is `docs/testing/live_qa/20261003_full_playtest/logs/cycle
 The archived file contains 428 matching rejection lines from repeated loading, corresponding to two messages for each of 107 source grants per load.
 All matching errors for this native adapter file name the rejected field.
 
-Installed `documentation/effects_documentation.md:1477-1504` and the offline `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md:2508-2542` document an optional `index` filter.
+Installed `documentation/effects_documentation.md:1477-1504` and the offline `paradox_wiki/effects.md:2508-2542` document an optional `index` filter.
 The supplied live parser result takes precedence for this installed game.
 Neither `index` nor `track_index` is used inside any Event 027 `add_mastery` block after the repair.
 The separate supported numeric `track` argument in `set_sub_doctrine` is retained.

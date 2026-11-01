@@ -207,9 +207,9 @@ Source contract checks above are not substitutes for required probability, event
 | --- | --- | --- |
 | `paradox_wiki\Data structures - Hearts of Iron 4 Wiki.md` | 303-325 regular targets, 429-449 variable types/lifetime/scoping | `62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4` |
 | `paradox_wiki\Scopes - Hearts of Iron 4 Wiki.md` | 24-65 scope semantics, 749-784 array scope iteration, 891-892 for/while cap | `18ef5249e4991f5427eca9ec4a2f66dd47f51e26a491c730adc622f1f5db1b49` |
-| `paradox_wiki\Event modding - Hearts of Iron 4 Wiki.md` | 25-35 recipient ROOT and event-target transfer | Local detailed read, no fresh MCP revision |
-| `paradox_wiki\Localisation - Hearts of Iron 4 Wiki.md` | 729-791 temporary display and text-trigger lifetime | Local detailed read, no fresh MCP revision |
-| `paradox_wiki\Effects - Hearts of Iron 4 Wiki.md` | 4683-4697 scripted-effect definition and Boolean call | Local detailed read, no fresh MCP revision |
+| `paradox_wiki\event_modding.md` | 25-35 recipient ROOT and event-target transfer | Local detailed read, no fresh MCP revision |
+| `paradox_wiki\localisation.md` | 729-791 temporary display and text-trigger lifetime | Local detailed read, no fresh MCP revision |
+| `paradox_wiki\effects.md` | 4683-4697 scripted-effect definition and Boolean call | Local detailed read, no fresh MCP revision |
 | Installed `documentation\effects_documentation.md` | 1477-1504 mastery filters, 2943-2966 country events, 4296-4329 iteration, 7774-7789 assignment, 7820-7827 temporary assignment, 8573-8586 while | `2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af` |
 | Installed `documentation\triggers_documentation.md` | 4181-4196 native reward-count predicate | `7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29` |
 | Installed `documentation\script_concept_documentation.md` | 216-245 script constants and supported-field restriction | `884bfe9f9207ea4b25b36b5129d0f77d11d4b2f7eb0592587767ec58d24930c7` |

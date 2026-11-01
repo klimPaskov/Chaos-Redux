@@ -10,7 +10,7 @@ No gameplay file, decision, event, on-action, cost, duration, AI weight, probabi
 
 No MCP acceptance claim is made because this bounded task is source architecture only and the parent explicitly deferred further expensive inspection.
 
-The required syntax references were read before this design: `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` lines 254–310 and 400–424 and 817–858, `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md` lines 240–277, `paradox_wiki/On actions - Hearts of Iron 4 Wiki.md` lines 112–124, `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md` lines 2278–2290, 2733–2781, 6016–6029, and 6496–6511, and `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md` lines 3844–3851, 5006–5013, 5672–5683, and 7450–7469.
+The required syntax references were read before this design: `paradox_wiki/data_structures.md` lines 254–310 and 400–424 and 817–858, `paradox_wiki/scopes.md` lines 240–277, `paradox_wiki/on_actions.md` lines 112–124, `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md` lines 2278–2290, 2733–2781, 6016–6029, and 6496–6511, and `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md` lines 3844–3851, 5006–5013, 5672–5683, and 7450–7469.
 
 The vanilla `common/on_actions/00_on_actions.txt` annex comment and `common/on_actions/05_lar_on_actions.txt` and `04_mtg_on_actions.txt` pre-annex comments were also inspected for ROOT/FROM ordering and the documented civil-war pre-annex lifetime.
 

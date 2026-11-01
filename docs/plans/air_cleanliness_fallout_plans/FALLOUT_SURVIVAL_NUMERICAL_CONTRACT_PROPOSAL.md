@@ -668,10 +668,10 @@ Primary syntax authority:
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/dynamic_variables_documentation.md` for `resource@type`, `building_level@type`, `damaged_building_level@type`, and `non_damaged_building_level@type` in state scope
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md` for variable scope and typed script constants
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/script_constants/documentation.md` for shared tuning schemas
-- `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` for arrays, indexes, and scope-valued variables
-- `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md` for arithmetic and loop effects
-- `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md` for variable and scope validation
-- `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md` for state and country ownership context
+- `paradox_wiki/data_structures.md` for arrays, indexes, and scope-valued variables
+- `paradox_wiki/effects.md` for arithmetic and loop effects
+- `paradox_wiki/triggers.md` for variable and scope validation
+- `paradox_wiki/scopes.md` for state and country ownership context
 
 Vanilla precedents inspected:
 

@@ -68,7 +68,7 @@ hoi4.probability_sweep was skipped because the parent explicitly directed finish
 
 ## References read
 
-Offline wiki pages: Data structures - Hearts of Iron 4 Wiki.md, Triggers - Hearts of Iron 4 Wiki.md, Effects - Hearts of Iron 4 Wiki.md, Modifiers - Hearts of Iron 4 Wiki.md, Localisation - Hearts of Iron 4 Wiki.md, Scopes - Hearts of Iron 4 Wiki.md, On actions - Hearts of Iron 4 Wiki.md, Event modding - Hearts of Iron 4 Wiki.md, Decision modding - Hearts of Iron 4 Wiki.md, Idea modding - Hearts of Iron 4 Wiki.md, and AI modding - Hearts of Iron 4 Wiki.md.
+Offline wiki pages: data_structures.md, triggers.md, effects.md, modifiers.md, localisation.md, scopes.md, on_actions.md, event_modding.md, decision_modding.md, idea_modding.md, and ai_modding.md.
 
 Vanilla documentation read: C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md, effects_documentation.md, modifiers_documentation.md, and script_concept_documentation.md. The vanilla decision reference notes has_political_power and add_political_power; the offline decision page documents native decision costs, custom-cost payment, ai_hint_pp_cost, and AI willingness score semantics.
 

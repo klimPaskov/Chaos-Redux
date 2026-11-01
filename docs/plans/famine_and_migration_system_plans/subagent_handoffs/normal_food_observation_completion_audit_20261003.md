@@ -59,7 +59,7 @@ No new balance threshold, stage, stock or mortality behavior was introduced by t
 ### F2: caller-side temporary result declarations were missing at exact consumers
 
 The parent explicitly extended this audit to reception and Camp caller outputs after the food work made the lifetime contract explicit.
-Offline `paradox_wiki\Data structures - Hearts of Iron 4 Wiki.md:436-442`, especially `:440`, warns that a temporary first defined inside a scripted helper may not remain visible outside it and guarantees modification of a temporary defined before the call.
+Offline `paradox_wiki\data_structures.md:436-442`, especially `:440`, warns that a temporary first defined inside a scripted helper may not remain visible outside it and guarantees modification of a temporary defined before the call.
 Installed `documentation\effects_documentation.md:7820-7839` supports the unscoped temporary assignment syntax but provides no stronger cross-helper lifetime guarantee.
 This distinction establishes a missing safe declaration contract, not deterministic output loss on every engine call.
 A bounded installed scripted-effects census found no exact comparable caller-declared return pattern, so no native precedent or execution result was invented.

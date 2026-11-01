@@ -10,7 +10,7 @@ The exact owned addition is:
 
 ```text
 Before each scripted-helper call, preinitialize every temporary output consumed after return to zero or its documented invalid sentinel in the caller's effect or trigger chain, including outputs forwarded through nested helpers; the child modifies that inherited storage.
-Use unprefixed temporary names, and do not assume an output first created inside the helper survives return (`paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, Variable types, line 440); see [Helper output lifetime](../chaos-redux-events/SKILL.md#helper-output-lifetime) for the shared contract.
+Use unprefixed temporary names, and do not assume an output first created inside the helper survives return (`paradox_wiki/data_structures.md`, Variable types, line 440); see [Helper output lifetime](../chaos-redux-events/SKILL.md#helper-output-lifetime) for the shared contract.
 Helpers reset public outputs at entry and clear one-shot input envelopes separately on success and rejection, without erasing published results before the caller consumes them.
 ```
 
@@ -22,7 +22,7 @@ No new skill or routing update is needed.
 
 ## Sources and evidence limits
 
-- Read `paradox_wiki\Data structures - Hearts of Iron 4 Wiki.md`, lines 436-442, especially line 440.
+- Read `paradox_wiki\data_structures.md`, lines 436-442, especially line 440.
   The source warns that temporaries created inside scripted effects or triggers may not remain outside the helper and states that preexisting temporaries carry into the helper and are modified there.
   Line 442 establishes unscoped temporary storage.
   Local file SHA-256: `62273F37ED30E5479ACB331A8973F48DADC1867C4913C8A940E3E790E7AF32D4`.

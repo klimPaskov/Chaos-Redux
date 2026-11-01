@@ -13,8 +13,8 @@ The implementation uses the installed engine and offline references reviewed for
 - `documentation/triggers_documentation.md` for `is_island_state`, `is_one_state_island`, `is_coastal`, `is_owned_and_controlled_by`, `state_population`, and event-target validation
 - `documentation/effects_documentation.md` for `add_manpower`, regular event targets, arrays, delayed events, and `meta_effect`
 - `common/collections/collections.txt` for the vanilla state-524 exception comment attached to `is_one_state_island`
-- `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` for regular event-target lifetime across a fired event chain
-- `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md` for country and state scope changes
+- `paradox_wiki/data_structures.md` for regular event-target lifetime across a fired event chain
+- `paradox_wiki/scopes.md` for country and state scope changes
 - the existing repository helper `apply_exact_state_civilian_population_loss` for one observed state-population deduction with a protected remainder and an exact applied output
 
 The destination classifier is the exact documented engine topology:

@@ -23,7 +23,7 @@ The source is a migration input, not a safe template to extend by merely changin
 
 ## E2: documented native border-battle effects
 
-Path: `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md`.
+Path: `paradox_wiki/effects.md`.
 Read relevant lines 620 through 707, with header and several additional ranges noted in the source manifest.
 The file identifies itself as a wiki snapshot captured on 19 September 2026.
 Its border-war section distinguishes native battle effects from the separate state-based `set_border_war` feature.
@@ -88,14 +88,14 @@ The following are full-file or excerpt leads, with the scope of this session's r
 | --- | --- | --- |
 | R1 | `events/078_border_war.txt` | Full file |
 | R2 | `localisation/english/078_border_war_l_english.yml` | Search excerpts only |
-| R3 | `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md` | Selected ranges |
+| R3 | `paradox_wiki/effects.md` | Selected ranges |
 | R4 | `common/scripted_effects/008_tensions_rising_effects.txt` | Search excerpts only |
 | R5 | `common/scripted_triggers/008_tensions_rising_triggers.txt` | Search excerpts only |
 | R6 | `common/scripted_effects/018_resources_found_decision_effects.txt` | Search excerpts only |
 | R7 | `common/scripted_effects/019_infantry_spawn_achievement_effects.txt` | Search excerpts only |
 | R8 | `docs/plans/famine_and_migration_system_plans/subagent_handoffs/corridor_attack_owner_exploration.md` | Search excerpts only |
 | R9 | `.agents/skills/chaos-redux-mtth/SKILL.md` | Full file |
-| R10 | `paradox_wiki/On actions - Hearts of Iron 4 Wiki.md` | Search excerpts only |
+| R10 | `paradox_wiki/on_actions.md` | Search excerpts only |
 
 Public web searches did not produce a sufficiently verified primary source for the unresolved concurrency behavior.
 No forum recollection or unrelated search result was used to declare an engine capability proven.
@@ -110,7 +110,7 @@ events/078_border_war.txt
 
 `https://github.com/klimPaskov/Chaos-Redux/blob/879b3007d3b6bf75c726c11635473fccda45c569/.agents/skills/chaos-redux-mtth/SKILL.md`
 
-paradox_wiki/Effects - Hearts of Iron 4 Wiki.md
+paradox_wiki/effects.md
 
 `https://github.com/klimPaskov/Chaos-Redux/blob/879b3007d3b6bf75c726c11635473fccda45c569/paradox_wiki/Effects%20-%20Hearts%20of%20Iron%204%20Wiki.md`
 

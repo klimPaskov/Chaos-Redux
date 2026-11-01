@@ -284,7 +284,7 @@ The current allocator source preserves the host-first covenant at source level: 
 
 Skills read and applied: chaos-redux-subagents, chaos-redux-events, chaos-redux-mtth, chaos-redux-focus-trees, chaos-redux-decisions-missions, and chaos-redux-event-planning. No skills were created or changed.
 
-Offline wiki sections read: paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md:28–41,1222–1230; Event modding:130–164; Decision modding:361–385; National focus modding:606–622; Data structures:263–327,887–910; Effects:4518–4546.
+Offline wiki sections read: paradox_wiki/ai_modding.md:28–41,1222–1230; Event modding:130–164; Decision modding:361–385; National focus modding:606–622; Data structures:263–327,887–910; Effects:4518–4546.
 
 Installed vanilla references read: C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md:5413–5435 for random_list; script_concept_documentation.md:217–225 for fixed-point script constants; and common/script_constants/documentation.md:1–20 for constant schema and examples. The installed documentation files searched did not expose an ai_will_do or ai_chance section.
 

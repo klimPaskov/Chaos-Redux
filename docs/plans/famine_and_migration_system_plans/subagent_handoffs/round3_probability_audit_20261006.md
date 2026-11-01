@@ -81,7 +81,7 @@ A code fix should follow a concrete evaluated defect; this audit selects no nume
 
 ## Reference and validation boundary
 
-Offline wiki sources read directly: `paradox_wiki\\AI modding - Hearts of Iron 4 Wiki.md`, MTTH blocks section around lines 26–45; `paradox_wiki\\Decision modding - Hearts of Iron 4 Wiki.md`, decision visibility/availability, custom cost, AI, and targeted-decision sections around lines 85–110, 308–366, and 511–582; and `paradox_wiki\\Triggers - Hearts of Iron 4 Wiki.md`, strict comparison and variable/resource trigger sections around lines 65–75, 571–590, 723, and 1516–1537.
+Offline wiki sources read directly: `paradox_wiki\\ai_modding.md`, MTTH blocks section around lines 26–45; `paradox_wiki\\decision_modding.md`, decision visibility/availability, custom cost, AI, and targeted-decision sections around lines 85–110, 308–366, and 511–582; and `paradox_wiki\\triggers.md`, strict comparison and variable/resource trigger sections around lines 65–75, 571–590, 723, and 1516–1537.
 Installed documentation read directly: `C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\triggers_documentation.md`, including `check_variable`, `has_equipment`, `has_fuel`, and `has_political_power`; and `script_concept_documentation.md` for script constants.
 The installed documentation search did not surface a decision `ai_will_do` selection model; the offline wiki supplies that model and distinguishes decision score races from event-option probability-proportional sampling.
 A vanilla decision precedent was read from `C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\common\\decisions\\ITA.txt`; it uses a conditional `ai_will_do` block, but does not validate this custom adapter or famine scenario.

@@ -38,16 +38,16 @@ Installed documentation is more authoritative than the wiki; where they disagree
 
 | Topic | Authoritative text | Vanilla precedent |
 | --- | --- | --- |
-| Map folder overview, BMP rules, provinces, terrain, adjacencies, supply files | `WIKI/Map modding - Hearts of Iron 4 Wiki.md` | `GAME/map/` |
-| State file keys, history block, state categories, building list | `WIKI/State modding - Hearts of Iron 4 Wiki.md` | `GAME/history/states/1-France.txt` (minimal), `116-Malta.txt` (strategic_province_location), `1022 - Interior Borneo.txt` (impassable enclave), `1032 - Yanan.txt` (IF with has_dlc inside history) |
-| Strategic region file, weather periods | `WIKI/Strategic region modding - Hearts of Iron 4 Wiki.md` | `GAME/map/strategicregions/1-Southern England.txt`, `100-Red Sea.txt` |
-| Building definition fields, slots, spawn points | `WIKI/Building modding - Hearts of Iron 4 Wiki.md` | `GAME/common/buildings/00_buildings.txt`, `01_landmark_buildings.txt` |
+| Map folder overview, BMP rules, provinces, terrain, adjacencies, supply files | `WIKI/map_modding.md` | `GAME/map/` |
+| State file keys, history block, state categories, building list | `WIKI/state_modding.md` | `GAME/history/states/1-France.txt` (minimal), `116-Malta.txt` (strategic_province_location), `1022 - Interior Borneo.txt` (impassable enclave), `1032 - Yanan.txt` (IF with has_dlc inside history) |
+| Strategic region file, weather periods | `WIKI/strategic_region_modding.md` | `GAME/map/strategicregions/1-Southern England.txt`, `100-Red Sea.txt` |
+| Building definition fields, slots, spawn points | `WIKI/building_modding.md` | `GAME/common/buildings/00_buildings.txt`, `01_landmark_buildings.txt` |
 | Strategic locations (extra provincial building cap) | `GAME/common/strategic_locations/documentation.md` | `GAME/common/strategic_locations/strategic_locations.txt` |
 | Scripted map modes | `GAME/common/map_modes/documentation.md` | none in vanilla (documentation only) |
-| Resources | `GAME/common/resources/_documentation.md`, `WIKI/Resources modding - Hearts of Iron 4 Wiki.md` | `GAME/common/resources/00_resources.txt` |
+| Resources | `GAME/common/resources/_documentation.md`, `WIKI/resources_modding.md` | `GAME/common/resources/00_resources.txt` |
 | State effects | `GAME/documentation/effects_documentation.md`, section "Effects for scope STATE", plus the individual entries named below | `GAME/common/national_focus/*.txt`, `GAME/events/*.txt` |
 | State triggers | `GAME/documentation/triggers_documentation.md`, section "Triggers for scope STATE" | same |
-| Effect argument tables (more detail than the installed file for building and flag effects) | `WIKI/Effects - Hearts of Iron 4 Wiki.md` (rows `add_building_construction`, `set_building_level`, `set_state_flag`, `build_railway`, `add_resource`, `transfer_state_to`) | |
+| Effect argument tables (more detail than the installed file for building and flag effects) | `WIKI/effects.md` (rows `add_building_construction`, `set_building_level`, `set_state_flag`, `build_railway`, `add_resource`, `transfer_state_to`) | |
 | Collections, `game:all_states` | `GAME/documentation/script_concept_documentation.md` (Collections), `script_collection_input.md`, `script_collection_operator.md` | |
 | Loop cap | `GAME/common/defines/00_defines.lua` (`MAX_EFFECT_ITERATION = 1000`) | |
 | State modifiers | `GAME/documentation/modifiers_documentation.md`, section "Modifiers for scope state" | `GAME/common/state_category/*.txt` |

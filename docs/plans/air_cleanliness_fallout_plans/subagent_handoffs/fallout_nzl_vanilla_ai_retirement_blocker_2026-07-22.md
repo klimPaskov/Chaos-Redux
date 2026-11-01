@@ -29,13 +29,13 @@ Required sources were read before this audit:
 
 - Repository `AGENTS.md`.
 - `.agents/skills/chaos-redux-subagents/SKILL.md` and `.agents/skills/chaos-redux-events/SKILL.md`.
-- Offline wiki core pages: `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, `Triggers - Hearts of Iron 4 Wiki.md`, `Effects - Hearts of Iron 4 Wiki.md`, `Modifiers - Hearts of Iron 4 Wiki.md`, `Localisation - Hearts of Iron 4 Wiki.md`, `Scopes - Hearts of Iron 4 Wiki.md`, `On actions - Hearts of Iron 4 Wiki.md`, `Event modding - Hearts of Iron 4 Wiki.md`, `Decision modding - Hearts of Iron 4 Wiki.md`, `Idea modding - Hearts of Iron 4 Wiki.md`, and `AI modding - Hearts of Iron 4 Wiki.md`.
+- Offline wiki core pages: `paradox_wiki/data_structures.md`, `triggers.md`, `effects.md`, `modifiers.md`, `localisation.md`, `scopes.md`, `on_actions.md`, `event_modding.md`, `decision_modding.md`, `idea_modding.md`, and `ai_modding.md`.
 - Installed official documentation: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`, `triggers_documentation.md`, `effects_documentation.md`, and `modifiers_documentation.md`.
 - Vanilla precedents: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/ai_strategy_plans/NZL_alternate_strategy_plan.txt` and `NZL_historical_strategy_plan.txt`.
 
-The offline AI reference states that `allowed` is evaluated only at game start, `enable` is checked daily, and `abort` is checked daily and must be false for a plan to be picked (`paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md:289-304`). This supports the intended current-generation abort gate.
+The offline AI reference states that `allowed` is evaluated only at game start, `enable` is checked daily, and `abort` is checked daily and must be false for a plan to be picked (`paradox_wiki/ai_modding.md:289-304`). This supports the intended current-generation abort gate.
 
-The offline loading reference states that base files load before mods, same-filename files overwrite the base file, and duplicate entries in different files have file-specific behavior. It explicitly warns that duplicate handling varies by database type and may prefer the first or last definition (`paradox_wiki/Modding - Hearts of Iron 4 Wiki.md:243-271`, `:352`). It does not define additive field-level merging for `common/ai_strategy_plans`.
+The offline loading reference states that base files load before mods, same-filename files overwrite the base file, and duplicate entries in different files have file-specific behavior. It explicitly warns that duplicate handling varies by database type and may prefer the first or last definition (`paradox_wiki/modding.md:243-271`, `:352`). It does not define additive field-level merging for `common/ai_strategy_plans`.
 
 The read-only CWTools AI-plan schema reference lists `name` and `enable` as required fields while `abort` is optional. This is a syntax/schema reference, not proof of duplicate merge behavior. The installed official effects documentation exposes `add_ai_strategy` only as “Adds strategy entry to country AI” (`documentation/effects_documentation.md:741-749`). There is no documented `add_ai_strategy_plan`, `remove_ai_strategy_plan`, or runtime plan-abort effect.
 

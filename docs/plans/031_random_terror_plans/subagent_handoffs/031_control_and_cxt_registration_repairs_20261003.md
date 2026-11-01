@@ -95,8 +95,8 @@ The reference routes became exposed during this pass, but the requests did not r
 
 The parent read these pertinent local references directly:
 
-- `paradox_wiki/On actions - Hearts of Iron 4 Wiki.md`, lines 85–125, startup and per-country daily scope
-- `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, country/global flag scope and persistence
+- `paradox_wiki/on_actions.md`, lines 85–125, startup and per-country daily scope
+- `paradox_wiki/data_structures.md`, country/global flag scope and persistence
 - Installed `documentation/triggers_documentation.md`, lines 5244–5253 for `is_ai` and 3624–3653 for `has_country_flag`
 - Installed `documentation/effects_documentation.md`, lines 6730–6738 for `set_country_flag`
 - Installed `common/on_actions/00_on_actions.txt`, startup effect structure and tag-scoped daily precedents

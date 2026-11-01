@@ -10,7 +10,7 @@ This is a narrow execution-frame repair. It does not widen package admission, ch
 
 ## Evidence and reason for the patch
 
-The offline `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` temporary-variable section documents that a temporary variable created only inside a nested scripted effect may not remain available to the caller, while a temporary variable seeded by the caller is carried into and back from the nested effect.
+The offline `paradox_wiki/data_structures.md` temporary-variable section documents that a temporary variable created only inside a nested scripted effect may not remain available to the caller, while a temporary variable seeded by the caller is carried into and back from the nested effect.
 
 `independence_wave_prepare_finalizer_frozen_country_origins` writes `independence_wave_execution_prepared_count`, `independence_wave_execution_activated_count`, and `independence_wave_execution_validated_count` through nested package passes. `independence_wave_finalize_frozen_country_origins` writes `independence_wave_execution_initialized_count` through another nested pass. The standalone caller previously seeded only the instantiated, state-transfer, transfer-failure, and validated counters before calling those effects. The joint caller likewise seeded the validated counter but not the other Event 006 finalizer counters.
 

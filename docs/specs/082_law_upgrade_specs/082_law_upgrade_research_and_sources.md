@@ -26,7 +26,7 @@ The public identifiers should be preserved unless a verified migration requires 
 
 ### Existing economy helper
 
-A targeted search of `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md` found documentation that `upgrade_economy_law` advances toward Total Mobilization but grants 150 Political Power at that cap and requires adjustment for new laws.
+A targeted search of `paradox_wiki/effects.md` found documentation that `upgrade_economy_law` advances toward Total Mobilization but grants 150 Political Power at that cap and requires adjustment for new laws.
 
 This was a snippet read, not a full Effects-page read. Treat it as a concrete warning requiring inspection of the loaded helper, not as installed-game proof.
 
@@ -34,7 +34,7 @@ The same helper is also called by the existing Zombie Outbreak event. Do not glo
 
 ### Idea and law implementation reference
 
-The full offline `paradox_wiki/Idea modding - Hearts of Iron 4 Wiki.md` was read. Its snapshot states that it was captured on 2026-09-19.
+The full offline `paradox_wiki/idea_modding.md` was read. Its snapshot states that it was captured on 2026-09-19.
 
 It distinguishes laws as idea categories, static idea modifiers from dynamic modifiers, startup/load-only `allowed` checks from continuously evaluated availability, manual-removal controls, law levels, removal costs, and slot-cost modifiers.
 

@@ -79,7 +79,7 @@ The four fixed family selectors are identity mappings, not duplicated balance tu
 ## Source references and engine limits
 
 Required offline wiki pages and the events/subagents skills were consulted; the decisions/missions skill was also used for the preceding quote task.
-The offline `On actions - Hearts of Iron 4 Wiki.md` documents `on_project_completion` with ROOT country and FROM project.
+The offline `on_actions.md` documents `on_project_completion` with ROOT country and FROM project.
 Vanilla `common/on_actions/12_wuw_on_actions.txt:1782` provides the same scope precedent.
 Vanilla `common/special_projects/projects/documentation.md` documents complete `project_output` and country scope, including that scripted completion may lack a facility/scientist.
 Vanilla `documentation/triggers_documentation.md:6243` documents country-scope `is_special_project_completed` with `sp:<id>`.

@@ -62,7 +62,7 @@ All price, reserve, retry and explanatory strings remain in `012_africa_gods_l_e
 
 Acceptance basis is the full-Gods goal and accepted L27 Council shipment, combined with the accepted L3 measured-contribution contract and October 7 decision audit.
 Installed `documentation/effects_documentation.md:6550–6558` documents the native COUNTRY transfer; vanilla `common/scripted_effects/USA_scripted_effects.txt:403–418` supplies its `equipment` spelling.
-Offline `Effects - Hearts of Iron 4 Wiki.md:2254` documents partial native delivery rather than negative source stock.
+Offline `effects.md:2254` documents partial native delivery rather than negative source stock.
 The shared contribution helper API records the native measurement contract and its limits.
 Independent source review, named Council probability scenarios and parent integration evidence belong to the October 7 Council handoffs under `docs/plans/012_africa_plans/subagent_handoffs/`.
 Those source/MCP checks do not prove native stock deltas or decision-row appearance.

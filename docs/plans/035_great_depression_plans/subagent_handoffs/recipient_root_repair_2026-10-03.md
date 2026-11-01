@@ -40,8 +40,8 @@ These checks establish the source routing and documented scope semantics, not ac
 Current event-source SHA-256 is `5F38DF9BF7E5DACAFC3017F4DA45080967473590692AB5946940954420C89137`.
 Current main-effects SHA-256 is `6FDAF35F9D19E264F012CBB675B41B0194868AFA8E48769BD0225FF626431470`.
 
-Offline `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md`, lines 25 to 35, defines event-recipient ROOT and transfers the original sender ROOT to FROM.
-Offline `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md`, lines 245 to 265, distinguishes ROOT from the current THIS scope.
+Offline `paradox_wiki/event_modding.md`, lines 25 to 35, defines event-recipient ROOT and transfers the original sender ROOT to FROM.
+Offline `paradox_wiki/scopes.md`, lines 245 to 265, distinguishes ROOT from the current THIS scope.
 Installed `documentation/effects_documentation.md`, lines 2943 to 2972, documents country-event scope and dispatch.
 The installed variable-backed delayed event precedent and document revisions are recorded in `external_commitment_cleanup_2026-10-03.md`.
 

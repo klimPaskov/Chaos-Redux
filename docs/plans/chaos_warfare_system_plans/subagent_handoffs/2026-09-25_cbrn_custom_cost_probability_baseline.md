@@ -60,7 +60,7 @@ For the authorized parent migration in `common/decisions/cbrn_protection_decisio
 
 ## References read
 
-Offline wiki references: `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, `Triggers - Hearts of Iron 4 Wiki.md`, `Effects - Hearts of Iron 4 Wiki.md`, `Modifiers - Hearts of Iron 4 Wiki.md`, `Localisation - Hearts of Iron 4 Wiki.md`, `Scopes - Hearts of Iron 4 Wiki.md`, `On actions - Hearts of Iron 4 Wiki.md`, `Event modding - Hearts of Iron 4 Wiki.md`, `Decision modding - Hearts of Iron 4 Wiki.md`, `Idea modding - Hearts of Iron 4 Wiki.md`, and `AI modding - Hearts of Iron 4 Wiki.md`. The decision cost and AI sections describe native PP `cost`, the display-only nature of a custom cost string, the manual payment effect for custom PP charges, `ai_hint_pp_cost`, decision `ai_will_do`, and score-race semantics.
+Offline wiki references: `paradox_wiki/data_structures.md`, `triggers.md`, `effects.md`, `modifiers.md`, `localisation.md`, `scopes.md`, `on_actions.md`, `event_modding.md`, `decision_modding.md`, `idea_modding.md`, and `ai_modding.md`. The decision cost and AI sections describe native PP `cost`, the display-only nature of a custom cost string, the manual payment effect for custom PP charges, `ai_hint_pp_cost`, decision `ai_will_do`, and score-race semantics.
 
 Vanilla documentation consulted under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/` included `triggers_documentation.md` (`has_political_power`), `effects_documentation.md` (`add_political_power`), `modifiers_documentation.md` (`political_power_cost`), and `script_concept_documentation.md` (script constants). All markdown files present in the installed documentation directory were inventoried.
 

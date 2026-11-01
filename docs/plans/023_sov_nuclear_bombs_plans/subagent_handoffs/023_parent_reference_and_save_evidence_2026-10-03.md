@@ -39,7 +39,7 @@ The creation, authorization, target, concurrency, failure, and cancellation cont
 
 The new decision-reference attempt first returned an input validation error because the question exceeded the live 160-character limit.
 A corrected shorter request returned `timed out awaiting tools/call after 600s`; no reference coverage is inferred from either request.
-Pending retrieval, the parent read installed `common/decisions/_documentation.md` lines 1–48, installed `common/decisions/AFG.txt` lines 1061–1109, offline `Decision modding - Hearts of Iron 4 Wiki.md` lines 514–589, offline `Data structures - Hearts of Iron 4 Wiki.md` lines 264–340, and installed `documentation/effects_documentation.md` lines 7888–7913.
+Pending retrieval, the parent read installed `common/decisions/_documentation.md` lines 1–48, installed `common/decisions/AFG.txt` lines 1061–1109, offline `decision_modding.md` lines 514–589, offline `data_structures.md` lines 264–340, and installed `documentation/effects_documentation.md` lines 7888–7913.
 The installed decision example confirms `state_target = any_owned_state`, FROM targeting and separate cancellation handling; the references distinguish temporary chain targets from persistent global targets and variables.
 SHA-256 revisions are `5E7E686B5582F32C38D898D805E17171E88F3BFEEE4A030DEB1884F9726DE019` (installed decision documentation), `DABC91C3F7FB1810D64D91D07147E827068D42540326CE10554A0752EE48D7A7` (AFG), `7713B9BCEE5F3818D63AAFBD45D18E812A9173A7C59AB238384B57DB60DB6162` (offline decision page), and `62273F37ED30E5479ACB331A8973F48DADC1867C4913C8A940E3E790E7AF32D4` (offline data structures).
 Installed effects documentation retains the revision listed above.

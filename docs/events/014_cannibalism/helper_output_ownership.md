@@ -2,7 +2,7 @@
 
 Disposition: `implemented` (round 2, agent decision R2-3 in `docs/plans/014_cannibalism_plans/agent_decisions_2026-10-04.md`).
 
-A temporary variable or temporary array first created inside a scripted effect or trigger may be gone when that helper returns, while storage that already existed before the call keeps the helper's changes (`paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, Variable types; `chaos-redux-events` skill, Helper output lifetime).
+A temporary variable or temporary array first created inside a scripted effect or trigger may be gone when that helper returns, while storage that already existed before the call keeps the helper's changes (`paradox_wiki/data_structures.md`, Variable types; `chaos-redux-events` skill, Helper output lifetime).
 Every Event 014 caller that reads a helper's output after the call therefore sets that output to the helper's own default before the call, including calls inside `if` limits and scripted-localisation `text.trigger` blocks.
 Temporary arrays are owned with `clear_temp_array` in the caller.
 Inputs and cursors such as `cannibalism_spread_queue_index` are never reset by this storage, and a value that a helper accumulates or adjusts is owned once by the outer frame instead of before every call.

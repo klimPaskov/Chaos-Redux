@@ -34,7 +34,7 @@ Both adapters still reset the request amount and proof after either outcome.
 An accepted service writes its actual requested amount once and registers the state idempotently; it creates no population or Deaths transaction.
 The old source SHA-256 was `6E67FDB164C14852440683FFE5308906B157C43C3A319C1F2278B7DC2D80E73C`; the corrected source SHA-256 is `62CE76598B5EE2FCD7517613370C52A8899B23347DF289872C44B31DB1AE607B`.
 
-Relevant reference sections read directly are installed `documentation/triggers_documentation.md:2110` (`check_variable` and strict `greater_than`), `documentation/effects_documentation.md:7820` (`set_temp_variable`), and offline `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md:563` (temporary variables and strict comparison semantics).
+Relevant reference sections read directly are installed `documentation/triggers_documentation.md:2110` (`check_variable` and strict `greater_than`), `documentation/effects_documentation.md:7820` (`set_temp_variable`), and offline `paradox_wiki/data_structures.md:563` (temporary variables and strict comparison semantics).
 The installed vanilla `common/scripted_triggers/00_scripted_triggers.txt:19` supplies the `exists = yes` object-validity precedent used in the related country-validation review; that separate proposed correction is not included here.
 
 ## Validation limits

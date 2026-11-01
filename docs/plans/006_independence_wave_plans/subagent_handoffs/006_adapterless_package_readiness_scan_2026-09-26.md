@@ -30,7 +30,7 @@
 | docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw095_package_completion_2026-09-19.md; 006_iw095_identity_portrait_symbol_research_2026-09-20.md | DAH implementation coverage and exact identity, source-rights, portrait, and flag blockers. | Package audit :20-32, :44-60; research :7-23, :25-43. |
 | docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw057_fer_completion_tranche_2026-09-19.md; 006_iw057_fer_portrait_gate_2026-08-28.md | FER package-local extent and missing accepted roster, portrait, and flag. | Completion :21-28; portrait gate :9-23. |
 | docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_scn008_completion_audit_2026-09-25.md; 006_event6_full_completion_audit_2026-09-26.md | Current accepted non-package continuation and its evidence limits. | SCN-008 :3-5, :65-73; full audit :59-68. |
-| paradox_wiki/Country creation - Hearts of Iron 4 Wiki.md; State modding - Hearts of Iron 4 Wiki.md | Local reference for country-tag/history and state-owner/core/province data. | Country creation :36-51; State modding :20, :45, :57-89. |
+| paradox_wiki/country_creation.md; state_modding.md | Local reference for country-tag/history and state-owner/core/province data. | Country creation :36-51; State modding :20, :45, :57-89. |
 
 ## Existing patterns
 - UDM preserves the registered vanilla carrier/history and adds package-local triggers/effects, ideas, decisions, AI, localisation, and five guarded callbacks into the shared Event 006 tree. Its own audit explicitly says central adapter, attestation, preflight, scenario, and Join ownership are absent.

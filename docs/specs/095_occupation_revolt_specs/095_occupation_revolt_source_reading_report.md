@@ -117,16 +117,16 @@ Their availability in the user's installed repository or game installation has n
 
 | Required or conditional reference | Status and impact |
 |---|---|
-| `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` | Not read, durable records and variables need native/reference verification |
-| `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md` | Not read, proposed state/unit/war operations are not verified syntax |
-| `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md` | Not read, exact eligibility adapters need verification |
-| `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md` | Not read, supplied skill scope rules were applied as design constraints only |
-| `paradox_wiki/On actions - Hearts of Iron 4 Wiki.md` | Not read, exact callback wiring needs current verification |
-| `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md` | Not read, current native event paths need verification |
-| `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md` | Not read, actual costs, missions and target behavior need verification |
-| `paradox_wiki/Idea modding - Hearts of Iron 4 Wiki.md` | Not read, temporary burden implementation needs verification |
-| `paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md` | Not read, final localisation implementation remains future work |
-| `paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md` | Not read, AI priorities are untested design proposals |
+| `paradox_wiki/data_structures.md` | Not read, durable records and variables need native/reference verification |
+| `paradox_wiki/effects.md` | Not read, proposed state/unit/war operations are not verified syntax |
+| `paradox_wiki/triggers.md` | Not read, exact eligibility adapters need verification |
+| `paradox_wiki/scopes.md` | Not read, supplied skill scope rules were applied as design constraints only |
+| `paradox_wiki/on_actions.md` | Not read, exact callback wiring needs current verification |
+| `paradox_wiki/event_modding.md` | Not read, current native event paths need verification |
+| `paradox_wiki/decision_modding.md` | Not read, actual costs, missions and target behavior need verification |
+| `paradox_wiki/idea_modding.md` | Not read, temporary burden implementation needs verification |
+| `paradox_wiki/localisation.md` | Not read, final localisation implementation remains future work |
+| `paradox_wiki/ai_modding.md` | Not read, AI priorities are untested design proposals |
 | Applicable offline national-focus, country-creation, character, technology and military-unit references | Not read, no claim that all transitive wiki requirements were met |
 | Installed `documentation/effects_documentation.md`, `triggers_documentation.md`, `dynamic_variables_documentation.md`, `script_concept_documentation.md`, `modifiers_documentation.md` | Not read, native capability gates remain open |
 | Installed `common/script_constants/documentation.md` | Not read, constant syntax and arithmetic require verification |

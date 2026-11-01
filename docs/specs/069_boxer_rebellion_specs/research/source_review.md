@@ -48,8 +48,8 @@ Exact repository paths, blob identities when returned, and source URLs are in [s
 | `.claude/skills/chaos-redux-events/SKILL.md` | Initial range to 200 and later ranges 181–330 and 331–510 were requested. Some responses were truncated, and the rest was not read. Evolution, scenario, logging, and country contracts were available in substantial excerpts. |
 | `.claude/skills/chaos-redux-subagents/SKILL.md` | Only a truncated opening range was read. Named role routing was inspected, but the complete skill and canonical role definitions were not read. |
 | `.claude/skills/chaos-redux-scripted-gui/SKILL.md` | Only a truncated opening range was read. Presentation budgets and native-render requirements were inspected. This package does not introduce a dedicated custom GUI. |
-| `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` | Only lines 1–60 were read. This is not complete data-structure or scope verification. |
-| `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md` | Only lines 1–50 were read, largely the contents list. Trigger definitions were not verified. |
+| `paradox_wiki/data_structures.md` | Only lines 1–60 were read. This is not complete data-structure or scope verification. |
+| `paradox_wiki/triggers.md` | Only lines 1–50 were read, largely the contents list. Trigger definitions were not verified. |
 
 Long connector responses sometimes returned a truncated JSON content string.
 Requested line ranges are not proof that every requested line was received.

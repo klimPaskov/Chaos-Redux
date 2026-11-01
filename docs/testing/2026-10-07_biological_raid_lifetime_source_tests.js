@@ -154,7 +154,7 @@ test('eleven non-raid consumers remain unchanged inventory-only follow-up',()=>{
 test('audited inputs stable',()=>{for(const [f,b]of bytes)assert.equal(hash(fs.readFileSync(path.join(root,f))),hash(b),f);});
 const game='C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV';
 const references=[
- ['wiki',path.join(root,'paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md'),435,443],
+ ['wiki',path.join(root,'paradox_wiki/data_structures.md'),435,443],
  ['installed',path.join(game,'documentation/effects_documentation.md'),6496,6504],
  ['installed',path.join(game,'common/raids/_documentation.md'),167,184],
  ['installed',path.join(game,'common/raids/_documentation.md'),245,300],

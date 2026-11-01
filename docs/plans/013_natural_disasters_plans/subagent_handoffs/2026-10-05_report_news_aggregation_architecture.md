@@ -232,9 +232,9 @@ No runtime tests were performed by this worker.
 
 ## Local reference evidence
 
-- Offline snapshot `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, captured 2026-09-19, lines 263-327 for event targets, 425-457 for variables and temporary outputs, 1069-1115 for arrays, and 1667-1679 for state building/owner/controller getters.
-- Offline snapshot `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md`, captured 2026-09-19, lines 260-267 for ROOT/PREV/owner/controller.
-- Offline snapshot `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md`, captured 2026-09-19, lines 27-35 for event scope inheritance and dormant-country timers, and 145-149 for triggered-only and major news behavior.
+- Offline snapshot `paradox_wiki/data_structures.md`, captured 2026-09-19, lines 263-327 for event targets, 425-457 for variables and temporary outputs, 1069-1115 for arrays, and 1667-1679 for state building/owner/controller getters.
+- Offline snapshot `paradox_wiki/scopes.md`, captured 2026-09-19, lines 260-267 for ROOT/PREV/owner/controller.
+- Offline snapshot `paradox_wiki/event_modding.md`, captured 2026-09-19, lines 27-35 for event scope inheritance and dormant-country timers, and 145-149 for triggered-only and major news behavior.
 - Installed `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, lines 2943-2968 for country events, 3374-3392 for building damage, 5053-5078 for news events, and 6496-6514 for event targets.
 - Installed `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`, lines 2708-2715 for COUNTRY-only existence, 3844-3852 for event-target presence, and 6554-6569 for undamaged building checks.
 - Installed `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/dynamic_variables_documentation.md`, lines 1101-1144 for building and owner/controller getters, including `damaged_building_level@arms_factory`.

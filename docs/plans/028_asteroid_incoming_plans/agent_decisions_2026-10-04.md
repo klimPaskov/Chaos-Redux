@@ -346,7 +346,7 @@ Basis: Part 6 (Presentation choice) lists the national recovery burden for damag
 
 Decision: the five Event 028 achievements gain the native `<id>_NAME` and `<id>_DESC` keys, and both the description and the `<id>_tooltip` read the Chaos threshold, the Government Beyond the Crater deadline, the Collector site minimum and hold, and the Piercing hold from `asteroid_incoming_runtime` through `[?constant:...|0]`.
 The tooltips no longer describe the hold as an "accepted control period".
-Basis: the wiki Achievement modding Localization section (`paradox_wiki/Achievement modding - Hearts of Iron 4 Wiki.md`, lines 96-103) and the convention used by 400 of the 410 mod achievements.
+Basis: the wiki Achievement modding Localization section (`paradox_wiki/achievement_modding.md`, lines 96-103) and the convention used by 400 of the 410 mod achievements.
 Commit: 08cb48523.
 
 ### One target per state recovery action

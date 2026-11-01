@@ -36,7 +36,7 @@ Equality at a cap is a valid capped contribution, rather than proof of duplicate
 
 ## References and verification
 
-The offline `Achievement modding - Hearts of Iron 4 Wiki.md` coding, icon, and localisation sections were read directly.
+The offline `achievement_modding.md` coding, icon, and localisation sections were read directly.
 They require one custom database identity, `possible` and `happened` predicates, root DDS triplets, and `_NAME` and `_DESC` keys.
 Installed vanilla `common/achievements.txt` documents the startup-only `possible` filter and recurring `happened` checks.
 Existing Chaos Redux entries supply the custom override-tooltip structure and any-country startup eligibility convention.

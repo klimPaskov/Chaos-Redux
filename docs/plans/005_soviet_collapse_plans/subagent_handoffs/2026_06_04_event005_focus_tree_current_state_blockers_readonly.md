@@ -22,7 +22,7 @@ Required references consulted before inspecting the Chaos Redux focus files:
 
 - `AGENTS.md`
 - Offline Paradox wiki core pages: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding
-- Offline Paradox wiki `National focus modding - Hearts of Iron 4 Wiki.md`
+- Offline Paradox wiki `national_focus_modding.md`
 - Vanilla documentation in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/`, including effects, triggers, modifiers, localisation objects, and script concepts
 - Vanilla focus files list and focus syntax precedent in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/`
 

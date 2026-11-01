@@ -48,7 +48,7 @@ Parent must carry that unresolved validation limit.
 ## References and skill guidance
 
 Applied `.agents/skills/chaos-redux-events/SKILL.md`, lines 162-164: numeric `defined_text` uses a literal real YAML key and assigns temporary display variables in the same text trigger.
-Previously read offline `paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md`, lines 656-691, documents first-matching scripted output and temporary trigger assignments remaining visible to the chosen key.
+Previously read offline `paradox_wiki/localisation.md`, lines 656-691, documents first-matching scripted output and temporary trigger assignments remaining visible to the chosen key.
 Previously read installed `documentation/effects_documentation.md`, lines 7820-7844, documents `set_temp_variable` accepting another variable.
 The previous localisation audit handoff retains reference hashes and full source paths.
 No skill changed, staging or commit performed.

@@ -148,10 +148,10 @@ Primary official engine sources:
 
 Relevant offline wiki sources were reviewed in parallel:
 
-- `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/effects.md`
+- `paradox_wiki/triggers.md`
+- `paradox_wiki/scopes.md`
+- `paradox_wiki/data_structures.md`
 
 Precedent search roots:
 

@@ -12,7 +12,7 @@ The interface constraint is absolute for this cleanup. Event-log details, select
 
 ## Required references and method
 
-The audit followed `AGENTS.md`, the repository cleanup master prompt, `chaos-redux-events`, and `chaos-redux-subagents`. It consulted the offline `Localisation - Hearts of Iron 4 Wiki.md` and `Data structures - Hearts of Iron 4 Wiki.md` pages, together with the installed vanilla `documentation/loc_formatter_documentation.md` and the relevant scope and localisation-object entries in `documentation/loc_objects_documentation.md`.
+The audit followed `AGENTS.md`, the repository cleanup master prompt, `chaos-redux-events`, and `chaos-redux-subagents`. It consulted the offline `localisation.md` and `data_structures.md` pages, together with the installed vanilla `documentation/loc_formatter_documentation.md` and the relevant scope and localisation-object entries in `documentation/loc_objects_documentation.md`.
 
 The English localisation scan covered 288 YAML files and 59,659 unique case-insensitive mod keys. It checked direct event title, description, option, tooltip, scripted-localisation, GFX token, GUI consumer, shared registry, documentation, and vanilla-localisation references before classifying a key as missing or potentially dead.
 

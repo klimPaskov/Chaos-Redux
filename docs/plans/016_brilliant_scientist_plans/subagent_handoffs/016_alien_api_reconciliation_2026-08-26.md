@@ -30,7 +30,7 @@ The required repository instructions and skills were read before the audit: `AGE
 
 The required offline wiki references were consulted for data structures and temporary-variable lifetime, event targets, scopes, triggers, effects, modifiers, localisation, on actions, event modding, decisions, ideas, AI, and state modding.
 
-The temporary-variable rule that affected this audit is in `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md:412-417`: a temporary variable defined inside a scripted effect is not guaranteed to remain available outside that scripted effect, while a temporary variable defined before the call is carried into it.
+The temporary-variable rule that affected this audit is in `paradox_wiki/data_structures.md:412-417`: a temporary variable defined inside a scripted effect is not guaranteed to remain available outside that scripted effect, while a temporary variable defined before the call is carried into it.
 
 The required vanilla documentation was read from `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation`, including `effects_documentation.md`, `triggers_documentation.md`, `script_concept_documentation.md`, `dynamic_variables_documentation.md`, and `common/script_constants/documentation.md`.
 

@@ -120,9 +120,9 @@ No GUI control, click effect, payment path, target selection, or gameplay action
 
 ## Engine and vanilla references
 
-Offline `Interface modding - Hearts of Iron 4 Wiki.md` was read at lines 83-95 for container bounds, backgrounds, clipping, and relative geometry, and lines 110-128 for scroll-container requirements.
+Offline `interface_modding.md` was read at lines 83-95 for container bounds, backgrounds, clipping, and relative geometry, and lines 110-128 for scroll-container requirements.
 
-Offline `Scripted GUI modding - Hearts of Iron 4 Wiki.md` was read at lines 44-60 for independent window binding, lines 71-114 for parent context, lines 179-208 for click effects and temporary GUI values, and lines 241-300 for dynamic lists and their native grid-box relationship.
+Offline `scripted_gui_modding.md` was read at lines 44-60 for independent window binding, lines 71-114 for parent context, lines 179-208 for click effects and temporary GUI values, and lines 241-300 for dynamic lists and their native grid-box relationship.
 
 Installed vanilla `common/scripted_guis/_documentation.md` was read at lines 78-90 for array, value, index, `change_scope`, and entry-container fields.
 

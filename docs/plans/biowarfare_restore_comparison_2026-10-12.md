@@ -47,7 +47,7 @@ Offline `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`, lines 576–
 Installed `common/decisions/_documentation.md`, lines 1–46, revision `5e7e686b5582f32c38d898d805e17171e88f3bfeee4a030deb1884f9726de019`, defines targeted scopes and trigger evaluation.
 Vanilla `common/decisions/AFG.txt`, line 489, uses `map_and_decisions_view`.
 Installed `common/raids/_documentation.md`, lines 75–178, and vanilla `common/raids/nuclear_raids.txt`, lines 43–72, distinguish type visibility, preparation, launch and native equipment collection.
-Installed `common/scripted_guis/_documentation.md`, lines 9–50, and offline `Scripted GUI modding - Hearts of Iron 4 Wiki.md`, lines 149–177, establish category attachment and visible bindings.
+Installed `common/scripted_guis/_documentation.md`, lines 9–50, and offline `scripted_gui_modding.md`, lines 149–177, establish category attachment and visible bindings.
 These references were read through the available MCP reference workflow or directly after the slow source/validation route; they establish source contracts, not observed game behavior.
 The parent A11 file-mode `hoi4.script_validate` request timed out after 600 seconds; no unchanged retry was made because there was no useful input correction.
 Further validation for that route requires a responsive service; direct source and history checks remain the verification route for this task.

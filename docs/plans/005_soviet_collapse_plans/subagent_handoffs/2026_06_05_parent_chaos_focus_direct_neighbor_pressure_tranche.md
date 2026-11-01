@@ -16,9 +16,9 @@ Flags, sprites, images, and other visual assets were not touched.
 - `chaos-redux-events`
 - `chaos-redux-subagents`
 - `chaos-redux-improvement-loop`
-- `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Effect - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/national_focus_modding.md`
+- `paradox_wiki/effects.md`
+- `paradox_wiki/triggers.md`
 - Current focus audit subagent handoff: `docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_06_05_173628_event005_custom_chaos_focus_audit_readonly.md`
 
 ## Files Changed

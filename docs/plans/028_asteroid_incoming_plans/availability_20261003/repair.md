@@ -87,7 +87,7 @@ Narrow reference context, corrected event trace, and one-state map requests were
 The read-only probability specialist was assigned the immutable before sources, after sources, and named cases for the required comparison.
 No current numeric probability comparison is claimed.
 
-The relevant offline `Scopes - Hearts of Iron 4 Wiki.md` section at lines 31 through 55 documents the `any_<object>` count threshold and scope iteration.
+The relevant offline `scopes.md` section at lines 31 through 55 documents the `any_<object>` count threshold and scope iteration.
 Installed `documentation/triggers_documentation.md` sections `any_country` at lines 1336 through 1343, `any_owned_state` at 1612 through 1619, `exists` at 2708 through 2715, and `is_owned_and_controlled_by` at 6079 through 6086 were read directly.
 Its `any_collection_element` example at lines 1291 through 1315 supplies the installed count-three precedent.
 The Event 028 target builder and shared Event 027/042 availability branches supplied the current project integration precedents.

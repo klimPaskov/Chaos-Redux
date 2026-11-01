@@ -44,6 +44,6 @@ No AI-weight or prerequisite change is recommended from this baseline. Preserve 
 
 ## Guidance consulted
 
-Read `AGENTS.md`, `.agents/skills/chaos-redux-subagents/SKILL.md`, and `.agents/skills/chaos-redux-decisions-missions/SKILL.md`. Opened the required offline Paradox wiki core pages and reviewed the decision AI and AI-modifier sections of `Decision modding - Hearts of Iron 4 Wiki.md` and `AI modding - Hearts of Iron 4 Wiki.md`. Consulted the vanilla `triggers_documentation.md` entry for `has_equipment`; it is a country-scope trigger, while the connected probability adapter still requires an explicit scenario-bound representation.
+Read `AGENTS.md`, `.agents/skills/chaos-redux-subagents/SKILL.md`, and `.agents/skills/chaos-redux-decisions-missions/SKILL.md`. Opened the required offline Paradox wiki core pages and reviewed the decision AI and AI-modifier sections of `decision_modding.md` and `ai_modding.md`. Consulted the vanilla `triggers_documentation.md` entry for `has_equipment`; it is a country-scope trigger, while the connected probability adapter still requires an explicit scenario-bound representation.
 
 No gameplay, AI, localisation, runtime, or other implementation files were edited.

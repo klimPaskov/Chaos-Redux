@@ -91,13 +91,13 @@ No constants were added or changed. The fix changes request identity and cleanup
 
 The implementation was checked against these required references:
 
-- `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, especially arrays, event targets, and array scopes
-- `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/On actions - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/data_structures.md`, especially arrays, event targets, and array scopes
+- `paradox_wiki/triggers.md`
+- `paradox_wiki/effects.md`
+- `paradox_wiki/scopes.md`
+- `paradox_wiki/on_actions.md`
+- `paradox_wiki/event_modding.md`
+- `paradox_wiki/decision_modding.md`
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`

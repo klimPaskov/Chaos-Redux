@@ -82,7 +82,7 @@ The installed official documentation was used as the primary syntax authority:
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md` for `all_of`, matched values and indexes, `all_of_scopes`, `is_in_array`, variable comparison, and dynamic scope validation
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md` for scope variables and typed script constants
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/script_constants/documentation.md` for script-constant schema and access
-- `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` for arrays, numeric indexes, scope arrays, and temporary-variable lifetime
+- `paradox_wiki/data_structures.md` for arrays, numeric indexes, scope arrays, and temporary-variable lifetime
 
 Repository precedents are the aligned successor-assignment ledger and living-world registry in the Fallout files, plus `006_independence_wave_effects.txt` and `006_independence_wave_triggers.txt` for stable indexed scope arrays and context-loaded dynamic-scope proof.
 

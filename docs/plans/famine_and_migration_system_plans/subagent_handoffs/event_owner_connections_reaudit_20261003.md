@@ -68,7 +68,7 @@ The Event 012-owned `migration_install_gods_of_africa_reception_service` and cle
 
 ## Vanilla or reference precedents
 
-The offline wiki’s `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md:25–33` explains event ROOT/THIS and the FROM/event-target scoping carried from effect-fired events. Installed vanilla documentation at `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md:8096–8106` lists `state_event` as supporting STATE and COUNTRY scopes.
+The offline wiki’s `paradox_wiki/event_modding.md:25–33` explains event ROOT/THIS and the FROM/event-target scoping carried from effect-fired events. Installed vanilla documentation at `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md:8096–8106` lists `state_event` as supporting STATE and COUNTRY scopes.
 
 No vanilla content-file precedent was needed for this re-audit because no new event syntax or population transaction is proposed. The source-owned Chaos Redux Camp custody and `civilian_transfer` patterns are the relevant current implementation precedents.
 

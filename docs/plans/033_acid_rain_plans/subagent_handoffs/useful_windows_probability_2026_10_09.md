@@ -430,8 +430,8 @@ No fallback, rate/cost/duration change, human restriction or project simplificat
 Reference evidence reused the exhausted R05-R07 capability findings; no new MCP probability or recovery request was made.
 Relevant local installed triggers_documentation.md sections are any_controlled_state:1318, is_fully_controlled_by:5585, modulo_temp_variable:6442-6454, round_temp_variable:7440 and set_temp_variable:7482.
 Its raw revision is7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29.
-Parallel offline paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md:425-443 covers variable/temporary lifetime and scope rules, revision62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4.
-Offline paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md:270,392 covers typed variable targets and controlled-state iteration, revision18ef5249e4991f5427eca9ec4a2f66dd47f51e26a491c730adc622f1f5db1b49.
+Parallel offline paradox_wiki/data_structures.md:425-443 covers variable/temporary lifetime and scope rules, revision62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4.
+Offline paradox_wiki/scopes.md:270,392 covers typed variable targets and controlled-state iteration, revision18ef5249e4991f5427eca9ec4a2f66dd47f51e26a491c730adc622f1f5db1b49.
 Vanilla common/decisions/AST.txt:114-178 supplies state-target/zero-factor structural precedent.
 The direct source/local verification route follows replacement AGENTS after exhausted unsupported analyzer capability and is not promoted to native or full probability acceptance.
 Skills used: chaos-redux-events, chaos-redux-decisions-missions and chaos-redux-subagents, including loop-break isolation; no skills were modified.
@@ -476,7 +476,7 @@ This follow-up changes only the trigger helper, maintained regression and this o
 No old receipt or sealed prior test is overwritten.
 
 Installed triggers_documentation.md:5381-5388 and5585-5592 documents the distinct controlled/full-controlled STATE predicates.
-Offline paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md:1842-1843 explicitly permits country scope or variable targets for both, raw revisionabc51ad18a2c46e46d47baa795c5a840ebaf7c4ae3e777426c64a9f4c0c0ce06.
+Offline paradox_wiki/triggers.md:1842-1843 explicitly permits country scope or variable targets for both, raw revisionabc51ad18a2c46e46d47baa795c5a840ebaf7c4ae3e777426c64a9f4c0c0ce06.
 The existing installed revision7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29 remains unchanged.
 The current events skill consolidates loop guidance under references/scripted-systems-and-country-integration.md, whose relevant complete helper-lifetime and loop-isolation sections were read.
 No loop or lifetime contract changed.

@@ -102,7 +102,7 @@ After the identity lock, transformed hosts still do not satisfy the seventeen or
 ## Validation performed
 
 - Read `AGENTS.md`, `chaos-redux-subagents`, `chaos-redux-events`, `chaos-redux-focus-trees`, and `chaos-redux-decisions-missions` skills before editing.
-- Read the required offline Paradox wiki pages, including `AI modding - Hearts of Iron 4 Wiki.md`, where `allowed` is documented as game-start-only and `enable` as daily.
+- Read the required offline Paradox wiki pages, including `ai_modding.md`, where `allowed` is documented as game-start-only and `enable` as daily.
 - Read the relevant vanilla effects and AI documentation, including `effects_documentation.md` and the vanilla country/cosmetic examples for `set_cosmetic_tag`.
 - Confirmed with repository scans that the source contains 19 KRG AI plan blocks, 17 remaining `allowed` blocks, and exactly two takeover plans without an `allowed` block.
 - Confirmed `brilliant_scientist_is_kruger_sovereign_country` accepts either `original_tag = KRG` or `brilliant_scientist_host_transformed_into_kruger_state`, and `brilliant_scientist_formed_by_takeover` checks `brilliant_scientist_formation_takeover`.

@@ -315,7 +315,7 @@ Required source evidence:
 - Offline `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, lines 270–302, revision `62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4`: global targets persist and require lifecycle care.
 - Installed `common/scripted_guis/_documentation.md`, lines 102–105, revision `43ce647fc5fde27488855b060b5463c790e5e356149fceb010d36b960b40f838`: tick property updates and dirty-variable invalidation.
 - Offline `paradox_wiki/Scripted GUI modding - Hearts of Iron 4 Wiki.md`, lines 165–173: dirty updates do not cache visibility.
-- Offline `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md`, lines 130–132: automatic event trigger and MTTH evaluation.
+- Offline `paradox_wiki/event_modding.md`, lines 130–132: automatic event trigger and MTTH evaluation.
 - Vanilla `common/on_actions/00_on_actions.txt`, lines 5717–5727: a controlled-state iterator applies scoped effects to states satisfying its limit.
 
 ## Remaining limits

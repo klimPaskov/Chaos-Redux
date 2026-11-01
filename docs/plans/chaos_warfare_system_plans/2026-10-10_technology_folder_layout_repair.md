@@ -81,7 +81,7 @@ The source check in `.tmp/bio_folder_links/check_links.py` records before/after 
 Gameplay fields and all chemical technology definitions are unchanged; chemical prerequisites that have no common biological folder intentionally remain cross-folder requirements without biological lines.
 No implementation simplification was used.
 
-Reference evidence: offline `paradox_wiki/Technology modding - Hearts of Iron 4 Wiki.md`, lines 254–292 (paths, inherited gridboxes, AND dependencies) and 715–722 (UP routing); installed vanilla `common/technologies/infantry.txt`, lines 27–38 (unit-coefficient path), `common/technologies/naval.txt`, lines 152–160 (secondary layout path), and `interface/countrytechtreeview.gui`, lines 246–274 (70x70 root gridboxes).
+Reference evidence: offline `paradox_wiki/technology_modding.md`, lines 254–292 (paths, inherited gridboxes, AND dependencies) and 715–722 (UP routing); installed vanilla `common/technologies/infantry.txt`, lines 27–38 (unit-coefficient path), `common/technologies/naval.txt`, lines 152–160 (secondary layout path), and `interface/countrytechtreeview.gui`, lines 246–274 (70x70 root gridboxes).
 Installed paths are relative to `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`; file hashes and source spans are retained in `.tmp/bio_folder_links/reference_evidence.json`.
 No installed technology-path schema was found in the installed documentation or technology directory; the installed vanilla definitions provide the direct precedent.
 Skills used: `chaos-redux-technology-doctrines` and `chaos-redux-shared-git-commit`.

@@ -17,7 +17,7 @@ Audit date: 2026-09-13, Europe/Kyiv.
 - Latest completion update: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_asset_audit_completion_update_2026-09-12.md`.
 - Flag rules: `.agents/skills/chaos-redux-event-assets/SKILL.md`.
 - Coordination and handoff rules: `.agents/skills/chaos-redux-subagents/SKILL.md`.
-- Offline references read: `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md` and `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`.
+- Offline references read: `paradox_wiki/graphical_asset_modding.md` and `paradox_wiki/data_structures.md`.
 - Canonical vanilla references read and visually opened: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/contact_sheet.png`, `README.md`, and `CATALOG.md`.
 - Installed vanilla examples and documentation were inspected under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/flags/` and `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/`.
 

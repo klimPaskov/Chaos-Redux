@@ -28,7 +28,7 @@ No files outside this handoff were edited.
 
 ## Required references consulted
 
-The offline portrait and graphics references consulted were paradox_wiki/Portrait modding - Hearts of Iron 4 Wiki.md, paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md, and paradox_wiki/Interface modding - Hearts of Iron 4 Wiki.md.
+The offline portrait and graphics references consulted were paradox_wiki/portrait_modding.md, paradox_wiki/graphical_asset_modding.md, and paradox_wiki/interface_modding.md.
 
 The canonical reference-library rules and catalog were consulted at .agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md and .agents/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md.
 

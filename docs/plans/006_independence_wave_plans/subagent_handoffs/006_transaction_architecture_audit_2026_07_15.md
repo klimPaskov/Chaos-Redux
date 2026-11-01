@@ -22,17 +22,17 @@ The minimum safe implementation must add compensating rollback before any post-m
 
 This audit used the required offline and installed references:
 
-- `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, especially regular event targets, scoped variables, and arrays
-- `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md`, especially `release`, `annex_country`, `set_capital`, `set_state_owner_to`, and `set_state_controller_to`
-- `paradox_wiki/Modifiers - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/On actions - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Idea modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/data_structures.md`, especially regular event targets, scoped variables, and arrays
+- `paradox_wiki/triggers.md`
+- `paradox_wiki/effects.md`, especially `release`, `annex_country`, `set_capital`, `set_state_owner_to`, and `set_state_controller_to`
+- `paradox_wiki/modifiers.md`
+- `paradox_wiki/localisation.md`
+- `paradox_wiki/scopes.md`
+- `paradox_wiki/on_actions.md`
+- `paradox_wiki/event_modding.md`
+- `paradox_wiki/decision_modding.md`
+- `paradox_wiki/idea_modding.md`
+- `paradox_wiki/ai_modding.md`
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/on_actions/_documentation.md`

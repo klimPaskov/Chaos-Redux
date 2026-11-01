@@ -41,12 +41,12 @@ Installed root: `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV
 
 | Local reference | Read sections / implication |
 | --- | --- |
-| `paradox_wiki\Decision modding - Hearts of Iron 4 Wiki.md:95–103,308–324,339–355,467–478,578–584` | Visibility/availability and target scope, custom-cost presentation, activation versus delayed removal/cancellation, mission activation and auto-completion, state targets. A cost display is not the entire payment contract. |
+| `paradox_wiki\decision_modding.md:95–103,308–324,339–355,467–478,578–584` | Visibility/availability and target scope, custom-cost presentation, activation versus delayed removal/cancellation, mission activation and auto-completion, state targets. A cost display is not the entire payment contract. |
 | Installed `common\decisions\_documentation.md:1–43` | Check frequency and target prefilters; target matches create separate decision entries, so six unique action IDs do not establish native list density. |
 | Installed `common\decisions\ENG.txt:1824–1909` | Exact precedent `ENG_enforce_blackouts` / `ENG_end_the_blackouts`: phase-dependent reciprocal actions, 14-day delayed effect, current-war AI modifiers. This is a lifecycle/policy precedent, not an evacuation subsystem or a reusable transport reservation implementation. |
-| `paradox_wiki\Data structures - Hearts of Iron 4 Wiki.md:263–265,440–442,566,1069–1074` | Scope pointers, unscoped temporaries, strict comparison, persistent versus temporary arrays. Supports explicit owner receipts and aligned persistent rows. |
+| `paradox_wiki\data_structures.md:263–265,440–442,566,1069–1074` | Scope pointers, unscoped temporaries, strict comparison, persistent versus temporary arrays. Supports explicit owner receipts and aligned persistent rows. |
 | Installed `documentation\effects_documentation.md:1468–1477,3374–3405` | `add_manpower` state/country scope and native building damage/repair semantics; do not equate a projection flag with a physical railway or a population outcome with free manpower. |
-| `paradox_wiki\Scripted GUI modding - Hearts of Iron 4 Wiki.md:157–170,478` | Decision-category context/attachment, dirty updates, AI scope. |
+| `paradox_wiki\scripted_gui_modding.md:157–170,478` | Decision-category context/attachment, dirty updates, AI scope. |
 | Installed `common\scripted_guis\_documentation.md:7–27,102–110` | Actual contexts, parent/window attachment, dirty updates and AI gate. Both report windows are system-owned category displays. |
 | Installed `documentation\script_concept_documentation.md:216–241` and `common\script_constants\documentation.md:1–35` | Shared constant schema, fixed-point access and explicitly supported fields. New quote/term tuning belongs in owner constants; unsupported fields require verified adaptation. |
 | Installed `common\map_modes\documentation.md:1–90` | Two script layers, state/country border types, player and `FROM` scope, target bounds and map text. Geographic substrate rendering and scripted layer execution remain different proof surfaces. |

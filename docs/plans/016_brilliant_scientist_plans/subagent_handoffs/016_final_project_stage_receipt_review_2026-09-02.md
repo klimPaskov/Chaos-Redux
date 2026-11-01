@@ -253,7 +253,7 @@ Finally run source-only checks for helper call counts, fixed family/stage mappin
 
 Required local references were read before review: `AGENTS.md`; `.agents/skills/chaos-redux-events/SKILL.md`; `.agents/skills/chaos-redux-decisions-missions/SKILL.md`; `.agents/skills/chaos-redux-subagents/SKILL.md`; `docs/specs/016_brilliant_scientist_specs/specs/016_final_completion_contract.md`; and `docs/events/016_brilliant_scientist/systems/projects.md`.
 
-The offline Paradox wiki references consulted were `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, `Triggers - Hearts of Iron 4 Wiki.md`, `Effects - Hearts of Iron 4 Wiki.md`, `Scopes - Hearts of Iron 4 Wiki.md`, `Event modding - Hearts of Iron 4 Wiki.md`, and `Decision modding - Hearts of Iron 4 Wiki.md`, including event-target persistence, scoped variables, scripted effects/triggers, decision `complete_effect`, `days_remove`, `remove_effect`, `cancel_trigger`, `cancel_if_not_visible`, and `cancel_effect` behavior.
+The offline Paradox wiki references consulted were `paradox_wiki/data_structures.md`, `triggers.md`, `effects.md`, `scopes.md`, `event_modding.md`, and `decision_modding.md`, including event-target persistence, scoped variables, scripted effects/triggers, decision `complete_effect`, `days_remove`, `remove_effect`, `cancel_trigger`, `cancel_if_not_visible`, and `cancel_effect` behavior.
 
 The vanilla documentation references consulted were `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`, `effects_documentation.md`, and `triggers_documentation.md`, including script constants, `save_event_target_as`, `clear_global_event_target`, `has_event_target`, `scope_exists`, `check_variable`, decision effects, and target validity.
 

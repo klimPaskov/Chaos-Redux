@@ -187,7 +187,7 @@ Decision:
 
 Disposition: `implemented`.
 
-Basis: lead round 2 decision R2-3, the `chaos-redux-events` skill (Helper output lifetime), `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` line 440 and the vanilla SWE lerp helper, which returns through a regular variable for the same reason.
+Basis: lead round 2 decision R2-3, the `chaos-redux-events` skill (Helper output lifetime), `paradox_wiki/data_structures.md` line 440 and the vanilla SWE lerp helper, which returns through a regular variable for the same reason.
 
 Decision:
 
@@ -258,7 +258,7 @@ MCP evidence: `hoi4.decision_inspect` in `inventory` mode with an `id` returned 
 
 Disposition: `implemented` (a code comment and one tooltip; no gameplay, tuning or AI change).
 
-Basis: independent review of 3954dd278, e5c3bb072, abacbd845, 364d07446, a49dc6df5 and c20dd3dc0 against `documentation/effects_documentation.md` (`damage_building`, `add_building_construction`), `documentation/triggers_documentation.md` (`any_province_building_level`), `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` (Variable types) and vanilla `SWE.txt`, `finland.txt`, `afghanistan.txt` and `ENG.txt` AI strategy.
+Basis: independent review of 3954dd278, e5c3bb072, abacbd845, 364d07446, a49dc6df5 and c20dd3dc0 against `documentation/effects_documentation.md` (`damage_building`, `add_building_construction`), `documentation/triggers_documentation.md` (`any_province_building_level`), `paradox_wiki/data_structures.md` (Variable types) and vanilla `SWE.txt`, `finland.txt`, `afghanistan.txt` and `ENG.txt` AI strategy.
 
 Findings:
 
@@ -277,7 +277,7 @@ Basis: lead round 3 decision D-R3-1 and the routed live defect in which the CXT 
 
 Evidence:
 
-- The engine reads `<subunit>_short` as the sub-unit's short display name. Vanilla `localisation/english/unit_l_english.yml:582` defines `motorized_rocket_brigade_short: "Mot. R. Artillery"` for the 26-character Motorized Rocket Artillery, and `paradox_wiki/Country creation - Hearts of Iron 4 Wiki.md:555` (section Other localisation, `hoi4.reference_search` revision 0c0e5791) documents `_short` as an optional short name.
+- The engine reads `<subunit>_short` as the sub-unit's short display name. Vanilla `localisation/english/unit_l_english.yml:582` defines `motorized_rocket_brigade_short: "Mot. R. Artillery"` for the 26-character Motorized Rocket Artillery, and `paradox_wiki/country_creation.md:555` (section Other localisation, `hoi4.reference_search` revision 0c0e5791) documents `_short` as an optional short name.
 - Vanilla `interface/divisiondesignerview.gui` `designer_subunit_entry` (lines 1891-1925) draws the name in a `hoi_18mbs` text box with `maxWidth = 160`.
 - Advance widths summed from vanilla `gfx/fonts/hoi_18mbs.fnt` (the font has no kerning pairs): Scavenger Warband 130, Network Cadre 101, Island Reavers 95, Feast Cohort 89, Siege Eaters 83, Feast Guard 81, Bone Riders 79, Bone Guard 77, March Predation Column 165, Predation Column 120. Vanilla's own shortened case measures 180 before and 109 after.
 
@@ -297,7 +297,7 @@ Decision:
 
 - No Event 014 localisation value contains a semicolon, em dash or en dash. The Raise the First Anchors tooltip and the hidden-hoard seizure tooltip split their clauses into sentences.
 - The Emergency Reinforcement Draft tooltip names what is removed and shows the manpower share from `cannibalism_warlord_decision.recruitment_manpower_factor`, the constant `cannibalism_execute_warlord_recruitment_transaction` multiplies by. The Frenzy and Command Integrity line names Survive the First Encirclement, the focus that sets `cannibalism_warlord_survival_order_open`.
-- Summon the Warlords states what its two flags change in `cannibalism_unified_refresh_command_profile`: Absorb an Autonomous Warlord gains `cannibalism_unified_profile.authority_small` more Unified Authority and costs `cannibalism_unified_profile.cost_reduction_small` Command Power, shown with the signed and coloured variable formats from `paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md` Formatting variables (lines 184-215; vanilla precedents `|+=%` and `|-0` in `localisation/english`).
+- Summon the Warlords states what its two flags change in `cannibalism_unified_refresh_command_profile`: Absorb an Autonomous Warlord gains `cannibalism_unified_profile.authority_small` more Unified Authority and costs `cannibalism_unified_profile.cost_reduction_small` Command Power, shown with the signed and coloured variable formats from `paradox_wiki/localisation.md` Formatting variables (lines 184-215; vanilla precedents `|+=%` and `|-0` in `localisation/english`).
 - The Preserve the Pack description and the Drill the Original Pack tooltip describe `cannibalism_wendigo_focus_preserve_pack_contract` as a template locked to paid musters. The Drill tooltip also shows its `cannibalism_wendigo_focus.pack_capacity_small` capacity gain, matching Feed the Anchor Guardians.
 - The Island Reavers description says the unit lands and fights as marines (`marines = yes`, `category_marines`).
 - "Unified Authority" is capitalised in the hoard review lines and the seizure mission outcomes.
@@ -306,7 +306,7 @@ Decision:
 
 Disposition: `implemented` (localisation only; no gameplay, tuning or AI change). On-screen checks remain `needs_live_game`.
 
-Basis: skeptical review of e5afb7571 and b5fb21249 against vanilla `localisation/english/unit_l_english.yml`, `interface/divisiondesignerview.gui` and `gfx/fonts/hoi_18mbs.fnt`, `paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md` (Formatting variables), and the Event 014 effects the reworded tooltips describe.
+Basis: skeptical review of e5afb7571 and b5fb21249 against vanilla `localisation/english/unit_l_english.yml`, `interface/divisiondesignerview.gui` and `gfx/fonts/hoi_18mbs.fnt`, `paradox_wiki/localisation.md` (Formatting variables), and the Event 014 effects the reworded tooltips describe.
 
 Findings:
 
@@ -323,7 +323,7 @@ MCP evidence: `hoi4.source_lookup` for `cannibal_march_predation_column_short` r
 
 Disposition: `implemented` (one hoard answer and four tooltips; no tuning or AI weight change).
 
-Basis: skeptical review of 3954dd278, e5c3bb072, abacbd845, a49dc6df5, 364d07446 and c20dd3dc0 at HEAD c03bcf4cc, against `documentation/effects_documentation.md` (`damage_building`, `add_building_construction`), the wiki `Effects` entry for `add_building_construction` (variable `level`, `limit_to_*` filters), `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` line 440 and vanilla `SWE.txt`, `afghanistan.txt`, `australia.txt` and `australia_taog.txt` naval base filters.
+Basis: skeptical review of 3954dd278, e5c3bb072, abacbd845, a49dc6df5, 364d07446 and c20dd3dc0 at HEAD c03bcf4cc, against `documentation/effects_documentation.md` (`damage_building`, `add_building_construction`), the wiki `Effects` entry for `add_building_construction` (variable `level`, `limit_to_*` filters), `paradox_wiki/data_structures.md` line 440 and vanilla `SWE.txt`, `afghanistan.txt`, `australia.txt` and `australia_taog.txt` naval base filters.
 
 Findings:
 

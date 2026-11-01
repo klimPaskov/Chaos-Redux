@@ -15,7 +15,7 @@ No interface, localisation, gameplay, Hannibal, shared manifest, aggregate promp
 
 - `imagegen`
 - `chaos-redux-event-assets`
-- Offline wiki core pages required by `AGENTS.md`, plus `paradox_wiki/Portrait modding - Hearts of Iron 4 Wiki.md`
+- Offline wiki core pages required by `AGENTS.md`, plus `paradox_wiki/portrait_modding.md`
 - Vanilla official portrait-related effect documentation and `interface/_leader_portraits.gfx`
 - Canonical asset-library rules and portrait catalog
 

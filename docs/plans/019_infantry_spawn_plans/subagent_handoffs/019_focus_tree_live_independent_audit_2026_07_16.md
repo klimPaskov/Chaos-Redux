@@ -29,15 +29,15 @@ Two defects were found against the pre-correction live snapshot and corrected by
 - The hierarchy join is an intentional OR prerequisite at `:442`; the doctrine choice and join are at `:454-530`. The three family modules and their route-locked, symmetric three-way transformations are at `:643-966`.
 - Each family capstone accepts any one of that family's mutually exclusive transformation outcomes, so no selected route creates an orphaned capstone: zombie `:729-752`, ghost `:837-861`, and golem `:946-966`.
 - The Regional Predator capstone is not granted from a route label. It requires an active package, consolidated hierarchy, completed family transformation, sustainable reinforcement, resolved former-parent pressure, territorial foothold, eight controlled states, and two recorded war wins at `:611-636`.
-- There are no `bypass`, `bypass_if_unavailable`, `cancel`, `cancel_if_invalid`, or `continue_if_invalid` keys in the 45 focus blocks. Thus no focus can be silently marked complete without its reward, and normal engine invalidation cancels an in-progress focus when `available` becomes false. This matches the offline National Focus Modding reference at `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md:303-322`.
+- There are no `bypass`, `bypass_if_unavailable`, `cancel`, `cancel_if_invalid`, or `continue_if_invalid` keys in the 45 focus blocks. Thus no focus can be silently marked complete without its reward, and normal engine invalidation cancels an in-progress focus when `available` becomes false. This matches the offline National Focus Modding reference at `paradox_wiki/national_focus_modding.md:303-322`.
 
-No dead or unreachable node remains. Route mutexes remove only alternatives, and every downstream join uses the correct OR form documented at `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md:234-245`.
+No dead or unreachable node remains. Route mutexes remove only alternatives, and every downstream join uses the correct OR form documented at `paradox_wiki/national_focus_modding.md:234-245`.
 
 ## Rewards, localisation, and focus art
 
 - All 45 `completion_reward` blocks contain a distinct `custom_effect_tooltip`; the source spans `common/national_focus/019_infantry_spawn_derivative_focus.txt:35-966`. Rewards are not copied placeholders: they select route transactions, swap lifecycle ideas, unlock priced decisions, set doctrine/family state, or grant route-appropriate bounded resources.
 - All 45 focus titles, 45 descriptions, and 45 reward tooltip keys are present in `localisation/english/019_infrantry_spawn_l_english.yml:880-1060`. Their visible strings are distinct, and the file has the required UTF-8 BOM.
-- Each focus icon has both its exact base sprite and `<icon>_shine` sprite in `interface/019_infantry_spawn.gfx:204-383` and `:657-702`. All 45 referenced DDS files exist under `gfx/interface/goals/019_infantry_spawn/`; the 45 files have 45 distinct SHA-256 hashes and consistent 100×88 dimensions. Base and shine definitions resolve to the same intended focus texture, matching the offline focus-art contract at `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md:267-273`.
+- Each focus icon has both its exact base sprite and `<icon>_shine` sprite in `interface/019_infantry_spawn.gfx:204-383` and `:657-702`. All 45 referenced DDS files exist under `gfx/interface/goals/019_infantry_spawn/`; the 45 files have 45 distinct SHA-256 hashes and consistent 100×88 dimensions. Base and shine definitions resolve to the same intended focus texture, matching the offline focus-art contract at `paradox_wiki/national_focus_modding.md:267-273`.
 
 ## Linked ideas, decisions, AI, and expansion
 

@@ -316,7 +316,7 @@ Review/coordinate them separately; do not silently include or drop them with cos
 Skills used include `.agents/skills/chaos-redux-subagents/SKILL.md`, `chaos-redux-state-ledgers`, `chaos-redux-decisions-missions`, `chaos-redux-shared-git-commit`, `chaos-redux-improvement-loop`, relevant events/assets guidance and `.agents/skills/xlsx/SKILL.md`.
 The official skill-creator guidance was used for the two committed skill paragraphs.
 
-Local references: `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md` lines305–355/576–610; Effects2253 and4683–4715; Triggers2359–2400; Data structures event targets/temporary variables; Localisation184–210.
+Local references: `paradox_wiki/decision_modding.md` lines305–355/576–610; Effects2253 and4683–4715; Triggers2359–2400; Data structures event targets/temporary variables; Localisation184–210.
 Installed references under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`: `documentation/script_concept_documentation.md` Script Constants; complete `common/script_constants/documentation.md`; resource/country scopes in `documentation/triggers_documentation.md`; `documentation/effects_documentation.md`; complete `common/map_modes/documentation.md`; `common/decisions/_documentation.md`; AFG490–500, PHI2352–2380 and BUL4245–4260 cost/negative-archetype precedents.
 Installed documentation outranks conflicting wiki defaults; both must be read.
 Do not use the live Paradox wiki.

@@ -22,7 +22,7 @@ Source: `https://github.com/klimPaskov/Chaos-Redux/blob/879b3007d3b6bf75c726c116
 
 The existing Event 076 localisation was identified through search excerpts. It was not fully audited for all keys or alternate consumers.
 
-The repository's `paradox_wiki/` directory listing was returned in truncated form. Part of `Event modding - Hearts of Iron 4 Wiki.md` was read, including useful descriptions of event scopes, delayed events, option behavior and namespaces, but the full page was not returned and read. No claim is made that the entire offline wiki set was covered. Delayed-event cautions in this package must still be checked against the installed game and full current reference.
+The repository's `paradox_wiki/` directory listing was returned in truncated form. Part of `event_modding.md` was read, including useful descriptions of event scopes, delayed events, option behavior and namespaces, but the full page was not returned and read. No claim is made that the entire offline wiki set was covered. Delayed-event cautions in this package must still be checked against the installed game and full current reference.
 
 Search excerpts identified exact-loss contracts in Event 033 documentation and references to Event 047. These helped identify the existing shared pattern. They were not full inspections of those events or their implementations.
 

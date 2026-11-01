@@ -1,7 +1,7 @@
 # AI strategy token catalog
 
 Read this file when you need the exact parameters or value meaning of one `ai_strategy` type.
-Primary source: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/ai_strategy/_documentation.md` (updated 2024-11), cross-checked against `paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md` and the usage counts in vanilla `common/ai_strategy/*.txt`.
+Primary source: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/ai_strategy/_documentation.md` (updated 2024-11), cross-checked against `paradox_wiki/ai_modding.md` and the usage counts in vanilla `common/ai_strategy/*.txt`.
 The token list there is the authority; if a token is missing here, read the installed file.
 Tokens seen in vanilla but absent from the documentation list are marked "vanilla only".
 

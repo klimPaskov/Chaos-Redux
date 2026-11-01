@@ -21,7 +21,7 @@ The vanilla pattern is a character-scope transfer, rather than an attempt to rec
 - Installed `documentation/effects_documentation.md:7397-7420`, set_nationality, reference id `99722353f32575ff3541fa464926251d8760c0a34f7491a3332c5e2d039f74c7`, same revision, located through the live search route and read directly from the installed file.
 - Offline `paradox_wiki/Character modding - Hearts of Iron 4 Wiki.md:410-489`, recruitment and roles, reference id `121018f89b283fe6b66a557b57bb55da139fb54b14ed23c96f641459f5c5b401`, revision `8ef3d5f9923026dd81f239944710b7331a8d06ad42e4345b32fce4e86dd95d98`, read through the live reference route.
 - The same offline file `:490-502` describes restoration after retirement, read directly.
-- Offline `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md:2735-2765` documents transfer and its examples, and `:262` states that character scoping no longer requires recruitment in the calling country from engine version 1.12.8 onward, read directly.
+- Offline `paradox_wiki/effects.md:2735-2765` documents transfer and its examples, and `:262` states that character scoping no longer requires recruitment in the calling country from engine version 1.12.8 onward, read directly.
 - Vanilla `events/AAT_Sweden.txt:7899-7914` transfers recruited Finnish and Danish officers through character scopes, read directly.
 - Live source lookup of `FIN_erik_heinrichs` returned its vanilla character definition at `game:common/characters/FIN.txt:131-166`, revision `09baf97c33d4503fcbc2252af10a51729af460871ea6c6610f989865e2a92467`.
 Its reference coverage is incomplete with 19,739 unresolved workspace references, so the direct vanilla event read supplies the consumer precedent.

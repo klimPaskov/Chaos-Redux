@@ -18,7 +18,7 @@ The selector must not silently replace cause, custody, original-owner, or physic
 
 The audit read the current repository `AGENTS.md`, the complete `chaos-redux-state-ledgers` skill, the current `chaos-redux-subagents` skill, the famine and migration specifications, prompts, closure review, implementation map, resume packet, source-of-truth map, completion report, map validation, and existing subagent handoffs.
 
-The relevant offline wiki pages read were `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, `Triggers - Hearts of Iron 4 Wiki.md`, `Effects - Hearts of Iron 4 Wiki.md`, `Modifiers - Hearts of Iron 4 Wiki.md`, `Localisation - Hearts of Iron 4 Wiki.md`, `Scopes - Hearts of Iron 4 Wiki.md`, `On actions - Hearts of Iron 4 Wiki.md`, `Event modding - Hearts of Iron 4 Wiki.md`, `Decision modding - Hearts of Iron 4 Wiki.md`, `Idea modding - Hearts of Iron 4 Wiki.md`, and `AI modding - Hearts of Iron 4 Wiki.md`.
+The relevant offline wiki pages read were `paradox_wiki/data_structures.md`, `triggers.md`, `effects.md`, `modifiers.md`, `localisation.md`, `scopes.md`, `on_actions.md`, `event_modding.md`, `decision_modding.md`, `idea_modding.md`, and `ai_modding.md`.
 
 The relevant vanilla references read were `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`, `effects_documentation.md`, `triggers_documentation.md`, and `common/script_constants/documentation.md`.
 

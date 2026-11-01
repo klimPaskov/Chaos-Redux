@@ -78,8 +78,8 @@ MCP probability adapter: unavailable in this turn. `probability_inspect`, `proba
 
 Local reference sections read directly:
 
-- `paradox_wiki\Decision modding - Hearts of Iron 4 Wiki.md:357-372` describes decision `ai_will_do` as a weighted MTTH block.
-- `paradox_wiki\AI modding - Hearts of Iron 4 Wiki.md:26-34` distinguishes the general `ai_will_do` highest-roll score race from event-option `ai_chance` probability-proportional sampling and explains `base` and multiplicative `factor`. Applying the general score-race description specifically to this decision is an inference from that section together with the Decision modding section.
+- `paradox_wiki\decision_modding.md:357-372` describes decision `ai_will_do` as a weighted MTTH block.
+- `paradox_wiki\ai_modding.md:26-34` distinguishes the general `ai_will_do` highest-roll score race from event-option `ai_chance` probability-proportional sampling and explains `base` and multiplicative `factor`. Applying the general score-race description specifically to this decision is an inference from that section together with the Decision modding section.
 - `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\common\decisions\_documentation.md:1-45` documents visible/available and targeted-decision evaluation, including that each matching target creates a separate entry.
 
 ## Source identities

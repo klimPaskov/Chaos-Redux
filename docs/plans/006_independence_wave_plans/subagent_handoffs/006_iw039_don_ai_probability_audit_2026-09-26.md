@@ -95,8 +95,8 @@ Dominance, starvation among simultaneously eligible settlement choices, rank rev
 
 ## Local references and skills applied
 
-- `paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md:28-41` distinguishes `ai_will_do` score races from `ai_chance` probability-proportional sampling and describes base/modifier behavior.
-- `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md:85-108,361-374` explains decision visibility/availability, political-power gating, and decision `ai_will_do` as an MTTH block.
+- `paradox_wiki/ai_modding.md:28-41` distinguishes `ai_will_do` score races from `ai_chance` probability-proportional sampling and describes base/modifier behavior.
+- `paradox_wiki/decision_modding.md:85-108,361-374` explains decision visibility/availability, political-power gating, and decision `ai_will_do` as an MTTH block.
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md:216-228` documents shared fixed-point script constants and the `constant:` prefix.
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md:2205-2212,3022-3028,3501-3507,3693-3699,4547-4553,5024-5030,6079-6085` covers command power, active missions, completed focuses, decisions, political power, war state, and state ownership/control. The installed documentation search found no `ai_will_do` section.
 - `docs/events/006_independence_wave/systems/iw039_don_millerovo_host_charter.md:9,69-71,95` describes the three mutually exclusive settlements, civilian review, and emergency-staff tradeoff. The peace/war selection target is also explicit in the user’s audit request.

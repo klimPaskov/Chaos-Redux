@@ -86,7 +86,7 @@ The file uses file-scoped `@CR_SC_IW_KOM_*` aliases at lines 2-10. No dynamic mo
 
 ## References consulted
 
-- Offline wiki: `paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md` and the required core pages for data structures, triggers, effects, modifiers, localisation, scopes, on actions, event modding, decision modding, and idea modding.
+- Offline wiki: `paradox_wiki/ai_modding.md` and the required core pages for data structures, triggers, effects, modifiers, localisation, scopes, on actions, event modding, decision modding, and idea modding.
 - Vanilla documentation: `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\common\ai_strategy\_documentation.md`, `common/ai_strategy/default.txt`, and the installed documentation markdown for triggers, effects, modifiers, script concepts, dynamic variables, script math, localisation formatting/objects, and script collections.
 
 ## Remaining uncertainty and blockers

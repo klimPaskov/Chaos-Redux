@@ -53,8 +53,8 @@ Status: superseded by `006_soviet_extended_surface_collision_rescan_2026_07_28.m
 
 ## Vanilla or reference precedents
 
-- `paradox_wiki/Country creation - Hearts of Iron 4 Wiki.md:36-52,104-105,325-370` proves the three-character uniqueness rule, country/history linkage, flag naming, and tag-localisation naming.
-- `paradox_wiki/Cosmetic tag modding - Hearts of Iron 4 Wiki.md` proves cosmetic tags are a separate, potentially longer identifier surface and must not be conflated with engine country tags.
+- `paradox_wiki/country_creation.md:36-52,104-105,325-370` proves the three-character uniqueness rule, country/history linkage, flag naming, and tag-localisation naming.
+- `paradox_wiki/cosmetic_tag_modding.md` proves cosmetic tags are a separate, potentially longer identifier surface and must not be conflated with engine country tags.
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md` documents `set_cosmetic_tag`, `change_tag_from`, original-tag effects, and release effects.
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md` documents `tag`, `original_tag`, `country_exists`, and `has_cosmetic_tag`.
 - Vanilla examples under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/country_tags/`, `common/countries/`, and `history/countries/` follow the same three-character registry/history pattern; use them for any final remap validation.

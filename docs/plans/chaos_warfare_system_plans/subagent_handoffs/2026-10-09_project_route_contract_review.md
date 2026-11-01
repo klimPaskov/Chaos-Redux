@@ -111,8 +111,8 @@ Pertinent installed documentation was read directly, with no new MCP call or ret
 - `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\documentation\effects_documentation.md:2896-2922` documents COUNTRY `complete_special_project`, prerequisite bypass, and omitted facility/scientist effects.
 - `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\documentation\triggers_documentation.md:6243-6256` documents COUNTRY native completion queries.
 - `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\common\special_projects\projects\documentation.md:34-65,198-219` gives project admission in project scope with FROM country, output country scope with FROM project, and the scripted-completion facility-state boundary.
-- Offline `paradox_wiki\Effects - Hearts of Iron 4 Wiki.md:3178` independently documents the scripted-completion prerequisite and facility/scientist boundary.
-- Offline `paradox_wiki\Data structures - Hearts of Iron 4 Wiki.md:263-268,303-305` documents single scope pointers and automatic regular-target chain cleanup.
+- Offline `paradox_wiki\effects.md:3178` independently documents the scripted-completion prerequisite and facility/scientist boundary.
+- Offline `paradox_wiki\data_structures.md:263-268,303-305` documents single scope pointers and automatic regular-target chain cleanup.
 - Vanilla `common\special_projects\projects\land_projects.txt:39-48` provides the native country-output precedent with a hidden country helper.
 
 These are direct local line citations, not a new live reference bundle or native execution proof.

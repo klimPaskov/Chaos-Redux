@@ -22,13 +22,13 @@ Repository revision inspected: `33b6946dd923b9fc90fbf29bc5798dce3c76a76f`.
 
 **R5. Offline wiki references.** An Effects search excerpt states that `add_mines` adds mines to a region for the current country. A Scopes fetch was truncated after its initial portion. Map and AI searches supplied only bounded excerpts. These references help locate the native questions but do not close installed-game verification.
 
-`paradox_wiki/Effects - Hearts of Iron 4 Wiki.md`
+`paradox_wiki/effects.md`
 
-`paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md`
+`paradox_wiki/scopes.md`
 
-`paradox_wiki/Map modding - Hearts of Iron 4 Wiki.md`
+`paradox_wiki/map_modding.md`
 
-`paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md`
+`paradox_wiki/ai_modding.md`
 
 ## Current primary public source
 

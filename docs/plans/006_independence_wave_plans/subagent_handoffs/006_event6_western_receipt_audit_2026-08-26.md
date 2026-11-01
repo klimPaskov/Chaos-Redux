@@ -150,7 +150,7 @@ The repair closes a stale-mission generation gap and does not add a new activati
 
 Required offline references were read before editing, including the core Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, and AI modding pages under `paradox_wiki/`.
 
-The directly relevant offline references are `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md:338,453-463`, `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md:286-287`, `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md:115-117`, and `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md:282-283,525-527`.
+The directly relevant offline references are `paradox_wiki/decision_modding.md:338,453-463`, `paradox_wiki/triggers.md:286-287`, `paradox_wiki/data_structures.md:115-117`, and `paradox_wiki/effects.md:282-283,525-527`.
 
 Vanilla documentation was consulted in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md:3624+`, `effects_documentation.md` mission/flag entries, and `dynamic_variables_documentation.md:238-239`. Vanilla decision mission precedents were also inspected.
 

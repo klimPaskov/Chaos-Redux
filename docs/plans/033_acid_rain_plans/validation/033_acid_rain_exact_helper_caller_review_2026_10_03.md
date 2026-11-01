@@ -252,11 +252,11 @@ The following spans were read for the rules applied here, and their source revis
 
 | Reference | Read spans and design implication |
 | --- | --- |
-| `paradox_wiki\Data structures - Hearts of Iron 4 Wiki.md` | 263–290 and 309–328, event target persistence. 431–470, especially 440–442, temporary-output lifetime and unscoped temporaries. 1682–1693, state population in thousands. |
-| `paradox_wiki\Effects - Hearts of Iron 4 Wiki.md` | 3359–3365, state `add_manpower` and recruitable-manpower side effect. 4682–4701, scripted-effect invocation. |
-| `paradox_wiki\Scopes - Hearts of Iron 4 Wiki.md` | 256–268, ROOT, THIS, PREV, OWNER and CONTROLLER. 528–542, state iterators. |
-| `paradox_wiki\Triggers - Hearts of Iron 4 Wiki.md` | 570, `has_variable` existence semantics. |
-| `paradox_wiki\Localisation - Hearts of Iron 4 Wiki.md` | 656–678, scripted localisation inherits its calling scope. No localisation change is proposed. |
+| `paradox_wiki\data_structures.md` | 263–290 and 309–328, event target persistence. 431–470, especially 440–442, temporary-output lifetime and unscoped temporaries. 1682–1693, state population in thousands. |
+| `paradox_wiki\effects.md` | 3359–3365, state `add_manpower` and recruitable-manpower side effect. 4682–4701, scripted-effect invocation. |
+| `paradox_wiki\scopes.md` | 256–268, ROOT, THIS, PREV, OWNER and CONTROLLER. 528–542, state iterators. |
+| `paradox_wiki\triggers.md` | 570, `has_variable` existence semantics. |
+| `paradox_wiki\localisation.md` | 656–678, scripted localisation inherits its calling scope. No localisation change is proposed. |
 | Installed `documentation\effects_documentation.md` | 1468–1476, STATE/COUNTRY `add_manpower`. 7820–7841, temporary assignment accepts values and variables. 6496–6511, regular and global target saves. |
 | Installed `documentation\triggers_documentation.md` | 2110–2151, variable comparisons and clamps. 5006–5021, `has_variable`. |
 | Installed `documentation\dynamic_variables_documentation.md` | 465–480, manpower in thousands and deprecated plain manpower. 1163–1178, native state population in thousands. |

@@ -141,10 +141,10 @@ Its omitted Data structures and Modifiers coverage was not claimed as read, and 
 - Installed `documentation/effects_documentation.md`, lines 3417-3437, read locally. `damage_units.limit` is explicitly a country check.
 - Installed `documentation/triggers_documentation.md`, lines 1684-1691, read locally. `any_state_division` is state-scoped and supports OWNER.
 - Installed `common/decisions/NOR.txt`, lines 2415-2422, read locally. Exact native precedent: `any_state_division = { OWNER = { tag = ROOT is_in_faction_with = ROOT } }`.
-- Offline `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md`, lines 266 and 404, read locally. Division iteration and owner-country routing.
+- Offline `paradox_wiki/scopes.md`, lines 266 and 404, read locally. Division iteration and owner-country routing.
 - Installed `common/scripted_effects/ITA_scripted_effects.txt`, lines 3212-3220, read locally. Native `damage_units` uses country `original_tag = ITA` in its limit.
 - Installed `common/dynamic_modifiers/0_dynamic_modifiers.txt`, lines 3-27 and its `autonomous_state` definition, read locally. `enable`, `remove_trigger`, state OWNER scope and fixed `attacker_modifier` behavior.
-- Offline `paradox_wiki/Modifiers - Hearts of Iron 4 Wiki.md`, lines 108-130, read locally. Daily dynamic-modifier refresh and attacker spillover.
+- Offline `paradox_wiki/modifiers.md`, lines 108-130, read locally. Daily dynamic-modifier refresh and attacker spillover.
 
 SHA-256 revisions for the seven locally read reference files are retained in `.tmp/c6_nonhuman/reference_sources.json`, alongside the exact path and line citations above.
 

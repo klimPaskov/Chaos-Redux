@@ -121,7 +121,7 @@ The nuclear intensity variable alone is insufficient. The active nuclear modifie
 
 ## Event-target and authority proof
 
-The Air Winter dispatcher saves `air_winter_event_country` and `air_winter_event_state` with `save_event_target_as`. The offline `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` states that regular event targets carry into delayed events fired from the same effect chain. Its documented example saves a state target and fires a country event ten days later.
+The Air Winter dispatcher saves `air_winter_event_country` and `air_winter_event_state` with `save_event_target_as`. The offline `paradox_wiki/data_structures.md` states that regular event targets carry into delayed events fired from the same effect chain. Its documented example saves a state target and fires a country event ten days later.
 
 The opening validates the generic owner-bound target contract and the exact ruined-city candidate. Each click repeats both checks. The state refresh binds `air_winter_pending_event_owner` to the country that made the choice.
 

@@ -56,6 +56,6 @@ Unresolved front registry transfer and signatory succession are separate lifecyc
 
 ## Evidence and remaining boundaries
 
-Source references: installed vanilla `common/on_actions/00_on_actions.txt`, `on_capitulation` and `on_state_control_changed`; installed `documentation/effects_documentation.md`, variable and array scope effects; offline `paradox_wiki/On actions - Hearts of Iron 4 Wiki.md`.
+Source references: installed vanilla `common/on_actions/00_on_actions.txt`, `on_capitulation` and `on_state_control_changed`; installed `documentation/effects_documentation.md`, variable and array scope effects; offline `paradox_wiki/on_actions.md`.
 These callbacks add no daily, weekly, or monthly whole-world iteration.
 Full successor lifecycle, all-signatory settlement history, and event-chain lifecycle certification remain acceptance work; source reset coverage is present, but runtime recurrence and save/reload evidence are still required and these helpers alone do not certify all six achievements.

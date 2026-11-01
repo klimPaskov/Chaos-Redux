@@ -27,7 +27,7 @@ The source window lists Poland and its two declared occupied state rows; it is a
 Both originals were opened at full resolution and their click overlays inspected.
 Text, source icons, list rows and native hit regions are legible without visible clipping or overlap; the occupation row's vertical scrollbar remains within the vanilla frame.
 Installed `interface/countrydecisionview.gui` and `interface/countryoccupationview.gui` contain their root names and `show_position` at lines 4–6; their exact raw hashes, along with decision, law, GFX and localisation sources, are in the manifest.
-The offline `paradox_wiki/Interface modding - Hearts of Iron 4 Wiki.md` button and container sections and installed `common/scripted_guis/_documentation.md` and decision files were consulted for the same native family; the connected `hoi4.reference_*` and `source_lookup` routes were absent from this task's callable list, so local source paths and hashes are retained here.
+The offline `paradox_wiki/interface_modding.md` button and container sections and installed `common/scripted_guis/_documentation.md` and decision files were consulted for the same native family; the connected `hoi4.reference_*` and `source_lookup` routes were absent from this task's callable list, so local source paths and hashes are retained here.
 
 These successful populated captures were obtained after the first four generated Chaos Redux design images and some native GUI edits.
 They close the missing populated-vanilla-artifact gap, but do not change that earlier sequence or prove exact in-game visual parity.

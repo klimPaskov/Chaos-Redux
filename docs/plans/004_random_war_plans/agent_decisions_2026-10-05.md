@@ -69,7 +69,7 @@ The first event-inspect selector attempts were rejected until the schema was cor
 - Offline `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md`, lines 900, 897, and 99 for the same commands, revision `997ddb09bfd63efb41a425149c46bd812d5f8953217a403386b2f6c85196aa0c`.
 - Offline `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, lines 436–449, particularly caller-owned temporary output lifetime and unscoped temporaries at lines 440–442.
 - Installed `documentation/script_concept_documentation.md`, lines 216–233, and `common/script_constants/documentation.md`, lines 1–85, for global constants, supported fields, and schema-first groups.
-- Installed `documentation/modifiers_documentation.md`, lines 1837–1841, 1957–1961, 2403–2407, 3440–3444, and 4552–4556, with the matching offline `Modifiers - Hearts of Iron 4 Wiki.md` rows 942, 956, 962, 1205, and 1209.
+- Installed `documentation/modifiers_documentation.md`, lines 1837–1841, 1957–1961, 2403–2407, 3440–3444, and 4552–4556, with the matching offline `modifiers.md` rows 942, 956, 962, 1205, and 1209.
 - Vanilla `events/BBA_Switzerland.txt`, country-event option and flag pattern, including the Frankfurter response options at lines 219–283.
 
 ## Live acceptance checks

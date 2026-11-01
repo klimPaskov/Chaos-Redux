@@ -22,7 +22,7 @@ They now use immutable before revision `f32aaa4b7acc3621fcb5375743b63bfc7a81f739
 This is a test-evidence correction, not a reset or gameplay patch.
 The original exact-result JSON remains evidence for its recorded pre-repair source hashes and is not represented as current NOR validation.
 
-Reference: offline `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md`, flow-control table at lines 337-345, specifically NOT/NOR at line 341.
+Reference: offline `paradox_wiki/triggers.md`, flow-control table at lines 337-345, specifically NOT/NOR at line 341.
 The installed Boolean dispatch is not exposed as an independent trigger-documentation section, and the current reference MCP route has returned no usable cited section.
 No new domain limit, quantum change, native operation, periodic scan, or event enablement is introduced.
 Native, full all-owner registry, UI/debit, save/reload, multiplayer, and failed MCP gates remain unresolved.

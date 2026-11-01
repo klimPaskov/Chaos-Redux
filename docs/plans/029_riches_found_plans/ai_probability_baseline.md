@@ -61,7 +61,7 @@ The accepted scenario matrix and the rest of the Event 029 design package were r
 - `docs\specs\029_riches_found_specs\029_riches_found_achievement_prompt.md`
 - `docs\specs\029_riches_found_specs\029_riches_found_asset_prompt.md`
 
-The required offline references were consulted in `paradox_wiki\`, including `AI modding - Hearts of Iron 4 Wiki.md`, `Data structures - Hearts of Iron 4 Wiki.md`, `Triggers - Hearts of Iron 4 Wiki.md`, `Effects - Hearts of Iron 4 Wiki.md`, `Modifiers - Hearts of Iron 4 Wiki.md`, `Localisation - Hearts of Iron 4 Wiki.md`, `Scopes - Hearts of Iron 4 Wiki.md`, `On actions - Hearts of Iron 4 Wiki.md`, `Event modding - Hearts of Iron 4 Wiki.md`, `Decision modding - Hearts of Iron 4 Wiki.md`, and `Idea modding - Hearts of Iron 4 Wiki.md`.
+The required offline references were consulted in `paradox_wiki\`, including `ai_modding.md`, `data_structures.md`, `triggers.md`, `effects.md`, `modifiers.md`, `localisation.md`, `scopes.md`, `on_actions.md`, `event_modding.md`, `decision_modding.md`, and `idea_modding.md`.
 
 The required vanilla documentation was consulted under `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\documentation\`, including `effects_documentation.md`, `triggers_documentation.md`, and `script_concept_documentation.md`. Relevant vanilla precedents included `random_country` with an explicit `limit`, weighted `random_list`, event `ai_chance` blocks with base and modifiers, and event MTTH blocks.
 

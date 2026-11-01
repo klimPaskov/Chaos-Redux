@@ -20,7 +20,7 @@ The parsed-source [23rd case](institutional_mortality_source_results.json) model
 The older burst still lacks a verified custody-row bind and cannot establish which original cohort suffered the loss.
 The monthly cause rates are central game-tuning inputs, not archival mortality estimates.
 
-The auditor read offline `Triggers - Hearts of Iron 4 Wiki.md` lines 66–73 (revision `abc51ad1…`), `Effects - Hearts of Iron 4 Wiki.md` lines 250–329 and 1928–1970 (revision `997ddb09…`), installed `triggers_documentation.md` lines 5381–5389 (revision `7d27ed77…`), and installed `effects_documentation.md` lines 2226–2233 (SHA-256 `2cdc93d2…`).
+The auditor read offline `triggers.md` lines 66–73 (revision `abc51ad1…`), `effects.md` lines 250–329 and 1928–1970 (revision `997ddb09…`), installed `triggers_documentation.md` lines 5381–5389 (revision `7d27ed77…`), and installed `effects_documentation.md` lines 2226–2233 (SHA-256 `2cdc93d2…`).
 These references cover date comparison, controller and ROOT scopes, and limited-use research bonus syntax.
 
 The read-only weighted pass began with `hoi4.probability_inspect` on the current `germany_mengele.txt` source hash `ed1c70133d90e49dcbda857ba71982caaef8724fec902a76b15b6187f772eefc`.

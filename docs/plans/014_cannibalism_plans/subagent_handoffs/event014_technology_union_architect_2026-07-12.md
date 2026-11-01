@@ -144,8 +144,8 @@ No self-union call is required. `cannibalism_prepare_wendigo_merge_identity` tra
 - Official `documentation/effects_documentation.md` documents `for_each_loop`, country-scoped `set_technology`, and `inherit_technology` as copying technology state.
 - Official `documentation/dynamic_variables_documentation.md` documents country `researched_techs` as the array of researched technology objects and global `technology` as the technology database array.
 - Official `documentation/script_concept_documentation.md` documents arrays and token-capable script data.
-- Offline `Data structures - Hearts of Iron 4 Wiki.md` documents `researched_techs`, the `for_each_loop` contract, token-valued technologies, scoped arrays, event targets, and `GetTokenKey`.
-- Offline `Technology modding - Hearts of Iron 4 Wiki.md`, `Effects - Hearts of Iron 4 Wiki.md`, and `Triggers - Hearts of Iron 4 Wiki.md` document `set_technology`, `inherit_technology`, and `has_tech` behavior.
+- Offline `data_structures.md` documents `researched_techs`, the `for_each_loop` contract, token-valued technologies, scoped arrays, event targets, and `GetTokenKey`.
+- Offline `technology_modding.md`, `effects.md`, and `triggers.md` document `set_technology`, `inherit_technology`, and `has_tech` behavior.
 - Vanilla files use `inherit_technology` for one-source country initialization, including `events/LAR_Spain.txt` and `common/decisions/GER.txt`. They do not provide a multi-donor additive union helper.
 - Approved Kaiserreich precedent `common/scripted_effects/00_transfer_technology_effects.txt`, helper `transfer_technologies`, uses the same engine-native pattern: `for_each_loop` over `PREV.researched_techs`, recipient `has_tech = var:technology`, and `set_technology = { var:technology = 1 popup = no }`.
 

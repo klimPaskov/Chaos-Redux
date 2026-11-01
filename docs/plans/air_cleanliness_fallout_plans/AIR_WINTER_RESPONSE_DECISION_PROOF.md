@@ -6,14 +6,14 @@ The Air Winter response layer has static engine support for targeted state decis
 
 ## Required references consulted
 
-- `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/decision_modding.md`
   - The custom-cost section defines the base, blocked, and tooltip localisation keys and requires payment in `complete_effect`.
   - The timed-decision section defines `days_remove`, `remove_effect`, `cancel_trigger`, and `cancel_effect`.
   - The targeted-decision section defines ROOT as the acting country and FROM as the selected state for `state_target = any_controlled_state`.
-- `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/data_structures.md`
   - Scope values may be stored in variables and arrays, then entered with `var:`.
   - Temporary variables carry arithmetic across nested scopes without a scope prefix.
-- `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/effects.md`
   - State-scope `add_manpower` changes total state population.
   - The state entry records that a negative value also credits recruitable manpower. The implementation compensates that documented quirk at country scope.
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/dynamic_variables_documentation.md`

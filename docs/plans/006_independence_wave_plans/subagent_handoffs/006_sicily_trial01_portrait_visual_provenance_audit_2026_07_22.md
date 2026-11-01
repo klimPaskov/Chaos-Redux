@@ -246,9 +246,9 @@ Read before review:
   and `CATALOG.md`.
 - `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/README.md`
   and `REFERENCE_MANIFEST.md`.
-- `paradox_wiki/Portrait modding - Hearts of Iron 4 Wiki.md` (portraits are
+- `paradox_wiki/portrait_modding.md` (portraits are
   normally `156x210`; army/navy pools are role-specific).
-- `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md` (the
+- `paradox_wiki/graphical_asset_modding.md` (the
   `.gfx` `spriteType` binds a stable name to a texture path).
 
 The matching role references were inspected at native canvas and through both

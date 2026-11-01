@@ -159,8 +159,8 @@ Priority conversion targets:
 
 - `sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - `rg --files paradox_wiki | rg 'Data structures|Triggers|Effects|Modifiers|Localisation|Scopes|On actions|Event modding|Decision modding|Idea modding|AI modding|National focus'`
-- `sed -n '1,220p' 'paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md'`
-- `sed -n '1,180p' 'paradox_wiki/Effect - Hearts of Iron 4 Wiki.md'`
+- `sed -n '1,220p' 'paradox_wiki/national_focus_modding.md'`
+- `sed -n '1,180p' 'paradox_wiki/effects.md'`
 - Core wiki smoke-read loop for Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding.
 - `sed -n '1,220p' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md'`
 - `sed -n '1,180p' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md'`

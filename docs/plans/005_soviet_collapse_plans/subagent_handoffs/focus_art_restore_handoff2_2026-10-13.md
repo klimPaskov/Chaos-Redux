@@ -27,7 +27,7 @@ All 232 restored focus textures match the parent LFS object SHA-256 and have val
 
 A source crosswalk over all Event 005 focus files found 1,760 icon assignments, with each base sprite, matching `_shine` sprite, and texture resolving. There are no duplicate sprite names across the restored main registry, the retained new-focus registry, and the UWR/KMB specialist registry.
 
-The offline wiki reference `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`, lines 305–336 (snapshot dated 2026-09-19), describes GFX sprite registration, duplicate-name load order, and the paired focus and `_shine` sprite names. Vanilla precedent was read from `common/national_focus/argentina.txt:46`, `interface/goals.gfx:5656`, and `interface/goals_shine.gfx:39229` in the installed game; it uses separate base and shine definitions for a focus icon.
+The offline wiki reference `paradox_wiki/national_focus_modding.md`, lines 305–336 (snapshot dated 2026-09-19), describes GFX sprite registration, duplicate-name load order, and the paired focus and `_shine` sprite names. Vanilla precedent was read from `common/national_focus/argentina.txt:46`, `interface/goals.gfx:5656`, and `interface/goals_shine.gfx:39229` in the installed game; it uses separate base and shine definitions for a focus icon.
 
 ## Validation limits and remaining risks
 

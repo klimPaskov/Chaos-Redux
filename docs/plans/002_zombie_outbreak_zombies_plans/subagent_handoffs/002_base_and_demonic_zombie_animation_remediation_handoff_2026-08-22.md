@@ -26,8 +26,8 @@ No simplification or fallback was used. The demonic creature was not silently re
 - `.agents/skills/chaos-redux-event-assets/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - `docs/plans/002_zombie_outbreak_zombies_plans/subagent_handoffs/002_custom_model_animation_quality_audit_2026-08-22.md`
-- `paradox_wiki/Entity modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/entity_modding.md`
+- `paradox_wiki/graphical_asset_modding.md`
 - the required core offline wiki pages named by `AGENTS.md`
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/entities/infantry.gfx`
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/entities/units_infantry.asset`

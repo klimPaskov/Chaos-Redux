@@ -112,7 +112,7 @@ Evidence:
 
 - Queue storage uses a scope value at Event 013 effects `:1042-1046`.
 - The worker scopes through `var:natural_disaster_job_target_state_entries^natural_disaster_job_index` at `:1204-1206`, then unconditionally removes the row at `:1207-1211`.
-- The offline wiki, `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` under **Variables** and **Arrays**, says an array element is a variable in every regard and that `var:` is mandatory when a variable is used as a scope. Official `effects_documentation.md:2278-2291` confirms scope values in arrays.
+- The offline wiki, `paradox_wiki/data_structures.md` under **Variables** and **Arrays**, says an array element is a variable in every regard and that `var:` is mandatory when a variable is used as a scope. Official `effects_documentation.md:2278-2291` confirms scope values in arrays.
 - Vanilla has current `value = PREV/THIS` scope-array precedents, for example `common/scripted_effects/TOA_scripted_effects.txt:1295-1297` and `GER_scripted_effects.txt:1255-1257`.
 - I found no current vanilla example of a *dynamically indexed* array element used directly as the left-hand scope. The repository has similar forms, including Event 014, but that is not an engine proof for this feature.
 - The accepted architecture explicitly required a focused parser/runtime proof and forbade continuing if it failed at `docs/plans/013_natural_disasters_plans/013_scripted_system_architecture.md:273-285` and `:1047-1057`. `013_implementation_validation_notes.md` and `013_event_completion_final_audit.md:86-98` confirm only static review; no live worker proof is recorded.

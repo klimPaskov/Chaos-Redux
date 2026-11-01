@@ -18,8 +18,8 @@ No shared event log, event-details framework, settings UI, super-event framework
 - `.agents/skills/chaos-redux-events/SKILL.md`
 - `.agents/skills/chaos-redux-decisions-missions/SKILL.md`, including the scripted-GUI action-integrity, text, value, action, background-first, and interactive-design contracts
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
-- Offline `paradox_wiki/Interface modding - Hearts of Iron 4 Wiki.md`
-- Offline `paradox_wiki/Scripted GUI modding - Hearts of Iron 4 Wiki.md`
+- Offline `paradox_wiki/interface_modding.md`
+- Offline `paradox_wiki/scripted_gui_modding.md`
 - Required core offline wiki pages named by `AGENTS.md`
 - Installed vanilla documentation, including `documentation/script_concept_documentation.md` and `documentation/triggers_documentation.md`
 - Vanilla precedent: `common/decisions/categories/INS_decision_categories.txt` and `common/scripted_guis/INS_revolution_scripted_gui.txt`

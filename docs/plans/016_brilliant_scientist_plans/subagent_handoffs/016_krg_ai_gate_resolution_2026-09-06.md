@@ -14,7 +14,7 @@ The prior architecture sentence at `docs/plans/016_brilliant_scientist_plans/016
 
 The source header at `common/ai_strategy_plans/016_brilliant_scientist_kruger_state_plans.txt:4-9` already states that the pre-start gate uses static identity checks, that Event 016 may transform any valid non-DJX host, and that the continuously evaluated `enable` gate owns runtime KRG identity.
 
-The offline AI-modelling references state that `allowed` is evaluated only at game start, while `enable` and `abort` are evaluated daily and control plan assignment and continuation (`paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md:280-305` and `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md:592-608`).
+The offline AI-modelling references state that `allowed` is evaluated only at game start, while `enable` and `abort` are evaluated daily and control plan assignment and continuation (`paradox_wiki/ai_modding.md:280-305` and `paradox_wiki/national_focus_modding.md:592-608`).
 
 ## Source gate review
 

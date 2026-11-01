@@ -8,7 +8,7 @@ This is not an Event005 completion claim.
 
 ## Required References Consulted
 
-- `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/national_focus_modding.md`
 - Core offline wiki pages required by `AGENTS.md`: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding
 - Vanilla focus precedent under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/`, especially China focus mutual-exclusion, path, AI, and war-goal structures
 - Vanilla documentation under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/`, especially effects, triggers, modifiers, and script concept documentation

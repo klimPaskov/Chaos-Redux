@@ -18,7 +18,7 @@ This handoff preserves the snapshot findings below for traceability. The current
 
 ### Medium — 29 custom costs are missing required blocked and hover localisation
 
-`custom_cost_text` selects `<key>_blocked` when its trigger fails and `<key>_tooltip` on hover according to [Decision modding](C:\Users\klimp\OneDrive\Documents\Paradox%20Interactive\Hearts%20of%20Iron%20IV\mod\chaos_redux\paradox_wiki\Decision%20modding%20-%20Hearts%20of%20Iron%204%20Wiki.md:299).
+`custom_cost_text` selects `<key>_blocked` when its trigger fails and `<key>_tooltip` on hover according to [Decision modding](C:\Users\klimp\OneDrive\Documents\Paradox%20Interactive\Hearts%20of%20Iron%20IV\mod\chaos_redux\paradox_wiki\decision_modding.md:299).
 
 All 29 identifiers below have a base key but neither required companion, so unavailable buttons and their cost hovers can display unresolved localisation keys instead of a comprehensible material requirement.
 

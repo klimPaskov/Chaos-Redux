@@ -68,7 +68,7 @@ The public documentation/catalog identifier remains `SCN-018`.
 
 The live reference routes read installed effects documentation lines 2278-2292 at revision `2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af` and offline Data structures lines 1069-1077 and 1210-1221 at revision `62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4`.
 The installed source is `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`.
-The offline source is `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`.
+The offline source is `paradox_wiki/data_structures.md`.
 The reference-context result omitted additional sources at its result limit; those omitted entries are not claimed as read by the bundle.
 
 The focused source lookup and Maximum-cap mechanic test timed out after 600 seconds without artifacts.

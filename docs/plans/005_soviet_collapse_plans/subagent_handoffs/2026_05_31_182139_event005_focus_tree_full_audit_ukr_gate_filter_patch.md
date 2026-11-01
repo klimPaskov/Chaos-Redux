@@ -44,19 +44,19 @@ Route behavior before and after:
 
 Commands/checks run:
 - Read required offline wiki pages before inspection:
-	- `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`
-	- `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md`
-	- `paradox_wiki/Effect - Hearts of Iron 4 Wiki.md`
-	- `paradox_wiki/Modifiers - Hearts of Iron 4 Wiki.md`
-	- `paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md`
-	- `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md`
-	- `paradox_wiki/On actions - Hearts of Iron 4 Wiki.md`
-	- `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md`
-	- `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`
-	- `paradox_wiki/Idea modding - Hearts of Iron 4 Wiki.md`
-	- `paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md`
-	- `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`
-	- `paradox_wiki/AI focuses - Hearts of Iron 4 Wiki.md`
+	- `paradox_wiki/data_structures.md`
+	- `paradox_wiki/triggers.md`
+	- `paradox_wiki/effects.md`
+	- `paradox_wiki/modifiers.md`
+	- `paradox_wiki/localisation.md`
+	- `paradox_wiki/scopes.md`
+	- `paradox_wiki/on_actions.md`
+	- `paradox_wiki/event_modding.md`
+	- `paradox_wiki/decision_modding.md`
+	- `paradox_wiki/idea_modding.md`
+	- `paradox_wiki/ai_modding.md`
+	- `paradox_wiki/national_focus_modding.md`
+	- `paradox_wiki/ai_focuses.md`
 - Read vanilla documentation and precedents:
 	- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
 	- vanilla focus files including `common/national_focus/baltic_shared.txt`, `common/national_focus/soviet.txt`, and `common/national_focus/uk.txt`

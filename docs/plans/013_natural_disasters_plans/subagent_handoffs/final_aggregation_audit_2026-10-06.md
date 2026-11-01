@@ -79,7 +79,7 @@ This narrow closure audit does not reassess decision-cost packages, shared GUI f
 | `localisation/english/013_natural_disasters_l_english.yml` | `6B801132229B649EF6568027AA7ED76EBE457E8E65B92092DA2E512DE8B3A3F4` |
 
 Reference evidence includes installed `documentation/effects_documentation.md:4279-4309` for native array versus scope iteration, `:2943-2964` for event scheduling, `:2792-2807` for flag cleanup, and installed `documentation/dynamic_variables_documentation.md:1118-1119` for the building damage getter.
-The offline snapshot `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md:1216-1217` confirms that `for_each_loop` preserves the calling scope and `for_each_scope_loop` changes it.
+The offline snapshot `paradox_wiki/data_structures.md:1216-1217` confirms that `for_each_loop` preserves the calling scope and `for_each_scope_loop` changes it.
 Installed `common/script_constants/documentation.md:16-31` supplies the required schema, and `documentation/script_concept_documentation.md:217-221` establishes constant support limits and scoped-variable access.
 The installed effects documentation SHA-256 is `2CDC93D26775990468EED167442F7A416B13059FB8FE07D139B54250B79209AF`, and the installed constants documentation SHA-256 is `E2812EFBDDC7961038E1F1F2B6DD6B059BDC70704EC87D1FE530835D9141BE1C`.
 The offline Data structures snapshot SHA-256 is `62273F37ED30E5479ACB331A8973F48DADC1867C4913C8A940E3E790E7AF32D4`, the installed dynamic-variable documentation SHA-256 is `538525747F0C285062C9CE8DB14B4E07C3CF6BAC1013115FA4F57291CB4EBDDA`, and the installed script-concept documentation SHA-256 is `884BFE9F9207EA4B25B36B5129D0F77D11D4B2F7EB0592587767EC58D24930C7`.

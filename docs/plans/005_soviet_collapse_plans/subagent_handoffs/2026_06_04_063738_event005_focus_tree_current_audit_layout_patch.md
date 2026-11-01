@@ -19,7 +19,7 @@ Required references consulted before patching:
 
 - `AGENTS.md`
 - `.agents/skills/chaos-redux-focus-trees/SKILL.md`
-- `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/national_focus_modding.md`
 - Required core offline wiki pages listed in `AGENTS.md`
 - Vanilla docs under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation`, including `effects_documentation.md`, `triggers_documentation.md`, and `script_concept_documentation.md`
 - Vanilla focus precedent from `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/uruguay.txt`

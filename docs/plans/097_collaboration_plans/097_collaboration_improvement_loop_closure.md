@@ -277,7 +277,7 @@ Closure. Settle R1 to R10 before finalizing the package. Accept or reject C1 to 
 - The whole specification package, the plan dispositions, the repo explorer handoff, the decision and AI probability audits, and the architecture plan.
 - Repository source: `events/063_subject_independence.txt` (Event 063 frees a random subject and lets the old overlord fight to re-subject it), `events/095_occupation_revolt.txt`, `events/097_collaboration.txt`, `get_event_weight` in `common/scripted_effects/chaosx_logic_effects.txt`, and the Event 063 name in `localisation/english/chaosx_event_names_l_english.yml`.
 - Event 039's specification folder, which has no Event 097 hook, and Event 052's interaction matrix line 11.
-- Offline wiki: `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md`, line 157, on option triggers.
+- Offline wiki: `paradox_wiki/event_modding.md`, line 157, on option triggers.
 - Web: one search on the French post-liberation purge, used for S3 and cited from its summary.
 
 ### Implementation surfaces affected

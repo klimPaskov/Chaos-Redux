@@ -17,7 +17,7 @@ This bounded owner tranche closes the executable AI gap identified by the probab
 
 ## Source review
 
-- Offline wiki: `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md` (strict comparison, resource, manpower, command-power, and `check_variable` forms) and `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md` (MTTH/`ai_will_do` modifier structure).
+- Offline wiki: `paradox_wiki/triggers.md` (strict comparison, resource, manpower, command-power, and `check_variable` forms) and `paradox_wiki/decision_modding.md` (MTTH/`ai_will_do` modifier structure).
 - Vanilla documentation: `documentation/triggers_documentation.md` and the decision documentation section of the offline snapshot.
 - Existing Chaos Redux precedents: Event 006 custom-cost triggers and `check_variable` comparisons between scoped variables.
 

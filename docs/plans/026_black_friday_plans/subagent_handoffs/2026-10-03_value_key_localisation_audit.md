@@ -48,7 +48,7 @@ The existing temporary assignments, constant references, consumer sentences, get
 
 Local sections read directly because the attempted connected reference route did not return a result:
 
-- `paradox_wiki\Localisation - Hearts of Iron 4 Wiki.md:680` explicitly states that temporary variables assigned in `text.trigger` remain set while displaying its localisation key.
+- `paradox_wiki\localisation.md:680` explicitly states that temporary variables assigned in `text.trigger` remain set while displaying its localisation key.
 - The same wiki at lines 729-791 demonstrates trigger-local calculations, real named `localization_key` entries, and variable expressions in the corresponding YAML values. Line 791 limits availability to scripted localisation and its downstream localisation keys.
 - `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\documentation\triggers_documentation.md:7482-7501` documents `set_temp_variable`, supported scope `any`, and the shorthand assignment pattern used by these getters.
 - `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\common\scripted_localisation\WUW_GER_scripted_loc.txt:689-697` assigns and adjusts temporary variables in a text trigger, then returns the real key `oppositional_monroe_list`.

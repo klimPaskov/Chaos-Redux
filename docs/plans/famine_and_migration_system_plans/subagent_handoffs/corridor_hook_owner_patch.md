@@ -51,7 +51,7 @@ The only explicit loop added by this patch iterates `global.famine_migration_act
 ## Validation and evidence
 
 - Read the prepared scripted-system prompt, complete famine specification folder, existing corridor architecture/attack-owner handoffs, sparse registry source, relief source, offline on-actions/data-structures/triggers/effects references, and vanilla effects/triggers documentation before editing.
-- Confirmed the documented callback scopes used by the patch from `paradox_wiki/On actions - Hearts of Iron 4 Wiki.md`: `FROM.FROM` is the changed state for `on_state_control_changed`; `ROOT` is the launcher and `FROM` is the nuked state for `on_nuke_drop`; `ROOT`/`FROM` are the named countries for `on_war_relation_added` and `on_peaceconference_ended`; `THIS` is the country that is no longer at war for `on_peace`, so the peace hook intentionally revalidates its ambient country only.
+- Confirmed the documented callback scopes used by the patch from `paradox_wiki/on_actions.md`: `FROM.FROM` is the changed state for `on_state_control_changed`; `ROOT` is the launcher and `FROM` is the nuked state for `on_nuke_drop`; `ROOT`/`FROM` are the named countries for `on_war_relation_added` and `on_peaceconference_ended`; `THIS` is the country that is no longer at war for `on_peace`, so the peace hook intentionally revalidates its ambient country only.
 - Reviewed the changed helper blocks and call sites with `rg` and PowerShell source inspection; the added hook path contains only the sparse active-country registry loop and no recurring global callback.
 - No live game launch was performed, as required by repository instructions.
 

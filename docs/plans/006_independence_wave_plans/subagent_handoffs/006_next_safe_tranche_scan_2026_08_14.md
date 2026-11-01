@@ -51,7 +51,7 @@ The historical source gap was limited to the missing ownership-and-control witne
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md` was consulted for country events, random lists, event-target effects, and country-state effects.
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md` was consulted for scope and state predicates, including ownership, control, cores, and event-target checks.
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md` was consulted for script constants and scope-safe scripted logic.
-- `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, `Triggers - Hearts of Iron 4 Wiki.md`, `Effects - Hearts of Iron 4 Wiki.md`, `Scopes - Hearts of Iron 4 Wiki.md`, and the required event, decision, idea, AI, localisation, modifier, and on-action pages were read from the offline snapshot.
+- `paradox_wiki/data_structures.md`, `triggers.md`, `effects.md`, `scopes.md`, and the required event, decision, idea, AI, localisation, modifier, and on-action pages were read from the offline snapshot.
 - No approved reference mod was needed. The existing Chaos Redux BLI and CHM compatibility helpers provide the closer structural precedent.
 - The installed package has no Technology Tree Viewer. No technology acceptance claim is made for IW-153 or any candidate package.
 

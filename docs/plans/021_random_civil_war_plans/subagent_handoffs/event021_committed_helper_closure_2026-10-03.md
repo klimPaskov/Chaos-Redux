@@ -70,9 +70,9 @@ Argument-field exclusion does not validate the enclosing effect's parameters or 
 | `ruling_only` | Installed `documentation/triggers_documentation.md:3640-3654`, `has_country_leader` |
 | `allow_spawning_on_enemy_provs` | Installed effects documentation `3278-3300`, `create_unit` |
 | `remember_old_capital` | Installed effects documentation `6655-6667`, `set_capital` |
-| `transfer_troops` | Installed effects documentation `2495-2498` identifies `annex_country`, offline `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md:1504` documents the argument |
+| `transfer_troops` | Installed effects documentation `2495-2498` identifies `annex_country`, offline `paradox_wiki/effects.md:1504` documents the argument |
 | `instant_build` | Installed effects documentation `839-846` identifies `add_building_construction`, offline Effects `3614` documents the argument |
-| `is_triggered_only`, `major`, `hidden` | Offline `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md:145,149,188` documents event metadata |
+| `is_triggered_only`, `major`, `hidden` | Offline `paradox_wiki/event_modding.md:145,149,188` documents event metadata |
 
 ## Dependency-minimal dynamic ledger repair
 

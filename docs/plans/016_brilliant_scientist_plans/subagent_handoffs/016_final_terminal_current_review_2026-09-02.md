@@ -92,7 +92,7 @@ Evidence:
 - The defeat scorer immediately compares the result to `duration_short_days = 180`, `duration_long_days = 365`, and `duration_epic_days = 730` in `common/script_constants/016_brilliant_scientist_super_event_constants.txt:105`.
 - When no start date exists, the scorer leaves the absolute current date value as the duration.
 - Installed `documentation/dynamic_variables_documentation.md:977` defines `date` as a date value for comparisons/localisation; `:996` defines `num_days` as current total days.
-The required offline `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md:959` explains that the date is encoded with one game hour equal to 0.00001.
+The required offline `paradox_wiki/data_structures.md:959` explains that the date is encoded with one game hour equal to 0.00001.
 Vanilla `common/ai_strategy/GER.txt:3847` uses `global.num_days` for actual day arithmetic.
 
 Causal fixtures: a threat genuinely active for 180, 365, or 730 days does not produce a same-unit elapsed-day value for the three score tiers; a never-active small state instead receives a nonzero absolute-date “duration.”

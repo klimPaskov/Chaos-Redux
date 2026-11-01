@@ -88,13 +88,13 @@ Offline wiki and installed vanilla documentation were read directly. These refer
 
 | Reference | Relevant section and lines | Use |
 | --- | --- | --- |
-| paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md | 26–36 | ai_will_do is a highest-score willingness race; ai_chance is a different proportional-sampling mechanism. |
-| paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md | 332–335, 359–371, 527–536, 578–586 | Custom costs require explicit debits; ai_will_do is a decision MTTH score; targeted decision root/target selection is daily while visible/available refresh more often. |
-| paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md | 68–72, 108–110, 128–130 | > and < are strict comparisons; neighbor-country and neighbor-state scopes are distinct. |
+| paradox_wiki/ai_modding.md | 26–36 | ai_will_do is a highest-score willingness race; ai_chance is a different proportional-sampling mechanism. |
+| paradox_wiki/decision_modding.md | 332–335, 359–371, 527–536, 578–586 | Custom costs require explicit debits; ai_will_do is a decision MTTH score; targeted decision root/target selection is daily while visible/available refresh more often. |
+| paradox_wiki/triggers.md | 68–72, 108–110, 128–130 | > and < are strict comparisons; neighbor-country and neighbor-state scopes are distinct. |
 | Installed common/decisions/_documentation.md | 1–45 | Availability refresh and daily targeted decision selection. |
 | Installed documentation/effects_documentation.md | 4296–4308, 8096–8120 | for_each_scope_loop and delayed state-event fields. |
 
-The offline Effects page at paradox_wiki/Effects - Hearts of Iron 4 Wiki.md:3350 documents state_event delay arguments and warns that variable day delays may be unreliable. The installed documentation describes event fields but does not prove this campaign's callback timing. This remains unresolved without runtime evidence.
+The offline Effects page at paradox_wiki/effects.md:3350 documents state_event delay arguments and warns that variable day delays may be unreliable. The installed documentation describes event fields but does not prove this campaign's callback timing. This remains unresolved without runtime evidence.
 
 ## Source values and behavior
 

@@ -30,7 +30,7 @@ The event-owned scripted-localisation source is `common/scripted_localisation/01
 
 ## Precedents and required references inspected
 
-The offline wiki pages `Interface Modding - Hearts of Iron 4 Wiki.md` and `Scripted GUI Modding - Hearts of Iron 4 Wiki.md` were read alongside the required data-structure, trigger, effect, modifier, localisation, scope, on-action, event, decision, idea, and AI pages.
+The offline wiki pages `Interface modding.md` and `Scripted GUI modding.md` were read alongside the required data-structure, trigger, effect, modifier, localisation, scope, on-action, event, decision, idea, and AI pages.
 
 The installed vanilla documentation and GUI precedents inspected were `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/interface_documentation.md`, `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/scripted_gui_documentation.md`, `interface/usa_congress_scripted_gui.gui` with `common/scripted_guis/USA_congress_scripted_gui.txt`, and `interface/raj_local_leaders_investments_decision_ui.gui` with `common/scripted_guis/RAJ_local_leaders_investments_scripted_gui.txt`.
 

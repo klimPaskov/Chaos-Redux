@@ -136,7 +136,7 @@ The reference MCP tools were not callable in the current session, so these citat
 | C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\common\decisions\GER.txt | Lines 250-279; GER_seize_gold_reserves conditional base/factor precedent | 6E109AF4C268DCD4E67AEC2D70EF7ABD479D64B06EBB2FC439A9777591C5C3C8 |
 | C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\documentation\dynamic_variables_documentation.md | Lines 557-565 and 687-692; stock and army target/fielded measurement semantics | 538525747F0C285062C9CE8DB14B4E07C3CF6BAC1013115FA4F57291CB4EBDDA |
 | C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\documentation\effects_documentation.md | Lines 6550-6557; country-scope send_equipment | 2CDC93D26775990468EED167442F7A416B13059FB8FE07D139B54250B79209AF |
-| paradox_wiki\Data structures - Hearts of Iron 4 Wiki.md | Lines 1614-1619; native equipment stock and army target/fielded quantity definitions | 62273F37ED30E5479ACB331A8973F48DADC1867C4913C8A9403E790E7AF32D4 |
+| paradox_wiki\data_structures.md | Lines 1614-1619; native equipment stock and army target/fielded quantity definitions | 62273F37ED30E5479ACB331A8973F48DADC1867C4913C8A9403E790E7AF32D4 |
 
 The installed documentation folder contained no decision ai_will_do weight section in the bounded search. The adjacent installed common/decisions documentation and vanilla conditional decision were read directly. Since no reference IDs or MCP revisions were returned, hoi4.reference_read could not be called revision-bound.
 

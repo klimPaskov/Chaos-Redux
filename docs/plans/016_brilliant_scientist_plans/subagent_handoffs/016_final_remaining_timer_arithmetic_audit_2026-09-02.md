@@ -10,7 +10,7 @@ The audit read `AGENTS.md`, the Chaos Redux decisions/missions, events, and suba
 
 The authoritative date distinction is in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/dynamic_variables_documentation.md`: `global.date` is a date value intended for date comparison/localisation, while `global.num_days` is the current total elapsed days.
 
-The offline `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` likewise states that `date` is the current date identifier and that one game hour advances it by `0.00001`, whereas `num_days` is the elapsed-day axis.
+The offline `paradox_wiki/data_structures.md` likewise states that `date` is the current date identifier and that one game hour advances it by `0.00001`, whereas `num_days` is the elapsed-day axis.
 
 Vanilla `events/LaR_espionage_operations.txt:185-193` provides a direct elapsed-day subtraction precedent using `global.num_days`.
 

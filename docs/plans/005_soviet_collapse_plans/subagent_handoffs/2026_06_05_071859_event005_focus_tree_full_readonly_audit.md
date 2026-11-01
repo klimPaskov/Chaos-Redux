@@ -17,18 +17,18 @@ Repo guidance and skill:
 - `chaos-redux-focus-trees` skill: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-focus-trees/SKILL.md`
 
 Offline Paradox wiki snapshot:
-- `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Effect - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Modifiers - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/On actions - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Idea modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/data_structures.md`
+- `paradox_wiki/triggers.md`
+- `paradox_wiki/effects.md`
+- `paradox_wiki/modifiers.md`
+- `paradox_wiki/localisation.md`
+- `paradox_wiki/scopes.md`
+- `paradox_wiki/on_actions.md`
+- `paradox_wiki/event_modding.md`
+- `paradox_wiki/decision_modding.md`
+- `paradox_wiki/idea_modding.md`
+- `paradox_wiki/ai_modding.md`
+- `paradox_wiki/national_focus_modding.md`
 
 Vanilla references:
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
@@ -283,18 +283,18 @@ Reference and discovery commands:
 ```bash
 sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-focus-trees/SKILL.md
 sed -n '1,220p' AGENTS.md
-sed -n '1,180p' "paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md"
-sed -n '1,120p' "paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md"
-sed -n '1,120p' "paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md"
-sed -n '1,120p' "paradox_wiki/Effect - Hearts of Iron 4 Wiki.md"
-sed -n '1,120p' "paradox_wiki/Modifiers - Hearts of Iron 4 Wiki.md"
-sed -n '1,120p' "paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md"
-sed -n '1,120p' "paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md"
-sed -n '1,120p' "paradox_wiki/On actions - Hearts of Iron 4 Wiki.md"
-sed -n '1,120p' "paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md"
-sed -n '1,120p' "paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md"
-sed -n '1,120p' "paradox_wiki/Idea modding - Hearts of Iron 4 Wiki.md"
-sed -n '1,120p' "paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md"
+sed -n '1,180p' "paradox_wiki/national_focus_modding.md"
+sed -n '1,120p' "paradox_wiki/data_structures.md"
+sed -n '1,120p' "paradox_wiki/triggers.md"
+sed -n '1,120p' "paradox_wiki/effects.md"
+sed -n '1,120p' "paradox_wiki/modifiers.md"
+sed -n '1,120p' "paradox_wiki/localisation.md"
+sed -n '1,120p' "paradox_wiki/scopes.md"
+sed -n '1,120p' "paradox_wiki/on_actions.md"
+sed -n '1,120p' "paradox_wiki/event_modding.md"
+sed -n '1,120p' "paradox_wiki/decision_modding.md"
+sed -n '1,120p' "paradox_wiki/idea_modding.md"
+sed -n '1,120p' "paradox_wiki/ai_modding.md"
 rg -n "add_ideas|create_wargoal|unlock_decision_tooltip|complete_tooltip|custom_effect_tooltip" "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md"
 rg -n "focus_tree|prerequisite|mutually_exclusive|relative_position_id|continuous_focus_position" "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt" "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/baltic_shared.txt" "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/generic.txt"
 ```

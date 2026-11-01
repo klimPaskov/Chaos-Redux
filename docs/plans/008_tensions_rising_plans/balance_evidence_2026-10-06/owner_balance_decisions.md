@@ -61,8 +61,8 @@ Source revisions below are SHA-256 file hashes, not proof of live execution.
 | --- | --- |
 | Installed `documentation/effects_documentation.md` | `add_named_threat`, 1762–1769; `round_temp_variable`, 6476–6484; `set_global_flag`, 7085–7092; existing meta-effect and arithmetic sections cited in the earlier handoffs |
 | Installed `documentation/dynamic_variables_documentation.md` | `threat`, 1051–1053: global world tension is a 0–1 value |
-| Offline `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md` | named threat, 1502–1503, and the meta-effect section cited by the event skill |
-| Offline `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` | global/country flag equivalence and timed flags, 119–129; variable lifetime, 435–449 |
+| Offline `paradox_wiki/effects.md` | named threat, 1502–1503, and the meta-effect section cited by the event skill |
+| Offline `paradox_wiki/data_structures.md` | global/country flag equivalence and timed flags, 119–129; variable lifetime, 435–449 |
 | Vanilla `common/national_focus/germany.txt` | Rhineland's `add_named_threat = 5`, 8188 |
 | Mod `common/scripted_effects/chaos_meter_effects.txt` | existing `global.threat * 100` conversion and derived Chaos update, 6501–6522 |
 

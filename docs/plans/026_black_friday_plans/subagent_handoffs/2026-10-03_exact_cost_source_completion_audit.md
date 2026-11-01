@@ -59,7 +59,7 @@ They compare the ratios, priorities, and eligibility-mask array lengths with the
 HOI4 evaluates those siblings as NOR, so the rejection branch runs only when every equality is false.
 An individual misaligned array, or two misaligned arrays while the third remains aligned, leaves `universal_cost_quote_valid = 1`.
 
-The offline reference `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md:337-345`, specifically line 341, explicitly identifies this semantics.
+The offline reference `paradox_wiki/triggers.md:337-345`, specifically line 341, explicitly identifies this semantics.
 It also agrees with the supplied AGENTS.md guidance to retain an explicit `AND` when negating a multi-condition conjunction.
 The exact API documentation at `common/scripted_triggers/chaosx_universal_cost_exact_triggers.md` and `docs/systems/universal_cost_modifier.md:61-66` promises malformed-registry rejection, so current source does not satisfy its documented contract.
 
@@ -195,7 +195,7 @@ No public achievement guard, remaining caller-file tranche, lifecycle or native 
 The repaired producer at `common/scripted_triggers/chaosx_universal_cost_exact_triggers.txt:528-538` nests all three array-length equality checks inside one `AND` child of `NOT`.
 The outer NOT now negates that conjunction under HOI4's documented NOR semantics.
 The shared VM at `subagent_handoffs/exact_quote_source_tests.js:142` evaluates NOT using `v.some`, and both RSA models use the equivalent `!a.some(...)` rule.
-The offline flow-control table at `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md:337-345` was reread, including the explicit NOT/NOR rule at line 341.
+The offline flow-control table at `paradox_wiki/triggers.md:337-345` was reread, including the explicit NOT/NOR rule at line 341.
 
 An independent read-only diagnostic evaluated the parsed production rejection guard using its own Boolean evaluator, separate from the shared VM dispatch.
 It covered 256 length tuples with IDs, ratios, priorities and masks each taking lengths 0, 1, 2 or 4.

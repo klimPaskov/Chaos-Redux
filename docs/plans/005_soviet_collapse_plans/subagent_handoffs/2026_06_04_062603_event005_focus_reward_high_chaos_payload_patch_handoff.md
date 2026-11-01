@@ -13,7 +13,7 @@ No flag files, visual flag assets, `.tga` files, flag `.gfx` files, or flag spri
 - `AGENTS.md`
 - `.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
-- `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/national_focus_modding.md`
 - Core offline wiki pages: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding
 - Vanilla docs inspected for script behavior: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`, `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`
 

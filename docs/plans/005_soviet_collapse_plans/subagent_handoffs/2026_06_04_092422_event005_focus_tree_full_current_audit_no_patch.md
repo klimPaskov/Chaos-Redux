@@ -19,7 +19,7 @@ Parent constraints honored:
 Skills and references used:
 - Read `AGENTS.md`.
 - Used `chaos-redux-focus-trees`, `chaos-redux-events`, and `chaos-redux-subagents`.
-- Consulted the offline Paradox wiki snapshot for national focus, decision, localisation, data structures, triggers, modifiers, scopes, on actions, event modding, idea modding, and AI modding. The offline snapshot does not contain a standalone `Effects - Hearts of Iron 4 Wiki.md` file, so vanilla `effects_documentation.md` was used for effect syntax.
+- Consulted the offline Paradox wiki snapshot for national focus, decision, localisation, data structures, triggers, modifiers, scopes, on actions, event modding, idea modding, and AI modding. The offline snapshot does not contain a standalone `effects.md` file, so vanilla `effects_documentation.md` was used for effect syntax.
 - Consulted vanilla docs in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/` and inspected vanilla `common/national_focus/soviet.txt` for focus structure precedent.
 
 ## Files Changed

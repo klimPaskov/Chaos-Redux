@@ -14,7 +14,7 @@ No SOV history, focus, leader, portrait, flag, country-definition, tag, unit, ma
 
 ## Evidence used
 
-- Offline wiki pages consulted before source review: `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, `Triggers - Hearts of Iron 4 Wiki.md`, `Effects - Hearts of Iron 4 Wiki.md`, `Modifiers - Hearts of Iron 4 Wiki.md`, `Localisation - Hearts of Iron 4 Wiki.md`, `Scopes - Hearts of Iron 4 Wiki.md`, `On actions - Hearts of Iron 4 Wiki.md`, `Event modding - Hearts of Iron 4 Wiki.md`, `Decision modding - Hearts of Iron 4 Wiki.md`, `Idea modding - Hearts of Iron 4 Wiki.md`, and `AI modding - Hearts of Iron 4 Wiki.md`.
+- Offline wiki pages consulted before source review: `paradox_wiki/data_structures.md`, `triggers.md`, `effects.md`, `modifiers.md`, `localisation.md`, `scopes.md`, `on_actions.md`, `event_modding.md`, `decision_modding.md`, `idea_modding.md`, and `ai_modding.md`.
 - Vanilla documentation consulted: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, and `script_concept_documentation.md`.
 - Vanilla precedents consulted: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/on_actions/00_on_actions.txt` for `on_release_as_free`, `on_release_as_puppet`, `on_annex`, `on_state_control_changed`, and `on_nuke_drop`, plus the vanilla Philippines nuclear-reactor focus and nuclear special-project building effects.
 - Event MCP post-change lint: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/9495899e317b825db01431cfe15901525036fc63e042d80d25dade52b1926dcf/e18ea383f8a2d21bf65b1dd674770bc89ea2e490cef533a04e33147a1d92d008/event-lint-e091020adf34.json`.

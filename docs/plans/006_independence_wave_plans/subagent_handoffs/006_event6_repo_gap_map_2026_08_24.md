@@ -5,7 +5,7 @@
 - Parent task: audit Event 006 against the accepted specifications, `006_source_of_truth_map.md`, and `006_independence_wave_resume_packet.md`, then identify one bounded next implementation gap.
 - Explicit constraints: read-only repository exploration; no gameplay, localisation, GUI, GFX, asset, history, country, focus, decision, scripted-effect, scripted-trigger, on-action, event, spreadsheet, or plan-source edits; this handoff is the only requested write.
 - Files and ids reviewed: `chaosx.nr6.1`, `.2`, `.3`, the Event 006 focus tree `independence_wave_focus_tree`, and the economy-lane focuses `independence_wave_secure_food_and_fuel`, `independence_wave_build_regional_transport_authority`, `independence_wave_establish_customs_service`, `independence_wave_activate_package_economic_program`, and `independence_wave_create_independent_treasury`.
-- Skills and references read: `chaos-redux-subagents`, `chaos-redux-events`, `chaos-redux-focus-trees`, the required offline wiki core pages plus `National focus modding - Hearts of Iron 4 Wiki.md`, and the installed vanilla documentation for effects, triggers, script concepts, localisation objects, and dynamic variables.
+- Skills and references read: `chaos-redux-subagents`, `chaos-redux-events`, `chaos-redux-focus-trees`, the required offline wiki core pages plus `national_focus_modding.md`, and the installed vanilla documentation for effects, triggers, script concepts, localisation objects, and dynamic variables.
 
 ## Primary findings
 
@@ -36,7 +36,7 @@ Keep the proposed patch in the existing absolute `x`/`y` style. Do not add `rela
 
 ## Vanilla or reference precedents
 
-- Offline wiki: `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`, sections “Position” and “Interaction with other focuses”, states that prerequisite parents should be above children and that coordinates determine the focus grid position.
+- Offline wiki: `paradox_wiki/national_focus_modding.md`, sections “Position” and “Interaction with other focuses”, states that prerequisite parents should be above children and that coordinates determine the focus grid position.
 - Vanilla: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/australia_taog.txt:213-225` defines `AST_the_pacific_pact` immediately below `AST_war_is_coming` with `relative_position_id`, `x = 0`, and `y = 1`, demonstrating the direct one-row prerequisite pattern. The proposed change uses the existing Chaos Redux absolute-coordinate style while preserving the same geometry principle.
 - No vanilla gameplay or cost logic is needed for this tranche. The relevant vanilla documentation directory contains no separate national-focus reference; the offline national-focus page is the applicable syntax authority.
 

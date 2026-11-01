@@ -390,23 +390,23 @@ Original hashes and exact per-reader intervals are retained in the portable mani
 | `events/003_the_holy_realm.txt` | X | 51,040 | 51,040 |
 | `events/038_malta_crusaders.txt` | X | 4,513 | 4,513 |
 | `events/chaosx_event_clusters.txt` | T | 533 | 533 |
-| `paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md` | R | 82,215 | 82,111 |
-| `paradox_wiki/Character modding - Hearts of Iron 4 Wiki.md` | R | 62,308 | 62,193 |
-| `paradox_wiki/Country creation - Hearts of Iron 4 Wiki.md` | R | 63,456 | 63,344 |
-| `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` | R | 153,223 | 153,101 |
-| `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md` | R | 37,244 | 37,128 |
-| `paradox_wiki/Division modding - Hearts of Iron 4 Wiki.md` | R | 24,702 | 24,594 |
-| `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md` | E | 299,125 | 298,873 |
-| `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md` | R | 48,936 | 48,786 |
-| `paradox_wiki/Faction modding - Hearts of Iron 4 Wiki.md` | R | 36,325 | 36,199 |
-| `paradox_wiki/Idea modding - Hearts of Iron 4 Wiki.md` | R | 36,229 | 36,127 |
-| `paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md` | R | 68,895 | 68,711 |
-| `paradox_wiki/Modifiers - Hearts of Iron 4 Wiki.md` | R | 138,074 | 137,954 |
-| `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md` | R | 87,843 | 87,701 |
-| `paradox_wiki/On actions - Hearts of Iron 4 Wiki.md` | R | 38,570 | 38,369 |
-| `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md` | R | 75,435 | 75,088 |
-| `paradox_wiki/Technology modding - Hearts of Iron 4 Wiki.md` | R | 58,158 | 58,028 |
-| `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md` | R | 189,240 | 188,994 |
+| `paradox_wiki/ai_modding.md` | R | 82,215 | 82,111 |
+| `paradox_wiki/character_modding.md` | R | 62,308 | 62,193 |
+| `paradox_wiki/country_creation.md` | R | 63,456 | 63,344 |
+| `paradox_wiki/data_structures.md` | R | 153,223 | 153,101 |
+| `paradox_wiki/decision_modding.md` | R | 37,244 | 37,128 |
+| `paradox_wiki/division_modding.md` | R | 24,702 | 24,594 |
+| `paradox_wiki/effects.md` | E | 299,125 | 298,873 |
+| `paradox_wiki/event_modding.md` | R | 48,936 | 48,786 |
+| `paradox_wiki/faction_modding.md` | R | 36,325 | 36,199 |
+| `paradox_wiki/idea_modding.md` | R | 36,229 | 36,127 |
+| `paradox_wiki/localisation.md` | R | 68,895 | 68,711 |
+| `paradox_wiki/modifiers.md` | R | 138,074 | 137,954 |
+| `paradox_wiki/national_focus_modding.md` | R | 87,843 | 87,701 |
+| `paradox_wiki/on_actions.md` | R | 38,570 | 38,369 |
+| `paradox_wiki/scopes.md` | R | 75,435 | 75,088 |
+| `paradox_wiki/technology_modding.md` | R | 58,158 | 58,028 |
+| `paradox_wiki/triggers.md` | R | 189,240 | 188,994 |
 
 ### Requested pinned paths that were not acquired
 

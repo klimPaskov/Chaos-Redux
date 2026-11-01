@@ -118,9 +118,9 @@ The screen has three summary values, within the four-value ceiling. No gameplay-
 
 Guidance read and applied: AGENTS.md, .agents/skills/chaos-redux-scripted-gui/SKILL.md, .agents/skills/chaos-redux-decisions-missions/SKILL.md, .agents/skills/chaos-redux-events/SKILL.md, .agents/skills/chaos-redux-event-assets/SKILL.md, .agents/skills/chaos-redux-frame-animation/SKILL.md, and .agents/skills/chaos-redux-subagents/SKILL.md. The two earlier Event 014 GUI handoffs named in the parent prompt were read as historical evidence only.
 
-The offline Interface modding page was read directly at paradox_wiki/Interface modding - Hearts of Iron 4 Wiki.md, including container sizing and clipping at lines 83-95, scroll-container requirements at 110-128, button elements at 227-250, and relative position/orientation at 369-373.
+The offline Interface modding page was read directly at paradox_wiki/interface_modding.md, including container sizing and clipping at lines 83-95, scroll-container requirements at 110-128, button elements at 227-250, and relative position/orientation at 369-373.
 
-The offline Scripted GUI modding page was read directly at paradox_wiki/Scripted GUI modding - Hearts of Iron 4 Wiki.md, including parent-window and top-bar behavior at lines 71-114, context and dirty updates at 144-171, effects and element triggers at 179-208, dynamic lists at 249-300, and properties at 391-420.
+The offline Scripted GUI modding page was read directly at paradox_wiki/scripted_gui_modding.md, including parent-window and top-bar behavior at lines 71-114, context and dirty updates at 144-171, effects and element triggers at 179-208, dynamic lists at 249-300, and properties at 391-420.
 
 The installed common/scripted_guis/_documentation.md was read directly at the installed game path. Its opening documentation comments identify context types and parent-window tokens, dynamic-list arrays and values, scripted button effects and element triggers, properties, and dirty-variable updates. The HOI4 reference_context and reference_search routes stalled, and no revision-bound result was returned. reference_read was not called because no revision was available.
 

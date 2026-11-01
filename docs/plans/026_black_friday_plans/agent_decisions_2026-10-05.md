@@ -101,9 +101,9 @@ No replacement asset family or runtime fallback was introduced.
 
 ## References and checks
 
-- Offline `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, lines 435–442: temporary helper lifetime.
-- Offline `paradox_wiki/Modifiers - Hearts of Iron 4 Wiki.md`, lines 57–59 and 108–145: additive contributions, `modifier@`, dynamic modifier values and update order.
-- Offline `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md`, lines 45–76: localisation and conditional descriptions.
+- Offline `paradox_wiki/data_structures.md`, lines 435–442: temporary helper lifetime.
+- Offline `paradox_wiki/modifiers.md`, lines 57–59 and 108–145: additive contributions, `modifier@`, dynamic modifier values and update order.
+- Offline `paradox_wiki/event_modding.md`, lines 45–76: localisation and conditional descriptions.
 - Installed `documentation/effects_documentation.md`, lines 1153–1172, 2681–2693, 2943–2967, 4372–4381, 5978–5992: add, clamp, country report dispatch, update, and remove operations.
 - Installed `documentation/dynamic_variables_documentation.md`, lines 496–498: country modifier readings.
 - Installed `events/PoliticalEvents.txt`, lines 2181–2193: conditional event-description precedent.

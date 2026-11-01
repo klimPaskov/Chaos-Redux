@@ -34,7 +34,7 @@ No fallback, replacement art, relabel, alias deletion, or identity promotion is 
 
 The relevant sourced-asset guidance was read from .agents/skills/chaos-redux-event-assets/SKILL.md, including the sourced-imagery, canonical-reference, flag ladder, provenance, handoff, and blocker sections.
 
-The required offline flag conventions were checked in paradox_wiki/Country creation - Hearts of Iron 4 Wiki.md, paradox_wiki/Cosmetic tag modding - Hearts of Iron 4 Wiki.md, paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md, and paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md. The core offline wiki pages required by AGENTS.md were also consulted.
+The required offline flag conventions were checked in paradox_wiki/country_creation.md, paradox_wiki/cosmetic_tag_modding.md, paradox_wiki/data_structures.md, and paradox_wiki/graphical_asset_modding.md. The core offline wiki pages required by AGENTS.md were also consulted.
 
 The canonical presentation shelf was checked at .agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md, .agents/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md, and .agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/. It is a presentation reference only and does not prove identity or rights.
 

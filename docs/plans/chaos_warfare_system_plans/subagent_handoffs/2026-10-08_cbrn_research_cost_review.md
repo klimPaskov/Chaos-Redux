@@ -18,7 +18,7 @@ The other two installed base define files, the installed DLC loose define surfac
 `descriptor.mod` declares no dependencies and replaces only loading-screen assets.
 `effective_defines.json` retains the scanned definition files, exact match lines, revisions, and DLC archive coverage.
 
-Offline `paradox_wiki/Defines - Hearts of Iron 4 Wiki.md:647` also records 110.
+Offline `paradox_wiki/defines.md:647` also records 110.
 Offline `Technology modding:248` still describes cost 1 as 100 base days, and its reference at line 810 repeats the obsolete define value 100.
 The installed define governs this calculation.
 Consequently the frozen before-source .5/.75/1 factors yield 55/82.5/110 unmodified base-day costs.

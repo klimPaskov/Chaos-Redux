@@ -75,7 +75,7 @@ The 2026-08-02 continuation also records durable Event 060/089 context receipts,
 
 Severity: high; AI-equivalent requirement not met.
 
-Both options in `chaosx.nr16.6` use `ai_will_do` at `events/016_brilliant_scientist_directorate_outcomes.txt:166-170,176-180`. Event options use `ai_chance`; the offline Event Modding reference states this contract at `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md:151-156`, and vanilla event options use the same structure.
+Both options in `chaosx.nr16.6` use `ai_will_do` at `events/016_brilliant_scientist_directorate_outcomes.txt:166-170,176-180`. Event options use `ai_chance`; the offline Event Modding reference states this contract at `paradox_wiki/event_modding.md:151-156`, and vanilla event options use the same structure.
 
 Consequently the intended context-biased publication versus classification choice is not implemented through the supported event-option weighting surface. The focused HOI4 event inspection did not surface this defect because its result was workspace-partial and its validation flag was false; the artifact is recorded under validation limits.
 

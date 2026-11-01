@@ -23,18 +23,18 @@ Required project guidance:
 
 Required offline wiki pages:
 
-- `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Effect - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Modifiers - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/On actions - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Idea modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/national_focus_modding.md`
+- `paradox_wiki/data_structures.md`
+- `paradox_wiki/triggers.md`
+- `paradox_wiki/effects.md`
+- `paradox_wiki/modifiers.md`
+- `paradox_wiki/localisation.md`
+- `paradox_wiki/scopes.md`
+- `paradox_wiki/on_actions.md`
+- `paradox_wiki/event_modding.md`
+- `paradox_wiki/decision_modding.md`
+- `paradox_wiki/idea_modding.md`
+- `paradox_wiki/ai_modding.md`
 
 Vanilla references:
 
@@ -215,18 +215,18 @@ Read-only inspection:
 ```bash
 sed -n '1,520p' .agents/skills/chaos-redux-focus-trees/SKILL.md
 sed -n '1,260p' .agents/skills/chaos-redux-subagents/SKILL.md
-sed -n '1,160p' "paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md"
-sed -n '1,120p' "paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md"
-sed -n '1,120p' "paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md"
-sed -n '1,120p' "paradox_wiki/Effect - Hearts of Iron 4 Wiki.md"
-sed -n '1,120p' "paradox_wiki/Modifiers - Hearts of Iron 4 Wiki.md"
-sed -n '1,120p' "paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md"
-sed -n '1,120p' "paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md"
-sed -n '1,120p' "paradox_wiki/On actions - Hearts of Iron 4 Wiki.md"
-sed -n '1,120p' "paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md"
-sed -n '1,120p' "paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md"
-sed -n '1,120p' "paradox_wiki/Idea modding - Hearts of Iron 4 Wiki.md"
-sed -n '1,120p' "paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md"
+sed -n '1,160p' "paradox_wiki/national_focus_modding.md"
+sed -n '1,120p' "paradox_wiki/data_structures.md"
+sed -n '1,120p' "paradox_wiki/triggers.md"
+sed -n '1,120p' "paradox_wiki/effects.md"
+sed -n '1,120p' "paradox_wiki/modifiers.md"
+sed -n '1,120p' "paradox_wiki/localisation.md"
+sed -n '1,120p' "paradox_wiki/scopes.md"
+sed -n '1,120p' "paradox_wiki/on_actions.md"
+sed -n '1,120p' "paradox_wiki/event_modding.md"
+sed -n '1,120p' "paradox_wiki/decision_modding.md"
+sed -n '1,120p' "paradox_wiki/idea_modding.md"
+sed -n '1,120p' "paradox_wiki/ai_modding.md"
 rg -n "add_ideas|swap_ideas|remove_ideas|add_timed_idea" common/scripted_effects/005_soviet_collapse_effects.txt common/decisions/005_soviet_collapse_decisions.txt common/national_focus/005_soviet_collapse_*.txt
 rg -n "id = MFR_(officers_chair_the_board|armorers_elect_delegates|merchants_of_ammunition|eternal_arsenal)|has_completed_focus = MFR_" common/national_focus/005_soviet_collapse_factory_successors.txt
 rg -n "id = (APX_khazar_charter|SOG_sogdian_city_charter|ANX_khwarazmian_water_charter|ABX_alan_pass_charter)|FOCUS_FILTER_ANNEXATION" common/national_focus/005_soviet_collapse_ancient_restorations.txt

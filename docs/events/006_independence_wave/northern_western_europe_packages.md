@@ -509,7 +509,7 @@ Reusing the established idea and decision language is the intended framework des
 
 The implementation was checked against the offline Paradox wiki snapshot for Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, Country creation, Character modding, National focus modding, Division modding, and Portrait modding.
 
-References consulted include vanilla `documentation/effects_documentation.md`, `documentation/triggers_documentation.md`, `documentation/modifiers_documentation.md`, `documentation/script_concept_documentation.md`, `common/ai_strategy/_documentation.md`, `common/script_constants/documentation.md`, `common/characters/_documentation.md`, the offline `paradox_wiki/On actions - Hearts of Iron 4 Wiki.md` snapshot, and the decision and country history documentation. Vanilla precedents included Belgian defense decisions, Dutch inundation and waterline content, institutional leaders, character promotion, and self-removing AI strategies.
+References consulted include vanilla `documentation/effects_documentation.md`, `documentation/triggers_documentation.md`, `documentation/modifiers_documentation.md`, `documentation/script_concept_documentation.md`, `common/ai_strategy/_documentation.md`, `common/script_constants/documentation.md`, `common/characters/_documentation.md`, the offline `paradox_wiki/on_actions.md` snapshot, and the decision and country history documentation. Vanilla precedents included Belgian defense decisions, Dutch inundation and waterline content, institutional leaders, character promotion, and self-removing AI strategies.
 
 ### Future plans and extension ideas
 

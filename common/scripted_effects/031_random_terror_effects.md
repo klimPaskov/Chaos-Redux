@@ -78,7 +78,7 @@ The selector still ranks controlled active states and occupied active cores by s
 
 ## References and verification
 
-Offline `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md`, line 35, documents immediate effect-fired events on absent countries and paused delayed-event clocks.
-Offline `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, lines 435-443, documents unscoped temporary storage and declaring a returned temporary before calling its scripted helper.
+Offline `paradox_wiki/event_modding.md`, line 35, documents immediate effect-fired events on absent countries and paused delayed-event clocks.
+Offline `paradox_wiki/data_structures.md`, lines 435-443, documents unscoped temporary storage and declaring a returned temporary before calling its scripted helper.
 Installed `documentation/effects_documentation.md`, lines 2943-2967 and 7820-7827, defines country-event dispatch and `set_temp_variable`.
 The task's exact source revisions, scenarios and validation limits are recorded in [the C5 handoff](../../docs/plans/031_random_terror_plans/subagent_handoffs/c5_bug_fix_2026-10-13.md).

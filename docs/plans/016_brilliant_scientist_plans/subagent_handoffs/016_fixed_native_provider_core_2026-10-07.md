@@ -140,7 +140,7 @@ Detailed source map, references, hashes, result counts, artifact links and execu
   },
   {
     "source": "wiki",
-    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Triggers - Hearts of Iron 4 Wiki.md",
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\triggers.md",
     "startLine": 886,
     "endLine": 886,
     "revision": "abc51ad18a2c46e46d47baa795c5a840ebaf7c4ae3e777426c64a9f4c0c0ce06",
@@ -148,7 +148,7 @@ Detailed source map, references, hashes, result counts, artifact links and execu
   },
   {
     "source": "wiki",
-    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Data structures - Hearts of Iron 4 Wiki.md",
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\data_structures.md",
     "startLine": 435,
     "endLine": 443,
     "revision": "62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4",
@@ -180,7 +180,7 @@ Detailed source map, references, hashes, result counts, artifact links and execu
   },
   {
     "source": "wiki",
-    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Data structures - Hearts of Iron 4 Wiki.md",
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\data_structures.md",
     "startLine": 566,
     "endLine": 566,
     "revision": "62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4",

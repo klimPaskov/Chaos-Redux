@@ -209,13 +209,13 @@ Targeted read-only inspection used `klimPaskov/Chaos-Redux` at commit `a3ef485c5
 
 | Finding | Exact pinned source |
 | --- | --- |
-| Direct fuel setter and ratio setter documented separately | `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md`, lines 1710 and 1718–1720 |
+| Direct fuel setter and ratio setter documented separately | `paradox_wiki/effects.md`, lines 1710 and 1718–1720 |
 | Existing exact-zero mod use | `events/053_mysterious_man.txt`, line 54 |
 | Existing cost helper mutates input and calls additive effect | `common/scripted_effects/chaosx_dynamic_effects.txt`, lines 752–755 |
-| Every-scope iteration, existing-country restriction, ROOT and THIS, and country iterators | `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md`, lines 45–51, 260–262, and 506–515 |
-| Fuel getters are thousands and a capacity ratio | `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, lines 1516–1518 |
-| Positive fuel, major, and war predicates | `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md`, lines 1522, 953, and 1077 |
-| Offline immediate and no-delay event behavior | `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md`, lines 182 and 194–203 |
+| Every-scope iteration, existing-country restriction, ROOT and THIS, and country iterators | `paradox_wiki/scopes.md`, lines 45–51, 260–262, and 506–515 |
+| Fuel getters are thousands and a capacity ratio | `paradox_wiki/data_structures.md`, lines 1516–1518 |
+| Positive fuel, major, and war predicates | `paradox_wiki/triggers.md`, lines 1522, 953, and 1077 |
+| Offline immediate and no-delay event behavior | `paradox_wiki/event_modding.md`, lines 182 and 194–203 |
 | Level 1 maps to tier 0 | `common/scripted_effects/chaosx_logic_effects.txt`, lines 156–177 |
 | Fired nonrepeatable exclusion | Same logic file, lines 860–884 |
 | Handler guards fired append but still records history and pacing | Same logic file, lines 1129–1158 |

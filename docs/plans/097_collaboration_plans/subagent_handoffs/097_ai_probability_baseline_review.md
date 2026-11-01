@@ -26,7 +26,7 @@ Every ordering, timing band, dominance limit, and starvation limit in the matrix
 - `docs/specs/097_collaboration_specs/specs/` parts 1, 2, 3, 4, and 6, with Part 1 and Part 6 re-read after they changed on disk, and the cluster section of Part 5
 - `docs/specs/097_collaboration_specs/matrices/097_collaboration_chaos_impact_map.md`
 - `docs/plans/097_collaboration_plans/subagent_handoffs/097_repo_explorer_handoff.md`
-- `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md` (`ai_chance`, `mean_time_to_happen`) and `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md` (`ai_will_do`)
+- `paradox_wiki/event_modding.md` (`ai_chance`, `mean_time_to_happen`) and `paradox_wiki/decision_modding.md` (`ai_will_do`)
 - Repository source listed in the next section
 
 ## Repository facts that the review relies on

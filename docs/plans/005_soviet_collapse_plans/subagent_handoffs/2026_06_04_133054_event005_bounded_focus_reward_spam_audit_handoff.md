@@ -42,18 +42,18 @@ Repo guidance:
 
 Required offline wiki snapshot pages:
 
-- `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Effect - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Modifiers - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/On actions - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Idea modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/data_structures.md`
+- `paradox_wiki/triggers.md`
+- `paradox_wiki/effects.md`
+- `paradox_wiki/modifiers.md`
+- `paradox_wiki/localisation.md`
+- `paradox_wiki/scopes.md`
+- `paradox_wiki/on_actions.md`
+- `paradox_wiki/event_modding.md`
+- `paradox_wiki/decision_modding.md`
+- `paradox_wiki/idea_modding.md`
+- `paradox_wiki/ai_modding.md`
+- `paradox_wiki/national_focus_modding.md`
 
 Vanilla references:
 
@@ -78,7 +78,7 @@ Relevant reference conclusions:
 - `rg --files 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation' | rg -i 'focus|national|trigger|effect|localisation|ai|script'`
 - `find 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV' -iname '*focus*documentation*' -o -iname '*national*focus*' | head -80`
 - `sed -n '3290,3325p' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md' && sed -n '4620,4645p' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md'`
-- `sed -n '120,260p' 'paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md'`
+- `sed -n '120,260p' 'paradox_wiki/national_focus_modding.md'`
 - One-off Python parser over the four bounded focus files and matching Event005 localisation files. Checks performed:
   - parsed `focus_tree` and `focus` blocks
   - counted duplicate focus ids

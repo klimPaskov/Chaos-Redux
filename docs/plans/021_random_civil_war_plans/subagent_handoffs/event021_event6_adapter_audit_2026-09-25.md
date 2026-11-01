@@ -51,7 +51,7 @@ The Event 021 parent source contains a weighted archetype selection surface upst
 
 The installed vanilla effects documentation at C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md was consulted. It documents save_event_target_as at lines 6496-6503, set_capital and remember_old_capital at lines 6655-6666, and transfer_state_to ownership/controller semantics at lines 8332-8344.
 
-Offline wiki references consulted: paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md:303-316 for regular event-target lifetime; paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md:329-349 for invalid event-target scope guarding and 388 / 533 for capital_scope and owned-state patterns; Triggers - Hearts of Iron 4 Wiki.md for has_event_target and is_capital.
+Offline wiki references consulted: paradox_wiki/data_structures.md:303-316 for regular event-target lifetime; paradox_wiki/scopes.md:329-349 for invalid event-target scope guarding and 388 / 533 for capital_scope and owned-state patterns; triggers.md for has_event_target and is_capital.
 
 Relevant prior handoffs reviewed: docs/plans/021_random_civil_war_plans/subagent_handoffs/event006_adapter_abort_cleanup_2026-09-20.md and docs/plans/021_random_civil_war_plans/subagent_handoffs/event6_secondary_front_architecture_2026-09-01.md. These provide implementation history and known validation limits, not design acceptance.
 

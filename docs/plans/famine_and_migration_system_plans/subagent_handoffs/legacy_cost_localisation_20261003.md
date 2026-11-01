@@ -189,7 +189,7 @@ No claim is made yet about those unfinished guard consumers.
 
 Skills applied: chaos-redux-events, chaos-redux-decisions-missions and chaos-redux-subagents.
 AGENTS.md and the parent's accepted boundary were read.
-The same-agent earlier review read offline `Decision modding - Hearts of Iron 4 Wiki.md:311`–329, installed decision `_documentation.md:1`–45, and the direct vanilla custom-cost base/blocked precedent at `toa_decisions_l_english.yml:340`–341 with its `AFG.txt:490`–496 consumer.
+The same-agent earlier review read offline `decision_modding.md:311`–329, installed decision `_documentation.md:1`–45, and the direct vanilla custom-cost base/blocked precedent at `toa_decisions_l_english.yml:340`–341 with its `AFG.txt:490`–496 consumer.
 The pure predicate documentation cites installed country-resource reader sections and the offline scripted-trigger rules, with native scope and constant parsing still separate validation obligations.
 
 The parent's current MCP inspections recovered partial metadata, while linked resource-body access and numeric scenario coverage remain unresolved.

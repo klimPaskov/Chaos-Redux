@@ -36,8 +36,8 @@ Read completely before editing:
 Repository and reference review also covered:
 
 - The offline Paradox wiki core-page headings required by `AGENTS.md`.
-- Full offline `Graphical asset modding - Hearts of Iron 4 Wiki.md` and
-  `Entity modding - Hearts of Iron 4 Wiki.md` pages, plus relevant character,
+- Full offline `graphical_asset_modding.md` and
+  `entity_modding.md` pages, plus relevant character,
   interface, and scripted-GUI page headings.
 - Relevant vanilla documentation excerpts for entity/model inspection, including
   `documentation/console_commands_documentation.md` and

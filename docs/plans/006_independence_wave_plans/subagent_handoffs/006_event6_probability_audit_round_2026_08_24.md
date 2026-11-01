@@ -88,7 +88,7 @@ This addendum is the authoritative result of the read-only refresh performed in 
 
 The result classes used here are exact only for the supplied complete fixture, bounded when the adapter returned a partial score or gate trace, score-only for a willingness or strategy race, and unresolved when the MCP route could not prove the source surface or its external state.
 
-Reference review covered `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, `Triggers - Hearts of Iron 4 Wiki.md`, `Effects - Hearts of Iron 4 Wiki.md`, `Modifiers - Hearts of Iron 4 Wiki.md`, `Localisation - Hearts of Iron 4 Wiki.md`, `Scopes - Hearts of Iron 4 Wiki.md`, `On actions - Hearts of Iron 4 Wiki.md`, `Event modding - Hearts of Iron 4 Wiki.md`, `Decision modding - Hearts of Iron 4 Wiki.md`, `Idea modding - Hearts of Iron 4 Wiki.md`, `AI modding - Hearts of Iron 4 Wiki.md`, and `National focus modding - Hearts of Iron 4 Wiki.md`. Vanilla references were `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`, and `script_collection_input.md`.
+Reference review covered `paradox_wiki/data_structures.md`, `triggers.md`, `effects.md`, `modifiers.md`, `localisation.md`, `scopes.md`, `on_actions.md`, `event_modding.md`, `decision_modding.md`, `idea_modding.md`, `ai_modding.md`, and `national_focus_modding.md`. Vanilla references were `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`, and `script_collection_input.md`.
 
 ### Allocator random list
 

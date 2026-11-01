@@ -67,7 +67,7 @@ The baseline synthetic exact-alert scenarios supplied hypothetical pre-registrat
 
 A parent-reported whitespace-only correction to the ordinary-cost effect source landed after the after source copy was first captured; its latest raw copy and hash are retained, and the parent directed that no second compare was needed because the score helper dependency provenance did not include that effect file.
 
-The offline decision-modelling references consulted for the baseline are `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md` lines 357-374 and 531-537, `paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md` lines 26-37, and the installed `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/decisions/_documentation.md` lines 1-46; the earlier reference-read revision receipts were not persisted, so their full revision IDs are unavailable in this evidence packet.
+The offline decision-modelling references consulted for the baseline are `paradox_wiki/decision_modding.md` lines 357-374 and 531-537, `paradox_wiki/ai_modding.md` lines 26-37, and the installed `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/decisions/_documentation.md` lines 1-46; the earlier reference-read revision receipts were not persisted, so their full revision IDs are unavailable in this evidence packet.
 
 ## Balance findings and recommendation
 

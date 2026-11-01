@@ -55,7 +55,7 @@ Recommended fix: add an explicit selected-controller Chinese-belligerent identit
 
 Both decisions assign `ai_hint_pp_cost = constant:japan_bio_campaign_cost...` at `common\decisions\japan_biological_campaign_decisions.txt:16,82`.
 
-The offline decision reference states that `ai_hint_pp_cost` must be a fixed amount because it only tells AI how much Political Power to reserve, and it does not charge Political Power itself at `paradox_wiki\Decision modding - Hearts of Iron 4 Wiki.md:299-319`.
+The offline decision reference states that `ai_hint_pp_cost` must be a fixed amount because it only tells AI how much Political Power to reserve, and it does not charge Political Power itself at `paradox_wiki\decision_modding.md:299-319`.
 
 Vanilla 1.19.2 uses literal values with custom-cost decisions, for example `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\common\decisions\FIN.txt:240-245,426-434,790-796`.
 
@@ -77,11 +77,11 @@ Recommended fix: use existing agent-payload text icons if they are registered, w
 
 ## Verified compliant behavior
 
-- Exact selected state: the state-targeted decision API exposes the selected state as `FROM`, which the tranche preserves through target validation, saved event target, lifecycle seed, and state history. This is supported engine behavior, not an inferred target, under `paradox_wiki\Decision modding - Hearts of Iron 4 Wiki.md:561-579`.
+- Exact selected state: the state-targeted decision API exposes the selected state as `FROM`, which the tranche preserves through target validation, saved event target, lifecycle seed, and state history. This is supported engine behavior, not an inferred target, under `paradox_wiki\decision_modding.md:561-579`.
 - Occupation reach: `any_neighbor_state` accepts only a Japanese or direct Japanese-subject controller at `common\scripted_triggers\japan_biological_campaign_triggers.txt:112-123`; no proxy launch state, frontline estimate, or alternate state is created.
 - Four-cost semantics: Anthrax and Plague custom-cost helpers each check Political Power, their distinct payload, Support Equipment, and Command Power at `common\scripted_triggers\japan_biological_campaign_triggers.txt:45-59`.
 - Four debits: after committed revalidation, the effect debits Political Power, the selected payload type, Support Equipment, and Command Power at `common\scripted_effects\japan_biological_campaign_effects.txt:122-151`.
-- Custom-cost semantics: the explicit debits are necessary and present because custom cost only controls availability and presentation, not payment, as documented at `paradox_wiki\Decision modding - Hearts of Iron 4 Wiki.md:299-319`.
+- Custom-cost semantics: the explicit debits are necessary and present because custom cost only controls availability and presentation, not payment, as documented at `paradox_wiki\decision_modding.md:299-319`.
 - No fallback or refund on a shared lifecycle rejection: the failed dispatch branch sets only `japan_bio_campaign_dispatch_failure_history` at `common\scripted_effects\japan_biological_campaign_effects.txt:175-187`; it creates no proxy state, substitute evidence, inferred history, or material refund.
 - Equal delivery acceptance: both decisions prepare only their agent parameters and set `bio_seed_result = ...success` through the one shared release path at `common\scripted_effects\japan_biological_campaign_effects.txt:12-26,114-168`; agent identity changes lifecycle profile, not this decision's delivery result.
 - Distinct payloads: Anthrax debits `anthrax_bomb_1` and Plague debits `plague_bomb_1` at `common\scripted_effects\japan_biological_campaign_effects.txt:141-150`.

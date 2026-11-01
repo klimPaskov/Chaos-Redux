@@ -35,10 +35,10 @@ A variable-existence guard does not establish that skipping an element preserves
 - Installed `documentation/effects_documentation.md:4802-4809` documents localized `log` output.
 - Installed `documentation/effects_documentation.md:4833-4851` documents `meta_effect` text injection, but does not establish that `GetTokenKey` converts every `global.technology` database object.
 - Installed `documentation/script_concept_documentation.md` and `documentation/loc_objects_documentation.md` were checked; neither provided that conversion guarantee.
-- Offline `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md:735-746` describes token-valued variables and `GetTokenKey`, including tokenizable technologies.
+- Offline `paradox_wiki/data_structures.md:735-746` describes token-valued variables and `GetTokenKey`, including tokenizable technologies.
 This describes variables with the token flag and does not prove every runtime database array element is such a token.
 Its array section at line 820 documents zero-based indexes and `array^num`.
-- Offline `paradox_wiki/Technology modding - Hearts of Iron 4 Wiki.md` documents the `technologies` wrapper and effect-based silent research.
+- Offline `paradox_wiki/technology_modding.md` documents the `technologies` wrapper and effect-based silent research.
 All required core wiki pages, the events skill, and the subagents skill were consulted.
 - Installed `common/technologies/` has no separate documentation file.
 Vanilla `infantry.txt` and `special_projects_tech.txt` were inspected as actual definition precedents.

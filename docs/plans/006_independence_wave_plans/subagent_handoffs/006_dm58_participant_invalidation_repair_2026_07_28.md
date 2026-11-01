@@ -33,7 +33,7 @@ The offline Data structures reference defines `is_in_array` as an exact element 
 - Focused PowerShell assertions confirmed the revalidation effect, active-operation guard, witness-member array check, shared cleanup call, and absence of `remove_wargoal` from operation cleanup.
 - A source brace and quote scan passed for `common/scripted_effects/006_independence_wave_effects.txt`.
 - `git diff --check` passed for the touched source and helper documentation.
-- Offline array and event-target semantics were read from `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md`, and `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md`.
+- Offline array and event-target semantics were read from `paradox_wiki/data_structures.md`, `paradox_wiki/triggers.md`, and `paradox_wiki/effects.md`.
 - Vanilla `triggers_documentation.md` and `effects_documentation.md` were read for `is_in_array`, `exists`, `has_event_target`, `add_to_array`, `remove_from_array`, `save_global_event_target_as`, and `clear_global_event_target`.
 
 ## Skipped meaningful validation

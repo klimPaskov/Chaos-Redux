@@ -8,7 +8,7 @@ This pass audits the accepted Event 020 two-tag country package and the Rat King
 
 The identity authority is `docs/specs/020_black_plague_specs/corrections/2026-07-29_two_rat_tags.md`: exactly two runtime country tags are allowed, reusable `RTA` Rat Nation and separate `RTX` Rat King.
 
-The terminal syntax and lifecycle review used `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`, `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md`, the vanilla `effects_documentation.md`, and vanilla targeted/state-targeted decision precedents.
+The terminal syntax and lifecycle review used `paradox_wiki/decision_modding.md`, `paradox_wiki/effects.md`, the vanilla `effects_documentation.md`, and vanilla targeted/state-targeted decision precedents.
 
 No 3D model, entity, map write, technology file, spreadsheet, or live game save was changed or created.
 

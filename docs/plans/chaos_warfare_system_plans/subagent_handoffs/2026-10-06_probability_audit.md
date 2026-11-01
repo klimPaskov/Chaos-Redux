@@ -10,7 +10,7 @@ Repository HEAD at report time was e08c6fadfeca19934617a2fe6a98f13e178f906a.
 
 Read AGENTS.md, the chaos-redux-subagents, chaos-redux-decisions-missions, chaos-redux-mtth, and chaos-redux-events skills, the 2026-10-05 remaining-work plan, and the relevant entries in agent_decisions_2026-10-04.md.
 
-Read offline paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md lines 26-45, Event modding - Hearts of Iron 4 Wiki.md lines 159-176, and Decision modding - Hearts of Iron 4 Wiki.md lines 361-388.
+Read offline paradox_wiki/ai_modding.md lines 26-45, event_modding.md lines 159-176, and decision_modding.md lines 361-388.
 
 Read installed documentation/triggers_documentation.md lines 2110-2132 and 5033-5040, dynamic_variables_documentation.md lines 439-444, installed common/raids/_documentation.md lines 66-69 and 100-126, and the vanilla AUS targeted-decision precedent at common/decisions/AUS.txt lines 125-159.
 

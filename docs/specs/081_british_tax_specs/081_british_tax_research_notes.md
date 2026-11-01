@@ -18,7 +18,7 @@ Source: `https://github.com/klimPaskov/Chaos-Redux/blob/879b3007d3b6bf75c726c116
 
 Source: `https://github.com/klimPaskov/Chaos-Redux/blob/879b3007d3b6bf75c726c11635473fccda45c569/common/ideas/081_england_tax_ideas.txt`
 
-**P04: offline HOI4 modifier documentation.** Targeted excerpts from `paradox_wiki/Modifiers - Hearts of Iron 4 Wiki.md` at the same commit were inspected through repository search. The documented targeted civilian and military modifiers allocate portions of industry to the target. The documented trade-cost modifier describes the target's cost of purchasing the modifier owner's resources. Therefore seller and buyer direction must be checked separately. The whole offline wiki document was not read in this session.
+**P04: offline HOI4 modifier documentation.** Targeted excerpts from `paradox_wiki/modifiers.md` at the same commit were inspected through repository search. The documented targeted civilian and military modifiers allocate portions of industry to the target. The documented trade-cost modifier describes the target's cost of purchasing the modifier owner's resources. Therefore seller and buyer direction must be checked separately. The whole offline wiki document was not read in this session.
 
 The legacy positive trade-cost entry on the taxpayer targeting ENG appears inconsistent with the intended cheap British purchase direction under that documented interpretation. Treat this as a supported diagnostic hypothesis pending installed-engine verification, not as a completed runtime fix.
 

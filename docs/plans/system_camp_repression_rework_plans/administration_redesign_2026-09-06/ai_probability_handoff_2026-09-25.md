@@ -182,7 +182,7 @@ For the event-chain structural pass, `event_inspect` on `event:germany_mengele.1
 
 Event scan artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/03f790bfbe6999890d7bcda2c7c437a74e7584bda26af7b012cdd1ee94c83266/48b81f82601f99e1b248ee61c15cd2b560e70fa74ccf2b93560980e776ef9ec4/event-scan-f50fb76d44de.json`. Event neighborhood JSON and SVG are `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/3e108330f3cc8ed38f9fd42c31f036615344ec2bd7c68b8f4d41e6fead8a048e/c33d03d853c8047fbe14207c4537445c4afbd96d10566bd852a7320e384b484b/event-neighborhood-f50fb76d44de.json` and `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/641fbfa49d62fd43d700818653f7a6e0d5fce46a014eb8289824b53b9c680029/86bc002959486f5d558f8693e8c4362582a7adb014e55f1b6d8c3316bb86423c/event-neighborhood-f50fb76d44de.svg`.
 
-Offline syntax references consulted for this branch were the `random_list` entry in `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md` and the `random_list` section in the installed vanilla `documentation/effects_documentation.md`; both describe weighted random effect selection, with the vanilla document also noting that the weight may be a current-scope variable.
+Offline syntax references consulted for this branch were the `random_list` entry in `paradox_wiki/event_modding.md` and the `random_list` section in the installed vanilla `documentation/effects_documentation.md`; both describe weighted random effect selection, with the vanilla document also noting that the weight may be a current-scope variable.
 
 ### Findings and remaining limits
 

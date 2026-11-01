@@ -82,7 +82,7 @@ The validator's callers remain `video_game_in_sweden_full_field_validation` and 
 ## References and meaningful validation
 
 Read repository `AGENTS.md`, the events skill, the subagents skill, and the required core offline wiki pages.
-Target semantics came from `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, triggers, effects, scopes, and idea-modifier documentation.
+Target semantics came from `paradox_wiki/data_structures.md`, triggers, effects, scopes, and idea-modifier documentation.
 Installed `documentation/effects_documentation.md` confirms dynamic-modifier removal scope and optional targeted-scope matching, global target save and clear, and `random_unit_leader` execution scope.
 Installed `documentation/triggers_documentation.md` confirms modifier presence checks, any-scope global target presence checks, and any-scope `scope_exists`.
 Vanilla precedent `common/scripted_effects/CHI_scripted_effects.txt` around line 845 checks `has_dynamic_modifier` before removing `CHI_nine_power_treaty_sea`.

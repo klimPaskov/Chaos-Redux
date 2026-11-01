@@ -43,5 +43,5 @@ That cycle predates this gate patch and does not prove the boundary cases or run
 ## References
 
 Installed `common/decisions/_documentation.md`, lines 17 to 23, defines `available` as the immediate decision-taking gate.
-Offline `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`, lines 304 to 340, defines custom-cost row selection, hover keys, and manual payment.
+Offline `paradox_wiki/decision_modding.md`, lines 304 to 340, defines custom-cost row selection, hover keys, and manual payment.
 Source hashes and the vanilla custom-cost precedent are retained in `cost_contract_repair_2026-10-03.md` and the baseline handoff.

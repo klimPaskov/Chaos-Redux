@@ -111,7 +111,7 @@ No gameplay changes, external research, MCP calls, provider calls, asset creatio
 
 ## Exact external references to inspect after global gate
 
-- Offline `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md` and `paradox_wiki/Entity modding - Hearts of Iron 4 Wiki.md`; character/interface pages only for consumers using them.
+- Offline `paradox_wiki/graphical_asset_modding.md` and `paradox_wiki/entity_modding.md`; character/interface pages only for consumers using them.
 - Relevant installed docs and exact vanilla definitions under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`, including mesh/anim/asset/entity/material/texture/sound/voice/counter consumers; `interface/subuniticons.gfx`; `gfx/FX/pdxmesh.shader`; infantry `vo.asset` consumers as applicable.
 - `.tools/3d_pipeline/README.md`, `.tools/3d_pipeline/config/blender_hoi4_adapter.json`, `.tools/3d_pipeline/config/dependencies.lock.json`, `.tools/3d_pipeline/config/asset_profiles.json`, `.tools/3d_pipeline/wrappers/run_meshy_mcp.cmd` and `.ps1`, complete adapter import closure/source hashes and actual live schemas.
 - Latest 3D skill `references/unit_rebuild_workflow.md`; `.tools/3d_pipeline/review/review_cli.py`, `provider_intake.py`, `lab_actions.py`, `pdx_textures.py`, `export_package.py`; locked `animation_root_export.py` for export-root correction.

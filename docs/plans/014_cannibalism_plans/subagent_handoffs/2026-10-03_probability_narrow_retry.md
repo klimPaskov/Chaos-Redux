@@ -78,6 +78,6 @@ When the probability route responds, rerun source-qualified inspect for this one
 
 Inputs read: `AGENTS.md`; `.agents/skills/chaos-redux-events/SKILL.md`; `.agents/skills/chaos-redux-subagents/SKILL.md`; `.agents/skills/chaos-redux-decisions-missions/SKILL.md`; `.agents/skills/chaos-redux-mtth/SKILL.md`; and the parent handoff `docs/plans/014_cannibalism_plans/subagent_handoffs/2026-10-03_event014_decision_probability_audit.md`.
 
-Offline references read directly: `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md` lines 85-103 and 361-374; `paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md` lines 26-34; installed `common/decisions/_documentation.md` lines 18-22; and installed `documentation/triggers_documentation.md` lines 3835-3842. Local SHA-256 digests are in `evidence/source_revisions.json`.
+Offline references read directly: `paradox_wiki/decision_modding.md` lines 85-103 and 361-374; `paradox_wiki/ai_modding.md` lines 26-34; installed `common/decisions/_documentation.md` lines 18-22; and installed `documentation/triggers_documentation.md` lines 3835-3842. Local SHA-256 digests are in `evidence/source_revisions.json`.
 
 Completed: focused source trace, preserved-baseline block comparison, MCP route/schema observation, and this bounded handoff. Blocked: current inspect/evaluate/sweep/render results, source-qualified MCP revision, typed scenario bindings, eligible candidate proof, rank/probability results, and repetition or campaign evidence. No balance target was chosen and no gameplay source was changed.

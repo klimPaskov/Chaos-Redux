@@ -102,12 +102,12 @@ Current escrow documentation is `common/scripted_effects/cbrn_scripted_effects.m
 
 ## Source evidence and limits
 
-- Offline `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md:270–280`: complete effect starts on selection and `days_re_enable` delays reappearance after taken.
+- Offline `paradox_wiki/decision_modding.md:270–280`: complete effect starts on selection and `days_re_enable` delays reappearance after taken.
 - Same source lines 337–355: native timer/modifier lifecycle and distinct cancellation callback.
 - Same source lines 584–586: state targeting uses FROM as the state scope.
-- Offline `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md:118–125`: state flag equivalence and targeted flag support for `@ROOT`.
+- Offline `paradox_wiki/data_structures.md:118–125`: state flag equivalence and targeted flag support for `@ROOT`.
 - Same source lines 303–305 and 437–442: local event target lifetime, outer-created temporary helper outputs, and unscoped temporary storage.
-- Offline `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md:4683–4695`, `Triggers - Hearts of Iron 4 Wiki.md:2359–2371`, and `Localisation - Hearts of Iron 4 Wiki.md:656–681`: helper definitions and temporary values in scripted-localisation trigger blocks.
+- Offline `paradox_wiki/effects.md:4683–4695`, `triggers.md:2359–2371`, and `localisation.md:656–681`: helper definitions and temporary values in scripted-localisation trigger blocks.
 - Installed `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md:216–245` and `common/script_constants/documentation.md`: shared constants schema and explicit support limitation.
 - Installed `documentation/effects_documentation.md:6496–6503`, `7716–7723`, and `7820–7839`: event-target, STATE flag, and temporary-variable commands.
 - Vanilla `common/decisions/_generic_decisions.txt:155–181` under the installed game: timed decision with static civilian factory modifier.

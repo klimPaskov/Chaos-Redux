@@ -33,7 +33,7 @@ The added paragraph addresses popup timeout, stale option availability, click-ti
 The existing Event 19 affirmative-first pattern is not a general safe-confirmation precedent, and its identifier and context were excluded from the skill.
 
 Read the local offline reference directly at:
-C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\paradox_wiki\Event modding - Hearts of Iron 4 Wiki.md.
+C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\paradox_wiki\event_modding.md.
 Options section, lines 151-163, especially line 157, documents option visibility being determined at firing.
 Line 186 documents native first-option timeout selection with a default of 13 days.
 Verified SHA-256 revision: 96327b896298420d84058394a44ed08be7eb518726b8f207b392fea71f05d43d.

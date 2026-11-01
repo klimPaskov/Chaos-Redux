@@ -20,11 +20,11 @@ Required references read before opening/editing focus files:
 - `.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
-- `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Effect - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/national_focus_modding.md`
+- `paradox_wiki/effects.md`
+- `paradox_wiki/triggers.md`
+- `paradox_wiki/data_structures.md`
+- `paradox_wiki/localisation.md`
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/focus_inlay_windows/documentation.md`

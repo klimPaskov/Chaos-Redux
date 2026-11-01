@@ -100,7 +100,7 @@ trigger = { humanitarian_cost_convoy_heavy_is_affordable = yes }
 
 The inclusive source precedent is `migration_reception_preparation_triggers.txt:4-10`.
 Installed `documentation/triggers_documentation.md:3073-3081,3835-3842,3957-3966,4547-4554` documents the country-scoped native readers.
-Offline `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md:2359-2400` documents Boolean scripted-trigger calls.
+Offline `paradox_wiki/triggers.md:2359-2400` documents Boolean scripted-trigger calls.
 Installed `documentation/script_concept_documentation.md:216-245` and `common/script_constants/documentation.md` govern the central table schema and field support.
 Exact source paths, revisions, case results and outstanding MCP/native gates are recorded in [the implementation handoff](../../docs/plans/famine_and_migration_system_plans/subagent_handoffs/legacy_cost_core_implementation_20261003.md).
 Parsed-source reserve tests do not establish native equipment aggregation, field-specific constant parsing, click-time revalidation or AI willingness.

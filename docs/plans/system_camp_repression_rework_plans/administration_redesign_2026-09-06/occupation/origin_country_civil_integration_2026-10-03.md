@@ -127,7 +127,7 @@ Successful revision-bound `hoi4.reference_read` sections:
 - Installed `common/doctrines/grand_doctrines/_documentation.md` 96–107, scripted-effect bonus example, revision `5ff029facf7fa8e8139d3ee33209329483f241e0241b0b568f687ca4ac2b43f0`.
 
 The limited `add_tech_bonus` search returned installed sources; it did not establish offline-wiki coverage.
-The pertinent offline sections were read directly: `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md` 1931–1955 (`add_tech_bonus`) and `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md` 881–903 (`has_tech_bonus`).
+The pertinent offline sections were read directly: `paradox_wiki/effects.md` 1931–1955 (`add_tech_bonus`) and `paradox_wiki/triggers.md` 881–903 (`has_tech_bonus`).
 Installed `documentation/triggers_documentation.md` 4891–4904 supplies the country category/technology bonus gate.
 Vanilla precedent `common/scripted_effects/DEN_scripted_effects.txt` 2478–2485 uses the same named bonus/strength/uses/category structure.
 Their current SHA256 revisions and exact read spans are retained in the integration manifest.

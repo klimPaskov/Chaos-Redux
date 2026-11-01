@@ -325,7 +325,7 @@ Post-repair decision lint was attempted against `common/decisions/famine_migrati
 
 ## Evidence, blockers, and unsupported analysis
 
-The required offline wiki and vanilla documentation were consulted, including `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`, `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md`, `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md`, `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md`, and the vanilla `documentation/effects_documentation.md`, `documentation/triggers_documentation.md`, `documentation/script_concept_documentation.md`, `documentation/dynamic_variables_documentation.md`, and `common/script_constants/documentation.md`.
+The required offline wiki and vanilla documentation were consulted, including `paradox_wiki/data_structures.md`, `paradox_wiki/decision_modding.md`, `paradox_wiki/triggers.md`, `paradox_wiki/effects.md`, `paradox_wiki/scopes.md`, and the vanilla `documentation/effects_documentation.md`, `documentation/triggers_documentation.md`, `documentation/script_concept_documentation.md`, `documentation/dynamic_variables_documentation.md`, and `common/script_constants/documentation.md`.
 
 The current source defect is visible in `common/decisions/famine_migration_decisions.txt:2004-2113`: `fm_negotiate_corridor` only proves an origin-side trapped crisis plus some enemy neighbor, accepts any other country, debits `relief_quarter` in `remove_effect`, and arms a mission without a durable exact front/counterpart or acceptance response.
 

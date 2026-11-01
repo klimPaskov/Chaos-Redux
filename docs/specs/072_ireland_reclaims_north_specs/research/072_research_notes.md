@@ -28,7 +28,7 @@ This is a pinned observed revision, not a claim that the implementation checkout
 | R05 | Formable state-puzzle README under the decisions skill | Substantial sections, full coverage not proven | Exact-state geometry, one helper and category attachment requirements |
 | R06 | Formable universal_state_registry_workflow.md | Full file | Canonical geometry, archived producer caveat, current runtime generator and evidence gates |
 | R07 | Formable category_attachment_audit.md | Full file | Strict category enumeration and actual generated block linkage |
-| R08 | paradox_wiki/Effects - Hearts of Iron 4 Wiki.md | Introductory contents only | Identified offline snapshot, not evidence for war-effect behavior |
+| R08 | paradox_wiki/effects.md | Introductory contents only | Identified offline snapshot, not evidence for war-effect behavior |
 | R09 | Guessed scripted-GUI references/visual-review.md path | Returned 404 | Not read, current actual reference path remains to be resolved |
 | R10 | Repository root, search results and offline wiki directory | Partial listings and search snippets | Discovery only, no claim of complete repository inspection |
 

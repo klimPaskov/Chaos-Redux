@@ -14,7 +14,7 @@ Every file below independently passes the legacy one-level BGRA contract: `DDS `
 
 The matching installed-vanilla full-portrait references were inspected at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/contact_sheet.png` and `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/contact_sheet.png`. The separate `65x67` advisor references were also inspected at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/advisors/contact_sheet.png`; none of these fourteen files has an authorized dossier-card consumer.
 
-The portrait/gfx syntax and consumer rules were checked against `paradox_wiki/Portrait modding - Hearts of Iron 4 Wiki.md`, `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`, `paradox_wiki/Character modding - Hearts of Iron 4 Wiki.md`, the required core offline wiki pages, and the installed vanilla `documentation/effects_documentation.md` `set_portraits` and portrait-effect entries.
+The portrait/gfx syntax and consumer rules were checked against `paradox_wiki/portrait_modding.md`, `paradox_wiki/graphical_asset_modding.md`, `paradox_wiki/character_modding.md`, the required core offline wiki pages, and the installed vanilla `documentation/effects_documentation.md` `set_portraits` and portrait-effect entries.
 
 ## Supplied DDS evidence and exact-consumer result
 

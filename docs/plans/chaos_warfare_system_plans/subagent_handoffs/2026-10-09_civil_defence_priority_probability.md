@@ -128,7 +128,7 @@ Because the adapter discovered no weighted surface, this review proves no rank r
 
 The current AI strategy file is the sole weighted consumer source captured for this task. Snapshotting its bytes does not freeze every scripted helper dependency; the four named before snapshots are preserved, and no old whole-workspace helper closure was reconstructed.
 
-Offline semantics were read from `paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md:77-110, 768-771` and installed `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/ai_strategy/_documentation.md:85-90, 473-514`; their raw SHA-256 values and the local-reference route limitation are in `reference_evidence.json`.
+Offline semantics were read from `paradox_wiki/ai_modding.md:77-110, 768-771` and installed `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/ai_strategy/_documentation.md:85-90, 473-514`; their raw SHA-256 values and the local-reference route limitation are in `reference_evidence.json`.
 
 The first reference-context request exceeded the tool’s 160-character question limit; a retry for the same reference-context overlength failure had already been used in the shared earlier audit, so this audit read the identified local wiki and installed documentation files directly instead of retrying that route.
 

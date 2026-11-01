@@ -281,8 +281,8 @@ Commercial film/game music, ordinary streaming or YouTube uploads without distri
 
 The required offline references were consulted before this handoff:
 
-- `paradox_wiki/Music modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Sound modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/music_modding.md`
+- `paradox_wiki/sound_modding.md`
 - the core offline pages required by `AGENTS.md`, including Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, and AI modding
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, including `play_song`, `scoped_play_song`, and `scoped_sound_effect`
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/console_commands_documentation.md`, Audio entries

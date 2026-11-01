@@ -18,7 +18,7 @@ The parent also removed a semicolon from the terminal category description and k
 
 The parent read the decision's custom-cost condition and complete-effect payments at `common/decisions/031_random_terror_decisions.txt`, depot repair, including the Authority debit to `random_terror_tuning.actor_supply_depot_gain`.
 All three displayed constants now match those payments.
-Offline `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`, lines 308–340, documents base, blocked and tooltip custom-cost localisation.
+Offline `paradox_wiki/decision_modding.md`, lines 308–340, documents base, blocked and tooltip custom-cost localisation.
 Installed `common/decisions/_documentation.md`, lines 18–45, supplies the available/targeted-decision reference used by the audit.
 The auditor's complete evidence and broader unresolved cost findings remain in `031_decision_variable_and_transaction_audit_20261003.md`.
 This is source presentation coverage, not a rendered layout or proof of native click-time affordability.

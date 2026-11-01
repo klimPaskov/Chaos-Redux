@@ -84,7 +84,7 @@ Localisation context and Script Constants search calls returned no result during
 A bounded source lookup for `sov_emergency_famine_relief` returned no result within 20 seconds.
 Direct local sections were read as the permitted reference fallback, without claiming MCP reference coverage.
 
-- `paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md:65-91`, physical-line syntax and UTF-8 BOM.
+- `paradox_wiki/localisation.md:65-91`, physical-line syntax and UTF-8 BOM.
 - The same page `:184-214`, numeric formatting, and `:221-244`, sprite icon tokens.
 - Wiki file SHA-256: `1a8f72362a34b4bb653186746b9fae0b98e463205cb02f12ccf2c3d9ccd3a064`.
 - Installed `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md:216-244`, Script Constants and scoped-variable access.

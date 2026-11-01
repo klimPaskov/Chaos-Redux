@@ -14,7 +14,7 @@ The dormant Banat/AXX, Epirus/BBX, and Thrace/BAX decision sections in `common\d
 
 The required repository instructions and the `chaos-redux-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents` skills were reviewed before the audit.
 
-The relevant offline references were `paradox_wiki\Scopes - Hearts of Iron 4 Wiki.md:253,257-264,314-315` and `paradox_wiki\Decision modding - Hearts of Iron 4 Wiki.md:81-105,337-340,451-463`.
+The relevant offline references were `paradox_wiki\scopes.md:253,257-264,314-315` and `paradox_wiki\decision_modding.md:81-105,337-340,451-463`.
 
 The vanilla documentation precedents were `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\documentation\triggers_documentation.md:1612-1617,5336-5343,5381-5385` and the vanilla `common\decisions\AFG.txt:107-111` `any_owned_state` control pattern.
 

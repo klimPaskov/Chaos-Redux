@@ -338,7 +338,7 @@ The scheduled delayed stages are declared in the fixture's sidecar contract rath
 These limitations were not hidden by editing the fixture.
 The complete registered seven-row catalog and selected queues remain declared, while the global active event pool and external timing factors remain incomplete.
 
-Offline variable-targeting review used `paradox_wiki\Data structures - Hearts of Iron 4 Wiki.md:551`, which explicitly covers temporary variables, integer targets, and `@var:` targeting.
+Offline variable-targeting review used `paradox_wiki\data_structures.md:551`, which explicitly covers temporary variables, integer targets, and `@var:` targeting.
 Installed documentation sections read were `effects_documentation.md:2773-2781` (`clear_variable`), `4279-4294` (`for_each_loop` and its temporary current-value binding), `7888-7906` (`set_variable`), and `triggers_documentation.md:5006-5013` (`has_variable` scope existence).
 The triggers-documentation SHA-256 is `7D27ED77DADAF3A213A4B3E2C624BF9C02DAE495317ABE8EEE833B27C2D1DE29`.
 This source/reference review does not prove the new receipt's engine lifecycle.
@@ -389,7 +389,7 @@ The earlier after logic hash `21004680401DDCF58118D7DB87502FE4FF719266E610205283
 The original before logic remains `433362223952AE687FA98F87176167D7931B7EB4D930236EAB3A8A4247A4C644`.
 
 Current `chaosx_logic_effects.txt:1136-1138` declares `event_cluster_effective_pacing_type` with the repeatable default and `event_cluster_acid_rain_pacing_row_index` with the negative-one default before calling `event_cluster_get_effective_pacing_type`.
-This matches the helper-output persistence contract described in `paradox_wiki\Data structures - Hearts of Iron 4 Wiki.md:437-442`, especially line `440`: temporary variables declared before a scripted helper are inherited and can be modified within that helper.
+This matches the helper-output persistence contract described in `paradox_wiki\data_structures.md:437-442`, especially line `440`: temporary variables declared before a scripted helper are inherited and can be modified within that helper.
 Installed `effects_documentation.md:7820-7838` was also read for the supported `set_temp_variable` form.
 The caller declarations use existing categorical constants and add no pacing tuning value.
 The delayed33-only receipt guard and finalization/queue-clearing cleanup are unchanged in cluster source hash `D8211DA66BB429A5C00D2C51EEFDC462D36D8A210BDE1BC3DF2D66F8DC25BDC2`.

@@ -19,7 +19,7 @@ No source edit was made. The reported explanatory-text overlap is reproducible i
 - `common/scripted_guis/006_independence_wave_scripted_gui.txt:27-60` sets one tab flag and clears the other four on every tab click.
 - `common/scripted_guis/006_independence_wave_scripted_gui.txt:73-87` exposes the Government panel only when no other tab flag is set and exposes each other panel only for its own tab flag.
 - `interface/006_independence_wave.gfx:67,70,73,76` are the four animated families with the known adapter-only `GUI_ANIMATION_STATIC_FALLBACK_MISSING` warnings; static siblings remain present at lines 68, 71, 74, and 77.
-- The offline `Interface modding - Hearts of Iron 4 Wiki.md` documents fixed-position text boxes, `maxWidth`, `maxHeight`, `format`, and `fixedsize`; the offline `Scripted GUI modding - Hearts of Iron 4 Wiki.md` documents per-element scripted-GUI visibility and independent decision-category windows.
+- The offline `interface_modding.md` documents fixed-position text boxes, `maxWidth`, `maxHeight`, `format`, and `fixedsize`; the offline `scripted_gui_modding.md` documents per-element scripted-GUI visibility and independent decision-category windows.
 - Vanilla `interface/AST_cabinet_trust_scripted_gui.gui` plus `common/scripted_guis/AST_cabinet_trust_scripted_gui.txt` provide the exact `context_type = decision_category` and `window_name` precedent.
 - Vanilla `interface/RAJ_eic_tax_fraud.gui` plus `common/scripted_guis/RAJ_tax_fraud_scripted_gui.txt` provide the matching fixed textbox and `<element>_visible` trigger precedent.
 

@@ -280,12 +280,12 @@ No web Paradox wiki access was used.
 
 | Source and line span read | Rule supported | Limit |
 | --- | --- | --- |
-| `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md:253-269`, `811-845` | ROOT remains native, THIS is current scope, PREV follows actual scope nesting, event targets are usable scopes | PREV depth must be proved for each helper call chain. |
-| `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md:263-327`, `425-459` | Regular/global event-target lifetime, country pointer variables, normal variables scoped, temporary variables unscoped, `event_target:name.variable` access, `var:` scope entry | Does not prove runtime correctness of this coupled Event35 closure. |
-| `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md:25-35`, `180-205` | Recipient ROOT, previous ROOT becomes FROM, regular targets carried, immediate versus option behavior, effect-based event firing | Instant firing wording does not establish sender-side synchronous return ordering. |
-| `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md:4683-4697` | Direct scripted-effect invocation with `= yes` | No named-argument function API or event-return guarantee. |
-| `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md:571-602`, `1840-1847` | Scoped variable comparisons and country pointers for state ownership/control/core checks | Rejected or unsupported argument fields still need installed validation. |
-| `paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md:531-536`, Data structures line 301 | Scoped namespaces and event-target names without `event_target:` in localisation | No localisation or GUI layout change is proposed. |
+| `paradox_wiki/scopes.md:253-269`, `811-845` | ROOT remains native, THIS is current scope, PREV follows actual scope nesting, event targets are usable scopes | PREV depth must be proved for each helper call chain. |
+| `paradox_wiki/data_structures.md:263-327`, `425-459` | Regular/global event-target lifetime, country pointer variables, normal variables scoped, temporary variables unscoped, `event_target:name.variable` access, `var:` scope entry | Does not prove runtime correctness of this coupled Event35 closure. |
+| `paradox_wiki/event_modding.md:25-35`, `180-205` | Recipient ROOT, previous ROOT becomes FROM, regular targets carried, immediate versus option behavior, effect-based event firing | Instant firing wording does not establish sender-side synchronous return ordering. |
+| `paradox_wiki/effects.md:4683-4697` | Direct scripted-effect invocation with `= yes` | No named-argument function API or event-return guarantee. |
+| `paradox_wiki/triggers.md:571-602`, `1840-1847` | Scoped variable comparisons and country pointers for state ownership/control/core checks | Rejected or unsupported argument fields still need installed validation. |
+| `paradox_wiki/localisation.md:531-536`, Data structures line 301 | Scoped namespaces and event-target names without `event_target:` in localisation | No localisation or GUI layout change is proposed. |
 | Installed `documentation/effects_documentation.md:2943-2966` | `country_event` COUNTRY scope and optional scheduling fields | No documented guarantee that the sending block's next statement reads completed recipient outputs. |
 | Installed `documentation/effects_documentation.md:6496-6512`, `2733-2749` | Save regular/global targets and clear global targets | No regular-target clear effect established. |
 | Installed `documentation/effects_documentation.md:7888-7907`, `7820-7839` | Normal and temporary variable assignment | Specific scoped access examples require the precedents below. |

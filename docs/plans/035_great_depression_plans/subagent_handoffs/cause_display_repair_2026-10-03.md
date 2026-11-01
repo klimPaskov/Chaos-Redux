@@ -31,7 +31,7 @@ English localisation SHA-256 after the display repair: `17296885CFBCD17C568926B6
 
 ## References and live evidence boundary
 
-Offline `paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md`, lines 655 to 696, and installed `common/scripted_localisation/00_scripted_localisation.txt`, lines 1 to 36, establish first-matching selector and fallback behavior.
+Offline `paradox_wiki/localisation.md`, lines 655 to 696, and installed `common/scripted_localisation/00_scripted_localisation.txt`, lines 1 to 36, establish first-matching selector and fallback behavior.
 The exact reference hashes are retained in `cost_contract_repair_2026-10-03.md`.
 The supplied cycle-one log is `docs/testing/live_qa/20261003_full_playtest/logs/cycle1/error.log`, SHA-256 `EDB523793E8C7EA1C79FF53546B1CFE5789C498217160191C9B022F09A85BAB3`.
 It has no Event 35 identifier or path matches, and the orchestrator reported that the main menu loaded.

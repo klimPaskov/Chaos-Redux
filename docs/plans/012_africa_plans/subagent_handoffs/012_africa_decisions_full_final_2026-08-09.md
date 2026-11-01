@@ -38,7 +38,7 @@ Recommended owner fix: add a named natural-disaster target-roster cap and a `ROO
 
 The four shared missions use `days_mission_timeout = FROM.africa_active_action_duration_days` (`common/decisions/012_africa_decisions.txt:488-566`).
 
-The offline Paradox wiki permits scoped variable references and dual scopes (`paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, Event targets and scoped variables sections), while installed vanilla documentation defines dynamic mission timeout fields (`C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/dynamic_variables_documentation.md:238-239`).
+The offline Paradox wiki permits scoped variable references and dual scopes (`paradox_wiki/data_structures.md`, Event targets and scoped variables sections), while installed vanilla documentation defines dynamic mission timeout fields (`C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/dynamic_variables_documentation.md:238-239`).
 
 Vanilla precedents found in `common/decisions/CHI_decisions.txt:5438,6454,6582` use country-prefixed variables or `var:` rather than `FROM.` in this field.
 

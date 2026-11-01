@@ -144,7 +144,7 @@ Read reference sections:
 | Same Data structures file, Event targets | 263-327 locally | same revision |
 | C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md, Timer upon selection | 337-356 | 7713b9bcee5f3818d63aafbd45d18e812a9173a7c59ab238384b57db60db6162 |
 | C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md, Temporary variable display | 729-792 | 1a8f72362a34b4bb653186746b9fae0b98e463205cb02f12ccf2c3d9ccd3a064 |
-| C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md | 254-266 locally | context revision18ef5249e4991f5427eca9ec4a2f66dd47f51e26a491c730adc622f1f5db1b49 |
+| C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/paradox_wiki/scopes.md | 254-266 locally | context revision18ef5249e4991f5427eca9ec4a2f66dd47f51e26a491c730adc622f1f5db1b49 |
 | C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/decisions/_documentation.md, native decision scopes | 1-46 locally | context revision5e7e686b5582f32c38d898d805e17171e88f3bfeee4a030deb1884f9726de019 |
 | C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md, every_controlled_state | 3800-3819 | 2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af |
 | Same effects documentation, set_country_flag / save_event_target_as | 6730-6738 / 6496-6504 | same revision |

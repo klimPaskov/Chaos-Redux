@@ -85,7 +85,7 @@ No free-unit, equipment-farming, war-goal, core, or cooldown exploit was introdu
 - Confirmed all four repaired conditions are present with their existing `independence_wave_decision_cost` constants and that no `check_variable` use remains for `army_experience`, `stability`, or `war_support` in the shared trigger file.
 - Enumerated core Event 006 callers for the three helpers to verify the repair covers the intended shared decision surfaces.
 - Ran `python -B .tools\audit_event6_gui_matrix.py`, which passed the Statehood Ledger semantic source matrix with five mutually exclusive tab contracts, existing frame cleanup coverage, and four static/animated sibling pairs.
-- Checked the implementation against `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md` for `has_army_experience`, `has_stability`, and `has_war_support`, plus vanilla `documentation/triggers_documentation.md` and vanilla decision documentation and precedent files.
+- Checked the implementation against `paradox_wiki/triggers.md` for `has_army_experience`, `has_stability`, and `has_war_support`, plus vanilla `documentation/triggers_documentation.md` and vanilla decision documentation and precedent files.
 
 Skipped meaningful validation: no Clausewitz runtime evaluation or state-specific GUI render was claimed because this was a source-only shared-trigger repair and no GUI scenario was supplied.
 

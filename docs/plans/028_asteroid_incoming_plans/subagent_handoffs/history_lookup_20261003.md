@@ -157,7 +157,7 @@ HOI4 was not launched.
 
 Read local references:
 
-- Offline `paradox_wiki\Data structures - Hearts of Iron 4 Wiki.md:1069-1088` documents zero-based arrays, `^num`, element existence before editing, and insertion shifting.
+- Offline `paradox_wiki\data_structures.md:1069-1088` documents zero-based arrays, `^num`, element existence before editing, and insertion shifting.
 - Its lines 1219-1220 and footnote at 1828 document the default loop ceiling.
 - Installed `documentation\effects_documentation.md:2278-2292` documents add_to_array and shifting insertion.
 - Installed lines 8187-8198 document subtraction from temporary variables.

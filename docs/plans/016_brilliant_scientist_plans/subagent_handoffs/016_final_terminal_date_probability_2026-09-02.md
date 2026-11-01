@@ -36,7 +36,7 @@ The source constants are at `common/script_constants/016_brilliant_scientist_sup
 - The scorer uses three independent threshold checks, so the intended duration contribution is 0 below 180, 2 from 180 through 364, 4 from 365 through 729, and 6 at 730 or above.
 - `minimum_score = 12` and `regional_minimum_score = 6` are unchanged context thresholds and are not selection probabilities.
 
-The relevant offline and vanilla references were consulted. Vanilla `documentation/dynamic_variables_documentation.md:977-997` defines `global.date` as a comparable date value and `global.num_days` as current total days. Offline `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md:959-960` documents encoded date values and the day-count variable. Vanilla `documentation/effects_documentation.md:7888-7907` and `:8203-8215` document `set_variable` and `subtract_from_variable` arithmetic. The terminal review identifies the same defect at `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_final_terminal_current_review_2026-09-02.md:86-107`.
+The relevant offline and vanilla references were consulted. Vanilla `documentation/dynamic_variables_documentation.md:977-997` defines `global.date` as a comparable date value and `global.num_days` as current total days. Offline `paradox_wiki/data_structures.md:959-960` documents encoded date values and the day-count variable. Vanilla `documentation/effects_documentation.md:7888-7907` and `:8203-8215` document `set_variable` and `subtract_from_variable` arithmetic. The terminal review identifies the same defect at `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_final_terminal_current_review_2026-09-02.md:86-107`.
 
 ## Mandatory MCP inspection
 

@@ -44,7 +44,7 @@ The relevant gate definitions are `great_depression_new_center_state_is_permitte
 
 The independent target weights are in `great_depression_independent_target_weight` at lines 1111-1138 of the constants file. The center score coefficients are in `great_depression_scaling` at lines 1179-1209.
 
-I read `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, Variable types, lines 435-442. Line 440 says temporary variables created in scripted effects or triggers may fail to remain visible to the caller, while a temporary variable initialized before the helper call carries through and is modified.
+I read `paradox_wiki/data_structures.md`, Variable types, lines 435-442. Line 440 says temporary variables created in scripted effects or triggers may fail to remain visible to the caller, while a temporary variable initialized before the helper call carries through and is modified.
 
 I read `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `set_temp_variable`, lines 7820-7826. The installed documentation defines the effect and its supported scope, but does not independently establish the scripted-helper return-lifetime behavior stated in the wiki.
 

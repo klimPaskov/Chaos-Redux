@@ -31,7 +31,7 @@ No other camp achievement blocks were changed. Localisation remained UTF-8 with 
 
 ## Reference evidence and route gap
 
-The offline wiki snapshot describes achievement `possible` and `happened` behavior and trigger evaluation in `paradox_wiki/Achievement modding - Hearts of Iron 4 Wiki.md:34-42`; country-flag trigger use is documented at `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md:643-669`; conditional `if`/`else_if` effect behavior is described at `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md:4456-4492`; and boolean flag-setting syntax is at `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md:897-921`.
+The offline wiki snapshot describes achievement `possible` and `happened` behavior and trigger evaluation in `paradox_wiki/achievement_modding.md:34-42`; country-flag trigger use is documented at `paradox_wiki/triggers.md:643-669`; conditional `if`/`else_if` effect behavior is described at `paradox_wiki/effects.md:4456-4492`; and boolean flag-setting syntax is at `paradox_wiki/effects.md:897-921`.
 
 The installed documentation confirms the `has_country_flag` country-scope trigger at `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md:3624-3636` and the country-scope `set_country_flag` effect at `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md:6730-6737`.
 

@@ -5,7 +5,7 @@
 - Explicit constraints: read-only except this report; no gameplay, workbook, CSV, or GUI edits; no game launch or desktop control; no web wiki; no `refresh = true`; no wide MCP queries. The parent owns shared framework work and a separate agent owns Event 006.
 - Files or ids requested: SCN-008, `triggerable_scenario_id.independence_wave`, `chaosx.triggerable_scenarios.8`, `.80`, `.81`, and the shared Liberation plan bridge.
 - Skills or docs read: `AGENTS.md`, `.agents/skills/chaos-redux-events/SKILL.md`, `.agents/skills/chaos-redux-subagents/SKILL.md`, `docs/systems/event_system/triggerable_scenarios.md`, `docs/events/006_independence_wave/systems/triggerable_scenario.md`, and `docs/plans/006_independence_wave_plans/agent_decisions_2026-10-04.md` (D9).
-- Reference sections read directly after connected reference requests did not return: `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md:27-35,198-217`, `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md:263-307`, `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md:260-263`, and installed `documentation/effects_documentation.md:2943-2967,6496-6503` under the vanilla game root.
+- Reference sections read directly after connected reference requests did not return: `paradox_wiki/event_modding.md:27-35,198-217`, `paradox_wiki/data_structures.md:263-307`, `paradox_wiki/scopes.md:260-263`, and installed `documentation/effects_documentation.md:2943-2967,6496-6503` under the vanilla game root.
 
 ## Primary findings
 
@@ -47,9 +47,9 @@ The nearest repair pattern for the prior failure is package-owned: ordinary cand
 
 ## Vanilla or reference precedents
 
-`paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md:27-35` documents the event ROOT as the receiving country and the event sender as FROM; lines 198-217 describe delayed `country_event` invocation and that the event trigger is checked when it fires. This matches the `.8` country-scoped barrier and its flag recheck.
+`paradox_wiki/event_modding.md:27-35` documents the event ROOT as the receiving country and the event sender as FROM; lines 198-217 describe delayed `country_event` invocation and that the event trigger is checked when it fires. This matches the `.8` country-scoped barrier and its flag recheck.
 
-`paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md:260-263` defines ROOT, THIS, and PREV; `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md:303-307` documents regular event-target lifetime and inheritance into events fired by an effect chain.
+`paradox_wiki/scopes.md:260-263` defines ROOT, THIS, and PREV; `paradox_wiki/data_structures.md:303-307` documents regular event-target lifetime and inheritance into events fired by an effect chain.
 
 Installed `documentation/effects_documentation.md:2943-2967` defines `country_event` as a country-scope effect with optional delay, and `:6496-6503` documents `save_event_target_as` as valid in any scope. The offline wiki and installed documentation were read locally because the connected reference routes did not return results in this task.
 

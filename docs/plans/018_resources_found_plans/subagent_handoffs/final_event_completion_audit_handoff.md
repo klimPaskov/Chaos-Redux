@@ -23,19 +23,19 @@ The main audit read the complete instructions for `chaos-redux-events`, `chaos-r
 
 The required offline wiki snapshot was consulted, including:
 
-- `Data structures - Hearts of Iron 4 Wiki.md`
-- `Triggers - Hearts of Iron 4 Wiki.md`
-- `Effects - Hearts of Iron 4 Wiki.md`
-- `Modifiers - Hearts of Iron 4 Wiki.md`
-- `Localisation - Hearts of Iron 4 Wiki.md`
-- `Scopes - Hearts of Iron 4 Wiki.md`
-- `On actions - Hearts of Iron 4 Wiki.md`
-- `Event modding - Hearts of Iron 4 Wiki.md`
-- `Decision modding - Hearts of Iron 4 Wiki.md`
-- `Idea modding - Hearts of Iron 4 Wiki.md`
-- `AI modding - Hearts of Iron 4 Wiki.md`
-- `National focus modding - Hearts of Iron 4 Wiki.md`
-- `Country creation - Hearts of Iron 4 Wiki.md`
+- `data_structures.md`
+- `triggers.md`
+- `effects.md`
+- `modifiers.md`
+- `localisation.md`
+- `scopes.md`
+- `on_actions.md`
+- `event_modding.md`
+- `decision_modding.md`
+- `idea_modding.md`
+- `ai_modding.md`
+- `national_focus_modding.md`
+- `country_creation.md`
 
 Vanilla documentation and live vanilla precedents were consulted in parallel, including `effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`, `dynamic_variables_documentation.md`, and `common/script_constants/documentation.md`. Current dynamic-resource semantics were checked against `dynamic_variables_documentation.md`; Event 018's six-resource deficit/import/production scoring was not adjudicated from memory.
 

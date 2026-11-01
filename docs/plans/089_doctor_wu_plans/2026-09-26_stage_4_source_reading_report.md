@@ -49,20 +49,20 @@ These bounded reads cover medical investment and reservation entry points, the c
 
 | Repository snapshot page | Lines consulted |
 | --- | --- |
-| `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` | 72–109 |
-| `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md` | 64–95 |
-| `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md` | 83–108 |
-| `paradox_wiki/Modifiers - Hearts of Iron 4 Wiki.md` | 37–69 |
-| `paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md` | 48–73 |
-| `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md` | 28–65 |
-| `paradox_wiki/On actions - Hearts of Iron 4 Wiki.md` | 15–54 |
-| `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md` | 30–62 |
-| `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md` | 65–103 |
-| `paradox_wiki/Idea modding - Hearts of Iron 4 Wiki.md` | 21–55 |
-| `paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md` | 1–43 |
-| `paradox_wiki/Unit modding - Hearts of Iron 4 Wiki.md` | 47–125 |
-| `paradox_wiki/Equipment modding - Hearts of Iron 4 Wiki.md` | 29–67 |
-| `paradox_wiki/Technology modding - Hearts of Iron 4 Wiki.md` | 81–125 |
+| `paradox_wiki/data_structures.md` | 72–109 |
+| `paradox_wiki/triggers.md` | 64–95 |
+| `paradox_wiki/effects.md` | 83–108 |
+| `paradox_wiki/modifiers.md` | 37–69 |
+| `paradox_wiki/localisation.md` | 48–73 |
+| `paradox_wiki/scopes.md` | 28–65 |
+| `paradox_wiki/on_actions.md` | 15–54 |
+| `paradox_wiki/event_modding.md` | 30–62 |
+| `paradox_wiki/decision_modding.md` | 65–103 |
+| `paradox_wiki/idea_modding.md` | 21–55 |
+| `paradox_wiki/ai_modding.md` | 1–43 |
+| `paradox_wiki/unit_modding.md` | 47–125 |
+| `paradox_wiki/equipment_modding.md` | 29–67 |
+| `paradox_wiki/technology_modding.md` | 81–125 |
 
 These pages were consulted through the repository's offline snapshot. They are bounded reference reads, not full-page reads. No web copy of the Paradox wiki replaced a supplied source. The ordinary decision, effect, scope, unit, and technology references inform proposed implementation boundaries but do not prove native behavior.
 

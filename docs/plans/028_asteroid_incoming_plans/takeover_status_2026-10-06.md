@@ -127,7 +127,7 @@ event chaosx.nr28.1 USA
 
 Before confirming, enable or disable evolutions 2801 and 2802 through Event 28 Details as the case requires.
 For low/600/800 cases replace the first Chaos value and load the base independently for each fire-once branch.
-Console `event` and `eval_effect` syntax is documented in offline `Console commands - Hearts of Iron 4 Wiki.md:169-170`; commands are QA setup, not observations made in this pass.
+Console `event` and `eval_effect` syntax is documented in offline `console_commands.md:169-170`; commands are QA setup, not observations made in this pass.
 Only for an explicit achievement-tracking fixture, clear the manual disqualifier after setup with `eval_effect clr_global_flag = asteroid_incoming_achievement_manual_disqualified`.
 Manual setup must not be mistaken for a legitimate achievement campaign.
 

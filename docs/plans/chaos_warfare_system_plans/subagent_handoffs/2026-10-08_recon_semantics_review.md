@@ -38,18 +38,18 @@ The factor may influence a command's units, but these sources do not prove fill 
 
 ### Documented
 
-Offline `paradox_wiki/Modifiers - Hearts of Iron 4 Wiki.md:973` labels `recon_factor` percentual.
+Offline `paradox_wiki/modifiers.md:973` labels `recon_factor` percentual.
 Installed `documentation/modifiers_documentation.md:4537-4541` recognizes the modifier, with army and defensive categories and one-decimal display precision, but states no accumulation equation.
 Installed `localisation/english/modifiers_l_english.yml:796-797` uses percentage formatting for `recon_factor_tt`.
 Together these establish the factor channel's intended percentage meaning, without establishing a multiplication layer for each source.
 
-Offline `paradox_wiki/Unit modding - Hearts of Iron 4 Wiki.md:308-318` lists `recon = 1` as reconnaissance among unit stats.
+Offline `paradox_wiki/unit_modding.md:308-318` lists `recon = 1` as reconnaissance among unit stats.
 Installed `common/units/equipment/_documentation.md:113-114` separately identifies equipment stat fields as base values before variant upgrades and modules.
 Installed `common/doctrines/grand_doctrines/_documentation.md:51-96` separates country modifiers, category/sub-unit stat bonuses, and `equipment_bonus` entries.
 Installed `documentation/effects_documentation.md:2391-2413` documents permanent subunit/category bonuses, but does not document reconnaissance arithmetic.
 An equipment archetype modifier, a category stat bonus, and a country factor must therefore retain their actual recipient channels rather than being combined solely because their labels say reconnaissance.
 
-Offline `paradox_wiki/Technology modding - Hearts of Iron 4 Wiki.md:94-122` documents category/sub-unit recipients and generically calls their modifiers multiplicative at line 105.
+Offline `paradox_wiki/technology_modding.md:94-122` documents category/sub-unit recipients and generically calls their modifiers multiplicative at line 105.
 It gives no reconnaissance-specific exception.
 That sentence is neither flat-point proof nor a recon-specific native aggregation formula.
 

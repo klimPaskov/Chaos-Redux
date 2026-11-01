@@ -6,7 +6,7 @@ Scope: only the malformed prerequisite declarations at the requested source loca
 
 ## Grammar basis
 
-The offline national-focus reference states that one `prerequisite` block containing multiple `focus =` entries is an OR, while multiple `prerequisite` blocks are AND (`paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md:234-240`). Vanilla uses the same form, for example `game:common/national_focus/abdacom_shared_branch.txt:591` and `game:common/national_focus/baltic_shared.txt:3124`.
+The offline national-focus reference states that one `prerequisite` block containing multiple `focus =` entries is an OR, while multiple `prerequisite` blocks are AND (`paradox_wiki/national_focus_modding.md:234-240`). Vanilla uses the same form, for example `game:common/national_focus/abdacom_shared_branch.txt:591` and `game:common/national_focus/baltic_shared.txt:3124`.
 
 The previous `prerequisite = { OR = { focus = ... } }` form was therefore replaced with one direct prerequisite block containing the same focus entries. The authored OR route meaning is preserved while the MCP focus parser can resolve the parent block.
 

@@ -51,7 +51,7 @@ Fully read before the final review correction or validation:
 - `C:\Users\klimp\.codex\skills\.system\skill-creator\scripts\quick_validate.py`
 
 Consulted the required offline wiki pages through their opening material and relevant introductory sections, without claiming a full read of the large engine references:
-`paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, `Triggers - Hearts of Iron 4 Wiki.md`, `Effects - Hearts of Iron 4 Wiki.md`, `Modifiers - Hearts of Iron 4 Wiki.md`, `Localisation - Hearts of Iron 4 Wiki.md`, `Scopes - Hearts of Iron 4 Wiki.md`, `On actions - Hearts of Iron 4 Wiki.md`, `Event modding - Hearts of Iron 4 Wiki.md`, `Decision modding - Hearts of Iron 4 Wiki.md`, `Idea modding - Hearts of Iron 4 Wiki.md`, and `AI modding - Hearts of Iron 4 Wiki.md`.
+`paradox_wiki/data_structures.md`, `triggers.md`, `effects.md`, `modifiers.md`, `localisation.md`, `scopes.md`, `on_actions.md`, `event_modding.md`, `decision_modding.md`, `idea_modding.md`, and `ai_modding.md`.
 All abbreviated wiki filenames in this sentence are under `paradox_wiki/`.
 Inspected the installed vanilla documentation directory and consulted the opening Script Concepts and Bindable Localization material in `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\documentation\script_concept_documentation.md`.
 No engine syntax or mechanics were changed.

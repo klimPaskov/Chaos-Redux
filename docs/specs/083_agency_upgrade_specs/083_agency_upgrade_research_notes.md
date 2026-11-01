@@ -34,7 +34,7 @@ The relevant useful-scripted-effects entry says that `gain_random_agency_upgrade
 
 The full Effects file was fetched but its large response was truncated. Its introductory material, a variable-related window, and targeted intelligence, operative, and helper sections were read. Fetching it did not constitute reading its entire contents.
 
-**E4. Repository offline Modifiers snapshot, partially read.** `paradox_wiki/Modifiers - Hearts of Iron 4 Wiki.md`, captured 19 September 2026.
+**E4. Repository offline Modifiers snapshot, partially read.** `paradox_wiki/modifiers.md`, captured 19 September 2026.
 
 Source: `https://github.com/klimPaskov/Chaos-Redux/blob/879b3007d3b6bf75c726c11635473fccda45c569/paradox_wiki/Modifiers%20-%20Hearts%20of%20Iron%204%20Wiki.md`
 

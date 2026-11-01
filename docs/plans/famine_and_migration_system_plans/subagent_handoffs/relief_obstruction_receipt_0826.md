@@ -73,7 +73,7 @@ The corridor route generation is a route identity and cannot substitute for the 
 
 There is no durable, replay-safe obstruction receipt surviving that cleanup boundary.
 
-The documented event-target rules in `paradox_wiki\Data structures - Hearts of Iron 4 Wiki.md:254-312` and `paradox_wiki\Scopes - Hearts of Iron 4 Wiki.md:231-264` confirm that regular targets are chain-lifetime pointers and global targets would require explicit cleanup.
+The documented event-target rules in `paradox_wiki\data_structures.md:254-312` and `paradox_wiki\scopes.md:231-264` confirm that regular targets are chain-lifetime pointers and global targets would require explicit cleanup.
 
 The current lifecycle therefore cannot safely reconstruct a responsible actor or exact affected people after rejection or expiry.
 
@@ -141,7 +141,7 @@ Parent-owned follow-up is to recover a concrete relief transaction owner or keep
 
 Required repository guidance and skills used: `AGENTS.md`, `.agents\skills\chaos-redux-state-ledgers\SKILL.md`, and `.agents\skills\chaos-redux-subagents\SKILL.md`.
 
-Offline references consulted: `paradox_wiki\Data structures - Hearts of Iron 4 Wiki.md`, `Effects - Hearts of Iron 4 Wiki.md`, `Triggers - Hearts of Iron 4 Wiki.md`, `Scopes - Hearts of Iron 4 Wiki.md`, `Modifiers - Hearts of Iron 4 Wiki.md`, `Localisation - Hearts of Iron 4 Wiki.md`, `On actions - Hearts of Iron 4 Wiki.md`, `Event modding - Hearts of Iron 4 Wiki.md`, `Decision modding - Hearts of Iron 4 Wiki.md`, `Idea modding - Hearts of Iron 4 Wiki.md`, and `AI modding - Hearts of Iron 4 Wiki.md`.
+Offline references consulted: `paradox_wiki\data_structures.md`, `effects.md`, `triggers.md`, `scopes.md`, `modifiers.md`, `localisation.md`, `on_actions.md`, `event_modding.md`, `decision_modding.md`, `idea_modding.md`, and `ai_modding.md`.
 
 Vanilla references consulted: `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\documentation\effects_documentation.md`, `triggers_documentation.md`, `script_concept_documentation.md`, and `common\script_constants\documentation.md`.
 

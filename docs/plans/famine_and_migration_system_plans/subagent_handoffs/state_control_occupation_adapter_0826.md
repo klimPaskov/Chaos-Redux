@@ -44,7 +44,7 @@ The existing behavior remains the correct fail-closed behavior: the hook invalid
 
 ## Engine and vanilla evidence
 
-The offline `On actions - Hearts of Iron 4 Wiki.md` records `on_state_control_changed` as `ROOT` new controller, `FROM` old controller, and `FROM.FROM` state ID.
+The offline `on_actions.md` records `on_state_control_changed` as `ROOT` new controller, `FROM` old controller, and `FROM.FROM` state ID.
 
 The vanilla `common/on_actions/00_on_actions.txt:5075-5076` carries the same scope comments.
 

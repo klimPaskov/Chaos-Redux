@@ -43,7 +43,7 @@ This helper is not a payment quote cache or a dynamic named-argument API.
 The existing bounded projection precedent is `migration_decision_phase_effects.txt:6-17`.
 Installed `documentation/script_concept_documentation.md:216-245` documents shared fixed-point constants and scoped-variable support.
 Installed `common/script_constants/documentation.md` documents the required first-entry schema.
-Offline `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md:435-449` distinguishes normal scoped variables from temporary storage.
-Offline `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md:4683-4715` documents `= yes` scripted-effect calls.
+Offline `paradox_wiki/data_structures.md:435-449` distinguishes normal scoped variables from temporary storage.
+Offline `paradox_wiki/effects.md:4683-4715` documents `= yes` scripted-effect calls.
 The implementation handoff records source-level tests and the outstanding native parser, MCP and probability comparison limits.
 No assets or icons are introduced, and the existing humanitarian cost texticons remain parent-owned consumers.

@@ -140,7 +140,7 @@ Raw exported quaternion continuity refusals were addressed by the maintained sig
 The movement findings remain unresolved.
 The widened vanilla death review first hit a UTF-8 BOM parsing error; the corrected read uses `utf-8-sig` and reuses the already imported reference without replaying the import.
 
-Local references read include offline `Entity modding - Hearts of Iron 4 Wiki.md` lines 24–183, the Graphical asset snapshot introduction, installed `gfx/entities/units_infantry.asset` lines 10–55, and installed `gfx/FX/pdxmesh.shader` lines 156–166, 236, and 279–307.
+Local references read include offline `entity_modding.md` lines 24–183, the Graphical asset snapshot introduction, installed `gfx/entities/units_infantry.asset` lines 10–55, and installed `gfx/FX/pdxmesh.shader` lines 156–166, 236, and 279–307.
 The installed documentation search found no dedicated skeleton/mesh format documentation; the installed shader and locked importer/exporter supplied the relevant concrete source rules.
 Source hashes and the line spans are retained in `evidence/models_1018/reference_citations.json`.
 Skills used: `chaos-redux-3d-model-pipeline` with its start, Blender/export, audio/counter, and unit-rebuild references; `chaos-redux-event-assets` for the preserved texture/DDS conventions.

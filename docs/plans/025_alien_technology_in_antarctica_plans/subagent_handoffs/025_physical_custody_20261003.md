@@ -31,7 +31,7 @@ The pre-existing 25 recovery/lifecycle/evolution callback tests must also remain
 The test interpreter explicitly does not emulate scheduling, rendering, diplomacy, external technologies, multiplayer, or save/reload.
 
 Installed `documentation/effects_documentation.md` meta_effect lines 4833–4852 and for-loop documentation previously retained by the parent support the bounded substitution/loop pattern.
-Offline `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` targeted flags lines 112–125 and global event targets lines 267–285 were read directly.
+Offline `paradox_wiki/data_structures.md` targeted flags lines 112–125 and global event targets lines 267–285 were read directly.
 The vanilla `common/scripted_effects/CZE_scripted_effects.txt` meta-effect examples at lines 442–470 were inspected as structure precedents.
 Source SHA-256 revisions: effects documentation `2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af`; Data structures wiki `62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4`; vanilla CZE effects `cb5ee5136b5759efe4caaaace23189964fce57af18558d0ac535336ea93319c6`.
 MCP reference_read of the exact meta-effect section timed out after 600 seconds; the narrower four-line retry also timed out after 600 seconds.

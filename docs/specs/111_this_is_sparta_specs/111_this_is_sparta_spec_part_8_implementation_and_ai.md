@@ -436,7 +436,7 @@ The targeted read register and limitations are recorded separately in the source
 
 - R1: docs/spreadsheets/chaos_redux_events_catalog.csv, lines 228–242, and common/scripted_effects/chaosx_logic_effects.txt, lines 220–345.
 - R2: docs/formables/state_registry/state_registry_index.json, metadata lines 1–46 and Peloponnese record lines 8205–8246.
-- R3: paradox_wiki/State modding - Hearts of Iron 4 Wiki.md, lines 1–150, and paradox_wiki/Effects - Hearts of Iron 4 Wiki.md, lines 1033–1077 and 1225–1250.
+- R3: paradox_wiki/state_modding.md, lines 1–150, and paradox_wiki/effects.md, lines 1033–1077 and 1225–1250.
 - R4: docs/formables/state_registry/README.md, lines 1–67, and docs/formables/formable_state_puzzle_system.md, lines 1–136.
 - R5: common/country_tags/chaosx_countries.txt, lines 1–44, and common/country_tags/006_independence_wave_countries.txt, lines 1–118.
 - R6: events/019_infantry_spawn.txt, lines 1–180, and common/scripted_effects/019_infantry_spawn_generation_effects.txt, lines 2235–2355.

@@ -49,7 +49,7 @@ The offline cosmetic-tag reference warns that a generic cosmetic flag does not o
 
 ## Validation performed
 
-- Read `paradox_wiki/Cosmetic tag modding - Hearts of Iron 4 Wiki.md` and the vanilla `effects_documentation.md` entries for `set_cosmetic_tag` and `drop_cosmetic_tag` before editing.
+- Read `paradox_wiki/cosmetic_tag_modding.md` and the vanilla `effects_documentation.md` entries for `set_cosmetic_tag` and `drop_cosmetic_tag` before editing.
 - Confirmed `KRG_SCIENTIFIC_REPUBLIC` is defined in `common/countries/016_brilliant_scientist_cosmetics.txt`.
 - Confirmed `KRG_SCIENTIFIC_REPUBLIC.tga` exists in `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/`.
 - Confirmed generic, `_DEF`, `_ADJ`, and democratic localisation keys exist in the UTF-8-BOM Event 016 English localisation file.

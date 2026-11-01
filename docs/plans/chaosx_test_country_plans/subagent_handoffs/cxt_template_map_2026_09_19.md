@@ -57,7 +57,7 @@ The CXT static baseline includes 18 CBRN/HQ support IDs, 18 chemical-tank varian
 
 ## Vanilla or reference precedents
 
-- `paradox_wiki/Division modding - Hearts of Iron 4 Wiki.md:47-72` establishes that `regiments` are combat battalions, `support` is for support companies, support IDs must have `group = support`, and a template needs at least one valid combat regiment to avoid a support-only/empty formation.
+- `paradox_wiki/division_modding.md:47-72` establishes that `regiments` are combat battalions, `support` is for support companies, support IDs must have `group = support`, and a template needs at least one valid combat regiment to avoid a support-only/empty formation.
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md:3278-3308` documents `create_unit`, including `count`, `prioritize_location`, and `country_score`. It supports replacing CXT's `capital_scope` concentration with an owned-state/province scoring strategy, subject to parent verification of the exact scope and selector used.
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md:2433-2452` documents `add_units_to_division_template` as a possible post-creation grouping/edit route, but direct explicit `division_template` blocks are clearer for CXT's fixed roster and easier to audit.
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md:2621,4905-4945` provides template existence and battalion-in-template checks for post-write validation.

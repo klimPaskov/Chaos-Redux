@@ -56,7 +56,7 @@ The parent installed the standalone Gulag icon, the 36-frame strip, and both 46x
 `@GULAG_NETWORK_ICON_FRAME` selects 36 in the existing building definition; `interface/zz_chaosx_building_strip.gfx` supplies one late 36-frame registration without editing the shared `countrystateview.gfx` override.
 The first 35 decoded cells remain pixel-identical; no building effects, costs, levels or gameplay setup changed.
 The offline Building modding Icon section, lines 135-152, documents matching `icon_frame`, strip art and `noOfFrames`; Character modding Sprite, lines 631-654, documents later ASCII-filename sprite precedence.
-Both local sections were read directly after `hoi4.reference_read` failed with `Transport closed`; exact source files are `paradox_wiki/Building modding - Hearts of Iron 4 Wiki.md` and `paradox_wiki/Character modding - Hearts of Iron 4 Wiki.md`.
+Both local sections were read directly after `hoi4.reference_read` failed with `Transport closed`; exact source files are `paradox_wiki/building_modding.md` and `paradox_wiki/character_modding.md`.
 Installed `common/buildings/00_buildings.txt`, lines 1-66, supplies the native building schema/comments and `icon_frame` precedents; no dedicated installed graphics/icon-frame documentation section was found.
 `hoi4.script_validate` for `common/buildings/chaosx_buildings.txt` also failed with `Transport closed`; no engine validation is claimed.
 The linked current group sheet is retained at `docs/assets/gfx_fix_2026-10/shared_chaosx_buildings/evidence/current_linked_sheet/`.

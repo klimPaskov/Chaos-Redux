@@ -75,8 +75,8 @@ The visible UI uses the `cannibalism.gui.*` family in `localisation/english/014_
 - Event 014 asset, animation, and localisation requirements in spec part 10.
 - `docs/plans/014_cannibalism_plans/014_gui_dimension_ledger.md`.
 - `docs/plans/014_cannibalism_plans/subagent_handoffs/2026-08-20_decision_category_gui_full_audit.md`.
-- Offline `paradox_wiki/Interface Modding - Hearts of Iron 4 Wiki.md`.
-- Offline `paradox_wiki/Scripted GUI Modding - Hearts of Iron 4 Wiki.md`.
+- Offline `paradox_wiki/interface_modding.md`.
+- Offline `paradox_wiki/scripted_gui_modding.md`.
 - Required offline core wiki pages for data structures, triggers, effects, modifiers, localisation, scopes, on actions, event modding, decision modding, idea modding, and AI modding.
 - Vanilla `common/scripted_guis/_documentation.md`.
 - Vanilla `common/scripted_guis/SOV_paranoia_system_scripted_gui.txt`.

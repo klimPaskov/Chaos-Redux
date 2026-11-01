@@ -34,7 +34,7 @@ The source/crop/raw/processed/painted comparison is `docs/assets/006_independenc
 
 The current package hashes independently rechecked for Rizzo are source `aa113393b9b51ed481bfa485aaf729e867c20c6a364b41d3f8999b0dc2c8663e`, crop `02394a103358298a06d929df76323a4a0310c5d28ed2db68654475dbd5b94403`, raw repaint `589bcfa1b1f53ad2619515aa867cae222d5f4c2d19065a8fdc9b3b843b1a0fdc`, processed PNG `a950f3737ba12dca1dd21372347e0999e0a80166be5076024a1f41ee9a6ebafd`, prompt `ee10d8b6fbcb7dae1d9cbec4f92031aff808ba0646aaf5ac75fd7678d43003ea`, package DDS `659c819547559f50025fb3007cd5c60947a150ca4673238cc179dc2f0867d714`, and comparison sheet `5823f7008a5589a52e16522f41064c4653f2a2b5e562161ae296a2ecd17c8fcf`.
 
-Portrait semantics were checked against `paradox_wiki/Character modding - Hearts of Iron 4 Wiki.md`, `paradox_wiki/Portrait modding - Hearts of Iron 4 Wiki.md`, `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/characters/_documentation.md`, and the relevant `effects_documentation.md` entries for `recruit_character`, `set_portraits`, and country-leader portrait handling.
+Portrait semantics were checked against `paradox_wiki/character_modding.md`, `paradox_wiki/portrait_modding.md`, `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/characters/_documentation.md`, and the relevant `effects_documentation.md` entries for `recruit_character`, `set_portraits`, and country-leader portrait handling.
 
 The canonical style rules and role families were checked in `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md`, `CATALOG.md`, `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/README.md`, and `REFERENCE_MANIFEST.md`.
 

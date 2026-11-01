@@ -9,8 +9,8 @@ No gameplay file was edited by this subagent. The only file added by this subage
 ## References consulted
 
 - `AGENTS.md` and the required Chaos Redux event, decision/mission, and subagent skills.
-- `paradox_wiki/Character modding - Hearts of Iron 4 Wiki.md`, especially the static recruitment restriction for `common/characters` entries and the country-history requirement.
-- `paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md`, including `equipment_production_factor`, `equipment_production_min_factories`, and `equipment_production_min_factories_archetype` identifiers.
+- `paradox_wiki/character_modding.md`, especially the static recruitment restriction for `common/characters` entries and the country-history requirement.
+- `paradox_wiki/ai_modding.md`, including `equipment_production_factor`, `equipment_production_min_factories`, and `equipment_production_min_factories_archetype` identifiers.
 - The offline data structures, triggers, effects, modifiers, localisation, scopes, on-actions, event, decision, idea, and AI wiki snapshots.
 - Vanilla `documentation/effects_documentation.md`, `documentation/triggers_documentation.md`, `documentation/script_concept_documentation.md`, `common/script_constants/documentation.md`, and vanilla `common/units/equipment/trains.txt`.
 

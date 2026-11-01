@@ -16,7 +16,7 @@ No gameplay, localisation, spreadsheet, test, or other documentation file was ed
 
 ## Findings and reference identity
 
-Directly read `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\paradox_wiki\Data structures - Hearts of Iron 4 Wiki.md`, lines 435–442 and 1069–1076.
+Directly read `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\paradox_wiki\data_structures.md`, lines 435–442 and 1069–1076.
 Line 440 documents that helper-created temporary variables may disappear after return, while storage initialized before the call carries into the helper and retains its modifications.
 Lines 1074–1076 describe temporary arrays and their elements using the same variable distinction.
 The conservative output contract therefore covers scalar and temporary-array storage, each nested caller, `if.limit`, scripted-localisation `text.trigger`, public API obligations, and actual-source test frames with regular saved state kept separate.
@@ -39,7 +39,7 @@ diff --git a/.agents/skills/chaos-redux-events/SKILL.md b/.agents/skills/chaos-r
  
 +### Helper output lifetime
 +
-+Temporary variables first created inside a scripted effect or trigger may disappear after return, while caller-preinitialized storage retains the helper's modifications (`paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, Variable types, line 440).
++Temporary variables first created inside a scripted effect or trigger may disappear after return, while caller-preinitialized storage retains the helper's modifications (`paradox_wiki/data_structures.md`, Variable types, line 440).
 +
 +- Before each helper call, ensure every temporary scalar and temporary-array output consumed afterwards has caller-owned storage, including calls inside `if.limit` and scripted-localisation `text.trigger`. Initialize new output storage without resetting existing input or cursor values.
 +- Apply this at every nested call boundary: each caller initializes the outputs it consumes, and outer callers also initialize forwarded outputs needed after return.

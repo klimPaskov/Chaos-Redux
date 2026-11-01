@@ -294,9 +294,9 @@ Physical revisions appear in the following hash inventory.
 | Installed `common/on_actions/00_on_actions.txt` | 923–939,1607–1624 | Native cap ROOT/FROM and annex ROOT/FROM |
 | Installed `common/decisions/_documentation.md` | 21–46 | Native actor/target decision scope and row creation |
 | Vanilla `common/decisions/ETH.txt` | 1701–1732 | Actual array-targeted decision precedent |
-| Offline `Scopes - Hearts of Iron 4 Wiki.md` | 257–269 | ROOT remains native root when entering FROM, real object scopes |
-| Offline `Data structures - Hearts of Iron 4 Wiki.md` | 426–446 | Actual-object variable assignment and caller-owned temp lifetime |
-| Offline `Decision modding - Hearts of Iron 4 Wiki.md` | 512–540 | ROOT actor, FROM target, country-array targeting |
+| Offline `scopes.md` | 257–269 | ROOT remains native root when entering FROM, real object scopes |
+| Offline `data_structures.md` | 426–446 | Actual-object variable assignment and caller-owned temp lifetime |
+| Offline `decision_modding.md` | 512–540 | ROOT actor, FROM target, country-array targeting |
 
 ## Physical current-source SHA-256 inventory
 

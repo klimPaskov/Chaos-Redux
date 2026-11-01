@@ -32,7 +32,7 @@ The main broad migrations to defer are legacy event-category ID normalization, E
 
 The following repository instructions and task files were read in full before inspection: `AGENTS.md`, `docs/plans/repo_cleanup/chaos_redux_repo_cleanup_master_prompt.md`, `.agents/skills/chaos-redux-events/SKILL.md`, and `.agents/skills/chaos-redux-subagents/SKILL.md`.
 
-The required offline wiki snapshot pages were read: `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, `Triggers - Hearts of Iron 4 Wiki.md`, `Effects - Hearts of Iron 4 Wiki.md`, `Modifiers - Hearts of Iron 4 Wiki.md`, `Localisation - Hearts of Iron 4 Wiki.md`, `Scopes - Hearts of Iron 4 Wiki.md`, `On actions - Hearts of Iron 4 Wiki.md`, `Event modding - Hearts of Iron 4 Wiki.md`, `Decision modding - Hearts of Iron 4 Wiki.md`, `Idea modding - Hearts of Iron 4 Wiki.md`, `AI modding - Hearts of Iron 4 Wiki.md`, `Scripted GUI Modding - Hearts of Iron 4 Wiki.md`, and `Interface Modding - Hearts of Iron 4 Wiki.md`.
+The required offline wiki snapshot pages were read: `paradox_wiki/data_structures.md`, `triggers.md`, `effects.md`, `modifiers.md`, `localisation.md`, `scopes.md`, `on_actions.md`, `event_modding.md`, `decision_modding.md`, `idea_modding.md`, `ai_modding.md`, `Scripted GUI modding.md`, and `Interface modding.md`.
 
 The required vanilla documentation was read from `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\documentation`, including `script_concept_documentation.md`, `effects_documentation.md`, `triggers_documentation.md`, `script_collection_input.md`, and `script_collection_operator.md`.
 

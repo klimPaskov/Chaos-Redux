@@ -28,10 +28,10 @@ Relevant references were read directly after the MCP reference request lost its 
 
 - Installed `documentation/effects_documentation.md`, lines 6083-6092, documents country-scoped `remove_mission`.
 - Installed `documentation/triggers_documentation.md`, lines 3022-3029, documents `has_active_mission`.
-- Offline `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md`, line 1916, documents `remove_mission`.
-- Offline `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md`, line 649, documents `has_active_mission`.
+- Offline `paradox_wiki/effects.md`, line 1916, documents `remove_mission`.
+- Offline `paradox_wiki/triggers.md`, line 649, documents `has_active_mission`.
 - Installed `common/decisions/ENG.txt` has `remove_mission` precedents at lines 4300 and 4400.
-- Offline `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`, lines 467-478, documents mission duration, activation, completion, and cancellation.
+- Offline `paradox_wiki/decision_modding.md`, lines 467-478, documents mission duration, activation, completion, and cancellation.
 - Installed `common/decisions/_documentation.md`, lines 1-40, documents permanent `allowed` filtering and the evaluation scopes.
 
 Installed effects documentation SHA-256: `2CDC93D26775990468EED167442F7A416B13059FB8FE07D139B54250B79209AF`.

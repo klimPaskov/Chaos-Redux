@@ -62,7 +62,7 @@ The connected MCP tool list did not expose the four reference lookup routes name
 | `documentation/effects_documentation.md` in the installed game | Lines 7888–7913, `set_variable` | `2CDC93D26775990468EED167442F7A416B13059FB8FE07D139B54250B79209AF` |
 | `documentation/triggers_documentation.md` in the installed game | Lines 2110–2145, `check_variable`, and 6079–6094, `is_owned_and_controlled_by` | `7D27ED77DADAF3A213A4B3E2C624BF9C02DAE495317ABE8EEE833B27C2D1DE29` |
 | `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` | Lines 439–456, persistent variable scoping and scope references | `62273F37ED30E5479ACB331A8973F48DADC1867C4913C8A940E3E790E7AF32D4` |
-| `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md` | Line 1847, state ownership and control predicate | Offline snapshot |
+| `paradox_wiki/triggers.md` | Line 1847, state ownership and control predicate | Offline snapshot |
 
 The installed vanilla RAJ scripted-trigger precedent uses a scope-valued `THIS` entry, and the installed AST, SWI, and shared scripted-effects precedents use scope-valued `PREV` entries.
 

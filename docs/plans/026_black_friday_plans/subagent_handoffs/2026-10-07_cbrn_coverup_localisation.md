@@ -234,7 +234,7 @@ These sections do not independently prove legacy nested temporary-variable lifet
 - Installed `documentation/loc_formatter_documentation.md:1-135`, revision `1fbd9a031fd09100d79bac08dec3c16e19468f23516c5e67c67578156282af08`, and the opening localisation-object definitions in `documentation/loc_objects_documentation.md` were read.
 - Installed `documentation/triggers_documentation.md:6442-6454` documents modulo temporary-variable use.
 - Installed `common/scripted_localisation/00_scripted_localisation.txt:1-70` supplies the literal-key/default-branch precedent.
-- Offline `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md:311-329` supplies native base/blocked/tooltip selection semantics.
+- Offline `paradox_wiki/decision_modding.md:311-329` supplies native base/blocked/tooltip selection semantics.
 
 The connected catalog exposes reference context/search/read, source lookup, decision inspect, GUI inspect/render, and technology inspect/render/compare.
 Exposure is not treated as service health.

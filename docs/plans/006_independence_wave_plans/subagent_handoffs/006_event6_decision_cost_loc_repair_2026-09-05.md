@@ -9,7 +9,7 @@ Disposition: `implemented` as a bounded localisation-only display repair. No dec
 - `docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_3_mechanics_and_decisions.md:9-15` requires an absolutely empty pre-event surface: no category, mission, pressure, cost, queue, history indication, or early request.
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_player_surface_origin_gate_2026-09-03.md` records the implemented active-origin gate.
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_dm35_patron_balance_affordability_repair_2026-09-03.md` establishes that DM-35 first use pays the diplomatic-standard bundle, while later uses pay the diplomatic-standard bundle plus the administration-light bundle; the combined later command-power threshold is `independence_wave_decision_cost.command_power_patron_balance_after_first`.
-- Offline `Decision modding - Hearts of Iron 4 Wiki.md` documents the `custom_cost_text`, `_blocked`, and `_tooltip` contract. Offline `Localisation - Hearts of Iron 4 Wiki.md` and installed vanilla decision precedents confirm texticon-backed custom costs and UTF-8 BOM localisation.
+- Offline `decision_modding.md` documents the `custom_cost_text`, `_blocked`, and `_tooltip` contract. Offline `localisation.md` and installed vanilla decision precedents confirm texticon-backed custom costs and UTF-8 BOM localisation.
 - `chaos-redux-decisions-missions` requires compact amount-plus-texticon rows and no more than four spendable resource types.
 
 ## Changed files

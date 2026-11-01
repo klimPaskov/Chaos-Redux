@@ -103,7 +103,7 @@ The opening refresh writes both `air_winter_pending_delayed_result` and `air_win
 
 The final read-only code audit found that the first draft relied on the generic target helper for item 4 through item 7. That helper intentionally accepts an initial event when no pending row exists. The final Desert City result trigger now proves the full pending-owner row inside its own state block. A surviving branch without its owner receipt cannot resolve event 49.
 
-Regular event targets are used instead of global targets. The offline `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` states that regular event targets carry into events fired within the same effect chain, including delayed child events. The installed `effects_documentation.md` defines `save_event_target_as`. The implementation follows that documented chain lifetime and avoids shared global target collisions between simultaneous countries.
+Regular event targets are used instead of global targets. The offline `paradox_wiki/data_structures.md` states that regular event targets carry into events fired within the same effect chain, including delayed child events. The installed `effects_documentation.md` defines `save_event_target_as`. The implementation follows that documented chain lifetime and avoids shared global target collisions between simultaneous countries.
 
 ## Deterministic result partition
 

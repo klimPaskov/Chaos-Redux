@@ -42,7 +42,7 @@ Required instructions and references inspected:
 - `.agents/skills/xlsx/SKILL.md`, used only to guide read-only workbook inspection
 - All eight `docs/specs/famine_and_migration_system_specs/famine_and_migration_system_spec_part_*.md` files
 - Every matrix, prompt, routing note, bibliography, closure review, and subagent prompt under `docs/specs/famine_and_migration_system_specs/`
-- Offline wiki pages `Data structures - Hearts of Iron 4 Wiki.md`, `Triggers - Hearts of Iron 4 Wiki.md`, `Effects - Hearts of Iron 4 Wiki.md`, `Modifiers - Hearts of Iron 4 Wiki.md`, `Localisation - Hearts of Iron 4 Wiki.md`, `Scopes - Hearts of Iron 4 Wiki.md`, `On actions - Hearts of Iron 4 Wiki.md`, `Event modding - Hearts of Iron 4 Wiki.md`, `Decision modding - Hearts of Iron 4 Wiki.md`, `Idea modding - Hearts of Iron 4 Wiki.md`, and `AI modding - Hearts of Iron 4 Wiki.md`
+- Offline wiki pages `data_structures.md`, `triggers.md`, `effects.md`, `modifiers.md`, `localisation.md`, `scopes.md`, `on_actions.md`, `event_modding.md`, `decision_modding.md`, `idea_modding.md`, and `ai_modding.md`
 - Vanilla `documentation/effects_documentation.md`, `documentation/triggers_documentation.md`, `documentation/script_concept_documentation.md`, `common/script_constants/documentation.md`, and available on-action documentation and event precedents under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`
 
 Primary current implementation and registry files inspected:

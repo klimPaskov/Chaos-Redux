@@ -28,9 +28,9 @@ The parent retains ownership of route selection, cosmetic tags, basename approva
 - `.agents/skills/chaos-redux-event-assets/SKILL.md`, including the flag ladder, provenance, rights, source-package, and handoff rules.
 - `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md`.
 - `.agents/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md` and its `flags/contact_sheet.png` reference family.
-- `paradox_wiki/Country creation - Hearts of Iron 4 Wiki.md` for the `gfx/flags` ladder, TGA format, and normal/medium/small dimensions.
-- `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md` for graphical asset paths and `.gfx` context.
-- `paradox_wiki/Cosmetic tag modding - Hearts of Iron 4 Wiki.md` and the relevant `Flags` section in `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`.
+- `paradox_wiki/country_creation.md` for the `gfx/flags` ladder, TGA format, and normal/medium/small dimensions.
+- `paradox_wiki/graphical_asset_modding.md` for graphical asset paths and `.gfx` context.
+- `paradox_wiki/cosmetic_tag_modding.md` and the relevant `Flags` section in `paradox_wiki/data_structures.md`.
 - Vanilla documentation `effects_documentation.md` (`set_cosmetic_tag`) and `triggers_documentation.md` (`has_cosmetic_tag`).
 - `docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_5_country_packages_and_regional_overlays.md`.
 - `docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_6_formables_league_and_scenario.md`.

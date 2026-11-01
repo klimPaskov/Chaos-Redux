@@ -25,7 +25,7 @@ The public repository was inspected at commit `879b3007d3b6bf75c726c11635473fccd
 | Legacy Event 84 English localisation search hit | Relevant search excerpt, not claimed as a complete file read | Legacy Political Power label and description |
 | `.agents/skills/chaos-redux-mtth/SKILL.md` | Complete actual file content read | Missing supplied MTTH skill recovered, variable usage and required probability-auditor workflow |
 | `common/mtth/chaosx_mtth_variables.txt` | Complete content field read, despite truncation of the tool's duplicated second copy | Existing MTTH-variable pattern and event-owned evolution interval example. Its unrelated event values are not copied into Event 84 |
-| Offline `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md` | Fetched, but response content truncated and not fully recovered | A limited inspected reference only. It does not justify claiming the entire required wiki set was read |
+| Offline `paradox_wiki/event_modding.md` | Fetched, but response content truncated and not fully recovered | A limited inspected reference only. It does not justify claiming the entire required wiki set was read |
 | Repository metadata | Read | Repository and inspected revision identity, not a full implementation audit |
 
 Exact source locations use the pinned repository revision, for example `https://github.com/klimPaskov/Chaos-Redux/blob/879b3007d3b6bf75c726c11635473fccda45c569/events/084_pp.txt`. The source manifest covers the supplied archive only, not a fictitious local checkout of the whole repository.

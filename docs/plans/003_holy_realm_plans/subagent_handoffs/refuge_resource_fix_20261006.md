@@ -24,7 +24,7 @@ No additional recruit source remains in these five decision effects or their exi
 
 `THR_open_refuge_roads` now has `fire_only_once = yes`. It sets `holy_realm_memory_open_refuge_roads`, and the existing `THR_close_refuge_roads` availability requires that flag to be absent. Repeating the opening purchase after its timer completed previously let the one-way choice pay its other rewards repeatedly; the new field makes the decision disappear after its first selection. Its existing AI weight and all effects remain unchanged.
 
-Offline Decision modding wiki `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md:282` states that `fire_only_once = yes` makes a decision impossible to fire again after completion. Vanilla precedence is `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/decisions/aat_mio_decisions.txt:4-12`, where a native priced decision sets `fire_only_once = yes`.
+Offline Decision modding wiki `paradox_wiki/decision_modding.md:282` states that `fire_only_once = yes` makes a decision impossible to fire again after completion. Vanilla precedence is `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/decisions/aat_mio_decisions.txt:4-12`, where a native priced decision sets `fire_only_once = yes`.
 
 ## Localization
 

@@ -48,7 +48,7 @@ Confirmed paths from the connected search:
 
 The existing root identity and legacy equipment-aid purpose were visible in search and partial fetch results. The full fetch arrived as an oversized single-line JSON content field and was truncated. It was not counted as a fully read live source file.
 
-The connected repository also returned `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, labeled as a snapshot captured on 19 September 2026. That response was truncated. It confirms availability in the repository, but does not satisfy the mandatory full-page read.
+The connected repository also returned `paradox_wiki/data_structures.md`, labeled as a snapshot captured on 19 September 2026. That response was truncated. It confirms availability in the repository, but does not satisfy the mandatory full-page read.
 
 Raw-file retrieval was attempted after the connector truncation. The container request failed with a DNS resolution error. A web raw-file attempt returned a disabled-fetch error. These attempts did not produce a usable complete file.
 

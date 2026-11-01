@@ -33,7 +33,7 @@ The unreturned calls do not establish MCP reference coverage or engine evidence.
 - Installed `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\documentation\effects_documentation.md`, lines 7397–7420: `set_nationality` supports COUNTRY and CHARACTER scopes; the documented country-scoped block takes `target_country` and `character`.
 - The same installed file, lines 5696–5707: `recruit_character` attaches a character to a country and requires country scope.
 - The same installed file, lines 4458–4481: `generate_scientist_character` creates a new character with a scientist role and recruits it into the country in scope; generation is distinct from recruiting an approved database token.
-- Offline `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\paradox_wiki\Character modding - Hearts of Iron 4 Wiki.md`, lines 50–58: character recruitment belongs in history and unrecruited characters never appear; the checklist describes any history file, usually the country's corresponding file.
+- Offline `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\paradox_wiki\character_modding.md`, lines 50–58: character recruitment belongs in history and unrecruited characters never appear; the checklist describes any history file, usually the country's corresponding file.
 - Installed vanilla `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\history\countries\USA - USA.txt`, lines 441–448: existing-country history directly recruits persistent named database tokens.
 
 Source revisions, SHA-256:

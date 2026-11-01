@@ -15,7 +15,7 @@ Status: complete after parent reconciliation.
 - `rg source-reference-policy .agents/skills` returns no live reference.
 - The source gate in `SKILL.md` was inspected at lines 144–162 after the edit and contains the inlined policy; no standalone source-policy link remains.
 - The installed Meshy route was inspected: `mcp__meshy__meshy_animate` requires `rig_task_id` and integer `action_id`; the repository lock and client agree. The live read-only `meshy_check_balance` call returned 724 credits during this pass. The official animation-library reference documents `action_id` as the predefined library-action selector: [Meshy Animation Library](https://docs.meshy.ai/en/api/animation-library).
-- The offline `paradox_wiki/Entity modding - Hearts of Iron 4 Wiki.md` and installed vanilla MG entity precedent were consulted as required. No gameplay, GFX, entity, sound, model, or asset file was edited.
+- The offline `paradox_wiki/entity_modding.md` and installed vanilla MG entity precedent were consulted as required. No gameplay, GFX, entity, sound, model, or asset file was edited.
 - Both updated skills pass the repository skill validator after parent reconciliation, and searches find no dangling policy-file reference or stale manual-weapon/recovery-confirmation route.
 
 ## Remaining blocker

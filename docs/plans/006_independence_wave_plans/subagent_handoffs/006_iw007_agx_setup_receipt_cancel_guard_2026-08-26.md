@@ -19,7 +19,7 @@ The cancellation effect remains idempotent for the package scope: setup loss tak
 
 ## Evidence and validation
 
-- Offline mission rules in `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md` distinguish activation checks from explicit cancellation checks, supporting the paired setup guard.
+- Offline mission rules in `paradox_wiki/decision_modding.md` distinguish activation checks from explicit cancellation checks, supporting the paired setup guard.
 - The package audit confirmed the setup writer/clear lifecycle in `common/scripted_effects/006_independence_wave_wallonia_frisia_package_effects.txt` and found no other AGX defect in this bounded pass.
 - Targeted source check: the AGX mission contains both its activation setup receipt and the matching cancellation guard, with one cancellation block.
 - `python -B .tools/audit_event6_allocator.py` passed: 149 publishers, 40 adapters, 32 attestations, 29 reservation groups, and the 3/4/5/7/10 ladder with World Collapse 10.

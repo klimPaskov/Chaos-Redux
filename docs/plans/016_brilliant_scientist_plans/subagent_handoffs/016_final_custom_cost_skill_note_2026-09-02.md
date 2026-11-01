@@ -8,7 +8,7 @@ Complete for the bounded skill-maintenance scope. This subtask changed only the 
 
 ## Verification proof
 
-- The offline `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md:299-319` documents `custom_cost_trigger` and `custom_cost_text`, states that a custom cost does not itself debit resources, and documents manual subtraction in `complete_effect` plus the fixed `ai_hint_pp_cost` hint for political power.
+- The offline `paradox_wiki/decision_modding.md:299-319` documents `custom_cost_trigger` and `custom_cost_text`, states that a custom cost does not itself debit resources, and documents manual subtraction in `complete_effect` plus the fixed `ai_hint_pp_cost` hint for political power.
 - The vanilla AUS precedent separates `available` from `custom_cost_trigger` (`C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\common\decisions\AUS.txt:983-995`) and manually subtracts the displayed political-power and command-power payment in `complete_effect` (`AUS.txt:1018-1023`).
 - A focused search of the existing decisions skill found cost-budget and cost-localisation guidance but no reusable rule connecting custom-cost display, availability gating, shared affordability predicates, one-time debit, and `ai_hint_pp_cost`.
 

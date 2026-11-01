@@ -27,7 +27,7 @@ The parent reported absent HOI4 reference tools in its connected tool list.
 This subagent's `ALL_TOOLS` instead exposes reference-context, reference-search, and reference-read names, but no calls or service-health claims were made.
 The authorized change is skill documentation only, and local reads provide the requested reference basis without claiming MCP or engine validation.
 
-- Offline `paradox_wiki\Localisation - Hearts of Iron 4 Wiki.md`, lines 190–214: decimal formatter rules and `.yml` numeric examples.
+- Offline `paradox_wiki\localisation.md`, lines 190–214: decimal formatter rules and `.yml` numeric examples.
 - Same wiki, lines 680–681: temporary variables set in a scripted-localisation trigger remain available when displaying the selected key, whose field uses the American spelling `localization_key`.
 - Same wiki, lines 706–726: dynamic text in `localization_key` constructs and evaluates a key name.
 - Same wiki, lines 729–791: numeric unit-display example computes temporary values in `text.trigger`, selects literal named keys, and formats those values in `.yml` strings.

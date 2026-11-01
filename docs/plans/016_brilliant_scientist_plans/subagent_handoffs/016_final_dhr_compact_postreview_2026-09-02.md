@@ -80,10 +80,10 @@ These are source traces, not simulated engine executions or MCP scenario proofs.
 Required AGENTS.md, the core offline wiki pages, and the event/decision skill references were consulted.
 The relevant narrow engine references are:
 
-- `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md:31`: delayed country-event timers on nonexistent countries pause until release.
+- `paradox_wiki/event_modding.md:31`: delayed country-event timers on nonexistent countries pause until release.
 - The same page `:149`: option visibility trigger is evaluated at event firing, which is why effect-time guards are required.
 - The same page `:174` and `:178`: immediate execution and native timeout behavior; the default timeout is 13 days and timeout selects the first option.
-- `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md:292`: regular event targets carry into events fired from their chain; `:415` does not support using temporary variables as persistent per-popup snapshots.
+- `paradox_wiki/data_structures.md:292`: regular event targets carry into events fired from their chain; `:415` does not support using temporary variables as persistent per-popup snapshots.
 - Installed vanilla `documentation/effects_documentation.md:2943`, `:6496`, `:6505`, `:2733`: country-event scheduling, regular/global event targets, and explicit global-target cleanup.
 - Installed vanilla `events/Generic.txt:38`, `:56` and `events/WTT_China.txt:191` use `tag = event_target:...`, supporting the explicit target comparison syntax used here.
 - Installed vanilla `documentation/effects_documentation.md:3564` documents `diplomatic_relation`'s `active` field; the MCP unresolved `active` label is not evidence that this native field is an absent scripted helper.

@@ -241,7 +241,7 @@ Debugger or isolated-platform investigation requires explicit authorization and 
 
 #### Variable comparisons
 
-For startup parse errors involving `check_variable`, distinguish valid shorthand such as `{ some_value > threshold }` from the malformed mixed form `{ var = some_value > threshold }`. Consult the `check_variable` section in `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\documentation\triggers_documentation.md` and the offline `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` comparison examples. In a confirmed mixed form, remove only the redundant `var =`, preserving the comparator, scoped variable token, and right-hand value, including any `constant:category.threshold` token. Keep valid shorthand and genuine long-form blocks such as `{ var = some_value value = threshold compare = greater_than }` intact; `>` itself is supported syntax.
+For startup parse errors involving `check_variable`, distinguish valid shorthand such as `{ some_value > threshold }` from the malformed mixed form `{ var = some_value > threshold }`. Consult the `check_variable` section in `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\documentation\triggers_documentation.md` and the offline `paradox_wiki/data_structures.md` comparison examples. In a confirmed mixed form, remove only the redundant `var =`, preserving the comparator, scoped variable token, and right-hand value, including any `constant:category.threshold` token. Keep valid shorthand and genuine long-form blocks such as `{ var = some_value value = threshold compare = greater_than }` intact; `>` itself is supported syntax.
 
 #### Temporary-variable cleanup
 

@@ -12,7 +12,7 @@ No country history, gameplay, localization, assets, flags, central admission, or
 
 ## References consulted
 
-The offline `paradox_wiki/Country creation - Hearts of Iron 4 Wiki.md` confirms that multiple tags may reference the same `common/countries/` file and that `common/countries/colors.txt` overrides a tag's country-definition color.
+The offline `paradox_wiki/country_creation.md` confirms that multiple tags may reference the same `common/countries/` file and that `common/countries/colors.txt` overrides a tag's country-definition color.
 
 The required offline core pages were consulted in parallel: Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, and AI modding.
 

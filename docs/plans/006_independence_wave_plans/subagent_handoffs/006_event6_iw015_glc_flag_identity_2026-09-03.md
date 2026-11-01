@@ -67,7 +67,7 @@ Standalone IW-015 flag attestation remains `NO` pending that parent decision; th
 
 ## Actual filename selection and route-specific boundary
 
-The offline country-creation reference states that ideology-specific files such as `TAG_democratic.tga` have priority over the non-specific `TAG.tga` fallback at `paradox_wiki/Country creation - Hearts of Iron 4 Wiki.md:322-340`.
+The offline country-creation reference states that ideology-specific files such as `TAG_democratic.tga` have priority over the non-specific `TAG.tga` fallback at `paradox_wiki/country_creation.md:322-340`.
 
 The installed vanilla family contains no `GLC_neutrality.tga`, so the no-suffix base is the neutrality fallback rather than the democratic opening file.
 

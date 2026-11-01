@@ -125,9 +125,9 @@ The common reason for every exclusion is the same: a state flag, building, quota
 
 ## Vanilla or reference precedents
 
-- `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` covers event targets, arrays, variables, and scope persistence. Its event-target guidance supports short-lived owner pointers, but it does not supply cohort identity; the explicit persisted ID must remain the source of truth.
-- `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md` covers `state_target`, `target_trigger`, `target_root_trigger`, and state-scoped decision effects. This matches the existing `fm_*` and camp decision shape, but the wiki does not define a famine cohort registry.
-- `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md` and vanilla `effects_documentation.md` cover arrays, loops, `save_event_target_as`, and state-scoped effects. They support bounded explicit-ID handling but do not justify a world scan.
+- `paradox_wiki/data_structures.md` covers event targets, arrays, variables, and scope persistence. Its event-target guidance supports short-lived owner pointers, but it does not supply cohort identity; the explicit persisted ID must remain the source of truth.
+- `paradox_wiki/decision_modding.md` covers `state_target`, `target_trigger`, `target_root_trigger`, and state-scoped decision effects. This matches the existing `fm_*` and camp decision shape, but the wiki does not define a famine cohort registry.
+- `paradox_wiki/effects.md` and vanilla `effects_documentation.md` cover arrays, loops, `save_event_target_as`, and state-scoped effects. They support bounded explicit-ID handling but do not justify a world scan.
 - Vanilla `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/decisions/JAP.txt` contains state-targeted and target-trigger decision examples and `save_event_target_as` usage. Vanilla `common/decisions/SOV.txt` contains state-target and array patterns. Vanilla `common/scripted_effects/GER_scripted_effects.txt` contains array/loop patterns. None contains a direct famine-cohort camp owner transaction.
 - The installed HOI4 MCP package has no Technology Tree Viewer; no technology surface was in this census, so no technology evidence is claimed. No focus, map, or scripted GUI surface was changed or treated as an owner producer.
 - No approved reference-mod pattern was needed because the repository's exact aligned-cohort contract is more specific than the available vanilla camp/decision examples.

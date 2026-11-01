@@ -158,7 +158,7 @@ Installed country `exists` at `documentation\triggers_documentation.md:2709-2715
 The installed trigger documentation SHA-256 is `7D27ED77DADAF3A213A4B3E2C624BF9C02DAE495317ABE8EEE833B27C2D1DE29`.
 Offline `paradox_wiki\Triggers - Hearts of Iron 4 Wiki.md:638` gives the country existence rule, with SHA-256 `ABC51AD18A2C46E46D47BAA795C5A840EBAF7C4AE3E777426C64A9F4C0C0CE06`.
 Installed `common\scripted_triggers\00_scripted_triggers.txt:16-20` supplies the exact `can_ROOT_get_wargoal_on_THIS` existence precedent.
-The unset-variable default and temporary-variable behavior were checked in offline `Data structures - Hearts of Iron 4 Wiki.md:436-450`, `:549`, and installed `effects_documentation.md:7820-7835`.
+The unset-variable default and temporary-variable behavior were checked in offline `data_structures.md:436-450`, `:549`, and installed `effects_documentation.md:7820-7835`.
 
 Installed `common\map_modes\documentation.md:1-101` establishes player and FROM state scope, both map layers, and mapmode tooltip keys.
 Its SHA-256 is `FE0A32E55F8F409DF104C9F386F607767D795193046E1DE509FAC75A46EC6392`.

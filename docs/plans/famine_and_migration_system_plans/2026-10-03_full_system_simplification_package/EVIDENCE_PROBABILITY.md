@@ -209,9 +209,9 @@ Supporting current source spans include the famine and migration ai_will_do bloc
 
 The offline wiki was read directly from local files because no live reference retrieval was used during this bounded audit.
 
-- paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md, lines 25-73: MTTH block ordering; ai_will_do generates score values and an AI score race, while ai_chance and random_list use probability-proportional sampling.
-- paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md, lines 357-385: decision ai_will_do uses MTTH block syntax; decision visibility/availability, targeted scopes, and fixed-seed notes are distinct inputs.
-- paradox_wiki/Effects - Hearts of Iron 4 Wiki.md, lines 4510-4550: random_list entries are relative weights normalized over their sum, and variable weights are supported.
+- paradox_wiki/ai_modding.md, lines 25-73: MTTH block ordering; ai_will_do generates score values and an AI score race, while ai_chance and random_list use probability-proportional sampling.
+- paradox_wiki/decision_modding.md, lines 357-385: decision ai_will_do uses MTTH block syntax; decision visibility/availability, targeted scopes, and fixed-seed notes are distinct inputs.
+- paradox_wiki/effects.md, lines 4510-4550: random_list entries are relative weights normalized over their sum, and variable weights are supported.
 
 Installed documentation read directly:
 

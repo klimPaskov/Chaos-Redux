@@ -33,7 +33,7 @@ Files changed by this GUI worker:
 - Repository `AGENTS.md`.
 - `.agents/skills/chaos-redux-decisions-missions/SKILL.md`, including scripted-GUI layout, action integrity, value/action budgets, background-first layout, and interactive state rules.
 - `.agents/skills/chaos-redux-events/SKILL.md` for event ownership and player-facing writing.
-- Offline `paradox_wiki/Interface Modding - Hearts of Iron 4 Wiki.md` and `paradox_wiki/Scripted GUI Modding - Hearts of Iron 4 Wiki.md`, plus the repository-required core wiki pages.
+- Offline `paradox_wiki/interface_modding.md` and `paradox_wiki/scripted_gui_modding.md`, plus the repository-required core wiki pages.
 - Installed vanilla `common/scripted_guis/_documentation.md` and related interface documentation.
 - Vanilla scripted-GUI precedent including `RAJ_tax_fraud_scripted_gui.txt`, which uses individual `<element>_visible` triggers in a `decision_category` consumer.
 - The user-supplied live screenshot `C:/Users/klimp/AppData/Local/Temp/codex-clipboard-8e14b4ee-c1f9-414f-9f30-1304bfb8569c.png`.

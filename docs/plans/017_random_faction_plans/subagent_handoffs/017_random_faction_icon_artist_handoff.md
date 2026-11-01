@@ -24,9 +24,9 @@ Both sequences were re-keyed from the untouched real source frames with the offi
 - `docs/specs/017_random_faction_specs/prompts/017_random_faction_asset_prompt.md`
 - `docs/specs/017_random_faction_specs/prompts/017_random_faction_achievement_prompt.md`
 - Required offline core wiki pages named in `AGENTS.md`
-- `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Interface modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Scripted GUI modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/graphical_asset_modding.md`
+- `paradox_wiki/interface_modding.md`
+- `paradox_wiki/scripted_gui_modding.md`
 - Vanilla `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/alerts.gfx`
 - Vanilla `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/menubar.gfx`
 - Archived style review: `docs/assets/017_random_faction/contact_sheets/reference_contact_sheet.png`

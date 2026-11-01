@@ -139,4 +139,4 @@ No existing artwork was overwritten or regenerated.
 Independent reviewer: shard 4 reviewer, 2026-10-11; evidence is .tmp/assets_shard_4_20261011/reviewer/spacecraft_review.json.
 The exact historical request arguments and input identities are unavailable; retained prompts, original source PNGs, processed PNGs and hashes remain the provenance evidence.
 Verification used local consumers and canonical reference families because HOI4 MCP routes are not exposed in this connection; it is not a live-game result.
-Local syntax references: offline paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md, lines 28-81, and installed interface/decisions.gfx, lines 1-36; the installed documentation folder has no GUI/GFX documentation section.
+Local syntax references: offline paradox_wiki/graphical_asset_modding.md, lines 28-81, and installed interface/decisions.gfx, lines 1-36; the installed documentation folder has no GUI/GFX documentation section.

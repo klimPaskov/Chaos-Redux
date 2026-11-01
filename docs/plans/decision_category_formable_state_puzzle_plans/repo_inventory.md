@@ -416,9 +416,9 @@ Crosswalk assertion: 296 unique ids are listed exactly once. Current source path
 ## Vanilla or reference precedents
 
 - Vanilla C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/decisions/categories/00_formable_categories.txt contains inherited formable metadata, including generic_formable_nations icons and category pictures. Chaos formable_nation_decisions.txt defines 48 containers.
-- Offline paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md lines 42, 178-223, and 233-252 document category metadata, picture requirements, visible_when_empty, on_map_area, and category-attached scripted GUI behavior.
-- Offline paradox_wiki/Scripted GUI modding - Hearts of Iron 4 Wiki.md lines 30-34, 112-123, and 130-140 document the common/scripted_guis/*.txt and interface/*.gui split, decision_category context, dirty refresh, and visibility.
-- Offline paradox_wiki/Map modding - Hearts of Iron 4 Wiki.md lines 34-52 covers map data used by state-piece geometry and warns that buildings/ports can produce global map errors.
+- Offline paradox_wiki/decision_modding.md lines 42, 178-223, and 233-252 document category metadata, picture requirements, visible_when_empty, on_map_area, and category-attached scripted GUI behavior.
+- Offline paradox_wiki/scripted_gui_modding.md lines 30-34, 112-123, and 130-140 document the common/scripted_guis/*.txt and interface/*.gui split, decision_category context, dirty refresh, and visibility.
+- Offline paradox_wiki/map_modding.md lines 34-52 covers map data used by state-piece geometry and warns that buildings/ports can produce global map errors.
 - Vanilla documentation consulted: C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md, triggers_documentation.md, modifiers_documentation.md, and script_concept_documentation.md. No installed vanilla decision-category-specific documentation page was found.
 
 ## Mandatory HOI4 MCP evidence

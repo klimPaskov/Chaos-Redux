@@ -73,7 +73,7 @@ No gameplay files, tests, Git index, or commits were changed.
 No additional MCP calls were made, as requested by the parent.
 
 Direct local reference reading confirms installed `effects_documentation.md:4833-4852` builds and runs meta-effect strings, and `8096-8128` documents numeric state-event delays.
-Offline `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md:4617-4682` describes replacing meta arguments when constructing the effect.
+Offline `paradox_wiki/effects.md:4617-4682` describes replacing meta arguments when constructing the effect.
 The parent owns the full citation revisions, reference evidence, domain inspection, implementation, and independent timing fixture.
 
 | Source snapshot | SHA-256 |

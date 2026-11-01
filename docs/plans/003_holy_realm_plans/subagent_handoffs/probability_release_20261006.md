@@ -72,7 +72,7 @@ The linked decision `THR_hold_dharma_teaching` has `ai_will_do = { factor = 2 }`
 
 That list is source-complete: weight 35 selects `chaosx.nr3.110`, 25 selects `.111`, 25 selects `.112`, and 15 selects `.113` (`common/decisions/003_holy_realm_decisions.txt:962-967`).
 
-Each of those four events has two local options without an explicit `ai_chance`; the offline Event modding page says an unset option uses the default weight of 1, but no MCP result confirms how the installed probability adapter resolves these pools (`events/003_the_holy_realm.txt:1696-1854`; `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md:157-161`).
+Each of those four events has two local options without an explicit `ai_chance`; the offline Event modding page says an unset option uses the default weight of 1, but no MCP result confirms how the installed probability adapter resolves these pools (`events/003_the_holy_realm.txt:1696-1854`; `paradox_wiki/event_modding.md:157-161`).
 
 At the reviewed event hash, `chaosx.nr3.74` is another incomplete explicit-weight pool: option `.a` has no `ai_chance`, while `.b` has base 30 and modifiers that set it to zero when the final doctrine leans final or final-silence pressure exceeds 59 (`events/003_the_holy_realm.txt:661-712`).
 
@@ -106,7 +106,7 @@ The current `THR_buddha_mandate` focus adds the `holy_realm_capital_sanctuary_se
 
 The trigger checks that the current capital is controlled by ROOT and that `holy_realm_capital_sanctuary_recently_fallen` is absent (`common/scripted_triggers/003_holy_realm_triggers.txt:95-100`).
 
-`THR_buddha_mandate` has no explicit `ai_will_do`, so the offline National focus page’s default score of 1 is the only source-level score rule available here; no complete available-focus pool or independent score race was evaluated (`paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md:604-623`).
+`THR_buddha_mandate` has no explicit `ai_will_do`, so the offline National focus page’s default score of 1 is the only source-level score rule available here; no complete available-focus pool or independent score race was evaluated (`paradox_wiki/national_focus_modding.md:604-623`).
 
 Final Silence’s configured gate remains 1000 in current and frozen constants (`common/script_constants/003_holy_realm_constants.txt:75`).
 
@@ -122,7 +122,7 @@ Those strategy values are directives, not normalized probabilities; package acti
 
 ## Evidence references and remaining blockers
 
-The offline wiki sections read directly were `AI modding - Hearts of Iron 4 Wiki.md:26-36,74-80`, `Event modding - Hearts of Iron 4 Wiki.md:157-161`, `Decision modding - Hearts of Iron 4 Wiki.md:361-373`, and `National focus modding - Hearts of Iron 4 Wiki.md:604-635`.
+The offline wiki sections read directly were `ai_modding.md:26-36,74-80`, `event_modding.md:157-161`, `decision_modding.md:361-373`, and `national_focus_modding.md:604-635`.
 
 The installed vanilla documentation read directly was `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md:5372-5379,5413-5428`, covering `random_country` and weighted `random_list` syntax.
 

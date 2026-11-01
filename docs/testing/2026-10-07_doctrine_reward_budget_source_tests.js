@@ -400,14 +400,14 @@ const referenceSections = [
  ['game_doc', path.join(game, 'common/doctrines/subdoctrines/_documentation.md'), 3, 57],
  ['game_doc', path.join(game, 'common/doctrines/grand_doctrines/_documentation.md'), 58, 110],
  ['vanilla_precedent', path.join(game, 'common/doctrines/subdoctrines/land/infantry_subdoctrines.txt'), 384, 401],
- ['wiki', path.join(root, 'paradox_wiki/Technology modding - Hearts of Iron 4 Wiki.md'), 92, 118],
- ['wiki', path.join(root, 'paradox_wiki/Modifiers - Hearts of Iron 4 Wiki.md'), 946, 950],
- ['wiki', path.join(root, 'paradox_wiki/Character modding - Hearts of Iron 4 Wiki.md'), 256, 264],
+ ['wiki', path.join(root, 'paradox_wiki/technology_modding.md'), 92, 118],
+ ['wiki', path.join(root, 'paradox_wiki/modifiers.md'), 946, 950],
+ ['wiki', path.join(root, 'paradox_wiki/character_modding.md'), 256, 264],
 ].map(([kind, file, startLine, endLine]) => ({kind, path: file, startLine, endLine, sha256: hash(fs.readFileSync(file))}));
 for(const [kind,file,startLine,endLine] of [
  ['game_doc',path.join(game,'documentation/modifiers_documentation.md'),4537,4541],
- ['wiki',path.join(root,'paradox_wiki/Modifiers - Hearts of Iron 4 Wiki.md'),971,974],
- ['wiki',path.join(root,'paradox_wiki/Unit modding - Hearts of Iron 4 Wiki.md'),308,318],
+ ['wiki',path.join(root,'paradox_wiki/modifiers.md'),971,974],
+ ['wiki',path.join(root,'paradox_wiki/unit_modding.md'),308,318],
  ['vanilla_precedent',path.join(game,'common/units/hq_support.txt'),112,146],
  ['vanilla_precedent',path.join(game,'common/technologies/support.txt'),536,544],
 ]) referenceSections.push({kind,path:file,startLine,endLine,sha256:hash(fs.readFileSync(file))});

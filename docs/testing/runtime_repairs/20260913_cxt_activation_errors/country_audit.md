@@ -113,7 +113,7 @@ No generic capital or technology fallback was added.
 
 ## Evidence and limits
 
-Relevant offline references were `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md`, `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, and the installed `documentation/effects_documentation.md`, `documentation/triggers_documentation.md`, and `documentation/script_concept_documentation.md` under the vanilla HOI4 directory.
+Relevant offline references were `paradox_wiki/scopes.md`, `paradox_wiki/data_structures.md`, and the installed `documentation/effects_documentation.md`, `documentation/triggers_documentation.md`, and `documentation/script_concept_documentation.md` under the vanilla HOI4 directory.
 The stored activation baseline is under `docs/testing/runtime_repairs/20260913_cxt_activation_errors/baseline/`.
 The adjacent `technology_handoff.md`, `technology_index_boundaries.json`, `technology_mcp_evidence.json`, and `condemnation_before_hashes.json` record the prior source and analysis evidence.
 

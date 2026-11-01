@@ -86,7 +86,7 @@ The original processed PNG directory `docs/assets/031_random_terror/processed_pn
 
 ## Consumer and lifecycle contract for the parent
 
-The local Character modding reference says `recruit_character` must be placed in country history and that characters without a role at start must receive it later with `add_country_leader_role` (`paradox_wiki/Character modding - Hearts of Iron 4 Wiki.md`, lines 50 and 58–59). Installed effects documentation lists `add_country_leader_role` at lines 985–1006, `recruit_character` at lines 5696–5705, and `set_nationality` at lines 7397–7414.
+The local Character modding reference says `recruit_character` must be placed in country history and that characters without a role at start must receive it later with `add_country_leader_role` (`paradox_wiki/character_modding.md`, lines 50 and 58–59). Installed effects documentation lists `add_country_leader_role` at lines 985–1006, `recruit_character` at lines 5696–5705, and `set_nationality` at lines 7397–7414.
 
 JMX history now recruits `JMX_random_terror_unanswered_presence` at line 53 and `JMX_random_terror_final_command_council` at line 54. The entity remains recruited but roleless until the actual gated transaction. Add and promote its leader role only in that transaction, and use `set_nationality` if it must move to a different human host.
 

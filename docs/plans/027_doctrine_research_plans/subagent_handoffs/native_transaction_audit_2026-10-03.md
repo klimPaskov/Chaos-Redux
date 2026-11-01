@@ -50,7 +50,7 @@ All repository-relative citations resolve under REPO.
 | `GAME\common\doctrines\tracks\_documentation.md:20-23` | Track `active` gates selection and mastery gain, including banking. | This is not a banking preservation or settlement-order specification. |
 | `GAME\common\defines\00_defines.lua:25,4687-4688` | Native loop cap is 1,000. Default mastery per reward is 100.0. | Neither value proves exact transaction behavior. |
 | `GAME\history\countries\GER - Germany.txt:753-769` | Vanilla selects native doctrines and branches, then adds fixed mastery amounts filtered by subdoctrine. | This is setup source, not an exact one-step or banked-track test. |
-| `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md:2508-2542,2577-2585` and `paradox_wiki/Doctrine modding - Hearts of Iron 4 Wiki.md:31-47` | Offline snapshot agrees on filter spelling, assignment indexing, and reward-count terminology. | No banking settlement algorithm is supplied. |
+| `paradox_wiki/effects.md:2508-2542,2577-2585` and `paradox_wiki/doctrine_modding.md:31-47` | Offline snapshot agrees on filter spelling, assignment indexing, and reward-count terminology. | No banking settlement algorithm is supplied. |
 
 Do not copy vanilla's fixed point grants or experience rewards into Event 027.
 No technology helper, experience grant, active replacement, or mastery dump is recommended.

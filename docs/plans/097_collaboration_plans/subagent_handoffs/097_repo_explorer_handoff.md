@@ -156,7 +156,7 @@ add_chaos_meter_value = yes
 | `on_join_faction`, `on_leave_faction`, `on_create_faction`, `on_guarantee`, `on_join_allies`, `on_wargoal_expire`, `on_ruling_party_change` | matching helpers | small signed values |
 | `on_monthly` host pulse | monthly decay | -1 |
 
-- Puppet and subject creation: per the wiki (`On actions - Hearts of Iron 4 Wiki.md:260`), `on_puppet` fires only for puppeting in a peace conference, and `on_release_as_puppet` is not hooked by any generic Chaos source. A collaboration government created by `instantiate_collaboration_government` (wiki Effects `:4723`) is a script effect, so no generic puppet or subject-creation source is documented to fire for it. Whether the engine also fires `on_puppet` for it is unconfirmed. What would fire later: `on_capitulation`, `on_annex`, `on_subject_annexed`, `on_subject_free`.
+- Puppet and subject creation: per the wiki (`on_actions.md:260`), `on_puppet` fires only for puppeting in a peace conference, and `on_release_as_puppet` is not hooked by any generic Chaos source. A collaboration government created by `instantiate_collaboration_government` (wiki Effects `:4723`) is a script effect, so no generic puppet or subject-creation source is documented to fire for it. Whether the engine also fires `on_puppet` for it is unconfirmed. What would fire later: `on_capitulation`, `on_annex`, `on_subject_annexed`, `on_subject_free`.
 - Event-owned Chaos must come from a concrete consequence and must not copy those sources. Also note the wiki scope for `on_puppet` is ROOT = puppeted nation and FROM = overlord, while `chaos_meter_on_puppet` logs "FROM was puppeted by THIS". Direction is unverified in source.
 
 ### 5. On_actions that matter
@@ -295,11 +295,11 @@ Safest existing patterns, in order:
 Vanilla files: unavailable. `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/` is not present in this Linux container, so no vanilla event, autonomous state, ideology, occupation law, operation, defines, or documentation markdown file (`effects_documentation.md`, `triggers_documentation.md`, `script_concept_documentation.md`) was read. Kaiserreich and the other approved reference mods are not present either.
 
 Offline wiki snapshot sections found (`paradox_wiki/`):
-- `Effects - Hearts of Iron 4 Wiki.md`: `add_collaboration` `:1246`, `set_collaboration` `:1247`, examples `:1320-1335`, `instantiate_collaboration_government` `:4723`.
-- `Triggers - Hearts of Iron 4 Wiki.md`: `has_collaboration` `:642` (target must be occupied by the scope, value uses `<` or `>`), `is_dynamic_country` `:652`.
-- `Data structures - Hearts of Iron 4 Wiki.md`: country variables `core_compliance`, `core_resistance`, `has_collaboration` `:1510-1512`, temp-variable lifetime `:440`.
-- `On actions - Hearts of Iron 4 Wiki.md`: `on_capitulation` `:254`, `on_annex` `:257`, `on_puppet` `:260` (peace conference only), `on_release_as_puppet` `:263`, `on_subject_*` `:434-436`, `on_government_exiled` `:442`, `on_state_control_changed` `:450`.
-- `Defines - Hearts of Iron 4 Wiki.md`: three collaboration defines `:480-482`.
+- `effects.md`: `add_collaboration` `:1246`, `set_collaboration` `:1247`, examples `:1320-1335`, `instantiate_collaboration_government` `:4723`.
+- `triggers.md`: `has_collaboration` `:642` (target must be occupied by the scope, value uses `<` or `>`), `is_dynamic_country` `:652`.
+- `data_structures.md`: country variables `core_compliance`, `core_resistance`, `has_collaboration` `:1510-1512`, temp-variable lifetime `:440`.
+- `on_actions.md`: `on_capitulation` `:254`, `on_annex` `:257`, `on_puppet` `:260` (peace conference only), `on_release_as_puppet` `:263`, `on_subject_*` `:434-436`, `on_government_exiled` `:442`, `on_state_control_changed` `:450`.
+- `defines.md`: three collaboration defines `:480-482`.
 - `Ideology modding`, `Autonomy state modding`, `Idea modding`, `Faction modding`: rule `can_create_collaboration_government`, ideology key `can_collaborate`.
 - `List of modifiers`: `operation_collaboration_government_cost`, `_outcome`, `_risk` `:50`.
 - `Localisation` `:258` and `Ideology modding :120`: collaboration government names use `$NONIDEOLOGY$`, `COUNTRY_autonomy_collaboration_government`.

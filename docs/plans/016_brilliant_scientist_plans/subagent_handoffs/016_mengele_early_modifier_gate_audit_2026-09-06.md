@@ -121,7 +121,7 @@ These are source-model checks and do not establish engine rendering, daily timin
 
 ## Source semantics and evidence limits
 
-The offline `Modifiers - Hearts of Iron 4 Wiki.md:104` dynamic-modifier section states that `enable` controls effect application and `remove_trigger` removes the modifier when true.
+The offline `modifiers.md:104` dynamic-modifier section states that `enable` controls effect application and `remove_trigger` removes the modifier when true.
 Installed vanilla `common/dynamic_modifiers/wuw_dynamic_modifiers.txt:1` contains the same documented schema and notes daily refresh unless forced.
 Vanilla `documentation/effects_documentation.md:1153` documents adding a modifier and updating the cooldown if it already exists, line 4372 documents immediate refresh, and line 5978 documents explicit removal.
 The generic `common/dynamic_modifiers/documentation.md` file is absent in this installation, so the installed commented schema and formal effects documentation were used instead.

@@ -35,9 +35,9 @@ Required engine references:
 
 - installed `documentation/effects_documentation.md` for delayed `country_event`, timed dynamic modifiers, and event targets
 - installed `documentation/triggers_documentation.md` for `count_triggers`
-- offline `Data structures - Hearts of Iron 4 Wiki.md` for regular event targets across delayed child events
-- offline `Event modding - Hearts of Iron 4 Wiki.md`
-- offline `Scopes - Hearts of Iron 4 Wiki.md`
+- offline `data_structures.md` for regular event targets across delayed child events
+- offline `event_modding.md`
+- offline `scopes.md`
 - vanilla delayed country-event calls such as `events/AAT_Denmark.txt`
 - vanilla and repository timed state dynamic modifiers
 

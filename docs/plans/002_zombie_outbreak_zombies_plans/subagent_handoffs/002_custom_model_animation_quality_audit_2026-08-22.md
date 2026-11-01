@@ -5,7 +5,7 @@
 - Parent task: read-only quality audit of the custom Event 002 zombie 3D skeletal animation packages.
 - Explicit constraints: inspect only runtime zombie models, their `.asset`/`.gfx` wiring, and the corresponding evidence roots; do not edit gameplay, runtime, or asset files; do not accept manual/local/procedural/whole-rig/static/semantic-alias actions as final animation evidence.
 - Files or ids requested: `gfx/models/units/chaosx_*zombies`, matching `gfx/entities/chaosx_*zombies.{asset,gfx}`, and `docs/assets/002_zombie_outbreak/models_3d/*`.
-- Skills or docs read: `AGENTS.md`, `.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md`, `.agents/skills/chaos-redux-event-assets/SKILL.md`, `.agents/skills/chaos-redux-subagents/SKILL.md`, `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`, `paradox_wiki/Entity modding - Hearts of Iron 4 Wiki.md`, vanilla `gfx/entities/infantry.gfx`, vanilla `gfx/entities/units_infantry.asset`, and the available vanilla documentation folder.
+- Skills or docs read: `AGENTS.md`, `.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md`, `.agents/skills/chaos-redux-event-assets/SKILL.md`, `.agents/skills/chaos-redux-subagents/SKILL.md`, `paradox_wiki/graphical_asset_modding.md`, `paradox_wiki/entity_modding.md`, vanilla `gfx/entities/infantry.gfx`, vanilla `gfx/entities/units_infantry.asset`, and the available vanilla documentation folder.
 
 ## Primary findings
 
@@ -63,7 +63,7 @@ The runtime/entity wiring pattern is structurally valid and mirrors the vanilla 
 
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/entities/infantry.gfx:76-108` maps separate vanilla infantry animation IDs for idle, attack, support attack, move, retreat, death, and other states.
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/entities/units_infantry.asset:11-96` shows entity state wiring, looping flags, and animation transitions.
-- `paradox_wiki/Entity modding - Hearts of Iron 4 Wiki.md:21-48,50-134` confirms that `.gfx` registers `pdxmesh` animation IDs and `.asset` maps entity states to those IDs.
+- `paradox_wiki/entity_modding.md:21-48,50-134` confirms that `.gfx` registers `pdxmesh` animation IDs and `.asset` maps entity states to those IDs.
 - No dedicated model/animation documentation file was present in the installed vanilla `documentation` folder; the repo skill and the entity wiki snapshot were used for the source/asset evidence boundary.
 
 ## Likely edit order for the parent

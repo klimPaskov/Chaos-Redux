@@ -210,11 +210,11 @@ The parent's separate probability auditor owns the unchanged decision AI surface
 
 Required reference sections read for this module:
 
-- `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`: 263-327 event targets, 425-454 normal variables and temporary lifetime, 546-553 integer targeting.
-- `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`: 339-354 timer and modifier lifetime, 513-536 ROOT/FROM targeting, 579-588 FROM state targeting.
-- `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md`: 75-82 variable-valued effects, 700-743 variable operations, 1068-1075 PP/manpower, 2253 equipment mutation.
-- `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md`: 571-605 variable comparisons and scopes.
-- `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md`: 283-329 ROOT/PREV/FROM examples and invalid-target limits.
+- `paradox_wiki/data_structures.md`: 263-327 event targets, 425-454 normal variables and temporary lifetime, 546-553 integer targeting.
+- `paradox_wiki/decision_modding.md`: 339-354 timer and modifier lifetime, 513-536 ROOT/FROM targeting, 579-588 FROM state targeting.
+- `paradox_wiki/effects.md`: 75-82 variable-valued effects, 700-743 variable operations, 1068-1075 PP/manpower, 2253 equipment mutation.
+- `paradox_wiki/triggers.md`: 571-605 variable comparisons and scopes.
+- `paradox_wiki/scopes.md`: 283-329 ROOT/PREV/FROM examples and invalid-target limits.
 - Installed `documentation/script_concept_documentation.md`: 184-215 arithmetic limits and 216-245 script constants.
 - Installed `common/script_constants/documentation.md`: complete schema and examples.
 - Installed `documentation/effects_documentation.md`: 1252-1268 equipment mutation, 1468-1477 manpower scope, 1854-1863 PP scope, 2773-2783 clearing, 7888-7909 variable assignment.

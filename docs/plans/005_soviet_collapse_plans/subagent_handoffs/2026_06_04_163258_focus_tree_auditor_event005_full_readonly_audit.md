@@ -16,18 +16,18 @@ Project guidance:
 
 Offline Paradox wiki snapshot:
 
-- `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Effect - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Modifiers - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/On actions - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Idea modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/national_focus_modding.md`
+- `paradox_wiki/data_structures.md`
+- `paradox_wiki/triggers.md`
+- `paradox_wiki/effects.md`
+- `paradox_wiki/modifiers.md`
+- `paradox_wiki/localisation.md`
+- `paradox_wiki/scopes.md`
+- `paradox_wiki/ai_modding.md`
+- `paradox_wiki/decision_modding.md`
+- `paradox_wiki/event_modding.md`
+- `paradox_wiki/on_actions.md`
+- `paradox_wiki/idea_modding.md`
 
 Vanilla docs/examples:
 
@@ -327,9 +327,9 @@ sed -n '1,220p' .agents/skills/chaos-redux-focus-trees/SKILL.md
 sed -n '1,220p' .agents/skills/chaos-redux-events/SKILL.md
 sed -n '1,260p' .agents/skills/chaos-redux-subagents/SKILL.md
 rg --files paradox_wiki | rg '((National focus|Focus|Effects|Triggers|Localisation|Scopes|AI modding|Modifiers|Decision modding|Data structures|Event modding|On actions|Idea modding).*Hearts of Iron 4 Wiki\\.md$)'
-sed -n '1,220p' 'paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md'
-sed -n '220,520p' 'paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md'
-sed -n '1,120p' 'paradox_wiki/Effect - Hearts of Iron 4 Wiki.md'
+sed -n '1,220p' 'paradox_wiki/national_focus_modding.md'
+sed -n '220,520p' 'paradox_wiki/national_focus_modding.md'
+sed -n '1,120p' 'paradox_wiki/effects.md'
 rg -n 'focus|national_focus|mutually_exclusive|prerequisite|allow_branch|ai_will_do|path' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation'
 rg -n '\\b(add_ideas|remove_ideas|swap_ideas|add_timed_idea|modify_ideas|add_dynamic_modifier|remove_dynamic_modifier)\\b' common/national_focus/005_soviet_collapse_*.txt common/scripted_effects common/ideas/005_soviet_collapse_ideas.txt
 python3 - <<'PY'

@@ -53,8 +53,8 @@ The implementation was checked against:
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md` for `add_dynamic_modifier`, `remove_dynamic_modifier`, `force_update_dynamic_modifier`, and timed country flags.
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md` for flag, variable, and equipment affordability checks.
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/modifiers_documentation.md` for the country-scoped naval detection and convoy escort modifiers.
-- `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md` for custom costs, removal effects, re-enable timing, and AI weights.
-- `paradox_wiki/Modifiers - Hearts of Iron 4 Wiki.md` for dynamic-modifier enable and removal behavior.
+- `paradox_wiki/decision_modding.md` for custom costs, removal effects, re-enable timing, and AI weights.
+- `paradox_wiki/modifiers.md` for dynamic-modifier enable and removal behavior.
 - Vanilla decisions with a Political Power cost plus a separate `custom_cost_trigger` and `custom_cost_text`, including `common/decisions/GER.txt`.
 
 ## Asset proof

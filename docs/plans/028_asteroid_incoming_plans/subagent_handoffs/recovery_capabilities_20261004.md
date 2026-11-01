@@ -365,9 +365,9 @@ Line spans below identify the directly read relevant sections and are distinct f
 | `game\common\dynamic_modifiers\bba_dynamic_modifiers.txt` | `out_of_supply_factor = ITA_re_out_of_supply` at 477 and corresponding repeated country modifier variants |
 | `game\common\defines\00_defines.lua` | Internal unit-supply AI handling at 3287 and 3480, army supply-ratio handling at 4395 to 4397 |
 | `game\interface\unitview.gui` | Supply widgets at 414 to 415 and 1702 to 1703, no scripted getter declaration |
-| `mod\paradox_wiki\Triggers - Hearts of Iron 4 Wiki.md` | Division-scoped trigger table at 2216 to 2226, including reserve priority rather than supplied status |
-| `mod\paradox_wiki\Decision modding - Hearts of Iron 4 Wiki.md` | Removal/cancellation at 336 to 356, mission lifecycle at 461 to 478, targeted actor/FROM scope at 511 to 536 |
-| `mod\paradox_wiki\Data structures - Hearts of Iron 4 Wiki.md` | Flag targeting at 125, variable targeting at 551 to 553, global date/num_days reader section |
+| `mod\paradox_wiki\triggers.md` | Division-scoped trigger table at 2216 to 2226, including reserve priority rather than supplied status |
+| `mod\paradox_wiki\decision_modding.md` | Removal/cancellation at 336 to 356, mission lifecycle at 461 to 478, targeted actor/FROM scope at 511 to 536 |
+| `mod\paradox_wiki\data_structures.md` | Flag targeting at 125, variable targeting at 551 to 553, global date/num_days reader section |
 
 The retained crater handoff, recovery target-isolation handoff, and physical receipt handoff were read for ownership and dependency contracts.
 Their source-model results remain attributed earlier evidence and were not rerun or promoted to native acceptance by this research.

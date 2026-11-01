@@ -83,9 +83,9 @@ On a normal loaded save, persistent cycle variables retain the last completed ow
 
 ## Engine references
 
-- `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` for variables, temporary variables, scope values, and arrays
-- `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md` for ROOT, PREV, THIS, OWNER, and nested scope chains
-- `paradox_wiki/On actions - Hearts of Iron 4 Wiki.md` for periodic iteration behavior
+- `paradox_wiki/data_structures.md` for variables, temporary variables, scope values, and arrays
+- `paradox_wiki/scopes.md` for ROOT, PREV, THIS, OWNER, and nested scope chains
+- `paradox_wiki/on_actions.md` for periodic iteration behavior
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md` for `for_each_scope_loop`, array operations, variable effects, and event firing
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/dynamic_variables_documentation.md` for `global.date`, `state_population_k`, and state identifiers
 

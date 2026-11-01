@@ -135,7 +135,7 @@ The removed historical Event 15 package at commit `0bce9e9a4` and its removal in
 
 ## References consulted
 
-The required offline wiki core pages were consulted together with `Music modding - Hearts of Iron 4 Wiki.md` and `Sound modding - Hearts of Iron 4 Wiki.md`. The installed vanilla `documentation/` directory contains no music- or sound-specific Markdown documentation, so direct vanilla precedents were also checked in `music/music.asset`, `music/_songs.txt`, `sound/sound.asset`, and `sound/soundeffects.asset`. Current Chaos Redux music, station, and sound naming and settings-aware volume patterns were checked before proposing the keys above.
+The required offline wiki core pages were consulted together with `music_modding.md` and `sound_modding.md`. The installed vanilla `documentation/` directory contains no music- or sound-specific Markdown documentation, so direct vanilla precedents were also checked in `music/music.asset`, `music/_songs.txt`, `sound/sound.asset`, and `sound/soundeffects.asset`. Current Chaos Redux music, station, and sound naming and settings-aware volume patterns were checked before proposing the keys above.
 
 ## Blockers, simplifications, and unresolved risk
 

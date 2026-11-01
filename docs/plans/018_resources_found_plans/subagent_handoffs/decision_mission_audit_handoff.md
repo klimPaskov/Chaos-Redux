@@ -8,7 +8,7 @@ No fallback, placeholder, omitted route, or simplified substitute was used.
 
 ## Required references used
 
-- Offline wiki: `Decision modding - Hearts of Iron 4 Wiki.md`, especially the mission note that mission-level `visible` has no effect and the category `visible` contract; plus Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Idea modding, and AI modding.
+- Offline wiki: `decision_modding.md`, especially the mission note that mission-level `visible` has no effect and the category `visible` contract; plus Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Idea modding, and AI modding.
 - Official game documentation: `documentation/decisions/_documentation.md`, `documentation/script_concept_documentation.md`, `common/script_constants/documentation.md`, `documentation/triggers_documentation.md`, and `documentation/effects_documentation.md`.
 - Vanilla activated-mission precedent: `common/decisions/CHI_warlord_decisions.txt` uses `allowed = { always = no }` missions explicitly activated from effects; the Event 018 clocks retain that engine-native activation pattern. Vanilla decision-category files provide the category-level `visible`/`visible_when_empty` rendering contract. Event 018 adds the stricter always-hidden category because the wiki explicitly documents that mission `visible` is ignored.
 

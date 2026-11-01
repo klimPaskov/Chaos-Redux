@@ -354,7 +354,7 @@ Contract: Part 3:198 to :215, Part 9:9 to :21, Part 10:207 to :212.
 Runtime:1220 and :1271 call `launch_nuke`, with thermonuclear/nuclear bomb type respectively and `use_nuke = no`.
 Installed `effects_documentation.md:4745` to :4760 describes that effect as launching a nuke at a state/province.
 Its `use_nuke` comment at :4756 refers only to consuming a nuke from stockpile.
-Offline `Effects - Hearts of Iron 4 Wiki.md:1517` likewise says it nukes the selected province and defines `use_nuke` only as stockpile deduction.
+Offline `effects.md:1517` likewise says it nukes the selected province and defines `use_nuke` only as stockpile deduction.
 The project precedent at `023_sov_nuclear_bombs_runtime_effects.txt:703` explicitly says `launch_nuke` detonates.
 Neither reference documents a presentation-only switch in the call used by Event028.
 

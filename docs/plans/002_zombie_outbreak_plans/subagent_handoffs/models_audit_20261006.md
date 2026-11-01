@@ -79,8 +79,8 @@ I made no paid call or source/runtime/GFX/entity/gameplay edit, service restart,
 ## Guidance and references read
 
 Read AGENTS.md, .agents\skills\chaos-redux-3d-model-pipeline\SKILL.md, .agents\skills\chaos-redux-event-assets\SKILL.md, .agents\skills\chaos-redux-subagents\SKILL.md, .tools\3d_pipeline\README.md, the current job.yaml and dependency/profile configuration, and the named September 27 and October 3 zombie-model handoffs.
-Read paradox_wiki\Entity modding - Hearts of Iron 4 Wiki.md sections on mesh registration (lines 25–43), entities (52–60 and 112–136), and animation registration (169–183).
-Read paradox_wiki\Graphical asset modding - Hearts of Iron 4 Wiki.md, Object Types section (lines 246–281); it contains no pdxmesh model syntax.
+Read paradox_wiki\entity_modding.md sections on mesh registration (lines 25–43), entities (52–60 and 112–136), and animation registration (169–183).
+Read paradox_wiki\graphical_asset_modding.md, Object Types section (lines 246–281); it contains no pdxmesh model syntax.
 Read installed vanilla gfx\entities\units_infantry.asset lines 12–52, gfx\entities\infantry.gfx lines 76–100, and gfx\models\units\animation.asset lines 235–292.
 The installed game documentation folder contains no model, mesh, entity, or skeletal-animation documentation file, so the local vanilla definitions and offline Entity modding page were the available engine references.
 Skills applied: chaos-redux-3d-model-pipeline, chaos-redux-event-assets, and chaos-redux-subagents.

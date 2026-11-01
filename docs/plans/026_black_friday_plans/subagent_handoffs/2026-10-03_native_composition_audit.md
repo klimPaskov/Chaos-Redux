@@ -24,8 +24,8 @@ Exact Windows roots:
 | I | `M\common\ideas\026_black_friday_ideas.txt` |
 | D | `M\common\dynamic_modifiers\026_black_friday_dynamic_modifiers.txt` |
 | R | `M\docs\plans\026_black_friday_plans\event26_cost_surface_registry.md` |
-| W | `M\paradox_wiki\Modifiers - Hearts of Iron 4 Wiki.md` |
-| IM | `M\paradox_wiki\Idea modding - Hearts of Iron 4 Wiki.md` |
+| W | `M\paradox_wiki\modifiers.md` |
+| IM | `M\paradox_wiki\idea_modding.md` |
 | MD | `V\documentation\modifiers_documentation.md` |
 | Def | `V\common\defines\00_defines.lua` |
 

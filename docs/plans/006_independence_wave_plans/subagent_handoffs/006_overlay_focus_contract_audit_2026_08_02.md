@@ -10,7 +10,7 @@ This handoff covers IW-022, IW-025, IW-035, IW-059, IW-085, IW-101, IW-102, IW-1
 
 The scoped overlays must not call `load_focus_tree` and must not be admitted as additive carriers by flag alone.
 
-`shared_focus` is a static import on the owning `focus_tree` definition, as documented by `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md` and the vanilla focus-tree files.
+`shared_focus` is a static import on the owning `focus_tree` definition, as documented by `paradox_wiki/national_focus_modding.md` and the vanilla focus-tree files.
 
 `common/scripted_effects/006_independence_wave_focus_effects.txt` explicitly uses `load_focus_tree` only for the full framework and never for additive overlays.
 

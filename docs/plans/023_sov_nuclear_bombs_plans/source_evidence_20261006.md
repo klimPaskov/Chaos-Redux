@@ -46,7 +46,7 @@ The source specification explicitly excludes a new focus tree, country, portrait
 No skill file or workbook/export was edited by this pass.
 
 The parent found a localisation pointer defect in the first localisation handoff: custom normal-variable scopes require the question-mark prefix, unlike regular event targets.
-Offline `Data structures - Hearts of Iron 4 Wiki.md:492-496` explicitly requires `[?country_variable.GetName]`.
+Offline `data_structures.md:492-496` explicitly requires `[?country_variable.GetName]`.
 Installed `localisation/english/aat_decisions_l_english.yml:399-415` uses `[?DEN.DEN_overlord_nation.GetNameDef]` and `[?DEN.hosts_danish_brigades.GetNameDefCap]` as exact current-engine precedents.
 News 231/232 use `[?SOV.sov_nuclear_bombs_news_threat_country.GetNameDef]` and equivalent state/strike variables.
 Successor news retains regular carried event targets without a question mark.

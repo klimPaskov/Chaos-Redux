@@ -108,7 +108,7 @@ The existing repair-progress helper also rejects `riches_found_severe_collapse` 
 Those requirements were preserved and must not be presented as automatically satisfied by the new pulse.
 
 The narrow state-control hook is available in installed vanilla and the offline wiki.
-Installed `common\on_actions\00_on_actions.txt:5074-5088` and offline `paradox_wiki\On actions - Hearts of Iron 4 Wiki.md:450-475` were read directly and document ROOT as the new controller, FROM as the old controller, and FROM.FROM as the changed state.
+Installed `common\on_actions\00_on_actions.txt:5074-5088` and offline `paradox_wiki\on_actions.md:450-475` were read directly and document ROOT as the new controller, FROM as the old controller, and FROM.FROM as the changed state.
 The existing parent evidence `evidence\2026_10_03_reference_review.md` and current `2026_10_03_resume_packet.md:174-188` retain separate successful hook reference-search/read evidence.
 This supports the documented hook and scope contract, without proving a live transfer.
 
