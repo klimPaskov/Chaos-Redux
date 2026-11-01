@@ -154,3 +154,7 @@ Processes report-event source art according to the report-event workflow documen
 python -B .agents/skills/chaos-redux-event-assets/tools/process_report_event_image.py `
 	<input.png> <processed_report_event.png>
 ```
+
+The defaults (card 192x154, tilt 4 degrees counter-clockwise, shadow offset 0 1, blur 2.5, opacity 0.96) reproduce vanilla's report-card alpha masks: a tight near-black shadow on all four sides that fades out before the canvas edge. `tests/test_report_event_shadow.py` checks this against the installed game and skips without it (`python -B -m unittest discover -s .claude/skills/chaos-redux-event-assets/tools/tests -v`).
+
+The script carries a `RECIPE_VERSION` that `--runtime` records. Cards recorded by an older recipe (no `recipe_version` means version 1, the old bottom-right shadow) are not reprocessed: `python -B .tools/gfx/gfx.py reports` lists them as review-level `GFX-REPORT-OLD-RECIPE` findings instead of failing their recipe rerun, and `--json <file>` lists every such card.
