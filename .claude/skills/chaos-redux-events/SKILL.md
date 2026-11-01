@@ -468,8 +468,16 @@ Event doc structure:
 9. World-end and super-event integration if relevant.
 10. Connections with other events if relevant.
 11. Asset wiring and sprite expectations if relevant.
-12. Limitations if any.
-13. Open tuning notes and future expansion ideas.
+12. Test plan.
+13. Limitations if any.
+14. Open tuning notes and future expansion ideas.
+
+The `Test plan` section is a short in-game checklist for the maintainer to use when they choose to test. It is never a request to the user: per `CLAUDE.md` an agent does not ask the user to run tests or to supply logs, and a task does not wait for testing to finish. Write it when the doc is created and whenever the mechanics change. Give one row for each state worth reaching, such as the opening, each branch, evolution, decision or mission outcome, and cleanup. Each row gives:
+
+- **State**: what to reach.
+- **Console commands**: the exact commands that reach it, such as `tag <TAG>` to take the country, `observe` to watch, `event chaosx.nr<ID>.<n>` to fire the event, or the mod's own setup and debug decisions (`e chaosx_test` for the test country, see `docs/testing/chaosx_test_country.md`). Name the flag or variable to set when no command reaches the state, and say so when a state cannot be reached from the console.
+- **Look at**: the tooltip, event window, event log entry, decision category, GUI, flag, or variable that shows the result.
+- **Expected result**: what the game should show, in one sentence.
 
 ### Docs and gameplay must stay aligned
 
@@ -482,6 +490,7 @@ Do not leave the doc describing:
 - old stage counts
 - removed branches
 - removed assets
+- a Test plan whose commands, ids, or expected results no longer match the implementation
 - outdated spreadsheet or deck expectations
 
 ### Event catalog spreadsheet
@@ -536,7 +545,7 @@ Before closing an event task, verify:
 11. If the event has a super-event, `chaos-redux-super-events` has been used for quote, remark, audio, and presentation planning.
 12. Supporting decisions, ideas, AI, country setup, or exclusions are updated if relevant.
 13. For every manifest-driven formable, the category attachment audit lists all in-scope category IDs and proves each one points to the generated state-puzzle scripted GUI. A formable family that declares strict all-category coverage has no static or text-only substitute where exact state control is central.
-14. `docs/events/` is updated.
+14. `docs/events/` is updated, including its Test plan.
 15. `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is updated, then `.tools/export_event_catalog_csv.py` is run so all three export-only CSV snapshots are refreshed.
 16. If assets are required, `chaos-redux-event-assets` has been used.
 17. During active work, generated assets are resized, converted to DDS 32 bit unsigned BGRA 8.8.8.8, moved into the correct folders, wired in `.gfx`, and recorded in the temporary asset manifest and crosswalk. Before completion, durable facts are promoted and the event-scoped `docs/assets/<event_id>_<event_slug>/` workspace is deleted, with no runtime reference left to it.
