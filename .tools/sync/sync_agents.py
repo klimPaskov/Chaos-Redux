@@ -284,6 +284,17 @@ def render_codex_registry(existing: str, agents: List[Dict[str, Any]]) -> str:
     return "\n".join(kept[:insert_at] + rows + kept[insert_at:])
 
 
+def codex_registry_problems(agents: List[Dict[str, Any]]) -> List[str]:
+    """Report `.codex/config.toml` agent rows that differ from the canonical agents."""
+    if not CODEX_CONFIG.exists():
+        return []
+    config = CODEX_CONFIG.read_text(encoding="utf-8")
+    if render_codex_registry(config, agents) == config.replace("\r\n", "\n"):
+        return []
+    return [".codex/config.toml: the [agents.*] rows differ from the canonical agents; "
+            "run python .tools/sync/sync_agents.py codex"]
+
+
 def render_qoder(agent: Dict[str, Any], profiles: Dict[str, Any]) -> str:
     tools = AUTHORITY_CLASSES[agent["authority"]][1]
     return "\n".join(
@@ -654,11 +665,7 @@ def run_verify(agents: List[Dict[str, Any]], profiles: Dict[str, Any]) -> int:
         for path in folder.glob("*"):
             if path.is_file() and re.search(r"fable", path.read_text(encoding="utf-8", errors="ignore"), re.I):
                 problems.append("{}: mentions a forbidden model name".format(path.relative_to(MOD_ROOT)))
-    if CODEX_CONFIG.exists():
-        config = CODEX_CONFIG.read_text(encoding="utf-8")
-        if render_codex_registry(config, agents) != config.replace("\r\n", "\n"):
-            problems.append(".codex/config.toml: the [agents.*] rows differ from the canonical agents; "
-                            "run python .tools/sync/sync_agents.py codex")
+    problems += codex_registry_problems(agents)
     print("{:<40} {:<8} {:<8} {:<14} {:<8} {}".format("agent", "claude", "effort", "codex", "cursor", "opencode"))
     for row in rows:
         print("{:<40} {:<8} {:<8} {:<14} {:<8} {}".format(*[str(c) for c in row]))
