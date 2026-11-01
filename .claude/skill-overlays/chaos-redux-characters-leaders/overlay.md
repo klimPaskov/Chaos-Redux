@@ -2,23 +2,9 @@
 description: Use when defining, recruiting, promoting, retiring, scripting, or auditing Chaos Redux characters and roles (country leaders, advisors, field marshals, corps commanders, admirals, scientists), the historical CBRN scientist roster, leader and scientist traits, ideologies and parties, or character portrait references and localisation. Covers the character database, the effects and triggers, and the silent failures.
 ---
 
-### In Unit Leader Traits, Skills and Abilities of references/unit-leader-traits.md
-
-Root is `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`. (Chaos Redux wording differs from the kit)
-
-### In Chaos Redux Characters, Leaders and Traits
-
-Guidance for the Hearts of Iron IV character system (patch 1.11 onwards) as used in Chaos Redux. (Chaos Redux wording differs from the kit)
-
-Portrait production (research, placeholders, ImageGen, DDS, wiring, manifests) belongs entirely to `chaos-redux-event-assets` and the `chaosx_portrait_creator` subagent; this skill only covers how a portrait is referenced from a character. (Chaos Redux wording differs from the kit)
-
 ### In Contents
 
 - Chaos Redux specifics
-
-### In Required reading and vanilla precedents
-
-Installed documentation is more authoritative than the wiki. Root: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`. (Chaos Redux wording differs from the kit)
 
 ### In Chaos Redux specifics
 

@@ -4,37 +4,19 @@ description: Use when creating, editing, auditing, or scripting Chaos Redux map 
 
 ### In Chaos Redux Map and States
 
-Guidance for the Hearts of Iron IV map and state system as used in Chaos Redux: what each map file does, how a state is defined, how script changes states at runtime, how population moves between states, and which engine mistakes fail silently. (Chaos Redux wording differs from the kit)
 This skill also owns the exact civilian transfer, cohort registry, reception ledger, and state map mode contracts in [references/state-ledgers.md](references/state-ledgers.md).
 
 ### In Contents
 
 - Chaos Redux specifics, including state ledgers (references/state-ledgers.md)
 
-### In Source map
-
-`GAME` means `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV`. (Chaos Redux wording differs from the kit)
-
 ### In Decision procedure: which mechanism
 
 5. Change the map geometry (new province, state split, new strategic region): use the Agent Nudger MCP routes (`hoi4_map_inspect` with `layer`, `overlays`, `scale`, `tile`, or `area` for renders, and `hoi4_map_rewrite`) rather than hand-editing BMPs and CSVs. See MCP map tools. (Chaos Redux wording differs from the kit)
 
-### In Buildings (common/buildings) and building models
-
-Definitions live in `common/buildings/*.txt` under `buildings = { name = { ... } }` (`GAME/common/buildings/00_buildings.txt`). Fields verified in the vanilla file and `WIKI/Building modding`: (Chaos Redux wording differs from the kit)
-
-
-### In Flags, variables, and modifiers on states
-
-- State variables: `set_variable`, `add_to_variable`, and friends executed in state scope write that state's variable. Read another state's variable with a numeric prefix (`123.my_var`), a stored scope (`var:target_state.my_var`), or a chain (`province_controllers^1234:capital:my_var`) per `WIKI/Data structures`. Temporary variables have no scope. (Chaos Redux wording differs from the kit)
-
 ### In Map modes and map GFX
 
 - A working repository precedent is `common/map_modes/chaosx_state_map_modes.txt` with its sprite wiring in `interface/*.gfx`.
-
-### In MCP map tools
-
-- `hoi4_map_inspect` with render selectors (`layer`, `overlays`, `scale`, `tile`, or `area`): layers `province`, `state`, `strategic-region`, `terrain`, `continent`, `owner`, `controller`, `cores`, `claims`, `coast`; overlays `coastlines`, `ports`, `victory-points`, `resources`, `state-buildings`, `province-buildings`, `supply-nodes`, `railways`, `adjacencies`, `building-positions`, `unit-positions`, `weather-positions`; restrict with `area` (state, region, province ids) or a pixel `tile`. (Chaos Redux wording differs from the kit)
 
 ### In Chaos Redux specifics
 

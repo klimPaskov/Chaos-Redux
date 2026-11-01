@@ -339,21 +339,9 @@ Verify with the connected tool list before relying on them; first call returns a
 
 ## Chaos Redux
 
-### In Doctrine authoring of references/doctrine-authoring.md
-
-`GAME` is `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV`. (Chaos Redux wording differs from the kit)
-
-### In Technology tree interface authoring of references/technology-tree-gui.md
-
-`GAME` is `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV` and `WIKI` is the repository folder `paradox_wiki`. (Chaos Redux wording differs from the kit)
-
 ### In Technology sprites and localisation of references/technology-tree-gui.md
 
 - The repository includes its own `chaosx_techtree.gfx` for local tiles.
-
-### In Chaos Redux Technologies and Doctrines
-
-In this skill `GAME` means `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV` and `WIKI` means the repository folder `paradox_wiki`. (Chaos Redux wording differs from the kit)
 
 ### In Decision table
 
@@ -396,7 +384,3 @@ The `CLAUDE.md` coding, constants, dynamic-effect, and localisation rules apply 
 **Test-country registration**
 
 The test country scans `global.technology` dynamically (the only documented runtime database array), so a plain technology needs no registration. A special project, equipment type, sub-unit, or doctrine does: see `docs/testing/chaosx_test_country.md`.
-
-### In Tools
-
-- `hoi4.tech_inspect` (`mode = compare`) compares revisions or proposed sources; it never writes. (Chaos Redux wording differs from the kit)

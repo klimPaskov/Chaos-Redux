@@ -296,42 +296,13 @@ has_dynamic_modifier = my_dynamic_modifier                                      
 
 ### In Chaos Redux Ideas and Modifiers
 
-Guidance for applying lasting numeric effects in Hearts of Iron IV as used in Chaos Redux: choosing between an idea, a dynamic modifier, a static modifier, or a custom modifier definition, writing each with verified syntax, and avoiding the silent failures. (Chaos Redux wording differs from the kit)
-
 Before authoring reusable scripted effects or triggers, read and follow the [helper argument contract](../chaos-redux-events/references/scripted-systems-and-country-integration.md#duration-fields-and-constants) and [caller-owned temporary-output contract](../chaos-redux-events/references/scripted-systems-and-country-integration.md#helper-output-lifetime), including supported variable/token inputs, meta substitutions, and output initialization at each call boundary.
 
 ### In Contents
 
 - Chaos Redux specifics
 
-### In Source map
-
-`GAME` means `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV`. (Chaos Redux wording differs from the kit)
-
-### In How modifiers work
-
-Source: `WIKI/Modifiers`, intro and section Applying a modifier. (Chaos Redux wording differs from the kit)
-
-### In Ideas: files, categories, slots
-
-- A new slot needs a category entry, a sprite `GFX_idea_slot_<slot>` for the empty-slot icon (see `GAME/interface/countrypoliticsview.gfx`), and GUI room: the politics view gridbox defaults to 7 horizontal slots per row, and `GFX_idea_categories` is a frame strip whose frame count must match the number of categories (`WIKI/Idea modding`, GFX and GUI). (Chaos Redux wording differs from the kit)
-
-### In Idea body: every field that matters
-
-- `modifier = { }`: static numbers only. Variables are not read here ("Variables do not work in this section", `WIKI/Idea modding`). Negative values allowed. (Chaos Redux wording differs from the kit)
-- `targeted_modifier = { tag = TAG <targeted modifiers> }`: applied by the idea holder, effective against TAG; see the Targeted modifiers section of `WIKI/List of modifiers`. (Chaos Redux wording differs from the kit)
-
-### In Spirits, hidden ideas, laws, designers, advisors
-
-- Advisor, two forms. Legacy idea-based: `political_advisor = { id = { picture traits allowed do_effect ai_will_do } }` (for example `GAME/common/ideas/andalusia.txt`). Current character-based: a character with `advisor = { slot = political_advisor idea_token = my_token allowed visible available traits cost can_be_fired }` in `common/characters/*.txt` (`GAME/common/characters/GER.txt`). `idea_token` is mandatory: without it recruiting that character hides every other token-less advisor, and `has_idea` and `show_ideas_tooltip` take the token, not the character id. `on_add` and `on_remove` in an advisor block run in character scope; use `owner = { ... }` to reach the country. See `WIKI/Character modding`. (Chaos Redux wording differs from the kit)
-
-### In Adding, removing, swapping, and timing ideas
-
-Verified against `GAME/documentation/effects_documentation.md` and `WIKI/Effects`. (Chaos Redux wording differs from the kit)
-
 ### In Dynamic modifiers
-
-Source: `WIKI/Modifiers`, section Dynamic modifiers; `GAME/common/dynamic_modifiers/0_dynamic_modifiers.txt` header comment; effects documentation. (Chaos Redux wording differs from the kit)
 
 Chaos Redux wording differs from the kit:
 

@@ -396,21 +396,9 @@ Run the checks that can realistically fail for the change; do not report boilerp
 
 ## Chaos Redux
 
-### In Naval and Air Orders of Battle of references/naval-air-oob.md
-
-Primary sources: `paradox_wiki/division_modding.md` (Adding Air Wings, Adding Navies, List of Units), `paradox_wiki/country_creation.md` (Order of battle, Variants), `paradox_wiki/namelist_modding.md` (Naval Names), installed `documentation/effects_documentation.md` (`create_ship`, `create_equipment_variant`, `set_naval_oob`, `set_air_oob`, `transfer_ship`, `transfer_navy`, `destroy_ships`, `add_equipment_production`), and the vanilla files named below under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`. (Chaos Redux wording differs from the kit)
-
-### In Chaos Redux Units, Divisions and Orders of Battle
-
-Guidance for land, naval and air units in Chaos Redux. (Chaos Redux wording differs from the kit)
-
 ### In Contents
 
 - Chaos Redux specifics
-
-### In Required reading and vanilla precedents
-
-Root: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`. (Chaos Redux wording differs from the kit)
 
 ### In Chaos Redux specifics
 

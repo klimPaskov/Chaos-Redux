@@ -2,18 +2,6 @@
 description: Use when creating, changing, scripting, or auditing Chaos Redux equipment: archetypes and variants, CBRN chemical and biological payload lots, modular tank, ship, and aircraft designs, stockpile, reservation, and production effects, equipment bonuses and military industrial organizations, script_enum_equipment_bonus_type, or test-country equipment registration. Also use when an equipment type, module, or bonus silently does nothing.
 ---
 
-### In Modules, the designer, graphics, and AI designs of references/modular-equipment-and-designer.md
-
-`GAME` is `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV`. (Chaos Redux wording differs from the kit)
-
-### In Production, stockpile, licences, and equipment script catalogue of references/production-and-stockpile.md
-
-`GAME` is `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV`. (Chaos Redux wording differs from the kit)
-
-### In Chaos Redux Equipment
-
-In this skill `GAME` means `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV` and `WIKI` means the repository folder `paradox_wiki`. (Chaos Redux wording differs from the kit)
-
 ### In Chaos Redux specifics
 
 The `CLAUDE.md` coding, constants, dynamic-effect, and localisation rules apply and are not repeated here.

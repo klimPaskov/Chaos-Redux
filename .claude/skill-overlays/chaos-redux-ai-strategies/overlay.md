@@ -2,29 +2,9 @@
 description: Use when designing, implementing, tuning, auditing, or debugging Chaos Redux country AI behaviour: common/ai_strategy blocks and CBRN country profiles, add_ai_strategy, AI strategy plans, AI focuses and scorers, ai_will_do and ai_chance weights, AI templates, equipment production AI, AI peace desires, and AI research or diplomacy weighting.
 ---
 
-### In Other AI systems of references/other-ai-systems.md
-
-`GAME` is `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV`. (Chaos Redux wording differs from the kit)
-
-### In AI strategy token catalog of references/strategy-token-catalog.md
-
-Primary source: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/ai_strategy/_documentation.md` (updated 2024-11), cross-checked against `paradox_wiki/ai_modding.md` and the usage counts in vanilla `common/ai_strategy/*.txt`. (Chaos Redux wording differs from the kit)
-
-### In Chaos Redux AI Strategies
-
-Guidance for steering the Hearts of Iron IV country AI from Chaos Redux script. (Chaos Redux wording differs from the kit)
-
 ### In Contents
 
 - Chaos Redux specifics
-
-### In Source map
-
-`GAME` means `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV`. (Chaos Redux wording differs from the kit)
-
-### In Debugging and verification
-
-1. Read the actual block and compute representative cases by hand. For `ai_will_do`, `ai_chance`, strategy plans and MTTH-backed weights prefer `hoi4_probability_inspect` (adapters: `event_option_ai_chance`, `decision_ai_will_do`, `mission_ai_will_do`, `national_focus_ai_will_do`, `technology_ai_will_do`, `doctrine_ai_will_do`, `ai_strategy_factor`, `random_list`, `direct_random`, `custom_weighted_pool`, `event_mean_time_to_happen`), then `hoi4_probability_inspect` or `hoi4_probability_analyze` (`analysis = compare`) with explicit named scenarios (country, date, flags, government, factory counts). (Chaos Redux wording differs from the kit)
 
 ### In Chaos Redux specifics
 

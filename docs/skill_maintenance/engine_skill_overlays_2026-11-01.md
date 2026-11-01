@@ -71,8 +71,10 @@ These old Chaos Redux lines state something the installed 1.19.3 game contradict
   - The limits of `hoi4.tech_render view = folder`.
   - The special-project locked-card pattern.
 
-## Decisions left to the maintainer
+## Maintainer decisions (2026-11-01)
 
-1. For each remaining "wording differs" line, pick one wording and delete the other. Start with the 17 path sentences and the 10 wiki-style lines, where the kit version is almost always the one to keep.
-2. Backport the 12 generic candidates to the kit, then remove them from the overlays after the next snapshot refresh.
-3. Decide whether the Contents entry and the other structure labels stay.
+The maintainer chose the recommended option for each question.
+
+1. **Wording differences: keep the kit wording where it says the same thing.** 37 of the 59 remaining marked lines were deleted from the overlays. They are the path sentences, the old-style wiki references, the tool-argument spellings, the intro sentences and one line the kit states in full. A line counted as the same when it matched its kit counterpart after those style differences were normalised (similarity at least 0.93), or it was one of four intro or subset lines checked by hand. The 22 kept lines add a Chaos Redux clause to the kit rule, so they stay with their marker. `CLAUDE.md` names the game folder, so the path sentences lost nothing. 30 `### In` headings left empty were removed.
+2. **Generic candidates: backport to the kit.** The 12 lines go to the kit's `hoi4-ideas-modifiers` and `hoi4-technology-doctrines` skills. The overlay lines are removed after the snapshot is refreshed from the kit commit that carries them.
+3. **Structure labels: keep.** The Contents entry and the labels such as `**Rules that recur**` stay. They organise the Chaos Redux section and cost a few bytes.

@@ -393,23 +393,11 @@ These follow the project rules in `CLAUDE.md`, which remain the authority.
 
 ## Chaos Redux
 
-### In Diplomacy and war syntax reference of references/syntax-reference.md
-
-`GAME` is `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV`; `WIKI` is `paradox_wiki/` at the mod root. (Chaos Redux wording differs from the kit)
-
-### In Chaos Redux Diplomacy and War
-
-Guidance for scripting relations between countries in Chaos Redux: factions, subjects, wargoals, war, peace, condemnation, and territory transfer. (Chaos Redux wording differs from the kit)
-
 ### In Contents
 
 - Chaos Redux specifics
 
-Argument tables and longer skeletons are in `references/syntax-reference.md` inside this skill folder. (Chaos Redux wording differs from the kit)
-
 ### In Source map
-
-`GAME` means `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV`. (Chaos Redux wording differs from the kit)
 
 Chaos Redux wording differs from the kit:
 

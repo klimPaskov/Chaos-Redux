@@ -2,23 +2,11 @@
 description: Use when scripting or auditing Chaos Redux diplomacy, factions, subjects and autonomy, wargoals, declarations of war, white peace or peace conferences, embargoes, opinion modifiers, condemnation and sanctions, Chaos Meter war hooks, annexation, release, or state transfer between countries.
 ---
 
-### In Diplomacy and war syntax reference of references/syntax-reference.md
-
-`GAME` is `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV`; `WIKI` is `paradox_wiki/` at the mod root. (Chaos Redux wording differs from the kit)
-
-### In Chaos Redux Diplomacy and War
-
-Guidance for scripting relations between countries in Chaos Redux: factions, subjects, wargoals, war, peace, condemnation, and territory transfer. (Chaos Redux wording differs from the kit)
-
 ### In Contents
 
 - Chaos Redux specifics
 
-Argument tables and longer skeletons are in `references/syntax-reference.md` inside this skill folder. (Chaos Redux wording differs from the kit)
-
 ### In Source map
-
-`GAME` means `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV`. (Chaos Redux wording differs from the kit)
 
 Chaos Redux wording differs from the kit:
 
