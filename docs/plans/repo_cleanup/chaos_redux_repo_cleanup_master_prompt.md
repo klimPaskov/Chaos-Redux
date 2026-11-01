@@ -38,13 +38,17 @@ General systems remain fully in scope, including:
 - docs
 - shared infrastructure and helper files
 
-Event-specific implementation cleanup is limited to Events 1 through 20.
+Event-specific implementation cleanup is limited to already-reworked Events 1 through 40, inclusive. Skip events in this range that have not yet been reworked. Events 41 and higher remain outside event-specific scope even if they have been reworked.
 
-Do not audit, refactor, clean up, delete, preserve, or improve the old event-specific implementations for Events 21 and higher. Those events are waiting for full rework and their current event-specific code should be treated as obsolete implementation that will be replaced completely.
+Before event-specific inspection, establish which Events 1 through 40 are already reworked from current repository rework-status records and implementation documentation. Record included and skipped event IDs, reasons, and supporting source paths. An existing event script or a planned rework specification alone does not confirm a completed rework. If rework status is missing, conflicting, or unclear, skip the event and report the uncertainty. Use the spreadsheet worker if this status check requires the event catalog workbook.
 
-Events 21 and higher may only be inspected or touched when they appear inside a general shared system and the reference affects shared infrastructure. Examples include event registration arrays, event-log catalog entries, settings lists, triggerable scenario registries, shared helper references, shared localisation selectors, shared docs for the general event system, or stale references that block cleanup of shared systems.
+Throughout this prompt, **eligible events** means confirmed-reworked Events 1 through 40. **Excluded events** means unreworked or unconfirmed Events 1 through 40 and all Events 41 and higher.
 
-Do not spend time improving old Events 21 and higher event chains, decisions, focus trees, ideas, country packages, assets, or localisation as standalone event content. If a reference belongs only to obsolete event-specific content, leave it for the future event rework or report it as out of scope.
+Do not audit, refactor, clean up, delete, or improve excluded event-specific implementations. Leave unreworked event-specific code for its future rework. Checking rework-status records does not authorize an implementation audit of a skipped event.
+
+Excluded events may only be inspected or touched beyond status verification when they appear inside a general shared system and the reference affects shared infrastructure. Examples include event registration arrays, event-log catalog entries, settings lists, triggerable scenario registries, shared helper references, shared localisation selectors, shared docs for the general event system, or stale references that block cleanup of shared systems. Shared-system work must preserve excluded event-specific behavior and must not become a standalone cleanup of excluded content.
+
+Do not spend time improving excluded event chains, decisions, focus trees, ideas, country packages, assets, or localisation as standalone event content. If a reference belongs only to excluded event-specific content, leave it in place and report it as out of scope. These boundaries apply in every directory, including mixed files that contain both shared logic and event-specific content.
 
 ## Main goals
 
@@ -89,7 +93,7 @@ Inspect existing reusable helper and tuning files before creating new helpers:
 
 Inspect relevant gameplay text files, including:
 
-- `events/` only for Events 1 through 20 event-specific implementations, plus shared event-system references to Events 21 and higher when they affect shared infrastructure
+- `events/` only for eligible event-specific implementations, plus shared event-system references to excluded events when they affect shared infrastructure
 - `common/scripted_effects/`
 - `common/scripted_triggers/`
 - `common/script_constants/`
@@ -98,15 +102,15 @@ Inspect relevant gameplay text files, including:
 - `common/decisions/categories/`
 - `common/scripted_guis/`
 - `common/scripted_localisation/`
-- `common/national_focus/` only for Events 1 through 20 or shared hooks, not obsolete Events 21 and higher event-specific trees
-- `common/ideas/` only for Events 1 through 20 or shared systems, not obsolete Events 21 and higher event-specific ideas
+- `common/national_focus/` only for eligible events or shared hooks, not excluded event-specific trees
+- `common/ideas/` only for eligible events or shared systems, not excluded event-specific ideas
 - `common/ai_strategy/`
 - `common/ai_templates/` when relevant
-- `history/` when country, state, setup, or tag references are involved for Events 1 through 20 or shared systems
+- `history/` when country, state, setup, or tag references are involved for eligible events or shared systems
 - `interface/` and `.gfx` only where UI, GUI button logic, sprite references, or asset references need cleanup
 - `localisation/` where keys, dynamic text, tooltips, event names, docs-facing labels, or player-facing text need cleanup
-- `docs/` where system docs, event docs for Events 1 through 20, helper docs, plans, manifests, prompt files, or README-style docs need alignment
-- `docs/spreadsheets/chaos_redux_events_catalog.xlsx` only through the spreadsheet worker when catalog fields need alignment with in-game wording
+- `docs/` for rework-status verification and where system docs, event docs for eligible events, helper docs, plans, manifests, prompt files, or README-style docs need alignment
+- `docs/spreadsheets/chaos_redux_events_catalog.xlsx` only through the spreadsheet worker when needed to confirm rework status or align catalog fields with in-game wording
 
 Do not inspect binary assets, DDS files, audio files, generated images, presentations, or spreadsheets unless a script, docs, `.gfx`, or manifest reference makes them relevant.
 
@@ -281,7 +285,7 @@ If uncertain, leave it in place and document the uncertainty. Do not delete it.
 
 Do not remove intentional placeholders, future hooks, templates, examples, or planned content unless the repo clearly marks them as obsolete.
 
-For Events 21 and higher, do not perform event-specific dead-code cleanup. Treat their old event-specific implementation as out of scope unless a reference affects shared infrastructure.
+For excluded events, do not perform event-specific dead-code cleanup. Treat their event-specific implementation as out of scope unless a reference affects shared infrastructure. Do not delete excluded event content merely because it is unreworked or outside the eligible range.
 
 If obsolete code is still useful as a pattern, move it to a clearly documented reference location or mark it as a retained template. Do not silently delete useful examples.
 
@@ -293,9 +297,9 @@ Update docs when helpers are created, renamed, moved, removed, or changed.
 
 Update docs when a subsystem becomes better organized.
 
-Update event docs for Events 1 through 20 when event-specific cleanup changes how an event is wired.
+Update event docs for eligible Events 1 through 40 when event-specific cleanup changes how an event is wired.
 
-Do not update old Events 21 and higher event docs as standalone event cleanup unless the document is part of shared-system documentation or creates confusion in shared infrastructure.
+Do not update excluded event docs as standalone event cleanup unless the document is part of shared-system documentation or creates confusion in shared infrastructure. Reading status records to determine eligibility does not authorize rewriting those event docs.
 
 Update helper markdown files when dynamic effects or triggers change.
 
@@ -307,7 +311,7 @@ Use `chaosx_documentation_curator` when docs, plans, handoffs, manifests, prompt
 
 Use `chaosx_localisation_auditor` when localisation, scripted localisation, missing keys, duplicate keys, dynamic text, encoding, or cross-surface wording needs focused cleanup.
 
-Use `chaosx_spreadsheet_doc_worker` only when the event catalog workbook needs updates.
+Use `chaosx_spreadsheet_doc_worker` only when the event catalog workbook is needed to confirm rework status or needs updates. Status verification alone does not authorize changing catalog fields.
 
 ## Skill maintenance
 
@@ -345,7 +349,7 @@ Keep cleanup changes grouped by subsystem so the diff is reviewable.
 
 ## Process
 
-1. Build a repo map of main systems and ownership boundaries.
+1. Confirm rework eligibility for Events 1 through 40 and record included and skipped event IDs with reasons and source paths. Build a repo map of main systems and ownership boundaries using this scope.
 2. Inventory existing dynamic effects, dynamic triggers, shared constants, subsystem files, and helper docs.
 3. Search for duplicated logic, overcomplicated code, and scattered subsystem workflows.
 4. Search for likely dead code and unused references.
@@ -383,7 +387,9 @@ At minimum, check:
 - no unsupported operators were introduced
 - no broad on-action iteration was added without explicit permission
 - no placeholder or fallback was introduced
-- Events 21 and higher were not treated as standalone event cleanup targets
+- every event-specific cleanup target is a confirmed-reworked Event 1 through 40, with supporting status evidence
+- unreworked or unconfirmed Events 1 through 40 and all Events 41 and higher were not treated as standalone event cleanup targets
+- changes involving excluded events are limited to justified shared-system references and preserve their event-specific behavior
 
 Avoid final-report noise. Mention validation only when it is task-specific, could realistically fail, found a problem, changed the implementation, or gives useful evidence.
 
@@ -392,8 +398,10 @@ Avoid final-report noise. Mention validation only when it is task-specific, coul
 The final report must include:
 
 - systems inspected
-- Events 1 through 20 event-specific surfaces inspected
-- Events 21 and higher shared-system references touched, if any
+- eligible Events 1 through 40 and supporting rework-status source paths
+- Events 1 through 40 skipped because they are unreworked or their status is unconfirmed, with reasons
+- eligible event-specific surfaces inspected
+- excluded-event shared-system references touched, if any, with the shared-system reason for each change
 - files changed
 - reusable helpers created or updated
 - scripted triggers created or updated
