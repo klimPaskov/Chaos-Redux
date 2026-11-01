@@ -47,7 +47,7 @@ def find_game_dir() -> Optional[Path]:
         from lib.game import game_dir  # type: ignore
 
         folder = Path(game_dir())
-    except Exception:
+    except (ImportError, OSError, ValueError):  # no game helper, or no readable game folder
         return None
     finally:
         sys.path.pop(0)
@@ -65,7 +65,7 @@ def vanilla_templates(game: Path) -> List[Tuple[int, np.ndarray]]:
         try:
             with Image.open(path) as image:
                 alpha = np.asarray(image.convert("RGBA"))[..., 3]
-        except Exception:
+        except (OSError, ValueError, NotImplementedError):
             continue  # a few vanilla files use a DX10 format Pillow cannot decode
         if alpha.shape != (SIZE[1], SIZE[0]):
             continue
