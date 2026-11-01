@@ -447,7 +447,7 @@ Package fixtures live in `common/scripted_effects/chaosx_test_country_package_fo
 Modifier-free unit, source-formation and template-selector tokens live in `common/ideas/chaosx_test_country_unit_extension_ideas.txt`, `chaosx_test_country_package_formation_ideas.txt`, and `chaosx_test_country_template_selector_ideas.txt`.
 Bounded registration is in `common/on_actions/chaosx_test_country_unit_extension_on_actions.txt` and `chaosx_test_country_package_formation_on_actions.txt`.
 Status and meta-effect strings use `common/scripted_localisation/chaosx_test_country.txt`, `chaosx_test_country_template_names.txt`, `localisation/english/chaosx_test_country_l_english.yml`, and `chaosx_test_country_template_names_l_english.yml`.
-This guide and the canonical `.claude/skills/chaos-redux-units-divisions/SKILL.md` hold the inventory, maps, extension contract and reusable placement rules.
+This guide and `.claude/skills/chaos-redux-units-divisions/SKILL.md` (generated; its Chaos Redux part is edited in `.claude/skill-overlays/chaos-redux-units-divisions/overlay.md`) hold the inventory, maps, extension contract and reusable placement rules.
 These 22 task paths reuse the existing model and counter assets without changing unit definitions, art or ordinary gameplay balance.
 
 ### Simplifications, omissions, and blockers

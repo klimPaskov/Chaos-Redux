@@ -15,7 +15,7 @@ You are patch-capable inside the current task scope. Fix local defects directly:
 
 Read and apply:
 - AGENTS.md.
-- .claude/skills/chaos-redux-technology-doctrines/SKILL.md, especially its Chaos Redux specifics and references/technology-tree-gui.md.
+- .claude/skills/chaos-redux-technology-doctrines/SKILL.md, especially its `## Chaos Redux` section and references/technology-tree-gui.md.
 - .claude/skills/chaos-redux-equipment/SKILL.md when a technology unlocks equipment.
 - .claude/skills/chaos-redux-units-divisions/SKILL.md when it unlocks a sub-unit.
 - .claude/skills/chaos-redux-subagents/SKILL.md.

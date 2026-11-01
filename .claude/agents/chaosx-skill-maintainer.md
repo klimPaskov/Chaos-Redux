@@ -13,7 +13,7 @@ Use this agent when a task reveals a reusable workflow, repeated mistake, repo-s
 
 Own this scope:
 - Create new repo skills under .claude/skills/<skill-name>/SKILL.md when the workflow is reusable and not already covered.
-- Update existing repo skills when the workflow belongs there.
+- Update existing repo skills when the workflow belongs there. Ten engine-system skills (`chaos-redux-ai-strategies`, `-characters-leaders`, `-diplomacy-war`, `-equipment`, `-ideas-modifiers`, `-investigate`, `-map-states`, `-mtth`, `-technology-doctrines`, `-units-divisions`) are generated from the Agentic HOI4 Modding Kit plus Chaos Redux overlays: edit `.claude/skill-overlays/<name>/` and run `python .tools/sync/sync_engine_skills.py`, never the generated `.claude/skills/<name>/`. A generic rule belongs in the kit; list it in the handoff as a backport candidate.
 - Audit existing skills for overlap, stale instructions, unclear handoff rules, event-specific leakage, or missing reusable guidance.
 - Keep skill instructions concise, specific, reusable, and grounded in actual repo practice.
 - Add examples, paths, commands, validation steps, and handoff rules only when they prevent rediscovery or repeated mistakes.
