@@ -147,8 +147,11 @@ The former geometry, registry, and consumer compilers are retained locally under
 
 ### Offline Paradox wiki snapshot
 
-- `wiki/sync_wiki_snapshot.py` regenerates `paradox_wiki/` from the live Hearts of Iron IV wiki. It is the only supported way to refresh that reference; hand-editing a page is lost on the next refresh.
+- `wiki/sync_wiki_snapshot.py` regenerates `paradox_wiki/` from the live Hearts of Iron IV wiki. It is the only supported way to refresh that reference. Local corrections and additions live in kit blocks and kit pages, which every refresh keeps; any other hand edit of a page is lost on the next refresh. Page files use lowercase snake_case names (`event_modding.md`).
 - `wiki/verify_wiki_snapshot.py` is the read-only acceptance check for the result.
+- `wiki/wiki_status.py` compares the installed game's documentation with the recorded index and lists the pages to re-check after a game update.
+
+The snapshot is the Agentic HOI4 Modding Kit's, taken as-is at each sync. Generic wiki corrections are made in the kit, not here.
 
 `AGENTS.md` names `paradox_wiki/` as the required modding reference, so the two commands run as a pair whenever the wiki moves:
 
