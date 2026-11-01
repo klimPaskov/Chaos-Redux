@@ -25,15 +25,6 @@ has_dynamic_modifier = my_dynamic_modifier                                      
 
 - Daily refresh: at the start of each day every variable-valued modifier resets to 0, then dynamic modifiers evaluate in the order they were added, each treated as 0 until its variables resolve. Changes take effect at most one day later unless you call `force_update_dynamic_modifier = yes` in the same scope. Re-adding an existing binding with the same holder, id, and optional scope updates its timer instead of stacking a second copy. (Chaos Redux wording differs from the kit)
 
-- A state-side `add_dynamic_modifier = { modifier = my_dynamic_modifier scope = GER }` restricts the beneficiary to GER; it does not move the holder off the state (`GAME/documentation/effects_documentation.md`, lines 1153–1173).
-  For country-bound views of state data, anchor values to `ROOT.my_state_variable` and state conditions in `enable` / `remove_trigger` to `ROOT = { ... }`, since the optional scope changes the default variable base while `ROOT` remains the containing effect scope (`GAME/common/dynamic_modifiers/0_dynamic_modifiers.txt`, lines 19–26; `WIKI/Modifiers`, lines 149–181).
-  Compute severity and duration once in the source state, then bind eligible country views to those results; do not repeat the arithmetic for each beneficiary.
-- Match holder, modifier id, and optional `scope` in every add, presence check, and removal (`GAME/documentation/triggers_documentation.md`, lines 3775–3794; `effects_documentation.md`, lines 5978–5991).
-  The documented targeting supports intended keying by distinct bound scopes; source review alone does not establish that same-id bindings coexist in the running engine.
-  Keep that distinction in the handoff without making user game testing a completion gate.
-- Binding lifecycle includes country creation, release, retirement, and changes of eligibility, as well as state cleanup and expiry; register newly eligible countries through the owning lifecycle path and remove stale bindings with the original scope.
-  When registration uses a country flag receipt, set and test `my_flag_@THIS` in that country's scope so a copied receipt for another tag does not suppress registration of a released or cloned tag (`WIKI/Data structures`, line 125, targeted flags).
-
 ### In Chaos Redux specifics
 
 The `CLAUDE.md` coding, constants, dynamic-effect, and localisation rules apply and are not repeated here, and no world-iterating hook may refresh ideas or modifiers; refresh from the effect that changes the underlying variable. (Chaos Redux wording differs from the kit)
