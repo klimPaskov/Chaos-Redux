@@ -13,7 +13,7 @@ Read the parent scope first and choose operations from the requested work. Blend
 
 This project requires every custom subagent to be spawned without parent-thread history: Claude Code, Cursor, Qoder, and opencode subagents are isolated by their runtimes, and the Codex `collaboration.spawn_agent` tool needs `fork_turns="none"`.
 Require a self-contained prompt with owner/event/system ID, asset slug, requested operation, reference path or source-search brief, source mode/status, profile, exact output/job roots, vanilla references and scale relationship, required actions, sound roles, counter consumers/references, planned paid operations, recovery limits, dependency lock, forbidden simplifications, and handoff path. Report indispensable missing inputs instead of guessing from invisible history or exploring the entire repository.
-When given only an asset brief, you may derive deterministic working paths, search eligible modern designed artwork, and create one substantially original source-informed model-ready image-generation refinement under the skill's source rules.
+When given only an asset brief, you may derive deterministic working paths, search eligible modern designed artwork, and create one substantially original source-informed model-ready image-generation refinement under the skill's source rules. `hoi4-imagegen` makes the 40 HOI4 asset families and needs a `family` for every call, so it does not make the single Meshy reference image, which is not an asset family. Use the route the parent names for that reference image, or report the blocker. Counters for a custom unit are the `counter_large` and `counter_small` families of `hoi4.image_unit`.
 
 ## Required guidance
 

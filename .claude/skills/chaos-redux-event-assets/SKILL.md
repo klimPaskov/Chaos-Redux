@@ -16,37 +16,25 @@ Read the reference that matches the asset family before producing it:
 - [references/portrait-production.md](references/portrait-production.md): every character portrait, portrait icon, source placeholder, and user-supplied final.
 - [references/event-images-and-flags.md](references/event-images-and-flags.md): report, news, and super-event images and every flag.
 - [references/unit-visuals.md](references/unit-visuals.md): equipment and technology art, counters, division-template emblems, and the 3D model package handoff.
-- [references/imagegen-route.md](references/imagegen-route.md): making art with the `hoi4-imagegen` MCP, the preferred route.
+- [references/imagegen-route.md](references/imagegen-route.md): making and importing art with the `hoi4-imagegen` MCP, the only image route.
 - [references/manifest-and-lineage.md](references/manifest-and-lineage.md): the event asset workspace layout, pre-generation inventory reconciliation, asset manifest fields, and generated-candidate lineage and review. Read before declaring a source gap or requesting fresh art.
 
 Skill-local `assets/` holds the reference and component libraries, and `tools/` holds the bundled converters and processors.
 
 ## Image-generation route
 
-This skill owns the image-generation route for the whole repository. Prefer the `hoi4-imagegen` MCP ([references/imagegen-route.md](references/imagegen-route.md)); the route below is the fallback. Claude Code generates images with the `generate_image` tool of the gptimage MCP server (parameters: `prompt`, `out`, `quality` low|medium|high|auto, `size` WIDTHxHEIGHT, `reference_images`). Codex uses native ImageGen instead. Everywhere else, "image generation" means this route.
+This skill owns the image-generation route for the whole repository, and the route is `hoi4-imagegen` (MCP server `hoi4_imagegen`, tools `hoi4.image_*`) for every client, Claude Code and Codex alike. Read the `hoi4-imagegen` skill and [references/imagegen-route.md](references/imagegen-route.md) first. Everywhere else, "image generation" means this route. If `hoi4.image_status` shows no signed-in provider, report the blocker and stop; do not build a substitute route.
 
-Inspect the active tool's exposed output-path capabilities and prefer an absolute in-repo destination when it offers one.
-Native ImageGen's automatic cache and service-managed temporary storage are allowed by default as generation implementation details; do not pause or ask for permission merely because it has no destination selector or cannot guarantee hidden-cache locations.
-Promptly copy any reported local output into the assigned repo source workspace, verify the copied SHA-256 against the original, and record the reported path and candidate lineage; do not speculate about unreported backend paths.
+The tool keeps its state in `.hoi4-imagegen/` and its candidates, processed PNGs, prompts, contact sheets and handoffs under `docs/assets/<owner>/...`.
 Require every worker command to use the Chaos Redux repo root as its explicit working directory and absolute in-repo paths for repo inputs and agent-controlled outputs.
 Keep agent-controlled sources, prompts, processing outputs, previews, contact sheets, and manifests under `docs/assets/<owner>/...`, scratch under `.tmp/`, and runtime art only under `gfx/`; never choose arbitrary user-profile, Home, Desktop, or Downloads destinations outside the repo.
-If the user explicitly forbids all outside-repo writes, including automatic caches, honor that restriction: use a route verified to write directly in-repo or return bytes without outside writes, and report the unavailable route if none can satisfy it.
-If a tool unexpectedly violates that explicit restriction, identify only this worker's exact reported output, move it into the assigned repo source folder, verify its hash and that the old path is absent, and record the containment failure in the handoff; never move unknown or other-shard cache files.
-This recovery does not authorize another call that violates the explicit restriction.
 Obey the current task's disk-space floor before production and moves; do not substitute a remembered or hardcoded threshold.
 
-- Make one image per call. Existing output paths are auto-versioned, so name the final `out` path explicitly and use the path the tool reports.
-- State each reference image's role in the prompt, for example "Image 1 is the vanilla style reference, Image 2 the subject to keep".
-- For alpha-backed families, request a genuinely transparent background in the prompt and set `transparent_background = true` with Codex native ImageGen; the gptimage MCP route has no explicit alpha parameter. Verify the alpha channel of the saved PNG, and fall back to the documented [background-removal fallback](#native-transparency-and-background-removal-fallback) only when the saved PNG has no usable alpha.
-- When a call fails, check authentication with `image_auth_status` before retrying.
-
-For Codex native ImageGen, save the exact argument record before the call under [Candidate lineage and review](references/manifest-and-lineage.md#candidate-lineage-and-review); never claim an unavailable historical request was saved before its call.
-In `functions.exec`, retain the returned result with `store()` and recover it with `load()` when persistence spans calls.
-Print only small metadata such as result keys and `output_hint`, never base64 or a sliced serialization of the huge result, which can hide the saved-path hint.
-If `output_hint` reports a saved local PNG under `CODEX_HOME/generated_images`, copy from that actual reported path into the source workspace and verify the copied SHA-256 matches the original, subject to any explicit outside-write restriction above.
-If persistence fails after successful generation, recover the existing output from the reported session folder and timestamp and inspect its subject before selecting it; do not repeat a successful generation merely to save its output.
-
-When Codex native `image_gen__imagegen` returns a `data:image/png;base64,...` URL with no reported local path, save the bytes exactly as [Saving a data-URL result](references/manifest-and-lineage.md#saving-a-data-url-result-from-codex-native-imagegen) says before processing.
+- Make one image per call. A plan with the same inputs gives the same id. Approve it with `approve: true` and an `idempotency_key`, and reuse the key when retrying so the call replays instead of paying again.
+- State each reference image's role: add it with `hoi4.image_references` (role `style_anchor`, `subject_anchor` or `geometry_anchor`, and a rights note), and say in the brief which properties may transfer.
+- For alpha-backed families, request a genuinely transparent background in the brief. `hoi4.image_process` proves transparency from the saved pixels and refuses an opaque result or a drawn checkerboard. Fall back to the documented [background-removal fallback](#native-transparency-and-background-removal-fallback) only when the saved PNG has no usable alpha after a regeneration.
+- When a call fails, check `hoi4.image_status` before retrying. After an error with retry class `reconcile_first`, use `hoi4.image_cancel` with `reconcile` and never retry blindly.
+- `hoi4.image_ledger` shows what belongs together. Record each candidate's lineage in the manifest as [Candidate lineage and review](references/manifest-and-lineage.md#candidate-lineage-and-review) says, with the plan id and ledger entry in place of a hand-saved argument record.
 
 ## Scope and routing
 
@@ -102,7 +90,7 @@ Before processing a large asset set, classify paths by role: `.gfx` files are te
 
 ### Standard HOI4 asset sizes
 
-Confirm canvas and frame behavior before requesting art. Focus, decision, idea, category, report, news and counter canvases, and sizes still accepted for existing art, are in `.tools/gfx/profiles.json`; check a file with `.tools/gfx/gfx.py size --profile <name>` and wired art with `gfx.py families`. News images are black and white. For the other families use these defaults unless the accepted spec, active consumer, or established repo pattern requires another size:
+Confirm canvas and frame behavior before requesting art. Focus, decision, idea, category, report, news and counter canvases, and sizes still accepted for existing art, are in `.tools/gfx/profiles.json`, and `hoi4.image_families { family }` shows each family's canvas next to the mod's override; check a file with `.tools/gfx/gfx.py size --profile <name>` and wired art with `gfx.py families`. News images are black and white. For the other families use these defaults unless the accepted spec, active consumer, or established repo pattern requires another size. Where a default below differs from the canvas `hoi4.image_families` plans (the tool uses the vanilla canvas for a family without a `profiles.json` row), say so in the plan and settle it with a profile row before approving:
 
 - country-leader, commander and operative portraits: 156x210 full textures; commanders never use a fabricated 50x67 source texture, and operatives still follow the cataloged owning sprite
 - flags: 82x52 normal, 41x26 medium, 10x7 small
@@ -116,7 +104,7 @@ For every icon, counter, emblem, strip, or model material not listed above, take
 
 Use lowercase snake_case and keep wired names stable.
 
-Recommended filename prefixes:
+`hoi4-imagegen` names a new asset from its family prefix, the feature slug and the asset name. Keep wired names stable and keep what the tool installs for a new asset. Recommended filename prefixes:
 
 - idea icons: `idea_`
 - focus icons: `goal_`
@@ -206,14 +194,13 @@ Treat user-provided images as sources, record that provenance, and complete the 
 
 ### Generate and refine source art
 
-Use image generation (see [Image-generation route](#image-generation-route)) for generated symbolic or fictional assets, including icons, flat flags, emblems, UI panels, progression art, and permitted event scenes. Choose ChatGPT Images 2.5 by the work being done:
+Use `hoi4-imagegen` (see [Image-generation route](#image-generation-route)) for generated symbolic or fictional assets, including icons, flat flags, emblems, UI panels, progression art, and permitted event scenes. The family fixes the canvas and background: the tool plans for it, records the dimensions the provider returned, and fits the candidate to the runtime canvas in `hoi4.image_process`. Pick the family from `hoi4.image_families` and call its group tool with that `family`.
 
-- **Flare:** quick static new generations, including icons, report/news images, thumbnails, and static concept drafts.
-- **Sunburst:** every existing-asset edit, scripted-GUI compositional reference, and every animation seed, draft, source frame, iteration, edit, and final. Never use Flare for an animation draft. Keep canvas, transparent bounds, anchors, silhouette, palette, edges, lighting, proportions, and unchanged regions consistent; model choice does not replace frame validation or drift checks.
+The model is the provider's: on the ChatGPT login every image runs on gpt-6-luna at high reasoning effort, and the route refuses a response whose model or effort differs. No model, quality or size selector exists, so describe the consumer canvas, composition, detail, and background in the brief and check the pixels. Never invent a tool, model, size, or reference argument.
 
-Describe the consumer canvas, composition, detail, and background in the prompt whichever tool runs: the Codex built-in tool exposes no model, quality, size, or destination-path selector, and the gptimage `generate_image` tool exposes `quality`, `size`, and `out` but no model selector. Inspect returned dimensions, then process to the exact runtime canvas. When model selection is unavailable, retain the named preference for selectable tools but report only the actual exposed execution path, never an unreported backend or API model name as a built-in control.
+Every existing-asset edit, scripted-GUI compositional reference, and every animation seed, draft, source frame, iteration, edit, and final goes through `hoi4.image_edit` or the group tool with an accepted candidate as its reference. Keep canvas, transparent bounds, anchors, silhouette, palette, edges, lighting, proportions, and unchanged regions consistent; the tool's validation does not replace frame validation or drift checks.
 
-Use CLI/API only when explicitly requested, following the installed official skill and verified parameter contract; do not duplicate its runner or silently switch paths. If image generation is unavailable, report the blocker and stop before an alternate route.
+Providers: the ChatGPT login (`hoi4-imagegen login`) is the default, and documented providers (`OPENAI_API_KEY`, `GEMINI_API_KEY`, `FAL_KEY`, a ComfyUI endpoint) stay available. Keys come from the environment only: never type one into chat, a file or a command. A plan with an explicit `provider` wins over the default.
 
 Do not create core artwork from simple shapes, placeholders, contact sheets, layout-only mockups, empty UI boxes, or generated charts. Final art must be real generated, sourced, or user-provided artwork, not circles, rectangles, lines, gradients, geometric diagrams, or other primitive-shape stand-ins.
 
@@ -235,11 +222,11 @@ Label each supplied image by index and filename, with its role and the propertie
 | Geometry or composition anchor | Intended arrangement, silhouette proportions, camera, reserved space | Sketch marks, labels, incidental props, invented map geometry |
 | Insert or compositing input | Explicitly named object or layer with its intended placement | Its backdrop, unrelated content, unintended text |
 
-Inspect local edit targets with `view_image` (Read in Claude Code) before editing and attach inputs using the active tool's actual schema. With the gptimage tool, pass the local paths in `reference_images` and state each image's role in the prompt. With the Codex built-in tool, when all targets have local paths, use `referenced_image_paths`; otherwise use the smallest `num_last_images_to_include` covering the required recent images, and never supply both. Do not rely on an unseen path, ambiguous “previous image,” or filenames alone to convey visual references.
+Inspect local edit targets with `view_image` (Read in Claude Code) before editing. Add references with `hoi4.image_references`, using its role and rights note, and state each image's role in the brief. The tool takes style references from existing Chaos Redux art of the same family first and from `assets/gfx_references/` second, and reports which it used and why. Do not rely on an unseen path, ambiguous “previous image,” or filenames alone to convey visual references.
 
 #### Focused edits
 
-With Sunburst and the execution-path rule above, when a candidate is close, edit that candidate to correct the specific defect before choosing a fresh composition. Use one coherent change per iteration, then inspect it before proceeding. Use the prior accepted output as the next edit target; if a revision drifts, return to the last accepted candidate and record that branch instead of building on the rejected result. A substantially wrong composition or an explicitly requested alternative can justify a new generation; record the reason and retain accepted candidates.
+When a candidate is close, edit that candidate with `hoi4.image_edit` to correct the specific defect before choosing a fresh composition. Use one coherent change per iteration, then inspect it before proceeding. Use the prior accepted output as the next edit target; if a revision drifts, return to the last accepted candidate and record that branch instead of building on the rejected result. A substantially wrong composition or an explicitly requested alternative can justify a new generation; record the reason and retain accepted candidates.
 
 Restate the invariants in every edit: subject identity where authorized, pose/composition, palette/style, consumer canvas and intended footprint, reserved space, and alpha/background mode. For alpha-backed assets explicitly request preservation of real transparent unused canvas after every edit. For opaque scene art preserve the required painted background instead. State “no added text, symbols, subjects, borders, or UI controls” where applicable; list any deliberately authorized exception precisely. Keep functional UI labels and controls native even when the generated composition follows a complex layout.
 
@@ -251,7 +238,7 @@ Map every alias of a shared texture to its actual consumer before changing dimen
 
 Apply native transparency to icons, counters, emblems, overlays, decorative UI pieces, transparent animation frames, and every family whose inspected consumer leaves unused canvas transparent. Full-canvas scenes, flags, portraits, and painted panels retain the background required by their consumer and reference family. Do not generate an alpha-backed asset on an opaque or chroma background as the normal route. Request a real transparent background in the first image-generation call, retain that native-alpha source PNG, and preserve its alpha through crop, alignment, resizing, frame assembly, and DDS conversion.
 
-Validate native transparency before processing: unused corners and padding must contain real zero-alpha pixels, the painted subject must retain nonzero alpha and complete edges, and the image must contain no fake checkerboard, matte, halo, key colour, or unintended transparent holes.
+`hoi4.image_process` proves transparency from the saved pixels. Still validate it before processing: unused corners and padding must contain real zero-alpha pixels, the painted subject must retain nonzero alpha and complete edges, and the image must contain no fake checkerboard, matte, halo, key colour, or unintended transparent holes.
 
 For transparent icon sources, a nonzero-alpha bounding box touching the canvas is not sufficient evidence of a clipped subject.
 Inspect boundary coverage at more than one alpha threshold (for example, 1, 8, and 16), together with source-resolution and native-size views.
@@ -262,10 +249,10 @@ If a visible leaf, frame, or other subject part is actually cut off, use a focus
 
 Background removal remains a fallback for either of these cases:
 
-- the image-generation result ignored the transparency request or failed alpha validation
+- the provider returned an opaque picture (`no_transparency_in_source`) and a regeneration with native alpha failed
 - an inherited, internet-sourced, or user-provided image has an unwanted opaque backdrop and the accepted asset type requires transparency
 
-First use a targeted image-generation edit that changes only the background to real transparency and preserves the subject, silhouette, colours, internal opacity, framing, and edge detail. If that still fails, use a deterministic local background-removal or chroma-key process only when its tool is actually installed and verified in the current environment. Preserve the untouched source, record the tool and settings, inspect for spill and clipped edges, and compare the repaired candidate with the source. If no verified fallback tool exists or removal damages the subject, mark the asset `blocked` or `needs_user_review`. Do not invent a helper path or silently ship an opaque square.
+First use a targeted `hoi4.image_edit` that changes only the background to real transparency and preserves the subject, silhouette, colours, internal opacity, framing, and edge detail. If that still fails, use a matte workflow only when the background is one flat colour, or another deterministic local background-removal process only when its tool is actually installed and verified in the current environment. Preserve the untouched source, record the tool and settings, inspect for spill and clipped edges, and compare the repaired candidate with the source. If no verified fallback tool exists or removal damages the subject, mark the asset `blocked` or `needs_user_review`. Do not invent a helper path or silently ship an opaque square.
 
 #### Review each iteration
 
@@ -280,7 +267,7 @@ Read the complete requirements in [Icon creation rules](references/icon-and-ui-f
 
 ### Report event images
 
-Report images are `210x176` period documentary photographs, black and white with sepia (full colour only by a user exception recorded in the manifest), with no modern UI overlays and no generated text. Sourced and generated report images alike receive the local report-card treatment (tilt, transparent edge space, soft shadow) before DDS conversion.
+Report images are `210x176` period documentary photographs, black and white with sepia (full colour only by a user exception recorded in the manifest), with no modern UI overlays and no generated text. `hoi4.image_picture` with `family: report_event` applies the report-card treatment (tilt, transparent edge space, the fixed soft shadow) itself, and `hoi4.image_process` imports a sourced photograph the same way, before DDS export.
 Read the complete requirements in [Report event images](references/event-images-and-flags.md#report-event-images) before this work.
 
 ### News event images
@@ -300,7 +287,7 @@ Read the complete requirements in [Decision category pictures](references/icon-a
 
 ### Flags
 
-Flags are flat identity assets on the `82x52`, `41x26`, and `10x7` TGA ladder. Every new flag comes from image generation after cited historical research, is never replaced by locally drawn geometry, and must pass the orientation, TGA-header, and ladder-consistency checks (`gfx.py flags`) before completion.
+Flags are flat identity assets on the `82x52`, `41x26`, and `10x7` TGA ladder. Every new flag comes from `hoi4.image_flag` (family `flag`) after cited historical research, which writes the three sizes of one tag and ideology with the vanilla TGA header and origin, is never replaced by locally drawn geometry, and must pass the orientation, TGA-header, and ladder-consistency checks (`gfx.py flags`) before completion.
 Read the complete requirements in [Flags](references/event-images-and-flags.md#flags) before this work.
 
 ### Country-leader, commander, operative, and named-officeholder portraits
@@ -362,7 +349,7 @@ Read the complete requirements in [3D model package handoff](references/unit-vis
 
 ### DDS conversion
 
-Final 2D PNG assets must be converted to DDS using the repository's standard 2D DDS conversion workflow. Model textures follow the separate compressed full-mip contract in [3D model package handoff](#3d-model-package-handoff). The converter lives only at `.claude/skills/chaos-redux-event-assets/tools/convert_to_dds.py`; `.tools/convert_to_dds.py` is obsolete, and active skills, agents, scripts, and handoffs must not restore or call it.
+Assets made or imported through `hoi4-imagegen` get their DDS (TGA for flags) from `hoi4.image_install`; do not convert them by hand. Final 2D PNG art outside the 40 families must be converted to DDS using the repository's standard 2D DDS conversion workflow. Model textures follow the separate compressed full-mip contract in [3D model package handoff](#3d-model-package-handoff). The converter lives only at `.claude/skills/chaos-redux-event-assets/tools/convert_to_dds.py`; `.tools/convert_to_dds.py` is obsolete, and active skills, agents, scripts, and handoffs must not restore or call it.
 
 For these 2D assets, the output must be compatible with Chaos Redux's expected 32-bit BGRA or B8G8R8A8-style DDS workflow.
 
@@ -414,6 +401,8 @@ Root-only and engine-convention exceptions:
 - `gfx/achievements/` must keep achievement DDS files directly in the root. Do not create `gfx/achievements/<event_id>_<event_slug>/` subfolders unless a new engine behavior has been verified locally. Achievement filenames must match the full achievement ids from `common/achievements/`, so event-owned achievement ids and triplet filenames should use `<event_id>_<event_slug>_<achievement_name>{,_grey,_not_eligible}.dds` or the exact established id if it includes an ordinal.
 - `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/` must keep HOI4 tag/ideology filenames. Do not put flags into event folders; use cosmetic tags or route-specific tag filenames when an event needs transformed flags.
 
+`hoi4-imagegen` installs each family into its own leaf folder under the feature slug and applies these exceptions.
+
 Shared or non-event systems may use a clear shared/system folder. Do not force shared assets into an event folder just to avoid a root directory.
 
 When moving or adding an asset, update every `.gfx`, `.gui`, event, idea, decision, focus, localisation, and documentation reference that names the old path or sprite. Keep sprite names stable unless the engine-facing identifier itself has to change, as with achievement ids.
@@ -424,7 +413,7 @@ Super-event audio follows the `chaos-redux-super-events` convention. Register th
 
 Asset subagents do not edit `.gfx` files by default.
 
-When an asset needs a sprite definition, the asset package must include a handoff note for the main agent.
+When an asset needs a sprite definition, the asset package must include a handoff note for the main agent. `hoi4.image_install` (default `mode: handoff`) writes it with the sprite snippet when the event folder `<event_id>_<event_slug>` is the feature slug; add the consumer ids it cannot know.
 
 Recommended path while the event asset workspace is active:
 
@@ -491,7 +480,7 @@ Do not use contact sheets as final game assets.
 
 Label asset names, types, selected final versions, and rejected alternatives where relevant.
 
-For the small-icon and counter contract, the sheet must also show the native-alpha image-generation source, processed transparency, enlarged smooth preview, and decoded DDS round-trip with dimensions, frame labels, and visible-bounds notes. If fallback removal was used, include the untouched opaque source and repaired edge comparison.
+For the small-icon and counter contract, the sheet must also show the native-alpha `hoi4-imagegen` source candidate, processed transparency, enlarged smooth preview, and decoded DDS round-trip with dimensions, frame labels, and visible-bounds notes. If fallback removal was used, include the untouched opaque source and repaired edge comparison.
 
 ### Requirement-to-runtime coverage audit
 

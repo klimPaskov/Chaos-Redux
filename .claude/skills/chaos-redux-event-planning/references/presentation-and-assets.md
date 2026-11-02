@@ -197,6 +197,7 @@ The asset prompt should include:
 - manifest requirements
 - source mode, including historically sourced design references for flags followed by image-generation reconstruction, and whether a symbol or portrait must be sourced historically instead of generated
 - reference example folder that must be inspected before asset work
+- the `hoi4-imagegen` family of every generated asset (`hoi4.image_families` lists them), since the family fixes its canvas, alpha and processing
 - decision category picture list, eligibility, source mode, presentation role, static or animated state, and exact reference folder when category pictures are planned
 - formable state-puzzle manifest needs, exact state geometry source, grey and green qualification states, projection, sprite ownership, and static category-picture alternative when formables are planned
 - instruction to create the decision category picture reference contact sheet and catalog entries when the canonical sheet is missing
@@ -211,7 +212,7 @@ Do not make the asset prompt vague. If a country has multiple cosmetic identitie
 
 ## HOI4 asset size reference
 
-Use these sizes when planning assets:
+Plan asset sizes from the mod's profile (`.tools/gfx/profiles.json`; `hoi4.image_families { family }` shows each family's canvas and the mod's override). Chaos Redux settled the focus, idea and decision canvases below, and every other generated family uses the canvas the tool reports. Use these sizes when planning assets:
 
 - report event images: 210x176
 - news event images: 397x153, black and white

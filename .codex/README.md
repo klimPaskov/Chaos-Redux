@@ -17,7 +17,7 @@ DSH is the exception and needs no generator: it already reads `AGENTS.md` and `.
 Skills are canonical in `.claude/skills/<name>/`; `.agents/skills/<name>` is the shared skill root that Codex, DSH, and opencode read, and it is generated as a junction to the canonical folder.
 Shared and runtime-agnostic: `docs/`, specs, plans, handoffs, and the `.tools/3d_pipeline/wrappers/` MCP wrappers.
 `CLAUDE.md` is the canonical project instruction file for Claude Code, and `AGENTS.md` serves the other runtimes with the same structure.
-The two differ only where a runtime needs different wording, such as the image-generation route: Codex has native ImageGen, and Claude Code uses the `gptimage` MCP server.
+The two differ only where a runtime needs different wording, such as the live-testing route. Image generation reads the same in both: every client uses the `hoi4_imagegen` MCP server (`hoi4-imagegen`).
 
 DSH is documented in [`docs/runtimes.md`](../docs/runtimes.md), which covers its native instruction and skill roots, its skill root priority, its runtime-composed subagents and model selection, and its profile-scoped MCP registration.
 
@@ -74,7 +74,7 @@ opencode registers them in `.opencode/opencode.json`.
 DSH registers them only in the active profile's `$DSH_HOME/profiles/<profile>/cordis.patch.yml`, so no repository file carries them.
 Codex-only keys such as approval modes and tool allowlists have no equivalent in the other runtimes, so the matching discipline is carried by the subagent prompts instead.
 `blender_lab_dev` remains a Codex-only diagnostic server.
-The `gptimage` MCP server is a Claude Code user-level server that supplies image generation where Codex uses its native ImageGen.
+The `hoi4_imagegen` MCP server (`hoi4-imagegen`, installed under `.tools/image_generation/` and registered in `.mcp.json` and `.codex/config.toml`) supplies image generation for every runtime.
 
 ### Anti-interference and instruction changes
 

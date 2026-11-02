@@ -19,6 +19,16 @@ startup_timeout_sec = 120
 tool_timeout_sec = 600
 default_tools_approval_mode = "auto"
 
+# hoi4-imagegen: HOI4 asset families, processing and install (tools hoi4.image_*). Release binary under
+# .tools/image_generation/hoi4-imagegen/, installed the way HOI4 Mod Setup installs it.
+[mcp_servers.hoi4_imagegen]
+command = ".tools/image_generation/hoi4-imagegen/0.2.1/hoi4-imagegen-mcp.exe"
+args = ["--project-root", "."]
+cwd = "."
+startup_timeout_sec = 60
+tool_timeout_sec = 900
+default_tools_approval_mode = "auto"
+
 # HOI4 Live Tools: drives the running game for chaos-redux-debug-playtest. Loading a save or stepping weeks of
 # game time takes minutes, so keep the long tool timeout. Machines without this checkout install the release
 # (python install.py) and register the installed launcher in their user config instead.
@@ -256,12 +266,3 @@ config_file = "agents/chaosx_super_event_text_researcher.toml"
 [agents.chaosx_technology_tree_worker]
 description = "Active implementation and small-patch subagent for Chaos Redux technologies, technology folders and cards, project-gated and hidden technologies, grant helpers, and doctrines. Builds and fixes the tree layout, prerequisites, unlocks, bonuses, and card localisation, and reviews the result with the technology inspector and renderer. Does not make card art."
 config_file = "agents/chaosx_technology_tree_worker.toml"
-
-# Image generation with an explicit output path, so generated art is written straight into this repository.
-[mcp_servers.gptimage]
-command = "C:/Program Files/nodejs/node.exe"
-args = ["C:/Users/klimp/tools/gptimage/src/server.js"]
-env = { GPTIMAGE_MODEL = "gpt-6-luna", GPTIMAGE_REASONING_EFFORT = "max" }
-startup_timeout_sec = 60
-tool_timeout_sec = 900
-default_tools_approval_mode = "auto"

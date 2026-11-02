@@ -90,7 +90,7 @@ The check is per frame: a solid NATO frame cannot hide an almost invisible first
 Thin antialiased symbols and intentional disabled states can trigger this diagnostic and need consumer review; it is not permission to make every pixel opaque.
 
 `defringe` is for existing transparent cut-outs with inherited key-colour contamination, not the normal production route for new art.
-New icons must use native ImageGen transparency as required by the event-assets skill.
+New icons must be made through `hoi4-imagegen`, which proves real transparency from the pixels, as required by the event-assets skill.
 It shrinks the alpha boundary by one pixel using a zero-padded minimum filter, then extends the nearest uncontaminated opaque interior RGB into semitransparent/transparent pixels and contaminated edge pixels.
 Magenta means both red and blue exceed green by more than 40; green means green exceeds red and blue by more than 40.
 Interior seed pixels must have alpha at least 240 and survive a one-pixel erosion, so a key-coloured rim cannot become a source colour.
