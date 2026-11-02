@@ -64,3 +64,11 @@ Deterministic template/frame geometry and processing remain allowed under the ap
 If an exact historical request is unavailable, mark it unavailable and preserve known source paths/hashes rather than reconstructing it; fresh generation or editing must remain within existing authorization and portrait/source-mode, provider, and fallback boundaries.
 
 Do not silently overwrite a prior accepted candidate or synchronize an older candidate into runtime. Before normal temporary-workspace cleanup, promote the lineage, prompts, final selection, and review facts into permanent documentation under the existing cleanup contract. Retain active image files until the required package review is complete; this rule does not create a second permanent asset archive.
+
+## Saving a data-URL result from Codex native ImageGen
+
+When Codex native `image_gen__imagegen` returns `result.image_url` as a `data:image/png;base64,...` URL with no reported local path, save the returned bytes before processing.
+Extract only the payload after the data-URL prefix and pass it directly to `tools.apply_patch` to create a uniquely named ignored `<job>/source_png/<candidate>.b64` file.
+Never print the payload with `text()` or `notify()`, or embed it in an `exec_command` argument: image-sized arguments exceed Windows command-length limits.
+Then invoke Python through `tools.exec_command` with only local paths, read the payload file, and use `base64.b64decode` to write a new source PNG without overwriting an existing candidate.
+Verify the PNG with an image decoder, record its SHA-256 in the candidate lineage, and preserve it unchanged; crops, resizing, and alpha repairs belong in separate processed files.

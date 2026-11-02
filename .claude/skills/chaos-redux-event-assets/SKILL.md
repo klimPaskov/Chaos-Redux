@@ -46,11 +46,7 @@ Print only small metadata such as result keys and `output_hint`, never base64 or
 If `output_hint` reports a saved local PNG under `CODEX_HOME/generated_images`, copy from that actual reported path into the source workspace and verify the copied SHA-256 matches the original, subject to any explicit outside-write restriction above.
 If persistence fails after successful generation, recover the existing output from the reported session folder and timestamp and inspect its subject before selecting it; do not repeat a successful generation merely to save its output.
 
-When Codex native `image_gen__imagegen` returns `result.image_url` as a `data:image/png;base64,...` URL with no reported local path, save the returned bytes before processing.
-Extract only the payload after the data-URL prefix and pass it directly to `tools.apply_patch` to create a uniquely named ignored `<job>/source_png/<candidate>.b64` file.
-Never print the payload with `text()` or `notify()`, or embed it in an `exec_command` argument: image-sized arguments exceed Windows command-length limits.
-Then invoke Python through `tools.exec_command` with only local paths, read the payload file, and use `base64.b64decode` to write a new source PNG without overwriting an existing candidate.
-Verify the PNG with an image decoder, record its SHA-256 in the candidate lineage, and preserve it unchanged; crops, resizing, and alpha repairs belong in separate processed files.
+When Codex native `image_gen__imagegen` returns a `data:image/png;base64,...` URL with no reported local path, save the bytes exactly as [Saving a data-URL result](references/manifest-and-lineage.md#saving-a-data-url-result-from-codex-native-imagegen) says before processing.
 
 ## Scope and routing
 
