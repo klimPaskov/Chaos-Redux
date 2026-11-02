@@ -99,10 +99,11 @@ python .tools/sync/refresh_kit_skills.py --kit <kit repository> --commit <revisi
 
 ## Wiki snapshot
 
-`hoi4_wiki/` is the kit's snapshot, copied whole from one kit commit. `.tools/kit_wiki.json` records the commit and the SHA-256 of every file (text with LF endings), and the `kit_wiki` check in the registry reports a changed, missing or extra file as `DRIFT`. Wiki corrections are made in the kit; then take its newer snapshot here.
+`hoi4_wiki/` is the kit's snapshot, copied whole from one kit commit. `.tools/kit_wiki.json` records the commit and the SHA-256 of every file (text with LF endings), and the `kit_wiki` check in the registry reports a changed, missing or extra file as `DRIFT`. Wiki corrections are made in the kit; then take its newer snapshot here. `--freshness` is the reminder to do so: `check.py` reports a snapshot that is behind as a `WIKI-BEHIND` warning with the refresh command, and never as an error.
 
 ```powershell
 python .tools/sync/kit_wiki.py                                                    # check; exit 1 on drift
+python .tools/sync/kit_wiki.py --freshness [--kit <kit repository>]               # BEHIND, CURRENT or UNKNOWN against the kit's newest wiki; always exit 0
 python .tools/sync/kit_wiki.py --refresh --kit <kit repository> --commit <revision>   # copy hoi4_wiki/ from the kit commit and record it
 ```
 
