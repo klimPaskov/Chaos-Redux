@@ -146,7 +146,7 @@ This is the sole supported formable-state tool in `.tools`. It rebuilds the shar
 
 The former geometry, registry, and consumer compilers are retained locally under `.tmp/archive/`, with their tracked originals recoverable from Git history. They are not normal maintenance commands and must be reviewed against current inputs before a map revision or new consumer is compiled.
 
-### Offline Paradox wiki snapshot
+### HOI4 wiki snapshot
 
 The snapshot is the Agentic HOI4 Modding Kit's, copied whole from one kit commit. `.tools/kit_wiki.json` records that commit and the hash of every file, and `sync/kit_wiki.py` (a check in the generator registry) reports any file that differs as drift. Wiki corrections and refreshes from the live wiki are made in the kit, never here. Page files use lowercase snake_case names (`event_modding.md`).
 
@@ -155,7 +155,7 @@ The snapshot is the Agentic HOI4 Modding Kit's, copied whole from one kit commit
 - `wiki/wiki_status.py` compares the installed game's documentation with the recorded index and lists the pages to re-check after a game update.
 - `wiki/sync_wiki_snapshot.py` regenerates the snapshot from the live wiki. It runs in the kit; its contract, options and page set are in `wiki/README.md`.
 
-`AGENTS.md` names `paradox_wiki/` as the required modding reference, so take a newer snapshot and verify it as a pair:
+`AGENTS.md` names `hoi4_wiki/` as the required modding reference, so take a newer snapshot and verify it as a pair:
 
 ```powershell
 python -B .tools/sync/kit_wiki.py --refresh --kit <kit repository> --commit <revision>

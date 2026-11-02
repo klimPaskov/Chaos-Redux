@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Keep the wiki snapshot identical to one Agentic HOI4 Modding Kit commit.
 
-`paradox_wiki/` is the kit's, copied whole. `.tools/kit_wiki.json` records the kit commit and the SHA-256 of
+`hoi4_wiki/` is the kit's, copied whole. `.tools/kit_wiki.json` records the kit commit and the SHA-256 of
 every file in it (text with LF line endings). The check reports a changed, missing or extra
 file as drift, so a hand edit here is caught; wiki fixes belong in the kit. A refresh copies the folder from
 the kit commit and records them again, so taking a newer snapshot never fails the check.
@@ -24,7 +24,7 @@ from typing import Dict, List, Optional, Sequence
 
 from sync_engine_skills import EngineSkillError, file_digest, is_text, to_lf
 
-FOLDERS = ("paradox_wiki",)
+FOLDERS = ("hoi4_wiki",)
 MANIFEST = ".tools/kit_wiki.json"
 SKIPPED = ("__pycache__",)
 
@@ -88,8 +88,8 @@ def kit_files(kit: Path, commit: str) -> Dict[str, bytes]:
                 continue
             data = git(kit, "cat-file", "blob", f"{commit}:{rel}")
             files[rel] = to_lf(data) if is_text(rel) else data
-    if not any(rel.startswith("paradox_wiki/") for rel in files):
-        raise EngineSkillError(f"the kit has no paradox_wiki/ at {commit[:7]}")
+    if not any(rel.startswith("hoi4_wiki/") for rel in files):
+        raise EngineSkillError(f"the kit has no hoi4_wiki/ at {commit[:7]}")
     return files
 
 
@@ -102,7 +102,7 @@ def refresh(root: Path, kit: Path, revision: str) -> int:
         (root / rel).parent.mkdir(parents=True, exist_ok=True)
         (root / rel).write_bytes(data)
     manifest = {
-        "_about": "Written by .tools/sync/kit_wiki.py. SHA-256 of every file in paradox_wiki/ (text with LF line endings).",
+        "_about": "Written by .tools/sync/kit_wiki.py. SHA-256 of every file in hoi4_wiki/ (text with LF line endings).",
         "kit": "Agentic HOI4 Modding Kit",
         "kit_commit": commit,
         "files": {rel: file_digest(rel, data) for rel, data in sorted(files.items())},
@@ -117,7 +117,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[2], help="repository root (default: this repository)")
     parser.add_argument("--check", action="store_true", help="check only (the default)")
-    parser.add_argument("--refresh", action="store_true", help="copy paradox_wiki/ from the kit commit and record it")
+    parser.add_argument("--refresh", action="store_true", help="copy hoi4_wiki/ from the kit commit and record it")
     parser.add_argument("--kit", type=Path, help="the Agentic HOI4 Modding Kit repository (with --refresh)")
     parser.add_argument("--commit", help="the kit revision to pin (with --refresh)")
     args = parser.parse_args(argv)

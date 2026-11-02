@@ -1,4 +1,4 @@
-"""Regression tests for `.tools/sync/kit_wiki.py`, the check that keeps `paradox_wiki/` equal to a kit commit.
+"""Regression tests for `.tools/sync/kit_wiki.py`, the check that keeps `hoi4_wiki/` equal to a kit commit.
 
 Every test builds a small repository in a temporary folder, so nothing tracked is written. The last class
 checks the real repository. Run from the mod root: `python -B .tools/tests/test_kit_wiki.py`.
@@ -40,9 +40,9 @@ class KitWikiCase(unittest.TestCase):
 		self.addCleanup(self.temporary.cleanup)
 		self.root = Path(self.temporary.name) / "mod"
 		self.kit = Path(self.temporary.name) / "kit"
-		write(self.kit / "paradox_wiki/effect.md", PAGE)
-		write(self.kit / "paradox_wiki/media/effect_img1.png", IMAGE)
-		write(self.kit / "paradox_wiki/LICENSE.txt", "CC BY-SA 3.0\n")
+		write(self.kit / "hoi4_wiki/effect.md", PAGE)
+		write(self.kit / "hoi4_wiki/media/effect_img1.png", IMAGE)
+		write(self.kit / "hoi4_wiki/LICENSE.txt", "CC BY-SA 3.0\n")
 		write(self.kit / "README.md", "Not part of the snapshot.\n")
 		git(self.kit, "init", "-q")
 		git(self.kit, "add", "-A")
@@ -61,32 +61,32 @@ class KitWikiCase(unittest.TestCase):
 class Refresh(KitWikiCase):
 	def test_refresh_copies_the_commit_and_the_check_then_passes(self):
 		# The working tree changes after the commit, and the snapshot must still come from the commit.
-		write(self.kit / "paradox_wiki/effect.md", "uncommitted\n")
+		write(self.kit / "hoi4_wiki/effect.md", "uncommitted\n")
 		self.assertEqual(self.refresh()[0], 0)
-		self.assertEqual((self.root / "paradox_wiki/effect.md").read_text(encoding="utf-8"), PAGE)
-		self.assertEqual((self.root / "paradox_wiki/media/effect_img1.png").read_bytes(), IMAGE)
+		self.assertEqual((self.root / "hoi4_wiki/effect.md").read_text(encoding="utf-8"), PAGE)
+		self.assertEqual((self.root / "hoi4_wiki/media/effect_img1.png").read_bytes(), IMAGE)
 		self.assertFalse((self.root / "README.md").exists())
 		manifest = json.loads((self.root / kit_wiki.MANIFEST).read_text(encoding="utf-8"))
 		self.assertEqual(manifest["kit_commit"], git(self.kit, "rev-parse", "HEAD").strip())
-		self.assertEqual(sorted(manifest["files"]), ["paradox_wiki/LICENSE.txt", "paradox_wiki/effect.md", "paradox_wiki/media/effect_img1.png"])
+		self.assertEqual(sorted(manifest["files"]), ["hoi4_wiki/LICENSE.txt", "hoi4_wiki/effect.md", "hoi4_wiki/media/effect_img1.png"])
 		self.assertEqual(self.run_tool(), (0, "Wiki snapshot matches the kit: 3 files.\n"))
 
 	def test_a_newer_kit_commit_replaces_the_snapshot_and_removes_dropped_pages(self):
 		self.refresh()
-		write(self.kit / "paradox_wiki/trigger.md", "# Trigger\n")
-		git(self.kit, "rm", "-q", "paradox_wiki/effect.md")
+		write(self.kit / "hoi4_wiki/trigger.md", "# Trigger\n")
+		git(self.kit, "rm", "-q", "hoi4_wiki/effect.md")
 		git(self.kit, "add", "-A")
 		git(self.kit, "-c", "commit.gpgsign=false", "commit", "-q", "-m", "newer")
 		self.assertEqual(self.refresh()[0], 0)
-		self.assertFalse((self.root / "paradox_wiki/effect.md").exists())
+		self.assertFalse((self.root / "hoi4_wiki/effect.md").exists())
 		self.assertEqual(self.run_tool()[0], 0)
 
 	def test_a_kit_without_a_wiki_cannot_run_and_writes_nothing(self):
-		git(self.kit, "rm", "-q", "-r", "paradox_wiki")
+		git(self.kit, "rm", "-q", "-r", "hoi4_wiki")
 		git(self.kit, "-c", "commit.gpgsign=false", "commit", "-q", "-m", "no wiki")
 		status, output = self.refresh()
 		self.assertEqual(status, 2)
-		self.assertIn("no paradox_wiki/", output)
+		self.assertIn("no hoi4_wiki/", output)
 		self.assertFalse((self.root / kit_wiki.MANIFEST).exists())
 
 
@@ -96,21 +96,21 @@ class Drift(KitWikiCase):
 		self.refresh()
 
 	def test_hand_edit_is_drift(self):
-		write(self.root / "paradox_wiki/effect.md", PAGE + "Local note.\n")
+		write(self.root / "hoi4_wiki/effect.md", PAGE + "Local note.\n")
 		status, output = self.run_tool("--check")
 		self.assertEqual(status, 1)
-		self.assertIn("DRIFT paradox_wiki/effect.md: differs from the kit snapshot", output)
+		self.assertIn("DRIFT hoi4_wiki/effect.md: differs from the kit snapshot", output)
 
 	def test_extra_and_missing_files_are_drift(self):
-		write(self.root / "paradox_wiki/local_page.md", "# Local\n")
-		(self.root / "paradox_wiki/LICENSE.txt").unlink()
+		write(self.root / "hoi4_wiki/local_page.md", "# Local\n")
+		(self.root / "hoi4_wiki/LICENSE.txt").unlink()
 		status, output = self.run_tool()
 		self.assertEqual(status, 1)
-		self.assertIn("DRIFT paradox_wiki/local_page.md: not in the kit snapshot", output)
-		self.assertIn("DRIFT paradox_wiki/LICENSE.txt: missing", output)
+		self.assertIn("DRIFT hoi4_wiki/local_page.md: not in the kit snapshot", output)
+		self.assertIn("DRIFT hoi4_wiki/LICENSE.txt: missing", output)
 
 	def test_crlf_checkout_is_not_drift(self):
-		write(self.root / "paradox_wiki/effect.md", PAGE.replace("\n", "\r\n"))
+		write(self.root / "hoi4_wiki/effect.md", PAGE.replace("\n", "\r\n"))
 		self.assertEqual(self.run_tool()[0], 0)
 
 	def test_missing_manifest_cannot_run(self):
