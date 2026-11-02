@@ -80,7 +80,7 @@ When a replaced line in `CLAUDE.md` is reworded, update its pair in `instruction
 
 ## Engine-system skills
 
-`chaos-redux-ai-strategies`, `chaos-redux-characters-leaders`, `chaos-redux-diplomacy-war`, `chaos-redux-equipment`, `chaos-redux-ideas-modifiers`, `chaos-redux-investigate`, `chaos-redux-map-states`, `chaos-redux-mtth`, `chaos-redux-technology-doctrines` and `chaos-redux-units-divisions` are generated, so `.claude/skills/<name>/` is not an authoring location for them.
+`chaos-redux-ai-strategies`, `chaos-redux-characters-leaders`, `chaos-redux-diplomacy-war`, `chaos-redux-equipment`, `chaos-redux-ideas-modifiers`, `hoi4-imagegen` (kept under its kit name, which is also its MCP command), `chaos-redux-investigate`, `chaos-redux-map-states`, `chaos-redux-mtth`, `chaos-redux-technology-doctrines` and `chaos-redux-units-divisions` are generated, so `.claude/skills/<name>/` is not an authoring location for them.
 Each is the Agentic HOI4 Modding Kit's skill text, pinned in `.tools/kit_skills/<kit-name>/`, with the names in `.tools/kit_skills/mapping.json` replaced (kit skill names, `hoi4_*` agent routing names), plus the Chaos Redux overlay in `.claude/skill-overlays/<name>/`.
 `.tools/kit_skills/manifest.json` records the kit commit and the SHA-256 of every snapshot file, and the generator refuses a snapshot that differs from it.
 
@@ -99,11 +99,11 @@ python .tools/sync/refresh_kit_skills.py --kit <kit repository> --commit <revisi
 
 ## Wiki snapshot
 
-`paradox_wiki/` is the kit's snapshot, copied whole from one kit commit. `.tools/kit_wiki.json` records the commit and the SHA-256 of every file (text with LF endings), and the `kit_wiki` check in the registry reports a changed, missing or extra file as `DRIFT`. Wiki corrections are made in the kit; then take its newer snapshot here.
+`hoi4_wiki/` is the kit's snapshot, copied whole from one kit commit. `.tools/kit_wiki.json` records the commit and the SHA-256 of every file (text with LF endings), and the `kit_wiki` check in the registry reports a changed, missing or extra file as `DRIFT`. Wiki corrections are made in the kit; then take its newer snapshot here.
 
 ```powershell
 python .tools/sync/kit_wiki.py                                                    # check; exit 1 on drift
-python .tools/sync/kit_wiki.py --refresh --kit <kit repository> --commit <revision>   # copy paradox_wiki/ from the kit commit and record it
+python .tools/sync/kit_wiki.py --refresh --kit <kit repository> --commit <revision>   # copy hoi4_wiki/ from the kit commit and record it
 ```
 
 ## Write rules
