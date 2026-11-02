@@ -13,10 +13,13 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 TOOLS = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(TOOLS))
 sys.path.insert(0, str(TOOLS / "sync"))
 
+import check
 import kit_wiki
 
 PAGE = "# Effect\n\nWiki text.\n"
@@ -116,6 +119,119 @@ class Drift(KitWikiCase):
 	def test_missing_manifest_cannot_run(self):
 		(self.root / kit_wiki.MANIFEST).unlink()
 		self.assertEqual(self.run_tool()[0], 2)
+
+
+class Freshness(KitWikiCase):
+	"""`--freshness` says whether the kit's wiki moved past the pinned commit, and is never a failure."""
+
+	def setUp(self):
+		super().setUp()
+		self.refresh()
+		# Neither the developer's kit clone nor the network may leak into these tests.
+		patcher = mock.patch.dict(os.environ)
+		patcher.start()
+		self.addCleanup(patcher.stop)
+		os.environ.pop(kit_wiki.KIT_ENVIRONMENT, None)
+
+	def commit_kit(self, message):
+		git(self.kit, "add", "-A")
+		git(self.kit, "-c", "commit.gpgsign=false", "commit", "-q", "-m", message)
+
+	def unreachable(self, pinned):
+		return None
+
+	def test_snapshot_in_sync_with_the_kit_is_current(self):
+		state, message = kit_wiki.freshness(self.root, self.kit, self.unreachable)
+		self.assertEqual(state, "current")
+		self.assertIn("matches the kit's newest wiki", message)
+
+	def test_a_kit_change_outside_the_wiki_is_still_current(self):
+		write(self.kit / "README.md", "Changed, but not a wiki page.\n")
+		self.commit_kit("readme")
+		self.assertEqual(kit_wiki.freshness(self.root, self.kit, self.unreachable)[0], "current")
+
+	def test_a_changed_wiki_page_is_behind_and_names_the_refresh_command(self):
+		write(self.kit / "hoi4_wiki/effect.md", PAGE + "A fixed claim.\n")
+		write(self.kit / "hoi4_wiki/trigger.md", "# Trigger\n")
+		self.commit_kit("wiki")
+		state, message = kit_wiki.freshness(self.root, self.kit, self.unreachable)
+		self.assertEqual(state, "behind")
+		self.assertIn("2 wiki file(s) changed", message)
+		self.assertIn("effect.md", message)
+		self.assertIn(kit_wiki.REFRESH_COMMAND, message)
+
+	def test_behind_exits_zero_and_a_refresh_makes_it_current(self):
+		write(self.kit / "hoi4_wiki/effect.md", PAGE + "A fixed claim.\n")
+		self.commit_kit("wiki")
+		status, output = self.run_tool("--freshness", "--kit", str(self.kit))
+		self.assertEqual(status, 0)
+		self.assertTrue(output.startswith("BEHIND "), output)
+		self.refresh()
+		status, output = self.run_tool("--freshness", "--kit", str(self.kit))
+		self.assertEqual((status, output.split(" ")[0]), (0, "CURRENT"))
+
+	def test_the_kit_clone_comes_from_the_environment_when_no_path_is_given(self):
+		write(self.kit / "hoi4_wiki/effect.md", PAGE + "A fixed claim.\n")
+		self.commit_kit("wiki")
+		os.environ[kit_wiki.KIT_ENVIRONMENT] = str(self.kit)
+		self.assertEqual(kit_wiki.freshness(self.root, None, self.unreachable)[0], "behind")
+
+	def test_without_a_readable_clone_the_remote_answer_is_used(self):
+		missing = Path(self.temporary.name) / "no_kit_here"
+		pinned = json.loads((self.root / kit_wiki.MANIFEST).read_text(encoding="utf-8"))["kit_commit"]
+		asked = []
+
+		def remote(commit):
+			asked.append(commit)
+			return ["hoi4_wiki/effect.md"]
+
+		self.assertEqual(kit_wiki.freshness(self.root, missing, remote)[0], "behind")
+		self.assertEqual(asked, [pinned])
+		self.assertEqual(kit_wiki.freshness(self.root, missing, lambda commit: [])[0], "current")
+
+	def test_when_nothing_answers_the_result_is_unknown_and_still_exits_zero(self):
+		state, message = kit_wiki.freshness(self.root, None, self.unreachable)
+		self.assertEqual(state, "unknown")
+		self.assertIn("could not compare", message)
+		with mock.patch.object(kit_wiki, "changed_on_github", self.unreachable):
+			status, output = self.run_tool("--freshness")
+		self.assertEqual((status, output.split(" ")[0]), (0, "UNKNOWN"))
+
+	def test_a_missing_manifest_cannot_run(self):
+		(self.root / kit_wiki.MANIFEST).unlink()
+		self.assertEqual(self.run_tool("--freshness", "--kit", str(self.kit))[0], 2)
+
+
+class CheckRunner(KitWikiCase):
+	"""`check.py` turns a snapshot that is behind into a warning, never an error."""
+
+	def setUp(self):
+		super().setUp()
+		self.refresh()
+		patcher = mock.patch.dict(os.environ, {kit_wiki.KIT_ENVIRONMENT: str(self.kit)})
+		patcher.start()
+		self.addCleanup(patcher.stop)
+		root_patch = mock.patch.object(check, "REPO_ROOT", self.root)
+		root_patch.start()
+		self.addCleanup(root_patch.stop)
+
+	def run_check(self):
+		with contextlib.redirect_stdout(io.StringIO()) as output:
+			findings, failure = check.run_wiki_freshness(None)
+		return findings, failure, output.getvalue()
+
+	def test_in_sync_reports_nothing(self):
+		self.assertEqual(self.run_check(), ([], None, ""))
+
+	def test_behind_is_one_warning_with_the_refresh_command_and_no_failure(self):
+		write(self.kit / "hoi4_wiki/effect.md", PAGE + "A fixed claim.\n")
+		git(self.kit, "add", "-A")
+		git(self.kit, "-c", "commit.gpgsign=false", "commit", "-q", "-m", "wiki")
+		findings, failure, printed = self.run_check()
+		self.assertIsNone(failure)
+		self.assertEqual([(finding.rule, finding.level) for finding in findings], [("WIKI-BEHIND", "warning")])
+		self.assertIn(kit_wiki.REFRESH_COMMAND, findings[0].message)
+		self.assertIn(kit_wiki.REFRESH_COMMAND, printed)
 
 
 class RepositoryState(unittest.TestCase):

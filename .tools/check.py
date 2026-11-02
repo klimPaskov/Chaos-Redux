@@ -28,7 +28,9 @@ Checks (rule ids and levels are defined by each tool; see `.tools/lib/report.py`
 - gfx              `gfx/gfx.py audit`                   frame strips, flag ladder, achievement size, runtime binaries
 - guidance         `sync/sync_read_limits.py --check`   guidance size ceilings and read-limit drift
 - generators       `sync/generators.py --check`         every generated file listed in `sync/generators.json`
-- tests            maintained regression tests in `.tools/` (full, or quick when `.tools/` changed)
+- wiki-freshness   `sync/kit_wiki.py --freshness`       warns when `hoi4_wiki/` is behind the kit's wiki and names the
+                   refresh command; never an error, and skipped with a notice when neither a kit clone nor GitHub answers
+- tests           maintained regression tests in `.tools/` (full, or quick when `.tools/` changed)
 - references       `audits/audit_script_references_static.py`  dead code, flags and clones (full only; review)
 - engine           `hoi4-engine check`                  reference closure, lints and override audit of the shared
                    HOI4 engine; only findings missing from `engine_baseline.json` count (full only; skipped
@@ -191,6 +193,37 @@ def run_generators(paths: Optional[List[str]]) -> Tuple[List[Finding], Optional[
 	return findings, "; ".join(failures) or None
 
 
+FRESHNESS_TIMEOUT_SECONDS = 30
+
+
+def run_wiki_freshness(paths: Optional[List[str]]) -> Tuple[List[Finding], Optional[str]]:
+	"""Warn when `hoi4_wiki/` is behind the kit's wiki; never an error, and never "could not run".
+
+	`sync/kit_wiki.py --freshness` reads a kit clone (`HOI4_KIT_REPO`) first and GitHub second. A snapshot that is
+	behind becomes a `WIKI-BEHIND` warning that names the refresh command and is also printed here, because
+	warnings are otherwise hidden in a full run. When neither source answers, the check prints a notice and passes.
+	"""
+	script = TOOLS / "sync" / "kit_wiki.py"
+	try:
+		completed = subprocess.run([sys.executable, "-B", str(script), "--root", str(REPO_ROOT), "--freshness"], cwd=REPO_ROOT, capture_output=True,
+			text=True, encoding="utf-8", errors="replace", timeout=FRESHNESS_TIMEOUT_SECONDS)
+	except subprocess.TimeoutExpired:
+		print(f"wiki-freshness: skipped: no answer within {FRESHNESS_TIMEOUT_SECONDS} s")
+		return [], None
+	answer = completed.stdout.strip()
+	if completed.returncode != 0 or not answer:
+		tail = (completed.stderr or completed.stdout).strip().splitlines()[-1:]
+		print(f"wiki-freshness: skipped: kit_wiki.py exited {completed.returncode}: {' | '.join(tail)}")
+		return [], None
+	state, _, message = answer.partition(" ")
+	if state == "BEHIND":
+		print(f"wiki-freshness: {message}")
+		return [Finding("wiki-freshness", "WIKI-BEHIND", "warning", ".tools/kit_wiki.json", 0, message)], None
+	if state == "UNKNOWN":
+		print(f"wiki-freshness: skipped: {message}")
+	return [], None
+
+
 ENGINE_BASELINE = TOOLS / "engine_baseline.json"
 ENGINE_LEVELS = {"error": "error", "warning": "warning", "info": "review"}
 
@@ -271,6 +304,7 @@ CHECKS = (
 	Check("guidance", ("CLAUDE.md", "AGENTS.md", ".claude/", ".codex/", ".opencode/", ".tools/sync/"), True,
 		run_guidance),
 	Check("generators", generator_prefixes(), True, run_generators),
+	Check("wiki-freshness", ("hoi4_wiki/", ".tools/kit_wiki.json", ".tools/sync/kit_wiki.py"), True, run_wiki_freshness),
 	Check("tests", (".tools/",), True, run_tests),
 	Check("references", (), False, run_report_tool("references", "audits/audit_script_references_static.py")),
 	# The shared HOI4 engine; full only, skipped with a notice when hoi4-engine is not installed.
