@@ -42,10 +42,10 @@ Before wiring an animated asset into the game, gather the applicable wiki and in
 
 Required references:
 
-- `paradox_wiki/graphical_asset_modding.md`
-- `paradox_wiki/interface_modding.md` when the animation appears in GUI
-- `paradox_wiki/scripted_gui_modding.md` when the animation appears in scripted GUI
-- `paradox_wiki/character_modding.md` when the animation is a portrait
+- `hoi4_wiki/graphical_asset_modding.md`
+- `hoi4_wiki/interface_modding.md` when the animation appears in GUI
+- `hoi4_wiki/scripted_gui_modding.md` when the animation appears in scripted GUI
+- `hoi4_wiki/character_modding.md` when the animation is a portrait
 - relevant vanilla `.gfx` and `.gui` files under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`
 - existing Chaos Redux `.gfx`, `.gui`, portrait, focus, decision, and scripted GUI examples when available
 

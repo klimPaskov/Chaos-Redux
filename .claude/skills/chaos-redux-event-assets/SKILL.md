@@ -16,13 +16,14 @@ Read the reference that matches the asset family before producing it:
 - [references/portrait-production.md](references/portrait-production.md): every character portrait, portrait icon, source placeholder, and user-supplied final.
 - [references/event-images-and-flags.md](references/event-images-and-flags.md): report, news, and super-event images and every flag.
 - [references/unit-visuals.md](references/unit-visuals.md): equipment and technology art, counters, division-template emblems, and the 3D model package handoff.
+- [references/imagegen-route.md](references/imagegen-route.md): making art with the `hoi4-imagegen` MCP, the preferred route.
 - [references/manifest-and-lineage.md](references/manifest-and-lineage.md): the event asset workspace layout, pre-generation inventory reconciliation, asset manifest fields, and generated-candidate lineage and review. Read before declaring a source gap or requesting fresh art.
 
 Skill-local `assets/` holds the reference and component libraries, and `tools/` holds the bundled converters and processors.
 
 ## Image-generation route
 
-This skill owns the image-generation route for the whole repository. Claude Code generates images with the `generate_image` tool of the gptimage MCP server (parameters: `prompt`, `out`, `quality` low|medium|high|auto, `size` WIDTHxHEIGHT, `reference_images`). Codex uses native ImageGen instead. Everywhere else, "image generation" means this route.
+This skill owns the image-generation route for the whole repository. Prefer the `hoi4-imagegen` MCP ([references/imagegen-route.md](references/imagegen-route.md)); the route below is the fallback. Claude Code generates images with the `generate_image` tool of the gptimage MCP server (parameters: `prompt`, `out`, `quality` low|medium|high|auto, `size` WIDTHxHEIGHT, `reference_images`). Codex uses native ImageGen instead. Everywhere else, "image generation" means this route.
 
 Inspect the active tool's exposed output-path capabilities and prefer an absolute in-repo destination when it offers one.
 Native ImageGen's automatic cache and service-managed temporary storage are allowed by default as generation implementation details; do not pause or ask for permission merely because it has no destination selector or cannot guarantee hidden-cache locations.

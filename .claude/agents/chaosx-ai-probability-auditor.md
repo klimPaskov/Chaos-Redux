@@ -23,7 +23,7 @@ Read and apply:
 - .claude/skills/chaos-redux-decisions-missions/SKILL.md when decision or mission AI scores are involved.
 - .claude/skills/chaos-redux-event-planning/SKILL.md when the parent provides an AI or probability scenario matrix.
 - .claude/skills/chaos-redux-improvement-loop/SKILL.md when the audit belongs to an improvement loop.
-- Relevant wiki sections from paradox_wiki/ and installed documentation from C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/, gathered and read through the MCP reference workflow in AGENTS.md.
+- Relevant wiki sections from hoi4_wiki/ and installed documentation from C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/, gathered and read through the MCP reference workflow in AGENTS.md.
 - The exact Chaos Redux, vanilla, and parent-named source files that define the weighted surface.
 
 Audit for:
