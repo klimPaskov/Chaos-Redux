@@ -2,7 +2,7 @@
 
 The accepted native-size game captures and current source-backed renderer views live under [`scripted_guis/`](../scripted_guis/), with source revisions, scenarios, crop bounds, and contact sheets in its manifest. Images elsewhere in this `interface/` tree are exploratory captures and are not evidence of current in-game visual parity. Each source precedent below remains useful for studying native GUI structure, but a new reference must pass the shelf's visual review before agents use it as an example.
 
-Use these references to study hierarchy, spacing, value grouping, attachment geometry, repeated rows, progress states, and information density before generating a new scripted-GUI reference with Sunburst. The generated reference establishes the intended composition; the vanilla source establishes what native HOI4 controls and asset families can implement. Do not copy a vanilla window wholesale or wire these review PNGs into the mod.
+Use these references to study hierarchy, spacing, value grouping, attachment geometry, repeated rows, progress states, and information density before generating a new scripted-GUI reference with `hoi4.image_interface`. The generated reference establishes the intended composition; the vanilla source establishes what native HOI4 controls and asset families can implement. Do not copy a vanilla window wholesale or wire these review PNGs into the mod.
 
 ## Categories
 
@@ -25,7 +25,7 @@ A category render uses an explicit scenario, resolution, UI scale, and source re
 
 1. Choose one or more categories that match the mechanic's information shape.
 2. Capture or inspect the category's full render and contact sheet with the recipe above, then inspect both installed source files.
-3. Generate the proposed composition with Sunburst, using the selected categories as style and geometry references rather than edit targets.
+3. Generate the proposed composition with `hoi4.image_interface`, using the selected categories as style and geometry references rather than edit targets.
 4. Map generated decoration to runtime textures and every label, value, meter, list, button, hover, tooltip, and click region to native controls.
 5. Inspect and render the implementation with the HOI4 MCP at matching states and resolutions, compare it with the generated reference, and fix every visible alignment, spacing, scaling, clipping, background, overlap, state, and hitbox defect.
 

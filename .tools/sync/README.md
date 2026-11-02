@@ -69,7 +69,7 @@ The generator stops on a definition without an entry or with a model outside `ha
 ## Instruction files
 
 `CLAUDE.md` is canonical and is the only instruction file edited by hand.
-`AGENTS.md` serves Codex, Cursor, Qoder, opencode, and DSH; `sync_instructions.py` generates it from `CLAUDE.md`, replacing each runtime-specific line listed in `instruction_projection.json` (the Codex wording for image generation and portraits, the `.agents/skills` mirror sentence, and the Linux live-testing route).
+`AGENTS.md` serves Codex, Cursor, Qoder, opencode, and DSH; `sync_instructions.py` generates it from `CLAUDE.md`, replacing each runtime-specific line listed in `instruction_projection.json` (the `.agents/skills` mirror sentence and the Linux live-testing route; image generation reads the same in both files because every client uses `hoi4-imagegen`).
 
 ```powershell
 python .tools/sync/sync_instructions.py           # regenerate AGENTS.md after editing CLAUDE.md

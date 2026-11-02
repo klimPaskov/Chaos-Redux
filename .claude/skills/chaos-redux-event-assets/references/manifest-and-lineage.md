@@ -36,7 +36,7 @@ The manifest must list every asset. Before deleting the temporary workspace, cop
 Each asset entry must identify:
 
 - Asset name/type, event id/slug, intended in-game use, exact target size, related focus/idea/event/decision/UI/super-event id, and localisation key where relevant.
-- Source mode (image generation, portrait-production output, internet source, or user-provided source); generated prompt and rationale, or source link, available author/archive/collection, date/range, license/public-domain status, era fit, and uncertainty.
+- Source mode (`hoi4-imagegen`, portrait-production output, internet source, or user-provided source); generated prompt and rationale, or source link, available author/archive/collection, date/range, license/public-domain status, era fit, and uncertainty.
 - Background mode (`native_transparent`, `consumer_opaque`, or `fallback_removed`), with the fallback reason, verified edit/tool and settings where applicable.
 - Source and processed PNG paths, final DDS path, sprite name, owning `.gfx`, notes, and status.
 - Generated candidate lineage and review evidence under [Candidate lineage and review](#candidate-lineage-and-review), including input roles, exact edit deltas, immutable source/intermediate paths, verdicts, and explicit final selection.
@@ -49,13 +49,13 @@ Use `not_needed`, `planned`, `sourced`, `generated`, `processed`, `converted`, `
 
 #### Candidate lineage and review
 
-Before each image-generation call or edit, save the exact request arguments in a repo-contained prompt record: `prompt` (including the transparency request), `transparent_background` where the tool exposes it, `out`, `quality`, and `size` where the tool exposes them, and supplied reference paths or recent-image count, with the actual referenced images identified and retained.
+Before each approved `hoi4-imagegen` call or edit, save the brief (including the transparency request), the family, the plan id, the `idempotency_key`, and the supplied reference paths with their roles in a repo-contained prompt record, with the actual referenced images identified and retained. The tool's `hoi4.image_ledger` entry for the plan is part of that record.
 
 While the asset workspace is active, keep the original generated source and every accepted intermediate immutable at distinct versioned paths. Keep source outputs separate from processed previews and runtime files. In the active manifest or linked prompt record, record for each generated candidate:
 
 - candidate id, parent candidate id or new-generation reason, and input paths with their declared roles
 - linked exact saved request, focused edit delta, invariants, and background mode
-- tool-reported output path, retained workspace path, source SHA-256, decoded dimensions, and alpha evidence
+- tool-reported candidate path, retained workspace path, source SHA-256, decoded dimensions, and alpha evidence
 - source-resolution and final-native-size review results, accepted/rejected status, and remaining defects
 - explicit final-selected candidate id, processed PNG path, final runtime path after conversion, and each subject's source-to-layer/frame-to-consumer mapping
 
@@ -64,11 +64,3 @@ Deterministic template/frame geometry and processing remain allowed under the ap
 If an exact historical request is unavailable, mark it unavailable and preserve known source paths/hashes rather than reconstructing it; fresh generation or editing must remain within existing authorization and portrait/source-mode, provider, and fallback boundaries.
 
 Do not silently overwrite a prior accepted candidate or synchronize an older candidate into runtime. Before normal temporary-workspace cleanup, promote the lineage, prompts, final selection, and review facts into permanent documentation under the existing cleanup contract. Retain active image files until the required package review is complete; this rule does not create a second permanent asset archive.
-
-## Saving a data-URL result from Codex native ImageGen
-
-When Codex native `image_gen__imagegen` returns `result.image_url` as a `data:image/png;base64,...` URL with no reported local path, save the returned bytes before processing.
-Extract only the payload after the data-URL prefix and pass it directly to `tools.apply_patch` to create a uniquely named ignored `<job>/source_png/<candidate>.b64` file.
-Never print the payload with `text()` or `notify()`, or embed it in an `exec_command` argument: image-sized arguments exceed Windows command-length limits.
-Then invoke Python through `tools.exec_command` with only local paths, read the payload file, and use `base64.b64decode` to write a new source PNG without overwriting an existing candidate.
-Verify the PNG with an image decoder, record its SHA-256 in the candidate lineage, and preserve it unchanged; crops, resizing, and alpha repairs belong in separate processed files.

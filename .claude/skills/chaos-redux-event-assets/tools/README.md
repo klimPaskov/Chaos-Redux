@@ -2,6 +2,8 @@
 
 These are the active reusable tools for the `chaos-redux-event-assets` skill. Call them from the mod root.
 
+`hoi4-imagegen` applies the recipes of the portrait crop, advisor card, report card, achievement triplet and DDS converter itself for the families it makes. Run these scripts by hand only for art outside those families, or when the tool is unavailable and the user approved it.
+
 Chaos Redux is the upstream of the Agentic HOI4 Modding package's copies of these tools, which are byte-identical (that package's `scripts/shared_tools.json` records them and its CI fails on drift). Keep project values out of the code: the label, identifier prefix, reference-asset folder, texconv image hint and report-provenance registry path live in `project_settings.json` beside the tools, and a changed tool is copied to the package with `python scripts/check_shared_tools.py --upstream <this mod> --write` there.
 
 Canonical engine-surface reference lookups Canonical engine-surface reference lookups use:

@@ -8,4 +8,8 @@ Chaos Redux settled three canvases that differ from vanilla, in its own `.tools/
 
 ### In Where things land
 
-`chaos-redux-event-assets` holds the Chaos Redux asset rules (folders, naming, handoff files, real-person rules) and keeps the manual tools in `.tools/` and its `tools/` folder as the fallback when the MCP is unavailable. Read it first.
+`chaos-redux-event-assets` holds the Chaos Redux asset rules (folders, naming, handoff files, real-person rules). `hoi4-imagegen` is the only image route, for Claude Code and Codex alike, and if it has no signed-in provider the work stops with a reported blocker. The manual tools in `.tools/` and its `tools/` folder are the reference recipes and the route only for art outside the 40 families. Read it first.
+
+### In When not to use it
+
+In Chaos Redux the real-person rule is the Portrait source-mode gate in `chaos-redux-event-assets` (`references/portrait-production.md`), which decides before any generation.

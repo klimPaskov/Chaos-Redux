@@ -14,6 +14,8 @@ Report-event images use a finished `210x176` RGBA canvas. The source photograph 
 
 Do not ask image generation to create the tilted card. Generate or source the documentary photograph first, then apply the card treatment locally. This keeps the tilt, shadow, and margins consistent.
 
+`hoi4.image_picture` with `family: report_event` applies this treatment itself, with the fixed report-card shadow, and `hoi4.image_process` imports a sourced photograph the same way. Do not run the script below by hand for a card the tool makes. A card made by the tool is recorded in the tool's ledger, not in the registry below, so `gfx.py reports` may warn `GFX-REPORT-NO-PROVENANCE` for it; the size and corner checks still apply. The script stays the reference recipe and the route for cards made outside the tool.
+
 ```powershell
 python -B .claude/skills/chaos-redux-event-assets/tools/process_report_event_image.py source.png processed_report_event.png --runtime gfx/event_pictures/<event>/<file>.dds
 python -B .claude/skills/chaos-redux-event-assets/tools/process_report_event_image.py source_folder processed_folder
@@ -35,7 +37,7 @@ Validation:
 - edge space is transparent, not black padding
 - source remains readable after crop, tilt, shadow, and DDS conversion
 
-Generated report images must still receive this local report-card treatment.
+Generated report images must still receive this report-card treatment, from the tool or from the script.
 
 ### News event images
 
@@ -50,6 +52,8 @@ If a super-event needs an audio cue, use `chaos-redux-super-events` and research
 Document each track's title, composer, performer or recording source where relevant, checked license or public-domain status, source link, thematic fit, suggested in-game use, and editing notes. Do not claim public-domain status without checking; mark an unclear license uncertain or unsuitable.
 
 ### Flags
+
+`hoi4.image_flag` (family `flag`) writes the three sizes of one tag and ideology with the vanilla TGA header and origin; do not build the ladder by hand.
 
 Flags should use clean symbolic designs that look like intentional flag designs, not simple-shape placeholders, palette swaps, ugly filters, or flipped/recolored variants. Treat flags as flat identity assets, not artwork or illustrated scenes.
 
