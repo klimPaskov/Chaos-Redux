@@ -21,3 +21,12 @@ Disposition: `accepted and queued`. The basis is a user decision of 2026-11-06, 
 
 - **The temporal guard carries a weapon.** The weapon fits the unit's time-themed lore in Chaos Redux (the Temporal Continuity Guard and its Continuity Field Apparatus). It is modelled live in Blender as a component, attached through a real hand control, and the attack and defend actions are planned around it. This replaces the plan's earlier default of unarmed close combat.
 - **The paleogenetic creature gets two new tentacle chains.** All six visible tentacles are rigged. The two new chains and their weights are authored live, and the weights stay off the body.
+
+## Modelled tatter and the review procedure (user decision, 2026-11-06)
+
+Disposition: `accepted and queued`. The basis is a maintainer decision of 2026-11-06, relayed by the coordinating session. Implementation is in progress on branch `cr-3d-author-3`, where the two affected units are re-authored live.
+
+- **Tatter is design.** The see-through tears in the demonic zombies' wing membranes and the ragged, spiky hem of the death ghost hosts' coat are intended looks. Their review requests tell the reviewer so, and the reviewer does not report them. Everything else is still judged: stretching, clipping, floating, weights, ground contact and how each clip reads.
+- **Double-sided membranes stay.** The demonic zombies' wing faces are duplicated with reversed winding, so the membranes do not vanish from behind. That repair is kept.
+- **The bar stays at zero findings.** A unit is accepted only when a fresh reviewer reports no defect.
+- **Rounds are consistent.** Every reviewer gets the same fixed checklist and the same fixed camera angles in each round. Intermediate rounds re-review only the clips that changed. One full fresh review of every clip ends each unit before it is accepted.
