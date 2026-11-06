@@ -14,3 +14,10 @@ The 3D skill forbade any repository script or adapter operation from generating 
 - **Free work comes first.** Free live re-authoring comes before any paid provider action or new generation. A paid step needs user approval, and only after the unit still fails review.
 
 The narrowed policy is in `.claude/skills/chaos-redux-3d-model-pipeline/SKILL.md` under `Skeleton, skinning, and action policy`.
+
+## Temporal guard weapon and paleogenetic tentacle chains (user decision, 2026-11-06)
+
+Disposition: `accepted and queued`. The basis is a user decision of 2026-11-06, relayed by the coordinating session in answer to the two open questions in `reauthor_plans_first_five.md`. Implementation is queued on branch `cr-3d-live-reauthor`, where the units are re-authored live.
+
+- **The temporal guard carries a weapon.** The weapon fits the unit's time-themed lore in Chaos Redux (the Temporal Continuity Guard and its Continuity Field Apparatus). It is modelled live in Blender as a component, attached through a real hand control, and the attack and defend actions are planned around it. This replaces the plan's earlier default of unarmed close combat.
+- **The paleogenetic creature gets two new tentacle chains.** All six visible tentacles are rigged. The two new chains and their weights are authored live, and the weights stay off the body.
