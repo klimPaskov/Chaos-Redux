@@ -457,3 +457,5 @@ Use a clear commit message that describes what was implemented.
 Never add `Co-Authored-By`, "Generated with" or any other AI attribution line to commit messages or pull request descriptions: the user is the sole author of this repository.
 
 Do not commit broken, unrelated, or half-finished work. If the plan cannot be completed cleanly, report the blocker instead of creating a misleading commit.
+
+Merge pull requests and push without asking the maintainer once the required checks pass (maintainer decision D-23, 2026-11-06). Never force push, never reset or clean in a way that loses work, and never delete a branch with unmerged work.
