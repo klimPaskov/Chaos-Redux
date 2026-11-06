@@ -1,0 +1,446 @@
+{
+  "schema_version": "1.0.0",
+  "profiles": {
+    "static_prop": {
+      "generation": {
+        "ai_model": "meshy-7",
+        "model_type": "standard",
+        "target_polycount": 5000,
+        "target_polycount_applies": false,
+        "should_remesh": false,
+        "texture_resolution": "2k",
+        "enable_pbr": true
+      },
+      "axis": "z_up",
+      "scale_reference": "1.5m overall height unless the named runtime reference requires another value",
+      "texture_max_dimension": 1024,
+      "triangle_range": {
+        "preferred_min": 5000,
+        "preferred_max": 30000,
+        "hard_max": 60000,
+        "working_triangle_target": 5000
+      },
+      "controlled_reduction_allowed": true,
+      "materials": {
+        "max_slots": 4,
+        "required_channels": [
+          "diff",
+          "spec",
+          "n"
+        ],
+        "shader": "PdxMeshAdvanced",
+        "specular_packing": {
+          "red": 0,
+          "green": 32,
+          "blue": "metallic",
+          "alpha": "roughness"
+        },
+        "raw_roughness_as_specular": false
+      },
+      "validation": {
+        "max_non_manifold_edges": 0,
+        "max_boundary_edges": 0,
+        "max_loose_components": 1,
+        "max_residual_zero_weight_vertices": 0
+      },
+      "validation_calibration": {
+        "counted_on": "position-welded geometry (1e-6), so UV and normal seams are not holes or loose parts",
+        "not_measured": "No shipped or candidate model of this profile has been measured yet, so the strict defaults stay: a closed, single-piece, fully skinned mesh. Calibrate from a measured shipped model before relaxing them."
+      },
+      "exceptions": [],
+      "rig_route": "none",
+      "actions": [],
+      "root_policy": "world_origin_on_ground",
+      "runtime_consumer": "map/building-style static entity handoff"
+    },
+    "building": {
+      "generation": {
+        "ai_model": "meshy-7",
+        "model_type": "standard",
+        "target_polycount": 30000,
+        "target_polycount_applies": false,
+        "should_remesh": false,
+        "texture_resolution": "2k",
+        "enable_pbr": true
+      },
+      "axis": "z_up",
+      "scale_reference": "installed vanilla facility_land.mesh/facility_land entity used by the map-building consumer",
+      "scale_policy": "match a named installed vanilla building consumer's source height and entity scale exactly once; height-only calibration is invalid",
+      "vanilla_reference": {
+        "mesh": "gfx/models/buildings/facility_land.mesh",
+        "entity": "building_land_facility",
+        "mesh_height_m": 3.4697628021,
+        "entity_scale": 0.6,
+        "runtime_height_m": 2.0818576813,
+        "runtime_dimensions_m": [
+          3.6194131851,
+          3.1972126007,
+          2.0818576813
+        ],
+        "measurement": "io_pdx_mesh import of the installed facility_land.mesh and vanilla gfx/entities/buildings.gfx"
+      },
+      "footprint": {
+        "axes": [
+          "x",
+          "y"
+        ],
+        "max_runtime_footprint_m": 4.0,
+        "policy": "reject_unless_explicit_fit_to_budget",
+        "comparison": "keep custom map buildings close to the installed vanilla facility footprint; 4.0m is the hard runtime ceiling"
+      },
+      "placement": {
+        "shared_spawn_points_allowed": false,
+        "default_policy": "dedicated_spawn_point_or_provincial_anchor",
+        "one_visual_per_state_requires": "province_building_max_1_and_random_province_construction"
+      },
+      "texture_max_dimension": 1024,
+      "triangle_range": {
+        "preferred_min": 8000,
+        "preferred_max": 45000,
+        "hard_max": 60000,
+        "working_triangle_target": 30000
+      },
+      "controlled_reduction_allowed": true,
+      "materials": {
+        "max_slots": 4,
+        "required_channels": [
+          "diff",
+          "spec",
+          "n"
+        ],
+        "shader": "PdxMeshAdvancedSnow",
+        "specular_packing": {
+          "red": 0,
+          "green": 32,
+          "blue": "metallic",
+          "alpha": "roughness"
+        },
+        "raw_roughness_as_specular": false
+      },
+      "validation": {
+        "max_non_manifold_edges": 0,
+        "max_boundary_edges": 0,
+        "max_loose_components": 1,
+        "max_residual_zero_weight_vertices": 0
+      },
+      "validation_calibration": {
+        "counted_on": "position-welded geometry (1e-6), so UV and normal seams are not holes or loose parts",
+        "not_measured": "No shipped or candidate model of this profile has been measured yet, so the strict defaults stay: a closed, single-piece, fully skinned mesh. Calibrate from a measured shipped model before relaxing them."
+      },
+      "exceptions": [],
+      "rig_route": "none",
+      "actions": [],
+      "root_policy": "world_origin_on_ground",
+      "runtime_consumer": "static map building entity"
+    },
+    "humanoid_unit": {
+      "generation": {
+        "ai_model": "meshy-7",
+        "model_type": "standard",
+        "target_polycount": 21000,
+        "target_polycount_applies": false,
+        "should_remesh": false,
+        "texture_resolution": "2k",
+        "enable_pbr": true
+      },
+      "axis": "z_up",
+      "scale_reference": "western_european_infantry.mesh source height 7.351824 with infantry_rifle_entity scale 0.8",
+      "runtime_entity_scale": 0.8,
+      "runtime_diffuse_gamma": 0.72,
+      "vanilla_reference": {
+        "mesh": "gfx/models/units/western_european_infantry.mesh",
+        "entity": "gfx/entities/units_infantry.asset#infantry_rifle_entity",
+        "mesh_object_names": [
+          "polySurface106"
+        ],
+        "exclude_name_patterns": [
+          "collision"
+        ],
+        "forward_axis": "-Y",
+        "up_axis": "+Z",
+        "mesh_height": 7.3518242835,
+        "entity_scale": 0.8,
+        "runtime_height": 5.8814594268,
+        "measurement": "io_pdx_mesh import, main polySurface106 object, collision object excluded"
+      },
+      "texture_max_dimension": 1024,
+      "triangle_range": {
+        "preferred_min": 12000,
+        "preferred_max": 50000,
+        "hard_max": 90000,
+        "working_triangle_target": 21000
+      },
+      "controlled_reduction_allowed": true,
+      "materials": {
+        "max_slots": 6,
+        "required_channels": [
+          "diff",
+          "spec",
+          "n"
+        ],
+        "shader": "PdxMeshAdvanced",
+        "specular_packing": {
+          "red": 0,
+          "green": 32,
+          "blue": "metallic",
+          "alpha": "roughness"
+        },
+        "raw_roughness_as_specular": false
+      },
+      "validation": {
+        "max_non_manifold_edges": 0,
+        "max_boundary_edges": 700,
+        "max_loose_components": 8,
+        "max_residual_zero_weight_vertices": 0
+      },
+      "validation_calibration": {
+        "counted_on": "position-welded geometry (1e-6), so UV and normal seams are not holes or loose parts",
+        "measured_on": "13 shipped humanoid_unit meshes: 5 zin units (zin_elves_warden, zin_men_infantry, zin_orcs_warrior, zin_the_dead_revenant, zin_trolls_brute) and 8 chaos_redux zombie units (demonic, infected, mutant, necrotic, parasitic, rabid, undead, base zombies), read from the exported .mesh files on 2026-11-01 in Blender 5.1; and on 2026-11-06 the ZIN grave rider (an armoured skeleton, Meshy remesh reduced to 21,000 triangles) in Blender 5.2.2",
+        "max_non_manifold_edges": "measured 0 on all 13, limit 0",
+        "max_boundary_edges": "measured 0 on all 8 chaos_redux units, 90, 214, 371, 468, 563 on the five zin pilots, and 624 on the ZIN grave rider (150 loops of at most 12 edges in the gaps between bones and plates; every bounded cap was rolled back as non-manifold). Limit 700 is the largest measured 624 plus about 12 percent",
+        "max_loose_components": "measured 1 on the five zin units and on 3 of 8 chaos_redux units (demonic, mutant, rabid), 2, 3, 4, 5 and 7 on the other five (separate accessory parts, largest 7 on parasitic_zombies), limit 8 is the largest measured 7 plus 1",
+        "max_residual_zero_weight_vertices": "measured 0 on all 13, limit 0",
+        "not_measured": "the other profiles have no shipped model on disk, so their limits are unchanged"
+      },
+      "exceptions": [],
+      "rig_route": "meshy_humanoid_candidate_then_blender_audit",
+      "actions": [
+        {
+          "role": "idle",
+          "provider_action_id": 0,
+          "fps": 24,
+          "loop": true,
+          "root_policy": "in_place"
+        },
+        {
+          "role": "attack",
+          "provider_action_id": 4,
+          "fps": 24,
+          "loop": false,
+          "root_policy": "in_place"
+        },
+        {
+          "role": "move",
+          "provider_action_id": null,
+          "fps": 24,
+          "loop": true,
+          "root_policy": "in_place",
+          "authoring_route": "blender_authored_skeletal"
+        }
+      ],
+      "root_policy": "root_bone_at_ground_origin",
+      "runtime_consumer": "land-unit entity"
+    },
+    "nonhumanoid_winged_biped": {
+      "generation": {
+        "ai_model": "meshy-7",
+        "model_type": "standard",
+        "target_polycount": 30000,
+        "target_polycount_applies": false,
+        "should_remesh": false,
+        "texture_resolution": "2k",
+        "enable_pbr": true
+      },
+      "axis": "z_up",
+      "scale_reference": "western_european_infantry.mesh source height 7.351824 with infantry_rifle_entity scale 0.8; overall creature height is calibrated to the same runtime height",
+      "runtime_entity_scale": 0.8,
+      "runtime_diffuse_gamma": 0.72,
+      "vanilla_reference": {
+        "mesh": "gfx/models/units/western_european_infantry.mesh",
+        "entity": "gfx/entities/units_infantry.asset#infantry_rifle_entity",
+        "mesh_object_names": [
+          "polySurface106"
+        ],
+        "exclude_name_patterns": [
+          "collision"
+        ],
+        "forward_axis": "-Y",
+        "up_axis": "+Z",
+        "mesh_height": 7.3518242835,
+        "entity_scale": 0.8,
+        "runtime_height": 5.8814594268,
+        "measurement": "io_pdx_mesh import, main polySurface106 object, collision object excluded"
+      },
+      "texture_max_dimension": 1024,
+      "triangle_range": {
+        "preferred_min": 10000,
+        "preferred_max": 45000,
+        "hard_max": 90000,
+        "working_triangle_target": 30000
+      },
+      "controlled_reduction_allowed": true,
+      "materials": {
+        "max_slots": 6,
+        "required_channels": [
+          "diff",
+          "spec",
+          "n"
+        ],
+        "shader": "PdxMeshAdvanced",
+        "specular_packing": {
+          "red": 0,
+          "green": 32,
+          "blue": "metallic",
+          "alpha": "roughness"
+        },
+        "raw_roughness_as_specular": false
+      },
+      "validation": {
+        "max_non_manifold_edges": 0,
+        "max_boundary_edges": 0,
+        "max_loose_components": 1,
+        "max_residual_zero_weight_vertices": 0
+      },
+      "validation_calibration": {
+        "counted_on": "position-welded geometry (1e-6), so UV and normal seams are not holes or loose parts",
+        "not_measured": "No shipped or candidate model of this profile has been measured yet, so the strict defaults stay: a closed, single-piece, fully skinned mesh. Calibrate from a measured shipped model before relaxing them."
+      },
+      "exceptions": [],
+      "rig_route": "blender_custom_winged_biped_rig",
+      "actions": [
+        {
+          "role": "idle",
+          "fps": 30,
+          "loop": true,
+          "root_policy": "in_place",
+          "authoring_route": "blender_authored_skeletal"
+        },
+        {
+          "role": "move",
+          "fps": 30,
+          "loop": true,
+          "root_policy": "in_place",
+          "authoring_route": "blender_authored_skeletal"
+        },
+        {
+          "role": "attack",
+          "fps": 30,
+          "loop": false,
+          "root_policy": "in_place",
+          "authoring_route": "blender_authored_skeletal"
+        },
+        {
+          "role": "death",
+          "fps": 30,
+          "loop": false,
+          "root_policy": "in_place",
+          "authoring_route": "blender_authored_skeletal"
+        }
+      ],
+      "root_policy": "custom_creature_root_at_ground_origin",
+      "runtime_consumer": "land-unit entity"
+    },
+    "nonhumanoid_creature": {
+      "generation": {
+        "ai_model": "meshy-7",
+        "model_type": "standard",
+        "target_polycount": 21000,
+        "target_polycount_applies": false,
+        "should_remesh": false,
+        "texture_resolution": "2k",
+        "enable_pbr": true
+      },
+      "axis": "z_up",
+      "scale_reference": "western_european_infantry.mesh source height 7.351824 with infantry_rifle_entity baseline scale 0.8; job-supplied entity scale derived from the named runtime consumer",
+      "runtime_entity_scale": 1.0,
+      "runtime_diffuse_gamma": 0.72,
+      "vanilla_reference": {
+        "mesh": "gfx/models/units/western_european_infantry.mesh",
+        "entity": "gfx/entities/units_infantry.asset#infantry_rifle_entity",
+        "mesh_object_names": [
+          "polySurface106"
+        ],
+        "exclude_name_patterns": [
+          "collision"
+        ],
+        "forward_axis": "-Y",
+        "up_axis": "+Z",
+        "mesh_height": 7.3518242835,
+        "entity_scale": 0.8,
+        "runtime_height": 5.8814594268,
+        "measurement": "io_pdx_mesh import, main polySurface106 object, collision object excluded"
+      },
+      "texture_max_dimension": 1024,
+      "triangle_range": {
+        "preferred_min": 10000,
+        "preferred_max": 45000,
+        "hard_max": 90000,
+        "working_triangle_target": 21000
+      },
+      "controlled_reduction_allowed": true,
+      "materials": {
+        "max_slots": 6,
+        "required_channels": [
+          "diff",
+          "spec",
+          "n"
+        ],
+        "shader": "PdxMeshAdvanced",
+        "specular_packing": {
+          "red": 0,
+          "green": 32,
+          "blue": "metallic",
+          "alpha": "roughness"
+        },
+        "raw_roughness_as_specular": false
+      },
+      "validation": {
+        "max_non_manifold_edges": 0,
+        "max_boundary_edges": 2700,
+        "max_loose_components": 8,
+        "max_residual_zero_weight_vertices": 0
+      },
+      "validation_calibration": {
+        "counted_on": "position-welded geometry (1e-6), so UV and normal seams are not holes or loose parts",
+        "measured_on": "the Meshy remesh (30,000 triangles) of the ZIN knights' barded warhorse, 2026-11-06, Blender 5.2.2: the first creature measured",
+        "max_non_manifold_edges": "measured 0, limit 0",
+        "max_boundary_edges": "measured 2489 in 451 small loops of at most 19 edges, the open edges of barding plates, straps and saddle flaps; the bounded hole fill capped 367 of them and rolled every cap back because capping made the shells non-manifold. Limit 2700 is the measurement plus about 8 percent",
+        "max_loose_components": "measured 4 (separate strap and stirrup parts); limit 8 matches the humanoid profile",
+        "max_residual_zero_weight_vertices": "limit 0, unchanged",
+        "review": "the remeshed previews show an intact horse with no visible hole; recalibrate when more creatures are measured",
+        "working_triangle_target": "21,000 like humanoid_unit: the exporter keeps one stream under 65,535 triangle-index entries (63,000 at 21,000 triangles); the knights' warhorse at 29,833 triangles needed 89,499"
+      },
+      "exceptions": [],
+      "rig_route": "blender_custom_creature_rig",
+      "actions": [
+        {
+          "role": "idle",
+          "fps": 24,
+          "loop": true,
+          "root_policy": "in_place",
+          "authoring_route": "blender_authored_skeletal"
+        },
+        {
+          "role": "attack",
+          "fps": 24,
+          "loop": false,
+          "root_policy": "in_place",
+          "authoring_route": "blender_authored_skeletal"
+        },
+        {
+          "role": "move",
+          "fps": 24,
+          "loop": true,
+          "root_policy": "in_place",
+          "authoring_route": "blender_authored_skeletal"
+        },
+        {
+          "role": "retreat",
+          "fps": 24,
+          "loop": true,
+          "root_policy": "in_place",
+          "authoring_route": "blender_authored_skeletal"
+        },
+        {
+          "role": "death",
+          "fps": 24,
+          "loop": false,
+          "root_policy": "in_place",
+          "authoring_route": "blender_authored_skeletal"
+        }
+      ],
+      "root_policy": "custom_creature_root_at_ground_origin",
+      "runtime_consumer": "land-unit entity"
+    }
+  }
+}
