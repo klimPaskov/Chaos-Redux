@@ -19,7 +19,14 @@ Do not use it to draw 2D equipment illustrations, unit counters, focus or idea i
 
 ## Skeleton, skinning, and action policy
 
-No repository Python script and no adapter operation may generate bones, skin weights, or keyframes from a declarative spec, a template, or a formula. Provider results are ingested as authored assets and are never synthesized by repository code.
+No repository Python script and no adapter operation may generate new bones, a new skin-weight set, or new keyframes from a declarative spec, a template, or a formula. Provider results are ingested as authored assets and are never synthesized by repository code. New creature rigs and new actions are authored live in Blender, never from template rigs or procedural gaits.
+
+Scripted repair of an existing unit is allowed (user decision of 2026-11-06, recorded in `docs/plans/unit_fix_2026-11/decisions.md`):
+- geometry repair, such as cutting fused parts, filling holes, and fixing winding, normals, and one-sided faces;
+- correction of existing weights, such as moving cloth, tails, and wings off the nearest limb, smoothing, and limiting influences to four;
+- ground-contact correction on existing actions.
+
+Each repaired unit is accepted only after renders and an independent fresh-context review (`Unit checks, free repair and independent visual review`). Free live re-authoring comes before any paid provider action or new generation, and a paid step needs user approval after the unit has failed review.
 
 The Meshy provider route is the preferred route for rigging and animating provider-eligible bipedal models. The worker generates the body, drives the Meshy rig task and the Meshy animation tasks, and ingests the provider results into the job.
 
@@ -31,7 +38,7 @@ Skeletons, skinning, and skeletal actions that the provider route does not suppl
 
 A Meshy-rigged body arrives with its skeleton inside the downloaded provider model, so `prepare_candidate` imports it, and `import_animation_action`, `import_bvh_animation_action`, and `retime_animation_action` bring the provider's actions onto that rig. `import_animation_action` transfers one receipt-verified provider or professional skeletal action onto the target armature by its exact source action id with hash-bound provenance, `import_bvh_animation_action` native-imports and retargets one receipt-verified BVH action with explicit bone chains, root-motion policy, scale and axes, and `retime_animation_action` retimes one already-ingested action between frame rates without changing its motion. `export_animation` and `reimport_export` prove the exported bytes.
 
-An operation that would generate a rig, transfer skin weights automatically, or synthesize an action is outside this surface and must not be introduced.
+An operation that would generate a new rig, create a skin-weight set from scratch, or synthesize an action is outside this surface and must not be introduced. Correcting existing weights and grounding under the repair rule above is not such an operation.
 
 ## No shortcuts in model work
 
@@ -260,6 +267,14 @@ Read the complete requirements in [Custom unit sound-design companion](reference
 
 Export and reimport the actual deliverables, checking skeleton, materials, scale, and action coverage before handoff.
 Read the complete requirements in [PDX export and reimport evidence](references/blender-processing-and-export.md#pdx-export-and-reimport-evidence) before this work.
+
+## Unit checks, free repair and independent visual review
+
+Every exported unit, new or repaired, passes these three gates from the kit snapshot in `.tools/kit_3d/` before it is wired or shown. Numeric checks alone once passed units whose clips tore fused limbs into spikes, whose cloth faced inward and whose feet left the ground.
+
+1. `python -B .tools/kit_3d/check_unit_files.py <unit folder> --mod-root .` reads the exported bytes and refuses holes, flipped or inside-out faces, surfaces fusing body parts that move apart, per-frame stretch and ground contact beyond what vanilla units do. The limits are measured on vanilla units and live in the snapshot. Never lower a limit or add a suppression: fix the unit.
+2. `python -B .tools/kit_3d/repair_unit.py <unit folder> --out <job>/repair --repairs winding bridges` fixes winding and cuts fused body parts in a copy, keeping the skeleton, the actions and every untouched weight. It reports bridges inside one continuous skin as `weight_seams`, which need weight work instead.
+3. `python -B .tools/kit_3d/review_unit.py <unit folder> --mod-root . --out <job>/evidence/review` renders every action from six views, including the HOI4 map camera, with back faces culled on magenta. Give `REVIEW_REQUEST.md` and the sheets, and nothing else, to a fresh subagent that did not make the unit. Record its reply with `--record`. The unit is accepted only on `VERDICT: pass` with no listed defect. Keep the reply and `verdict.json` in the job evidence.
 
 ## Evidence package and handoff
 

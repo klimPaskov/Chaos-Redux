@@ -38,6 +38,7 @@ Before retiring a tool, search its filename, module name, output signatures, and
 | `wiki/` | Offline wiki snapshot tools, copied from the kit; the snapshot is pinned by `kit_wiki.json` and checked by `sync/kit_wiki.py` |
 | `live_testing/` | Linux Clausewitz MCP bridge |
 | `3d_pipeline/` | Shared 3D model infrastructure, with its own tests and README |
+| `kit_3d/` | Pinned snapshot of the kit's 3D unit tools: `check_unit_files.py` (holes, winding, fused body parts, per-frame stretch and ground contact from the exported bytes, against limits measured on vanilla units), `review_unit.py` (contact sheets for the independent visual review, and the recorded verdict) and `repair_unit.py` (free Blender repair of winding and fused parts). Changed only by `sync/refresh_kit_3d.py --kit <kit> --commit <revision>`; `sync/refresh_kit_3d.py --check` refuses local edits. Change the tools in the kit, then refresh |
 | `tests/` | Every maintained regression test, their shared JS helpers (`tests/lib/`) and fixtures |
 
 Tools in a subfolder import `lib` by adding `.tools` to `sys.path` at the top of the file; run every tool from the mod root.
