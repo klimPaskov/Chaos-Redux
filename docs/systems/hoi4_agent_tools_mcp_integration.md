@@ -55,6 +55,47 @@ Use the skill that owns the current work.
 Choose routes that answer a concrete question about the changed surface and apply the retry limits in `AGENTS.md`.
 There is no central MCP skill or router.
 
+## Agent rules
+
+`CLAUDE.md` keeps the short version of these rules. Read this section before using a route, when one fails and before reporting MCP evidence.
+
+### Lookups and validation
+
+- Reference tools return the wiki and installed documentation. Follow `nextLine` only for the relevant section. A source list alone does not prove the rules were read.
+- A result with `omittedSources` needs a higher limit or targeted `hoi4.reference_search` and `hoi4.reference_read` calls before coverage is claimed. `missing` means absent files. A limit of 1 keeps only installed documentation, and 2 or more keep both required source kinds.
+- If a route is unavailable, read the pertinent local files directly and record the route gap. Do not reread material from the filesystem that a result already returned.
+- `hoi4.script_validate` checks effect and trigger bodies under an explicit scope. Prefer file mode (`path`) for changed files. Inspect `known_mistakes`, every `KNOWN_MISTAKE_<RULE>` finding and its cited fix, unresolved commands, `valid = null`, unchecked argument blocks and omitted findings. Parameter semantics and engine behavior are separate evidence.
+- Review `reference_context.knownMistakes` and their citations. A listed rule does not prove a mistake in current source.
+
+### Work types
+
+- Focus: inspect the changed route, lint source and render the affected layout when useful. Cleanup and new routes use `hoi4.focus_rewrite` or reviewed direct edits.
+- Event: use narrow `hoi4.event_inspect` queries, render or compare when they answer a structural question, then edit source normally.
+- Technology: inspect prerequisites, placements, unlocks, bonuses, references and assets, and render or compare the changed portion when useful.
+- Weighted logic: prefer `hoi4.probability_inspect` and representative named scenarios. Choose evaluation, comparison, sweeps, simulation, sequence analysis or renders only as the balance question needs. If an analyzer cannot handle the script, review the actual code, calculate a few relevant cases and explain what remains uncertain.
+- GUI: follow `chaos-redux-scripted-gui`. Establish the intended reference, inspect linked layout and click regions, and review representative states and resolutions before and after editing when rendering is available. Apply reviewed edits directly or through `hoi4.gui_rewrite`. Fix known visible defects. If the renderer is unavailable, review source geometry, assets, text and state wiring and disclose the visual-check limitation without waiting for a game screenshot.
+- Map: inspect the connected province, state, region, adjacency, supply and railway data before editing through `hoi4.map_rewrite` or a reviewed direct change.
+
+### Retry limits
+
+These apply to every supported surface.
+
+- Run checks that answer a concrete question about the change, and reuse results until their inputs change.
+- After a failure or an unsupported or inconclusive analysis, allow the first read-only request and at most one retry with corrected or narrower inputs. Skip the retry when the tool is known to be unavailable or no correction is useful.
+- The limit follows the underlying failure across files, scenarios, tools using the same unsupported capability, agents and resumed turns. A new request name, an unrelated source edit or another successful status poll does not reset it. Retry only after new information or a tool or input change addresses the failure.
+- Then read local references and code directly and run the useful available checks.
+- The limit never excuses a confirmed code defect. Fix it and recheck the affected behavior.
+- Record the failed check, the attempts used and what would justify trying again once, in the existing handoff or work note. Do not create another report for unchanged results.
+- Continue implementation instead of polling unchanged status or repairing external tools, unless tooling work was requested.
+- Inspect current source or transaction state before retrying an uncertain mutation.
+
+### Evidence rules
+
+- Tool exposure does not prove service health or viewer availability. A successful read-only domain call shows the route works, so no separate health check is needed. Reuse schema and version discovery for an unchanged connection.
+- If task or job negotiation cannot be confirmed, use the ordinary domain call or local source review. Jobs and helper pages are delivery tools, so keep the domain-specific inspect, render, compare and scenario evidence, with continuation URIs, source revisions, coverage and unresolved findings from final results.
+- Check the standalone Technology Tree Viewer only when the task needs it. Its absence does not block source implementation. Keep viewer and inspector use read-only.
+- MCP supports implementation and review, and its output is not a universal completion gate. When a tool is unavailable, source review and local checks can support completion but are never described as MCP proof or live engine validation.
+
 ## Local reference workflow
 
 Start with `hoi4.reference_context` for the work surface; use `hoi4.reference_search` and `hoi4.reference_read` for exact rule or command text not already returned. `hoi4.source_lookup` finds exact vanilla and Chaos Redux definitions, override status, and indexed usages. Keep the source path, line span, and revision with implementation notes. The offline wiki under `paradox_wiki/` and installed game documentation are the source material; do not fetch the Paradox Wiki website. Read only the sections relevant to the task. Read the source excerpts returned by MCP; use targeted search/read for needed text that the context result does not include. A source list alone is only navigation. MCP-delivered source text satisfies the reading requirement; do not reopen the same files for a separate offline-reading pass. If a reference root is unavailable or sections are skipped, inspect the local files directly and record the missing coverage. When a live context result includes `omittedSources`, raise the result limit or use targeted search/read to cover those required sources; `missing` identifies absent files instead. At a limit of 1, installed documentation can occupy the only result; a limit of 2 or more can retain both available required source kinds. Reuse already-read excerpts while their source revision and relevance are unchanged. Installed game documentation takes precedence for current syntax; verify a vanilla source precedent when possible.
